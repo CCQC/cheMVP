@@ -30,6 +30,7 @@
      QString label() {return (myLabelSubscript.size() ? myLabel + "_" + myLabelSubscript : myLabel);}
      const QFont& labelFont() {return myLabelFont;}
      void computeRadius();
+     void setLabelSubscript(const QString &string) {myLabelSubscript = string;}
      void setLabelFontSize(int val) {myFontSize = val; myLabelFont.setPointSizeF(double(val)*myEffectiveRadius/15.0);}
      void setLabelFont(const QString &font) {myLabelFont.setFamily(font);}
      void setScaleFactor(double val) {myScaleFactor = val;}

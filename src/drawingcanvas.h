@@ -32,6 +32,7 @@ public:
     void setAtomLabels(QString text);
 public slots:
 	void toggleBondDashing();
+	void toggleAtomNumberSubscripts();
 	void atomLabelFontChanged(const QFont &);
 	void atomLabelFontSizeChanged(const QString &);
     void setMode(Mode mode);
@@ -76,6 +77,7 @@ private:
     QPointF mouseOrigin;
     QColor myBackgroundColor;
     int numMouseMoves;
+    bool myAtomNumberSubscripts;
     std::vector<Atom*> atomsList;
     std::vector<Bond*> bondsList;
     std::vector<Angle*> anglesList;

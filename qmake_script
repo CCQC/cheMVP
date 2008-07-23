@@ -19,4 +19,8 @@ QMakeFile.puts "QMAKE_CXXFLAGS_DEBUG = \"-O0 -g\""
 QMakeFile.puts "QT += svg"
 QMakeFile.close
 
-`qmake #{FileName}`
+if ENV["VENDOR"] == "apple"
+    `qmake -spec macx-g++ #{FileName}`
+else
+    `qmake #{FileName}`
+end

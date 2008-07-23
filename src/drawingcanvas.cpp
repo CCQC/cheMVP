@@ -11,6 +11,7 @@ DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_
     QGraphicsScene(parent),
     elementToAdd("C"),
     drawingInfo(info),
+    myAtomNumberSubscripts(false),
     myBackgroundColor(255, 255, 255, 0),
     parser(in_parser)
 {
@@ -295,6 +296,36 @@ void DrawingCanvas::atomLabelFontChanged(const QFont &font)
 	foreach(Atom *atom, atomsList){
 		if(atom->isSelected()){
 			atom->setLabelFont(font.family());
+		}
+	}
+	update();
+}
+
+
+void DrawingCanvas::toggleAtomNumberSubscripts()
+{
+	if(myAtomNumberSubscripts){
+		myAtomNumberSubscripts = false;
+		foreach(Atom *atom, atomsList){
+			if(!atom->isSelected()) continue;
+			if(atom->label().indexOf('_') == -1){
+				atom->setLabelSubscript(QString());
+				atom->setLabel(QString());
+			}else{
+				atom->setLabelSubscript(QString());
+			}
+		}
+	}else{
+		myAtomNumberSubscripts = true;	
+		for(int atom = 0; atom < atomsList.size(); ++atom){
+			if(!atomsList[atom]->isSelected()) continue;
+			if(!atomsList[atom]->label().size()){
+				// If there's no label, assign the number to the label
+				atomsList[atom]->setLabel(QString().setNum(atom+1));
+				atomsList[atom]->setLabelSubscript(QString());
+			}else{
+				atomsList[atom]->setLabelSubscript(QString().setNum(atom+1));
+			}
 		}
 	}
 	update();

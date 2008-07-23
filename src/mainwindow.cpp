@@ -261,7 +261,13 @@ QWidget *MainWindow::createAtomsWidget()
     connect(atomSizeSpinBox, SIGNAL(valueChanged(double)), this, SLOT(changeAtomSize()));
     atomSizeWidget->setLayout(atomSizeLayout);
     layout->addWidget(atomSizeWidget);
-       
+
+    // The atom numbers as label subscripts    
+    toggleAtomNumberSubscriptsButton = new QPushButton(tr("Toggle Atom Number Subscripts"));
+    layout->addWidget(toggleAtomNumberSubscriptsButton);
+    connect(toggleAtomNumberSubscriptsButton, SIGNAL(pressed()),
+                canvas, SLOT(toggleAtomNumberSubscripts()));
+
     QGroupBox *drawingStyleBox 	    = new QGroupBox(tr("Drawing Style"));    
     atomDrawingStyleButtonGroup     = new QButtonGroup;
     QGridLayout *drawingStyleLayout = new QGridLayout;

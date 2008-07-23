@@ -9,3 +9,8 @@
 
 # Ignore Apple files
 *DS_Store
+
+# Ignore Eclipse project files
+
+*.project
+*.cproject

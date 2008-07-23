@@ -88,6 +88,7 @@ private:
     QPushButton *toggleBondLabelsButton;
     QPushButton *toggleBondDashingButton;
     QPushButton *toggleAngleLabelsButton;
+    QPushButton *toggleAtomNumberSubscriptsButton;
     
     QRadioButton *simpleAtomDrawingButton;
     QRadioButton *houkMolAtomDrawingButton;
