@@ -1,0 +1,8 @@
+# Ignore code from the meta object compiler
+*moc_*
+
+# Ignore generate resource files
+*qrc_*
+
+# Ignore object files
+*.o

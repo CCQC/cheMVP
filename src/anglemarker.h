@@ -1,0 +1,39 @@
+#ifndef ANGLEMARKER_H_
+#define ANGLEMARKER_H_
+
+#include <QtGui>
+#include <QGraphicsItem>
+#include <cmath>
+#include <iostream>
+
+#include "drawinginfo.h"
+#include "defines.h"
+
+class AngleMarker : public QGraphicsPathItem
+{
+public:
+	enum { Type = UserType + ANGLEMARKERTYPE};
+	int type() const {return Type;}
+
+    AngleMarker(DrawingInfo *drawingInfo, QGraphicsItem *parent = 0);
+    
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+               QWidget *widget = 0);
+    void setOtherMarker(AngleMarker *marker) {otherMarker = marker;}
+    void setHover(bool t_f) {hoverOver = t_f;}
+
+protected:
+	void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    DrawingInfo *drawingInfo;
+    AngleMarker *otherMarker;
+    qreal penWidth;
+    double effectiveWidth;
+    QColor myColor;
+    bool hoverOver;
+    QPen myPen;
+};
+
+
+#endif /*ANGLEMARKER_H_*/
