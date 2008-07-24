@@ -50,6 +50,7 @@ std::map<QString, QColor> Atom::labelToColor;
 
 
  void Atom::setLabel(const QString &text){
+     /*
 	 int pos = text.indexOf("_");
 	 if(pos == -1){
 		 myLabel = text;
@@ -57,6 +58,25 @@ std::map<QString, QColor> Atom::labelToColor;
 	 }else{
 		 myLabel = text.section('_', 0, 0);
 		 myLabelSubscript = text.section('_', 1, 1);
+	 }
+	 */
+	 // Regular expression to match C_x^y
+	 QRegExp rx("([A-Za-z0-9]*)([_^]\\w+)?([_^]\\w+)?", Qt::CaseInsensitive, QRegExp::RegExp2);
+     myLabel.clear();
+     myLabelSubscript.clear();
+     myLabelSuperscript.clear();
+	 if (rx.exactMatch(text) == true) {
+         myLabel = rx.cap(1);
+         if (rx.cap(2).startsWith('_')) {
+             myLabelSubscript = rx.cap(2).remove(0, 1);
+         } else if (rx.cap(2).startsWith('^')) {
+             myLabelSuperscript = rx.cap(2).remove(0, 1);
+         }
+         if (rx.cap(3).startsWith('_')) {
+             myLabelSubscript = rx.cap(3).remove(0, 1);
+         } else if (rx.cap(3).startsWith('^')) {
+             myLabelSuperscript = rx.cap(3).remove(0, 1);
+         }
 	 }
  }
  
@@ -150,6 +170,18 @@ std::map<QString, QColor> Atom::labelToColor;
     	 painter->drawText(-myEffectiveRadius/3.5 + hOffset, myEffectiveRadius/6.0 + vOffset, myLabelSubscript);
      }
      
+     // If there's a superscript to be drawn, do it
+     if(myLabelSuperscript.size()){
+    	 QFont superscriptFont(myLabelFont.family(), myLabelFont.pointSizeF()/2.0);
+    	 painter->setFont(superscriptFont);
+    	 QFontMetricsF labelFM(myLabelFont);
+    	 qreal hOffset  = labelFM.boundingRect(myLabel).width();
+         qreal vOffset2 = labelFM.boundingRect(myLabel).height();
+    	 QFontMetricsF superscriptFM(superscriptFont);
+    	 qreal vOffset = superscriptFM.boundingRect(myLabel).height()/3.0;
+    	 
+    	 painter->drawText(-myEffectiveRadius/3.5 + hOffset, myEffectiveRadius/6.0 - vOffset2 + 2.0*vOffset, myLabelSuperscript);
+     }
      // Draw the blob for HoukMol rip-off
      if(myDrawingStyle == HoukMol){
     	 QPointF startPoint(-myEffectiveRadius/1.8, -myEffectiveRadius/20.0);
