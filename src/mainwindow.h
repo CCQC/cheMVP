@@ -37,6 +37,7 @@ private slots:
     void openFile();
     void save();
     void saveAs();
+    void changeZoom(int);
 
 private:
 	void createToolBox();
@@ -94,6 +95,7 @@ private:
     QRadioButton *houkMolAtomDrawingButton;
     QRadioButton *simpleColoredAtomDrawingButton;
     
+    QSpinBox       *zoomSpinBox;
     QDoubleSpinBox *atomSizeSpinBox;
     QDoubleSpinBox *bondSizeSpinBox;
     

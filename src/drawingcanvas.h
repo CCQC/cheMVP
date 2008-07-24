@@ -22,6 +22,7 @@ public:
     DrawingCanvas(QMenu *itemMenu, DrawingInfo *drawingInfo, FileParser *parser, QObject *parent = 0);
     void setElementToAdd(const QString &element) {elementToAdd = element;}
     void clearAll();
+    void unselectAll();
     void performRotation();
     void updateBonds();
     void updateAngles();

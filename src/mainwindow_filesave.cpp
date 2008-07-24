@@ -45,6 +45,8 @@ void MainWindow::saveAs()
 
 void MainWindow::saveImage(const QString &fileName)
 {
+    canvas->unselectAll();
+    
 	FileType fileType = determineFileType(fileName);
 	QSize imageDimension(canvas->sceneRect().width(), canvas->sceneRect().height());
 
