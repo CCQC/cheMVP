@@ -97,7 +97,7 @@ void MainWindow::saveImage(const QString &fileName)
 	}else{
 		QString message("Unsupported file type:\n\n");
 		message += fileName;
-		message += "\n\nSupported extensions are\n.pdf, .svg, .ps, .eps";
+		message += "\n\nSupported extensions are\n.pdf, .svg, .ps, .eps, .png, .tiff, .tif";
 		error(message, __FILE__, __LINE__);
 	}
 }

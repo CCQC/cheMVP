@@ -98,13 +98,15 @@ void MainWindow::createToolBox()
     QWidget *bondsWidget        = createBondsWidget();
     QWidget *anglesWidget       = createAnglesWidget();
     QWidget *atomsWidget        = createAtomsWidget();
+    QWidget *annotationWidget   = createAnnotationWidget();
 
     toolBox = new QToolBox;
     toolBox->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Ignored));
     toolBox->setMinimumWidth(atomsWidget->sizeHint().width());
 //    toolBox->addItem(builderWidget, tr("Builder"));
-    toolBox->addItem(appearanceWidget, tr("Appearance"));
     toolBox->addItem(anglesWidget, tr("Angles"));
+    toolBox->addItem(annotationWidget, tr("Annotation"));
+    toolBox->addItem(appearanceWidget, tr("Appearance"));
     toolBox->addItem(atomsWidget, tr("Atoms"));
     toolBox->addItem(bondsWidget, tr("Bonds"));
 }
@@ -203,6 +205,18 @@ QWidget *MainWindow::createAppearanceWidget()
 }
 
 
+QWidget *MainWindow::createAnnotationWidget()
+{
+    QWidget *widget = new QWidget;
+    QGridLayout *layout = new QGridLayout;
+    
+    
+
+    widget->setLayout(layout);
+    return widget;	
+}
+
+
 QWidget *MainWindow::createBondsWidget()
 {
     QWidget *widget = new QWidget;
@@ -291,7 +305,7 @@ QWidget *MainWindow::createAtomsWidget()
     // The label
     atomLabelInput = new QLineEdit;
 	atomLabelInput->setText(tr("Select Atoms"));
-	atomLabelInput->setToolTip(tr("Text entered here will be used as the label for the selected atom(s).  Anything appended after an underscore will be used as a subscript"));
+	atomLabelInput->setToolTip(tr("Text entered here will be used as the label for the selected atom(s).  Anything appended after an underscore will be used as a subscript, anything after a carat is a superscript"));
     labelStyleLayout->addWidget(atomLabelInput, 0, 0);
     connect(atomLabelInput, SIGNAL(returnPressed()), this, SLOT(setAtomLabels()));
     // The label font

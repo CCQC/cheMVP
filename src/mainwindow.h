@@ -55,12 +55,14 @@ private:
 	QWidget *createAnglesWidget();
 	QWidget *createBondsWidget();
 	QWidget *createAtomsWidget();
+	QWidget *createAnnotationWidget();
 
 //    QWidget *builderWidget;
     QWidget *appearanceWidget;
     QWidget *bondsWidget;
     QWidget *anglesWidget;
     QWidget *atomsWidget;
+    QWidget *annotationWidget;
 
 //	QButtonGroup *periodicTableButtonGroup;
     QButtonGroup *mouseModeButtonGroup;
