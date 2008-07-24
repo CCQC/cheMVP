@@ -200,6 +200,20 @@ QWidget *MainWindow::createAppearanceWidget()
     rotationGroupBox->setLayout(sliderLayout);
     layout->addWidget(rotationGroupBox);
 
+    QWidget *zoomWidget = new QWidget;
+    QGridLayout *zoomLayout = new QGridLayout;
+    QLabel *zoomTitle = new QLabel(tr("Zoom:"));
+    zoomSpinBox = new QSpinBox();
+    zoomSpinBox->setRange(0, 500);
+    zoomSpinBox->setSuffix("%");
+    zoomSpinBox->setAccelerated(true);
+    zoomSpinBox->setValue(100);
+    connect(zoomSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
+    zoomLayout->addWidget(zoomTitle, 0, 0);
+    zoomLayout->addWidget(zoomSpinBox, 0, 1);
+    zoomWidget->setLayout(zoomLayout);
+    layout->addWidget(zoomWidget);
+    
     widget->setLayout(layout);
     return widget;	
 }
@@ -771,4 +785,8 @@ void MainWindow::changeBondSize()
 	}	
 }
 
-
+void MainWindow::changeZoom(int val)
+{
+    drawingInfo->setZoom(val);
+    canvas->refresh();
+}

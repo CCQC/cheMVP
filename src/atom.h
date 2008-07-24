@@ -62,6 +62,7 @@
  	 QString myLabel;
  	 QString mySymbol;
  	 QString myLabelSubscript;
+     QString myLabelSuperscript;
  	 int myFontSize;
  	 bool hoverOver;
  	 QFont myLabelFont;

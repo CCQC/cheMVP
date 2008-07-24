@@ -26,6 +26,7 @@ public:
 	double scaleFactor() const {return myUserScaleFactor * myAngToSceneScale;}
 	double perspective() const {return myPerspectiveScale;}
 	void determineScaleFactor();
+    void setZoom(int val) { myUserScaleFactor = (double)val; }
 private:
 	int myXRot;
 	int myYRot;

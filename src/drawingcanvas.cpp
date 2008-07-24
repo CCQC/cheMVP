@@ -48,6 +48,13 @@ void DrawingCanvas::clearAll()
 	arrowsList.clear();
 }
 
+void DrawingCanvas::unselectAll()
+{
+    foreach(QGraphicsItem *item, items()) {
+        item->setSelected(false);
+    }
+    update();
+}
 
 void DrawingCanvas::setAtomLabels(QString text)
 {
