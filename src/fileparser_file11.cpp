@@ -25,7 +25,7 @@ void FileParser::readFile11()
     
     QRegExp rx("", Qt::CaseInsensitive, QRegExp::RegExp2);
     
-    while (!infile.eof()) {
+    while (1) {
         Molecule *molecule = new Molecule();
         numAtoms = 0;
         
@@ -40,15 +40,16 @@ void FileParser::readFile11()
         //                            0.0000000000       -0.0417341586        0.0349588272
                                     
         getline(infile, tempString);
-        if (infile.eof())
+        if (infile.eof()) 
             break;
-        molecule->setComment(QString(tempString.c_str()));
+        // molecule->setComment(QString(tempString.c_str()));
         
         // Match number of atoms and optional total energy
         getline(infile, tempString);
-        rx.setPattern("\\s*(\\d+)\\s*(?:-\\d+\\.\\d+).*");
+        rx.setPattern("\\s*(\\d+)\\s*(-\\d+\\.\\d+).*");
         if (rx.exactMatch(tempString.c_str()) == true) {
             numAtoms = rx.cap(1).toInt();
+            molecule->setComment(rx.cap(2));
         } else {
             error("Ill formed file11.", __FILE__, __LINE__);
             return;
@@ -93,6 +94,5 @@ void FileParser::readFile11()
             std::cout << "Adding molecule to the list" << std::endl;
             #endif
         }
-        // break;
     }
 }

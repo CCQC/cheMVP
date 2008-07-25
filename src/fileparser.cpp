@@ -42,4 +42,7 @@ void FileParser::readFile()
 		default:
 		;
 	}
+	if (myMoleculeList.size()) {
+        currentGeometry = myMoleculeList.size() - 1;
+    }
 }
