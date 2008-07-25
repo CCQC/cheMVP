@@ -7,6 +7,7 @@ SOURCES = ../src/angle.cpp  \
 ../src/drawinginfo.cpp  \ 
 ../src/error.cpp  \ 
 ../src/fileparser.cpp  \ 
+../src/fileparser_file11.cpp  \ 
 ../src/fileparser_xyz.cpp  \ 
 ../src/filesavedialog.cpp  \ 
 ../src/label.cpp  \ 
