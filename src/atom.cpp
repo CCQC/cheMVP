@@ -61,7 +61,7 @@ std::map<QString, QColor> Atom::labelToColor;
 	 }
 	 */
 	 // Regular expression to match C_x^y
-	 QRegExp rx("([A-Za-z0-9]*)([_^]\\w+)?([_^]\\w+)?", Qt::CaseInsensitive, QRegExp::RegExp2);
+	 QRegExp rx("([A-Za-z0-9]*)([_^][A-Za-z0-9]+)?([_^][A-Za-z0-9]+)?", Qt::CaseInsensitive, QRegExp::RegExp2);
      myLabel.clear();
      myLabelSubscript.clear();
      myLabelSuperscript.clear();
