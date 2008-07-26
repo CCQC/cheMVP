@@ -10,8 +10,8 @@
 MainWindow::MainWindow(FileParser *parser_in):
 	parser(parser_in)
 {
-    drawingInfo = new DrawingInfo();
-    canvas = new DrawingCanvas(itemMenu, drawingInfo, parser);
+	drawingInfo = new DrawingInfo();
+	canvas = new DrawingCanvas(itemMenu, drawingInfo, parser);
 	// Selecting items causes an update of the menus to reflect the current
 	// selected items' settings
     connect(canvas, SIGNAL(selectionChanged()), this, SLOT(updateMenus()));
@@ -29,10 +29,10 @@ MainWindow::MainWindow(FileParser *parser_in):
     
     QWidget *widget = new QWidget;
     widget->setLayout(layout);
-    setCentralWidget(widget);
 
     loadFile();
     
+    setCentralWidget(widget);
 }
 
 
