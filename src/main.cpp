@@ -37,7 +37,7 @@ int main(int argv, char *args[])
     MainWindow mainWindow(parser);
     mainWindow.setGeometry(30, 50, 1200, 700);
     mainWindow.showNormal();
-    sleep(7);
+    sleep(5);
     splash.finish(&mainWindow);    
 
     return app.exec();
