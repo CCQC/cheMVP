@@ -32,12 +32,13 @@ int main(int argv, char *args[])
     QPixmap pixmap("../images/splash.png");
     pixmap = pixmap.scaled(QSize(500, 300), Qt::KeepAspectRatio);
     QSplashScreen splash(pixmap);
-    splash.showMessage("Created by Andy Simmonett and Justin Turney,\nCenter for Computational Chemistry, University of Georgia");
+    splash.showMessage("Created by Andy Simmonett and Justin Turney,\nCenter for Computational Chemistry, University of Georgia",
+                       Qt::AlignBottom | Qt::AlignLeft);
     splash.show();
     MainWindow mainWindow(parser);
     mainWindow.setGeometry(30, 50, 1200, 700);
     mainWindow.showNormal();
-    sleep(7);
+    sleep(5);
     splash.finish(&mainWindow);    
 
     return app.exec();
