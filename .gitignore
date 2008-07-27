@@ -14,3 +14,6 @@
 
 *.project
 *.cproject
+
+# Ignore Makefiles
+Makefile

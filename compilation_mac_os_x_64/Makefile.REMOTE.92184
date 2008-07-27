@@ -52,7 +52,6 @@ SOURCES       = ../src/angle.cpp \
 		../src/drawinginfo.cpp \
 		../src/error.cpp \
 		../src/fileparser.cpp \
-		../src/fileparser_file11.cpp \
 		../src/fileparser_xyz.cpp \
 		../src/filesavedialog.cpp \
 		../src/label.cpp \
@@ -72,7 +71,6 @@ OBJECTS       = angle.o \
 		drawinginfo.o \
 		error.o \
 		fileparser.o \
-		fileparser_file11.o \
 		fileparser_xyz.o \
 		filesavedialog.o \
 		label.o \
@@ -213,7 +211,7 @@ cheMVP.app/Contents/Info.plist:
 	@sed -e "s,@ICON@,,g" -e "s,@EXECUTABLE@,cheMVP,g" -e "s,@TYPEINFO@,????,g" /usr/local/Qt4.4/mkspecs/macx-g++/Info.plist.app >cheMVP.app/Contents/Info.plist
 dist: 
 	@$(CHK_DIR_EXISTS) .tmp/cheMVP1.0.0 || $(MKDIR) .tmp/cheMVP1.0.0 
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/cheMVP1.0.0/ && $(COPY_FILE) --parents ../src/angle.h ../src/anglemarker.h ../src/arrow.h ../src/atom.h ../src/bond.h ../src/defines.h ../src/drawingcanvas.h ../src/drawinginfo.h ../src/error.h ../src/fileparser.h ../src/filesavedialog.h ../src/label.h ../src/mainwindow.h ../src/molecule.h .tmp/cheMVP1.0.0/ && $(COPY_FILE) --parents ../src/chemvp.qrc .tmp/cheMVP1.0.0/ && $(COPY_FILE) --parents ../src/angle.cpp ../src/anglemarker.cpp ../src/arrow.cpp ../src/atom.cpp ../src/bond.cpp ../src/drawingcanvas.cpp ../src/drawinginfo.cpp ../src/error.cpp ../src/fileparser.cpp ../src/fileparser_file11.cpp ../src/fileparser_xyz.cpp ../src/filesavedialog.cpp ../src/label.cpp ../src/main.cpp ../src/mainwindow.cpp ../src/mainwindow_filesave.cpp ../src/molecule.cpp .tmp/cheMVP1.0.0/ && (cd `dirname .tmp/cheMVP1.0.0` && $(TAR) cheMVP1.0.0.tar cheMVP1.0.0 && $(COMPRESS) cheMVP1.0.0.tar) && $(MOVE) `dirname .tmp/cheMVP1.0.0`/cheMVP1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/cheMVP1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/cheMVP1.0.0/ && $(COPY_FILE) --parents ../src/angle.h ../src/anglemarker.h ../src/arrow.h ../src/atom.h ../src/bond.h ../src/defines.h ../src/drawingcanvas.h ../src/drawinginfo.h ../src/error.h ../src/fileparser.h ../src/filesavedialog.h ../src/label.h ../src/mainwindow.h ../src/molecule.h .tmp/cheMVP1.0.0/ && $(COPY_FILE) --parents ../src/chemvp.qrc .tmp/cheMVP1.0.0/ && $(COPY_FILE) --parents ../src/angle.cpp ../src/anglemarker.cpp ../src/arrow.cpp ../src/atom.cpp ../src/bond.cpp ../src/drawingcanvas.cpp ../src/drawinginfo.cpp ../src/error.cpp ../src/fileparser.cpp ../src/fileparser_xyz.cpp ../src/filesavedialog.cpp ../src/label.cpp ../src/main.cpp ../src/mainwindow.cpp ../src/mainwindow_filesave.cpp ../src/molecule.cpp .tmp/cheMVP1.0.0/ && (cd `dirname .tmp/cheMVP1.0.0` && $(TAR) cheMVP1.0.0.tar cheMVP1.0.0 && $(COMPRESS) cheMVP1.0.0.tar) && $(MOVE) `dirname .tmp/cheMVP1.0.0`/cheMVP1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/cheMVP1.0.0
 
 
 clean:compiler_clean 
@@ -364,12 +362,6 @@ fileparser.o: ../src/fileparser.cpp ../src/fileparser.h \
 		../src/defines.h \
 		../src/error.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fileparser.o ../src/fileparser.cpp
-
-fileparser_file11.o: ../src/fileparser_file11.cpp ../src/fileparser.h \
-		../src/molecule.h \
-		../src/defines.h \
-		../src/error.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fileparser_file11.o ../src/fileparser_file11.cpp
 
 fileparser_xyz.o: ../src/fileparser_xyz.cpp ../src/fileparser.h \
 		../src/molecule.h \

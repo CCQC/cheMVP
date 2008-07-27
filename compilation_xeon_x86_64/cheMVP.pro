@@ -7,13 +7,13 @@ SOURCES = ../src/angle.cpp  \
 ../src/fileparser.cpp  \ 
 ../src/filesavedialog.cpp  \ 
 ../src/label.cpp  \ 
-../src/main.cpp  \ 
 ../src/molecule.cpp  \ 
 ../src/fileparser_xyz.cpp  \ 
 ../src/atom.cpp  \ 
 ../src/drawingcanvas.cpp  \ 
-../src/mainwindow.cpp  \ 
-../src/mainwindow_filesave.cpp
+../src/mainwindow_filesave.cpp  \ 
+../src/main.cpp  \ 
+../src/mainwindow.cpp
 HEADERS = ../src/angle.h  \ 
 ../src/anglemarker.h  \ 
 ../src/arrow.h  \ 
