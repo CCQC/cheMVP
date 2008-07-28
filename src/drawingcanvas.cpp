@@ -491,37 +491,65 @@ void DrawingCanvas::translateToCenterOfMass()
 }
 
 
+bool DrawingCanvas::isBonded(Atom *atom1, Atom *atom2){
+	foreach(Bond *bond, bondsList){
+		if((bond->startAtom() == atom1 && bond->endAtom() == atom2) ||
+		   (bond->startAtom() == atom2 && bond->endAtom() == atom1)){
+			return true;
+		}
+	}
+	return false;
+}
+
+
+std::vector<Angle*>::iterator DrawingCanvas::angleExists(Atom *atom1, Atom *atom2, Atom *atom3){
+	std::vector<Angle*>::iterator pos;
+	for(pos = anglesList.begin(); pos != anglesList.end(); ++pos){
+		Angle *angle = *pos;
+		if((angle->startAtom() == atom1 && angle->centerAtom() == atom2 && angle->endAtom() == atom3) ||
+		   (angle->startAtom() == atom3 && angle->centerAtom() == atom2 && angle->endAtom() == atom1)){
+			return pos;
+		}
+	}
+	pos = anglesList.end();
+	// Checking the bounds on the iterator later will reveal whether the angle exists in the list,
+	// as long as we return an iterator beyond the end of the list
+	return ++pos;
+}
+
+
 void DrawingCanvas::toggleAngleLabels()
 {
-	for(int i = 0; i < bondsList.size(); ++i){
-		for(int j = 0; j < i; ++j){
-			Bond *bond1 = bondsList[i];
-			Bond *bond2 = bondsList[j];
-			if(bond1->isSelected() && bond2->isSelected()){
-				if(bond1->startAtom() == bond2->startAtom()){
-					Angle *angle = new Angle(bond1->endAtom(), bond1->startAtom(), bond2->endAtom(), drawingInfo);
-					addItem(angle->label());
-					addItem(angle->marker1());
-					addItem(angle->marker2());
-					anglesList.push_back(angle);
-				}else if(bond1->endAtom() == bond2->startAtom()){
-					Angle *angle = new Angle(bond1->startAtom(), bond1->endAtom(), bond2->endAtom(), drawingInfo);
-					addItem(angle->label());
-					addItem(angle->marker1());
-					addItem(angle->marker2());
-					anglesList.push_back(angle);
-				}else if(bond1->startAtom() == bond2->endAtom()){
-					Angle *angle = new Angle(bond1->endAtom(), bond1->startAtom(), bond2->startAtom(), drawingInfo);
-					addItem(angle->label());
-					addItem(angle->marker1());
-					addItem(angle->marker2());
-					anglesList.push_back(angle);
-				}else if(bond1->endAtom() == bond2->endAtom()){
-					Angle *angle = new Angle(bond1->startAtom(), bond1->endAtom(), bond2->startAtom(), drawingInfo);
-					addItem(angle->label());
-					addItem(angle->marker1());
-					addItem(angle->marker2());
-					anglesList.push_back(angle);
+	// This is quite cumbersome, which stems from my reluctance to use numbers to label the atoms
+	// so I can begin removing and inserting atoms more easily should I chose to in the future...
+	for(int a1 = 0; a1 < atomsList.size(); ++a1){
+		Atom *atom1 = atomsList[a1];
+		if(!atom1->isSelected()) continue;
+		for(int a2 = 0; a2 < atomsList.size(); ++a2){
+			Atom *atom2 = atomsList[a2];
+			if(!atom2->isSelected()) continue;
+			for(int a3 = 0; a3 != a1; ++a3){
+				Atom *atom3 = atomsList[a3];
+				if(!atom3->isSelected()) continue;
+				if(a1 == a2 || a2 == a3) continue;
+				if(isBonded(atom1, atom2) && isBonded(atom2, atom3)){
+					std::vector<Angle*>::iterator anglePos = angleExists(atom1, atom2, atom3); 
+					if(anglePos <= anglesList.end()){
+						// Remove angle
+						Angle *angle = *anglePos;
+						removeItem(angle->label());
+						removeItem(angle->marker1());
+						removeItem(angle->marker2());
+						anglesList.erase(anglePos);
+						delete angle;
+					}else{
+						//add angle
+						Angle *angle = new Angle(atom1, atom2, atom3, drawingInfo);
+						addItem(angle->label());
+						addItem(angle->marker1());
+						addItem(angle->marker2());
+						anglesList.push_back(angle);
+					}
 				}
 			}
 		}
