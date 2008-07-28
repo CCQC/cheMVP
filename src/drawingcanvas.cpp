@@ -52,7 +52,18 @@ void DrawingCanvas::unselectAll()
 {
     foreach(QGraphicsItem *item, items()) {
         item->setSelected(false);
+    	std::cout<<"setting normal"<<std::endl;
+        if(item->type() == Label::AngleLabelType || 
+           item->type() == Label::BondLabelType){
+        	Label *label = dynamic_cast<Label*>(item);
+            QTextCursor cursor = label->textCursor();
+            cursor.clearSelection();
+            label->setTextCursor(cursor);
+        	label->setTextInteractionFlags(Qt::NoTextInteraction);
+        	std::cout<<"setting all of this junk"<<std::endl;
+        }
     }
+    
     update();
 }
 
