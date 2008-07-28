@@ -101,14 +101,15 @@ void MainWindow::createToolBox()
     QWidget *annotationWidget   = createAnnotationWidget();
 
     toolBox = new QToolBox;
-    toolBox->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Ignored));
-    toolBox->setMinimumWidth(atomsWidget->sizeHint().width());
 //    toolBox->addItem(builderWidget, tr("Builder"));
     toolBox->addItem(anglesWidget, tr("Angles"));
     toolBox->addItem(annotationWidget, tr("Annotation"));
     toolBox->addItem(appearanceWidget, tr("Appearance"));
     toolBox->addItem(atomsWidget, tr("Atoms"));
     toolBox->addItem(bondsWidget, tr("Bonds"));
+    toolBox->setMaximumWidth(atomsWidget->sizeHint().width());
+    // The toolbox is collapsable now, in case (i.e. Shane) wants to see something in the background
+    toolBox->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
 
 

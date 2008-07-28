@@ -15,7 +15,7 @@
  {
      setFlag(QGraphicsItem::ItemIsMovable, true);
      setFlag(QGraphicsItem::ItemIsSelectable, true);
-     setTextInteractionFlags(Qt::NoTextInteraction);
+     setTextInteractionFlags(Qt::TextEditable);
      setZValue(1000.0);
      updateLabel();
      setFont(DEFAULT_LABEL_FONT);
@@ -52,14 +52,17 @@
  void Label::focusOutEvent(QFocusEvent *event)
  {
      setTextInteractionFlags(Qt::NoTextInteraction);
+     setSelected(false);
 //     emit lostFocus(this);
      QGraphicsTextItem::focusOutEvent(event);
  }
 
  
-// void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
-// {
-// }
+ void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
+ {
+	 if (textInteractionFlags() == Qt::NoTextInteraction)
+	          setTextInteractionFlags(Qt::TextEditorInteraction);
+ }
 
 
 // void Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
