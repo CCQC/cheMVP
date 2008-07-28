@@ -20,7 +20,7 @@ QMakeFile.puts "QT += svg"
 QMakeFile.close
 
 if ENV["VENDOR"] == "apple"
-    `qmake -spec macx-g++ #{FileName}`
+#    `qmake -spec macx-g++ #{FileName}`
 else
-    `qmake #{FileName}`
+#    `qmake #{FileName}`
 end

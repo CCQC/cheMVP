@@ -38,11 +38,12 @@ private slots:
     void save();
     void saveAs();
     void changeZoom(int);
+    void setAddArrowMode();
 
 private:
 	void createToolBox();
-    void createActions();
-    void createMenus();
+  void createActions();
+      void createMenus();
     void createToolbars();
     FileType determineFileType(const QString &fileName);
     void saveImage(const QString &fileName);
@@ -87,6 +88,8 @@ private:
     QAction *exitAction;
     QAction *saveAction;
     QAction *saveAsAction;
+    
+    QAction *addArrowAction;
 
     QPushButton *toggleBondLabelsButton;
     QPushButton *toggleBondDashingButton;
@@ -112,6 +115,7 @@ private:
     QString currentSaveFile;
     QMenu *fileMenu;
     QMenu *itemMenu;
+    QMenu *insertMenu;
 
     QToolBox *toolBox;
     
