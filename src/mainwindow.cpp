@@ -108,7 +108,7 @@ void MainWindow::createToolBox()
     toolBox->addItem(atomsWidget, tr("Atoms"));
     toolBox->addItem(bondsWidget, tr("Bonds"));
     toolBox->setMaximumWidth(atomsWidget->sizeHint().width());
-    // The toolbox is collapsable now, in case (i.e. Shane) wants to see something in the background
+    // The toolbox is collapsable now, in case the user (i.e. Shane) wants to see something in the background
     toolBox->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
 
