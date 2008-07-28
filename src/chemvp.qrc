@@ -9,6 +9,7 @@
     <file>../images/save.png</file>
     <file>../images/saveas.png</file>
     <file>../images/exit.png</file>
+    <file>../images/splash.png</file>
 </qresource>
 </RCC>
 
