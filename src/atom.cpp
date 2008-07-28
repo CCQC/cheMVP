@@ -155,32 +155,32 @@ std::map<QString, QColor> Atom::labelToColor;
      }
      // Now draw the atomic symbol on there
      setLabelFontSize(myFontSize);
+	 QFontMetricsF labelFM(myLabelFont);
+
+     QPointF labelPos(-labelFM.boundingRect(myLabel).width()/2.0, labelFM.boundingRect(myLabel).height()/3.5);
      painter->setFont(myLabelFont);
-     QRectF label_box(-myEffectiveRadius/3.5, -myEffectiveRadius/1.6, myEffectiveRadius, myEffectiveRadius/1.25); 
-     painter->drawText(-myEffectiveRadius/3.5, myEffectiveRadius/6.0, myLabel);
+     painter->drawText(labelPos, myLabel);
      // If there's a subscript to be drawn, do it
      if(myLabelSubscript.size()){
     	 QFont subscriptFont(myLabelFont.family(), myLabelFont.pointSizeF()/2.0);
     	 painter->setFont(subscriptFont);
-    	 QFontMetricsF labelFM(myLabelFont);
     	 qreal hOffset = labelFM.boundingRect(myLabel).width();
     	 QFontMetricsF subscriptFM(subscriptFont);
     	 qreal vOffset = subscriptFM.boundingRect(myLabel).height()/3.0;
     	 
-    	 painter->drawText(-myEffectiveRadius/3.5 + hOffset, myEffectiveRadius/6.0 + vOffset, myLabelSubscript);
+    	 painter->drawText(labelPos + QPointF(hOffset, vOffset), myLabelSubscript);
      }
      
      // If there's a superscript to be drawn, do it
      if(myLabelSuperscript.size()){
     	 QFont superscriptFont(myLabelFont.family(), myLabelFont.pointSizeF()/2.0);
     	 painter->setFont(superscriptFont);
-    	 QFontMetricsF labelFM(myLabelFont);
     	 qreal hOffset  = labelFM.boundingRect(myLabel).width();
          qreal vOffset2 = labelFM.boundingRect(myLabel).height();
     	 QFontMetricsF superscriptFM(superscriptFont);
     	 qreal vOffset = superscriptFM.boundingRect(myLabel).height()/3.0;
     	 
-    	 painter->drawText(-myEffectiveRadius/3.5 + hOffset, myEffectiveRadius/6.0 - vOffset2 + 2.0*vOffset, myLabelSuperscript);
+    	 painter->drawText(labelPos + QPointF(hOffset, - vOffset2 + 2.0*vOffset), myLabelSuperscript);
      }
      // Draw the blob for HoukMol rip-off
      if(myDrawingStyle == HoukMol){
@@ -194,7 +194,19 @@ std::map<QString, QColor> Atom::labelToColor;
          painter->setPen(QPen(fill_color));
 	     painter->setBrush(Qt::white);
     	 painter->drawPath(path);
+     }else if(myDrawingStyle == SimpleColored){
+    	 QPointF startPoint(myEffectiveRadius/1.8, -myEffectiveRadius/20.0);
+    	 QPointF endPoint(myEffectiveRadius/20.0, -myEffectiveRadius/1.8);
+    	 QPointF midPoint1(myEffectiveRadius/1.2, -myEffectiveRadius/1.2);
+    	 QPointF midPoint2(myEffectiveRadius/2.1, -myEffectiveRadius/2.1);
+    	 QPainterPath path(startPoint);
+    	 path.quadTo(midPoint1, endPoint);
+    	 path.quadTo(midPoint2, startPoint);
+         painter->setPen(QPen(fill_color));
+	     painter->setBrush(Qt::white);
+    	 painter->drawPath(path);
      }
+     
      // Draw a semi-transparent green circle over any selected atoms
      if(isSelected()){
 	     painter->setBrush(SELECTED_COLOR);

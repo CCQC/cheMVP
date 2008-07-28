@@ -7,6 +7,7 @@ void FileParser::readXYZ()
 	if(!infile){
 		QString errorMessage = "Unable to open " + myFileName + " for reading";
 		error(errorMessage,__FILE__,__LINE__);
+		return;
 	}
 	
 	std::string tempString;

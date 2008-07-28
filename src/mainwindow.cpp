@@ -101,14 +101,15 @@ void MainWindow::createToolBox()
     QWidget *annotationWidget   = createAnnotationWidget();
 
     toolBox = new QToolBox;
-    toolBox->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Ignored));
-    toolBox->setMinimumWidth(atomsWidget->sizeHint().width());
 //    toolBox->addItem(builderWidget, tr("Builder"));
     toolBox->addItem(anglesWidget, tr("Angles"));
     toolBox->addItem(annotationWidget, tr("Annotation"));
     toolBox->addItem(appearanceWidget, tr("Appearance"));
     toolBox->addItem(atomsWidget, tr("Atoms"));
     toolBox->addItem(bondsWidget, tr("Bonds"));
+    toolBox->setMaximumWidth(atomsWidget->sizeHint().width());
+    // The toolbox is collapsable now, in case (i.e. Shane) wants to see something in the background
+    toolBox->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
 
 
@@ -353,6 +354,7 @@ QWidget *MainWindow::createAnglesWidget()
     QGridLayout *layout = new QGridLayout;
 
     toggleAngleLabelsButton = new QPushButton(tr("Toggle Angle Labels"));
+    toggleAngleLabelsButton->setToolTip(tr("Select three or more atoms to toggle the angle markers and labels.  Only angles between bonds will be drawn"));
     layout->addWidget(toggleAngleLabelsButton);
     connect(toggleAngleLabelsButton, SIGNAL(pressed()),
                 canvas, SLOT(toggleAngleLabels()));
@@ -384,7 +386,7 @@ void MainWindow::createActions()
     openAction->setStatusTip(tr("Open a File"));
     connect(openAction, SIGNAL(triggered()), this, SLOT(openFile()));
 
-    exitAction = new QAction(tr("E&xit"), this);
+    exitAction = new QAction(QIcon(":/images/exit.png"),tr("E&xit"), this);
     exitAction->setShortcut(tr("Ctrl+X"));
     exitAction->setStatusTip(tr("Quit ChemVP"));
     connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
@@ -397,6 +399,16 @@ void MainWindow::createActions()
     saveAsAction = new QAction(QIcon(":/images/saveas.png"), tr("&Save As"), this);
     saveAsAction->setStatusTip(tr("Save under a new name"));
     connect(saveAsAction, SIGNAL(triggered()), this, SLOT(saveAs()));
+    
+    addArrowAction = new QAction(QIcon(":/images/addarrow.png"), tr("Add Arrow"), this);
+    addArrowAction->setStatusTip(tr("Add Arrow"));
+    
+    connect(addArrowAction, SIGNAL(triggered(bool)), this, SLOT(setAddArrowMode()));
+}
+
+void MainWindow::setAddArrowMode()
+{
+  mouseModeButtonGroupClicked((int) DrawingCanvas::AddArrow);
 }
 
 
@@ -404,12 +416,20 @@ void MainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(openAction);
+    fileMenu->addAction(saveAction);
+    fileMenu->addAction(saveAsAction);
     fileMenu->addAction(exitAction);
 
     itemMenu = menuBar()->addMenu(tr("&Item"));
     itemMenu->addAction(deleteAction);
     itemMenu->addSeparator();
-
+    
+    
+    insertMenu = menuBar()->addMenu(tr("&Insert"));
+    //insertMenu->addAction(addBondAction);
+    //insertMenu->addAction(addArrowAction);
+    insertMenu->addAction(addArrowAction);
+    
 }
 
 
