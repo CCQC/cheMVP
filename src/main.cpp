@@ -30,14 +30,14 @@ int main(int argv, char *args[])
     //Use the file name (if any) to create a new parser object
     FileParser *parser = new FileParser(cmd_line_arg);
     QPixmap pixmap("../images/splash.png");
-    pixmap = pixmap.scaled(QSize(500, 300), Qt::KeepAspectRatio);
     QSplashScreen splash(pixmap);
-    splash.showMessage("Created by Andy Simmonett and Justin Turney,\nCenter for Computational Chemistry, University of Georgia");
+    splash.showMessage("Created by Andy Simmonett and Justin Turney,\nCenter for Computational Chemistry, University of Georgia",
+                        Qt::AlignLeft | Qt::AlignBottom, Qt::white);
     splash.show();
     MainWindow mainWindow(parser);
     mainWindow.setGeometry(30, 50, 1200, 700);
     mainWindow.showNormal();
-    sleep(7);
+    sleep(4);
     splash.finish(&mainWindow);    
 
     return app.exec();
