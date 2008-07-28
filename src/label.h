@@ -40,9 +40,9 @@
 
  protected:
 //     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-//     void focusOutEvent(QFocusEvent *event);
+     void focusOutEvent(QFocusEvent *event);
      void mousePressEvent(QGraphicsSceneMouseEvent *event);
-     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+//     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 //     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
      void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
  private:

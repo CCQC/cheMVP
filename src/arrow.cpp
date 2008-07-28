@@ -1,15 +1,16 @@
 #include "arrow.h"
 #include<iostream>
  
- DragBox::DragBox(double x, double y, QGraphicsItem *parent)
+ DragBox::DragBox(double x, double y, DrawingInfo *info, QGraphicsItem *parent)
      : QGraphicsRectItem(parent),
+     drawingInfo(info),
      hoverOver(false)
  {
      setFlag(QGraphicsItem::ItemIsSelectable, false);
 	 setFlag(QGraphicsItem::ItemIsMovable, true);
 	 setAcceptsHoverEvents(true);
 	 setZValue(1001.0);
-	 double dimension = 15.0;
+	 double dimension = 0.1 * drawingInfo->scaleFactor();
 	 setRect(-dimension/2.0, -dimension/2.0, dimension, dimension);
 	 setPos(x, y);
  }
@@ -48,7 +49,7 @@
  {
 	if(!hoverOver) return;
 	
-	myPen.setWidthF(2.0); 	
+	myPen.setWidthF(0.001 * drawingInfo->scaleFactor()); 	
  	myPen.setColor(Qt::black);
 	painter->setPen(myPen);
  	painter->drawRect(rect());
@@ -59,14 +60,22 @@
      : QGraphicsLineItem(parent),
      drawingInfo(info),
      hoverOver(false)
-     {
-         setFlag(QGraphicsItem::ItemIsSelectable, false);
-    	 setAcceptsHoverEvents(true);
-    	 setZValue(1000.0);
-    	 myStartBox = new DragBox(x,y);
-    	 myEndBox   = new DragBox(x,y);
-     }
+ {
+     setFlag(QGraphicsItem::ItemIsSelectable, true);
+	 setAcceptsHoverEvents(true);
+	 setZValue(1000.0);
+	 myStartBox = new DragBox(x, y, drawingInfo);
+	 myEndBox   = new DragBox(x, y, drawingInfo);
+	 setThickness(DEFAULT_ARROW_THICKNESS);
+ }
 
+ 
+ Arrow::~Arrow()
+ {
+	delete myStartBox;
+	delete myEndBox;
+ }
+ 
  
  void Arrow::updatePosition()
  {
@@ -99,14 +108,26 @@
  void Arrow::paint(QPainter *painter,
             const QStyleOptionGraphicsItem *option, QWidget *widget)
  {
-	myPen.setWidthF(0.02 * drawingInfo->scaleFactor()); 	
+	myPen.setWidthF(hoverOver ? 10.0 * effectiveWidth : effectiveWidth); 	
  	myPen.setColor(Qt::black);
+ 	// Draw the line
 	painter->setPen(myPen);
  	painter->drawLine(line());
+ 	// Now the arrowhead, the brush is thin to make the corners look correct
  	painter->setBrush(Qt::black);
- 	myPen.setWidthF(0.001 * drawingInfo->scaleFactor());
+ 	myPen.setWidthF(0.001);
  	painter->setPen(myPen);
  	painter->drawPolygon(arrowHead);
+ 	if(isSelected()){
+ 		myPen.setWidthF(hoverOver ? 10.0 * effectiveWidth : effectiveWidth); 	
+ 	 	myPen.setColor(SELECTED_COLOR);
+ 		painter->setPen(myPen);
+ 	 	painter->drawLine(line());
+ 	 	painter->setBrush(SELECTED_COLOR);
+ 	 	myPen.setWidthF(0.001);
+ 	 	painter->setPen(myPen);
+ 	 	painter->drawPolygon(arrowHead); 		
+ 	}
  }
  
  
