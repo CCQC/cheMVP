@@ -15,4 +15,5 @@
 *.project
 *.cproject
 
+# Ignore all of the compilation folders
 compilation*

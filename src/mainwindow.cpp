@@ -353,6 +353,7 @@ QWidget *MainWindow::createAnglesWidget()
     QGridLayout *layout = new QGridLayout;
 
     toggleAngleLabelsButton = new QPushButton(tr("Toggle Angle Labels"));
+    toggleAngleLabelsButton->setToolTip(tr("Select three or more atoms to toggle the angle markers and labels.  Only angles between bonds will be drawn"));
     layout->addWidget(toggleAngleLabelsButton);
     connect(toggleAngleLabelsButton, SIGNAL(pressed()),
                 canvas, SLOT(toggleAngleLabels()));

@@ -15,7 +15,7 @@ public:
 	enum { Type = UserType + DRAGBOXTYPE};
 	int type() const {return Type;}
 
-    DragBox(double x, double y, QGraphicsItem *parent = 0);
+    DragBox(double x, double y, DrawingInfo *info, QGraphicsItem *parent = 0);
     
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = 0);
@@ -28,6 +28,7 @@ protected:
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
     bool hoverOver;
+    DrawingInfo *drawingInfo;
     QPen myPen;
 };
 
@@ -38,12 +39,12 @@ public:
 	int type() const {return Type;}
 
     Arrow(double x, double y, DrawingInfo *drawingInfo, QGraphicsItem *parent = 0);
-    
+    ~Arrow();
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = 0);
 
     void setColor(const QColor &color)     { myColor = color; }
-    void setThickness(const double val) {myThickness = val;}
+    void setThickness(const double val) {myThickness = val; effectiveWidth = drawingInfo->scaleFactor() * val;}
     void updatePosition(double x, double y) {myEndBox->setPos(x,y); updatePosition();}
     void updatePosition();
     DragBox* startBox() const { return myStartBox; }

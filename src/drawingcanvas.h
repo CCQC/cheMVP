@@ -61,6 +61,8 @@ private:
     void setYRotation(int phi);
     void setZRotation(int phi);
     double bondLength(Atom* atom1, Atom* atom2);
+    bool isBonded(Atom* atom1, Atom* atom2);
+    std::vector<Angle*>::iterator angleExists(Atom* atom1, Atom* atom2, Atom* atom3);
 
     
     QMenu *myItemMenu;

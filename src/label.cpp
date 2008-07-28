@@ -49,22 +49,22 @@
  }
  
  
-// void Label::focusOutEvent(QFocusEvent *event)
-// {
-//     setTextInteractionFlags(Qt::NoTextInteraction);
+ void Label::focusOutEvent(QFocusEvent *event)
+ {
+     setTextInteractionFlags(Qt::NoTextInteraction);
 //     emit lostFocus(this);
-//     QGraphicsTextItem::focusOutEvent(event);
-// }
+     QGraphicsTextItem::focusOutEvent(event);
+ }
 
  
- void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
- {
- }
+// void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
+// {
+// }
 
 
- void Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
- {
- }
+// void Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+// {
+// }
 
  
 // void Label::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
