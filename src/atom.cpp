@@ -153,6 +153,32 @@ std::map<QString, QColor> Atom::labelToColor;
      }else if(myDrawingStyle == HoukMol){
 	     painter->drawArc(v_line_box, 1440, -2880);
      }
+
+     // Draw the blob for HoukMol rip-off
+     if(myDrawingStyle == HoukMol){
+    	 QPointF startPoint(-myEffectiveRadius/1.8, -myEffectiveRadius/20.0);
+    	 QPointF endPoint(-myEffectiveRadius/20.0, -myEffectiveRadius/1.8);
+    	 QPointF midPoint1(-myEffectiveRadius/1.2, -myEffectiveRadius/1.2);
+    	 QPointF midPoint2(-myEffectiveRadius/2.1, -myEffectiveRadius/2.1);
+    	 QPainterPath path(startPoint);
+    	 path.quadTo(midPoint1, endPoint);
+    	 path.quadTo(midPoint2, startPoint);
+         painter->setPen(QPen(fill_color));
+	     painter->setBrush(Qt::white);
+    	 painter->drawPath(path);
+     }else if(myDrawingStyle == SimpleColored){
+    	 QPointF startPoint(myEffectiveRadius/1.8, -myEffectiveRadius/20.0);
+    	 QPointF endPoint(myEffectiveRadius/20.0, -myEffectiveRadius/1.8);
+    	 QPointF midPoint1(myEffectiveRadius/1.2, -myEffectiveRadius/1.2);
+    	 QPointF midPoint2(myEffectiveRadius/2.1, -myEffectiveRadius/2.1);
+    	 QPainterPath path(startPoint);
+    	 path.quadTo(midPoint1, endPoint);
+    	 path.quadTo(midPoint2, startPoint);
+         painter->setPen(QPen(fill_color));
+	     painter->setBrush(Qt::white);
+    	 painter->drawPath(path);
+     }
+     
      // Now draw the atomic symbol on there
      setLabelFontSize(myFontSize);
 	 QFontMetricsF labelFM(myLabelFont);
@@ -182,63 +208,12 @@ std::map<QString, QColor> Atom::labelToColor;
     	 
     	 painter->drawText(labelPos + QPointF(hOffset, - vOffset2 + 2.0*vOffset), myLabelSuperscript);
      }
-     // Draw the blob for HoukMol rip-off
-     if(myDrawingStyle == HoukMol){
-    	 QPointF startPoint(-myEffectiveRadius/1.8, -myEffectiveRadius/20.0);
-    	 QPointF endPoint(-myEffectiveRadius/20.0, -myEffectiveRadius/1.8);
-    	 QPointF midPoint1(-myEffectiveRadius/1.2, -myEffectiveRadius/1.2);
-    	 QPointF midPoint2(-myEffectiveRadius/2.1, -myEffectiveRadius/2.1);
-    	 QPainterPath path(startPoint);
-    	 path.quadTo(midPoint1, endPoint);
-    	 path.quadTo(midPoint2, startPoint);
-         painter->setPen(QPen(fill_color));
-	     painter->setBrush(Qt::white);
-    	 painter->drawPath(path);
-     }else if(myDrawingStyle == SimpleColored){
-    	 QPointF startPoint(myEffectiveRadius/1.8, -myEffectiveRadius/20.0);
-    	 QPointF endPoint(myEffectiveRadius/20.0, -myEffectiveRadius/1.8);
-    	 QPointF midPoint1(myEffectiveRadius/1.2, -myEffectiveRadius/1.2);
-    	 QPointF midPoint2(myEffectiveRadius/2.1, -myEffectiveRadius/2.1);
-    	 QPainterPath path(startPoint);
-    	 path.quadTo(midPoint1, endPoint);
-    	 path.quadTo(midPoint2, startPoint);
-         painter->setPen(QPen(fill_color));
-	     painter->setBrush(Qt::white);
-    	 painter->drawPath(path);
-     }
      
      // Draw a semi-transparent green circle over any selected atoms
      if(isSelected()){
 	     painter->setBrush(SELECTED_COLOR);
 	     painter->drawEllipse(rect());
-     }
- 
-     
-     
-//TODO use the following code to place the atom symbol correctly
-//     QPainterPath path;
-//     QFont f("times new roman,utopia");
-//     f.setStyleStrategy(QFont::ForceOutline);
-//     f.setPointSize(72);
-//     f.setStyleHint(QFont::Times);
-//     path.addText(0, 0, f, textEditor->text());
-//
-//     QFontMetrics fm(f);
-//     QRectF br(fm.boundingRect(textEditor->text()));
-//     QPointF center(br.center());
-//     painter->translate(ctrlPoints.at(0) - center);
-//
-//     painter->translate(center);
-//     painter->rotate(m_rotation);
-//     painter->scale(m_scale, m_scale); 
-//     painter->shear(0, m_shear);
-//     painter->translate(-center);
-//
-//     painter->fillPath(path, Qt::black);
-//
-//     painter->setPen(QPen(QColor(255, 0, 0, alpha), 0.25, Qt::SolidLine, Qt::FlatCap, Qt::BevelJoin));
-//     painter->setBrush(Qt::NoBrush);
-//     painter->drawRect(br.adjusted(-1, -1, 1, 1));
+     }     
  }
 
  
