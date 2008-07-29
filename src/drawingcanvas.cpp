@@ -22,6 +22,7 @@ DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_
     selectionRectangle 	= 0;
     myArrow             = 0;
     myTempMoveItem      = 0;
+    myBackgroundColor.setAlpha(myBackgroundAlpha);
     setBackgroundBrush(QBrush(myBackgroundColor));
     setSceneRect(QRectF(0, 0, DEFAULT_SCENE_SIZE_X,  DEFAULT_SCENE_SIZE_Y));
 
@@ -62,7 +63,6 @@ void DrawingCanvas::unselectAll()
             cursor.clearSelection();
             label->setTextCursor(cursor);
         	label->setTextInteractionFlags(Qt::NoTextInteraction);
-        	std::cout<<"setting all of this junk"<<std::endl;
         }
     }
     

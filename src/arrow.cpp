@@ -80,7 +80,7 @@
  void Arrow::updatePosition()
  {
      double angle = (line().length() == 0.0 ? 0.0 : acos(line().dx() / line().length()));
-     double arrowSize = 0.1 * drawingInfo->scaleFactor();
+     double arrowSize = 0.08 * drawingInfo->scaleFactor();
 	 setLine(QLineF(myStartBox->scenePos().x(),
 			 	    myStartBox->scenePos().y(), 
 			        myEndBox->scenePos().x(),

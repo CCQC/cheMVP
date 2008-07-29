@@ -12,15 +12,15 @@ public:
 	int xRot()		{return myXRot;}
 	int yRot()		{return myYRot;}
 	int zRot()		{return myZRot;}
-	void incDX(double val) { myDX += val;}
-	void incDY(double val) { myDY += val;}
+	void incDX(double val) { myUserDX += val; myDX = myMidX + myUserDX;}
+	void incDY(double val) { myUserDY += val; myDY = myMidY + myUserDY;}
 	void setXRot(int val)	{ myXRot = val;}
 	void setYRot(int val)	{ myYRot = val;}
 	void setZRot(int val)	{ myZRot = val;}
-	void setWidth(double val) { myWidth = val; }
-	void setHeight(double val) { myHeight = val; }
+	void setWidth(double val) { myWidth = val; myMidX = val/2; myDX = myMidX + myUserDX;}
+	void setHeight(double val) { myHeight = val; myMidY = val/2; myDY = myMidY + myUserDY;}
 	void setMoleculeMaxDimension(double val) {myMoleculeMaxDimension = val;}
-	double dX() const		{return myDX;}
+	double dX() const   {return myDX;}
 	double dY()	const	{return myDY;}
 	double moleculeMaxDimension() const {return myMoleculeMaxDimension;}
 	double scaleFactor() const {return myUserScaleFactor * myAngToSceneScale;}
@@ -33,6 +33,10 @@ private:
 	int myZRot;
 	int myDX;
 	int myDY;
+	int myUserDX;
+	int myUserDY;
+	int myMidX;
+	int myMidY;
 	double myWidth;
 	double myHeight;
 	double myUserScaleFactor;

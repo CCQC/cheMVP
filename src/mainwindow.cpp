@@ -29,7 +29,16 @@ MainWindow::MainWindow(FileParser *parser_in):
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); 
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-    
+
+    toolBox->setGeometry(0, 0, DEFAULT_TOOLBOX_WIDTH, DEFAULT_SCENE_SIZE_Y);
+    toolBox->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+
+	drawingInfo->setHeight(view->sceneRect().height());
+	drawingInfo->setWidth(view->sceneRect().width());
+	drawingInfo->determineScaleFactor();
+	canvas->setSceneRect(0, 0, view->sceneRect().width(), view->sceneRect().height());
+	canvas->refresh();
+	
     QSplitter *splitter = new QSplitter(Qt::Horizontal);
     splitter->addWidget(view);
     splitter->addWidget(toolBox);
@@ -115,10 +124,6 @@ void MainWindow::createToolBox()
     toolBox->addItem(appearanceWidget, tr("Appearance"));
     toolBox->addItem(atomsWidget, tr("Atoms"));
     toolBox->addItem(bondsWidget, tr("Bonds"));
-    
-    toolBox->setGeometry(0, 0, atomsWidget->sizeHint().width(), DEFAULT_SCENE_SIZE_Y);
-    toolBox->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-
 }
 
 

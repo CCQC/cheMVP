@@ -7,8 +7,12 @@ DrawingInfo::DrawingInfo():
 	myUserScaleFactor(100.0),
 	myWidth(DEFAULT_SCENE_SIZE_X),
 	myHeight(DEFAULT_SCENE_SIZE_Y),
+	myMidX(DEFAULT_SCENE_SIZE_X/2.0),
+	myMidY(DEFAULT_SCENE_SIZE_Y/2.0),
 	myDX(DEFAULT_SCENE_SIZE_X/2.0),
 	myDY(DEFAULT_SCENE_SIZE_Y/2.0),
+	myUserDX(0),
+	myUserDY(0),
 	myPerspectiveScale(0.0015),
 	myMoleculeMaxDimension(1.0),
 	myAngToSceneScale(1.0)
