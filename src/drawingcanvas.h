@@ -31,7 +31,10 @@ public:
     void loadFromParser();
     void refresh();
     void setAtomLabels(QString text);
+    void drawBackground(QPainter *painter, const QRectF &rect);
 public slots:
+	void setBackgroundOpacity(int val);
+	void setBackgroundColor();
 	void toggleBondDashing();
 	void toggleAtomNumberSubscripts();
 	void atomLabelFontChanged(const QFont &);
@@ -79,6 +82,7 @@ private:
     QString elementToAdd;
     QPointF mouseOrigin;
     QColor myBackgroundColor;
+    int myBackgroundAlpha;
     int numMouseMoves;
     bool myAtomNumberSubscripts;
     std::vector<Atom*> atomsList;

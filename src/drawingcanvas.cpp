@@ -12,7 +12,8 @@ DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_
     elementToAdd("C"),
     drawingInfo(info),
     myAtomNumberSubscripts(false),
-    myBackgroundColor(255, 255, 255, 0),
+    myBackgroundColor(Qt::white),
+    myBackgroundAlpha(0),
     parser(in_parser)
 {
     myItemMenu 			= itemMenu;
@@ -30,9 +31,10 @@ DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_
     }
 }
 
-void QGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
+void DrawingCanvas::drawBackground(QPainter *painter, const QRectF &rect)
 {
-//	painter->setB
+	painter->setBrush(myBackgroundColor);
+	painter->drawRect(sceneRect());
 }
 
 
@@ -707,4 +709,21 @@ void DrawingCanvas::getAngleInBounds(int &angle)
          angle += 360;
     while (angle > 180)
          angle -= 360;
+}
+
+
+void DrawingCanvas::setBackgroundColor()
+{
+	QColor color = QColorDialog::getColor(myBackgroundColor);
+	color.setAlpha(myBackgroundAlpha);
+	myBackgroundColor = color;
+	update();
+	
+}
+
+void DrawingCanvas::setBackgroundOpacity(int val)
+{
+	myBackgroundAlpha = (int)(255*val/100);
+	myBackgroundColor.setAlpha(myBackgroundAlpha);
+	update();
 }

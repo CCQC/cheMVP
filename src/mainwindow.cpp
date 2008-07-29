@@ -3,6 +3,7 @@
 #include <iostream>
 #include <iomanip>
 #include "mainwindow.h"
+#include "drawingdisplay.h"
 #include "drawingcanvas.h"
 #include "defines.h"
 
@@ -22,10 +23,17 @@ MainWindow::MainWindow(FileParser *parser_in):
     createToolbars();
 
     QHBoxLayout *layout = new QHBoxLayout;
-    view = new QGraphicsView(canvas);
+    view = new DrawingDisplay(canvas, drawingInfo);
+    view->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    view->setGeometry(0, 0, DEFAULT_SCENE_SIZE_X, DEFAULT_SCENE_SIZE_Y);
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); 
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-    layout->addWidget(view);
-    layout->addWidget(toolBox);
+    
+    QSplitter *splitter = new QSplitter(Qt::Horizontal);
+    splitter->addWidget(view);
+    splitter->addWidget(toolBox);
+    layout->addWidget(splitter);
     
     QWidget *widget = new QWidget;
     widget->setLayout(layout);
@@ -107,9 +115,10 @@ void MainWindow::createToolBox()
     toolBox->addItem(appearanceWidget, tr("Appearance"));
     toolBox->addItem(atomsWidget, tr("Atoms"));
     toolBox->addItem(bondsWidget, tr("Bonds"));
-    toolBox->setMaximumWidth(atomsWidget->sizeHint().width());
-    // The toolbox is collapsable now, in case the user (i.e. Shane) wants to see something in the background
+    
+    toolBox->setGeometry(0, 0, atomsWidget->sizeHint().width(), DEFAULT_SCENE_SIZE_Y);
     toolBox->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+
 }
 
 
@@ -200,6 +209,23 @@ QWidget *MainWindow::createAppearanceWidget()
     sliderLayout->setColumnMinimumWidth(2,32);
     rotationGroupBox->setLayout(sliderLayout);
     layout->addWidget(rotationGroupBox);
+
+    QGroupBox *backgroundColorGroupBox = new QGroupBox(tr("Background"));
+    QGridLayout *backgroundColorLayout = new QGridLayout;
+    backgroundColorButton = new QPushButton(tr("Background Color"));
+    backgroundColorButton->setToolTip(tr("Change the background color"));
+    backgroundColorLayout->addWidget(backgroundColorButton, 0, 0, 1, 2);
+    connect(backgroundColorButton, SIGNAL(clicked()), canvas, SLOT(setBackgroundColor()));
+    backgroundColorLayout->addWidget(new QLabel(tr("Background Opacity")), 1, 0);
+    backgroundOpacitySpinBox = new QSpinBox;
+    backgroundOpacitySpinBox->setToolTip(tr("Changes how opaque the background is"));
+    backgroundOpacitySpinBox->setSuffix("%");
+    backgroundOpacitySpinBox->setValue(0);
+    backgroundOpacitySpinBox->setRange(0,100);
+    connect(backgroundOpacitySpinBox, SIGNAL(valueChanged(int)), canvas, SLOT(setBackgroundOpacity(int)));
+    backgroundColorLayout->addWidget(backgroundOpacitySpinBox, 1, 1);
+    backgroundColorGroupBox->setLayout(backgroundColorLayout);
+    layout->addWidget(backgroundColorGroupBox);
 
     QWidget *zoomWidget = new QWidget;
     QGridLayout *zoomLayout = new QGridLayout;
@@ -405,6 +431,7 @@ void MainWindow::createActions()
     
     connect(addArrowAction, SIGNAL(triggered(bool)), this, SLOT(setAddArrowMode()));
 }
+
 
 void MainWindow::setAddArrowMode()
 {

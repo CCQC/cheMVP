@@ -184,6 +184,7 @@ std::map<QString, QColor> Atom::labelToColor;
 	 QFontMetricsF labelFM(myLabelFont);
 
      QPointF labelPos(-labelFM.boundingRect(myLabel).width()/2.0, labelFM.boundingRect(myLabel).height()/3.5);
+     painter->setPen(text_color);
      painter->setFont(myLabelFont);
      painter->drawText(labelPos, myLabel);
      // If there's a subscript to be drawn, do it

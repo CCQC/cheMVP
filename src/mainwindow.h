@@ -70,6 +70,7 @@ private:
     QButtonGroup *mouseModeButtonGroup;
     QButtonGroup *atomDrawingStyleButtonGroup;
 
+    
     QLineEdit *atomLabelInput;
     
     QToolBar *mouseModeToolBar;
@@ -95,11 +96,13 @@ private:
     QPushButton *toggleBondDashingButton;
     QPushButton *toggleAngleLabelsButton;
     QPushButton *toggleAtomNumberSubscriptsButton;
+    QPushButton *backgroundColorButton;
     
     QRadioButton *simpleAtomDrawingButton;
     QRadioButton *houkMolAtomDrawingButton;
     QRadioButton *simpleColoredAtomDrawingButton;
     
+    QSpinBox	   *backgroundOpacitySpinBox;
     QSpinBox       *zoomSpinBox;
     QDoubleSpinBox *atomSizeSpinBox;
     QDoubleSpinBox *bondSizeSpinBox;
