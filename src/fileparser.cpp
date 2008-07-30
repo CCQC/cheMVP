@@ -16,7 +16,10 @@ FileParser::~FileParser()
 
 void FileParser::determineFileType()
 {
-	fileType = XYZ;
+    if (myFileName.contains("file11", Qt::CaseInsensitive))
+        fileType = FILE11;
+	else
+	    fileType = XYZ;
 }
 
 
@@ -33,7 +36,13 @@ void FileParser::readFile()
 		case XYZ:
 			readXYZ();
 			break;
+		case FILE11:
+            readFile11();
+            break;
 		default:
 		;
 	}
+	if (myMoleculeList.size()) {
+        currentGeometry = myMoleculeList.size() - 1;
+    }
 }
