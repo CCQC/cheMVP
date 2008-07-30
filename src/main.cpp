@@ -5,6 +5,7 @@
 
 #include "mainwindow.h"
 #include "fileparser.h"
+#include "defines.h"
 
 
 int main(int argv, char *args[])
@@ -31,7 +32,7 @@ int main(int argv, char *args[])
     FileParser *parser = new FileParser(cmd_line_arg);
     QPixmap pixmap("../images/splash.png");
     QSplashScreen splash(pixmap);
-    splash.showMessage("Created by Andy Simmonett and Justin Turney,\nCenter for Computational Chemistry, University of Georgia",
+    splash.showMessage("Version " + QString(CHEMVP_VERSION)+"\nCreated by Andy Simmonett and Justin Turney,\nCenter for Computational Chemistry, University of Georgia",
                         Qt::AlignLeft | Qt::AlignBottom, Qt::white);
     splash.show();
     MainWindow mainWindow(parser);

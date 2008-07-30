@@ -13,6 +13,8 @@
 
 #define TINY 0.00001
 
+#define CHEMVP_VERSION "0.1"
+
 #define EXTRA_DRAWING_SPACE 0.2
 
 #define DEFAULT_LABEL_FONT "Helvetica"
