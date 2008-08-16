@@ -36,7 +36,7 @@ MainWindow::MainWindow(FileParser *parser_in):
 	drawingInfo->setHeight(view->sceneRect().height());
 	drawingInfo->setWidth(view->sceneRect().width());
 	drawingInfo->determineScaleFactor();
-	canvas->setSceneRect(0, 0, view->sceneRect().width(), view->sceneRect().height());
+	canvas->setSceneRect(view->sceneRect());
 	canvas->refresh();
 	
     QSplitter *splitter = new QSplitter(Qt::Horizontal);

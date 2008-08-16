@@ -101,8 +101,6 @@
 	setZValue((atom1->zValue() + atom2->zValue())/2.0 - TINY);
  	myPen.setCapStyle( (fabs(dz) > DZ_ZERO_TOL ? Qt::RoundCap : Qt::SquareCap));
  	effectiveWidth = (1.0 + drawingInfo->perspective() * zValue()) * myThickness * drawingInfo->scaleFactor();
- 	myPen.setColor(myColor);
- 	setPen(myPen);
  
  	// A cheap and cheerful guess of the label's position
 	if(myLabel != 0){
@@ -139,8 +137,9 @@
  void Bond::paint(QPainter *painter,
             const QStyleOptionGraphicsItem *option, QWidget *widget)
  {
-	myPen.setWidthF(hoverOver ? 1.5*effectiveWidth : effectiveWidth); 	
- 	myPen.setColor(Qt::black);
+	myPen.setWidthF(hoverOver ? 1.5*effectiveWidth : effectiveWidth);
+ 	myPen.setColor(myColor);
+	painter->setBrush(myColor);
 	painter->setPen(myPen);
  	painter->drawLine(line());
  	if(isSelected()){
