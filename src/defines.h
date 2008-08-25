@@ -45,7 +45,7 @@
 #define RAD_TO_DEG 57.29577951308232
 #define PI 3.14159265
 
-#define ANGLE_MARKER_OFFSET 0.3
+#define ANGLE_MARKER_OFFSET 0.4
 
 
 #endif /*DEFINES_H_*/

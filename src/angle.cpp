@@ -88,15 +88,6 @@
  	double phi2  		= (phi1 + phi3) / 2.0;
     double radius 		= myCenterAtom->effectiveRadius() + 0.2 * drawingInfo->scaleFactor();
     
-//    if( ((phi3>phi1)&&(phi1 - phi3 > -PI)) || (phi1 - phi3>PI) ){
-//    	phi1 += ANGLE_MARKER_OFFSET;
-//    	phi3 -= ANGLE_MARKER_OFFSET;
-//    }else{
-//    	phi1 -= ANGLE_MARKER_OFFSET;
-//    	phi3 += ANGLE_MARKER_OFFSET;    	
-//    }
-    
-    
     double xRef = myCenterAtom->pos().x();
     double yRef = myCenterAtom->pos().y();
     double zRef = myCenterAtom->zValue();
