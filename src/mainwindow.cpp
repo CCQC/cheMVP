@@ -273,15 +273,18 @@ QWidget *MainWindow::createBondsWidget()
     layout->addWidget(toggleBondLabelsButton);
     connect(toggleBondLabelsButton, SIGNAL(pressed()),
                 canvas, SLOT(toggleBondLabels()));
+
+
+    // The bond appearance
+    QGroupBox *bondSizeWidget   = new QGroupBox(tr("Bond Appearance"));
+    QGridLayout *bondSizeLayout = new QGridLayout;
+
     // The bond dashing
     toggleBondDashingButton = new QPushButton(tr("Toggle Bond Dashing"));
-    layout->addWidget(toggleBondDashingButton);
+    bondSizeLayout->addWidget(toggleBondDashingButton, 0, 0, 1, 2);
     connect(toggleBondDashingButton, SIGNAL(pressed()),
                 canvas, SLOT(toggleBondDashing()));
-
     // The bond thickness
-    QWidget *bondSizeWidget     = new QWidget;
-    QGridLayout *bondSizeLayout = new QGridLayout;
     QLabel *bondSizeLabel       = new QLabel("Bond thickness = ");
     bondSizeSpinBox             = new QDoubleSpinBox();
     bondSizeSpinBox->setSuffix(QString(" Angstrom"));
@@ -290,8 +293,8 @@ QWidget *MainWindow::createBondsWidget()
     bondSizeSpinBox->setSpecialValueText(tr("Select Bonds"));
     bondSizeSpinBox->setValue(bondSizeSpinBox->minimum());
     bondSizeSpinBox->setAccelerated(true);
-    bondSizeLayout->addWidget(bondSizeLabel, 0, 0);
-    bondSizeLayout->addWidget(bondSizeSpinBox, 0, 1);
+    bondSizeLayout->addWidget(bondSizeLabel, 1, 0);
+    bondSizeLayout->addWidget(bondSizeSpinBox, 1, 1);
     connect(bondSizeSpinBox, SIGNAL(valueChanged(double)), this, SLOT(changeBondSize()));
     bondSizeWidget->setLayout(bondSizeLayout);
     layout->addWidget(bondSizeWidget);
@@ -322,11 +325,6 @@ QWidget *MainWindow::createAtomsWidget()
     atomSizeWidget->setLayout(atomSizeLayout);
     layout->addWidget(atomSizeWidget);
 
-    // The atom numbers as label subscripts    
-    toggleAtomNumberSubscriptsButton = new QPushButton(tr("Toggle Atom Number Subscripts"));
-    layout->addWidget(toggleAtomNumberSubscriptsButton);
-    connect(toggleAtomNumberSubscriptsButton, SIGNAL(pressed()),
-                canvas, SLOT(toggleAtomNumberSubscripts()));
 
     QGroupBox *drawingStyleBox 	    = new QGroupBox(tr("Drawing Style"));    
     atomDrawingStyleButtonGroup     = new QButtonGroup;
@@ -346,28 +344,38 @@ QWidget *MainWindow::createAtomsWidget()
     drawingStyleBox->setLayout(drawingStyleLayout);
     layout->addWidget(drawingStyleBox);
     
+    // The atom labels
     QGroupBox *labelStyleBox 	    = new QGroupBox(tr("Atom Label"));    
     QGridLayout *labelStyleLayout   = new QGridLayout;
-    // The label
+    
+    // The atom numbers as label subscripts    
+    toggleAtomNumberSubscriptsButton = new QPushButton(tr("Toggle Atom Number Subscripts"));
+    toggleAtomNumberSubscriptsButton->setToolTip(tr("Add/remove atom numbers as a subscript to the selected atoms"));
+    labelStyleLayout->addWidget(toggleAtomNumberSubscriptsButton, 0, 0);
+    connect(toggleAtomNumberSubscriptsButton, SIGNAL(pressed()),
+                canvas, SLOT(toggleAtomNumberSubscripts()));
+    // The label text
     atomLabelInput = new QLineEdit;
 	atomLabelInput->setText(tr("Select Atoms"));
 	atomLabelInput->setToolTip(tr("Text entered here will be used as the label for the selected atom(s).  Anything appended after an underscore will be used as a subscript, anything after a carat is a superscript"));
-    labelStyleLayout->addWidget(atomLabelInput, 0, 0);
+    labelStyleLayout->addWidget(atomLabelInput, 1, 0);
     connect(atomLabelInput, SIGNAL(returnPressed()), this, SLOT(setAtomLabels()));
     // The label font
     atomLabelFontCombo = new QFontComboBox();
     atomLabelFontCombo->setEditText(tr("Select Atoms"));
-    labelStyleLayout->addWidget(atomLabelFontCombo, 1, 0);
+    atomLabelFontCombo->setToolTip(tr("The font for the selected atoms"));
+    labelStyleLayout->addWidget(atomLabelFontCombo, 2, 0);
     connect(atomLabelFontCombo, SIGNAL(currentFontChanged(const QFont &)),
             canvas, SLOT(atomLabelFontChanged(const QFont &)));
     // The label font size
     atomLabelFontSizeCombo = new QComboBox;
     atomLabelFontSizeCombo->setEditable(true);
+    atomLabelFontSizeCombo->setToolTip(tr("The font size for the selected atoms"));
     for (int i = 4; i < 20; ++i){
       atomLabelFontSizeCombo->addItem(QString().setNum(i));
     }
     atomLabelFontSizeCombo->setEditText(tr("Select Atoms"));
-    labelStyleLayout->addWidget(atomLabelFontSizeCombo, 2, 0);
+    labelStyleLayout->addWidget(atomLabelFontSizeCombo, 3, 0);
     connect(atomLabelFontSizeCombo, SIGNAL(currentIndexChanged(const QString &)),
             canvas, SLOT(atomLabelFontSizeChanged(const QString &)));
     
