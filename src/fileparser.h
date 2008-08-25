@@ -18,7 +18,7 @@
 
 class FileParser
 {
-	enum FileType {XYZ, PSI3, QCHEM3_1};
+	enum FileType {XYZ, PSI3, FILE11, QCHEM3_1};
 	enum UnitsType {Angstrom, Bohr};
 
 public:
@@ -37,6 +37,7 @@ public:
 protected:
 	void determineFileType();
 	void readXYZ();
+    void readFile11();
 
 	FileType fileType;
 	UnitsType myUnits;
