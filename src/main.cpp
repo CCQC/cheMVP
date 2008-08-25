@@ -1,6 +1,6 @@
 #include <QtGui>
 #include <QString>
-#include <QPixMap>
+#include <QPixmap>
 #include <iostream>
 
 #include "mainwindow.h"
