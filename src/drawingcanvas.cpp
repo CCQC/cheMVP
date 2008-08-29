@@ -34,6 +34,7 @@ DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_
 
 void DrawingCanvas::drawBackground(QPainter *painter, const QRectF &rect)
 {
+	if(myBackgroundColor.alpha() == 0) return;
 	painter->setBrush(myBackgroundColor);
 	painter->drawRect(sceneRect());
 }

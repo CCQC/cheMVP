@@ -62,10 +62,8 @@ void MainWindow::saveImage(const QString &fileName)
 		delete svgGen;
 	}else if(fileType == PNG || fileType == TIFF){
 		QPainter *painter = new QPainter();
-		QImage *image = new QImage(3.0*imageDimension, QImage::Format_ARGB32);
+		QImage *image = new QImage(5.0*imageDimension, QImage::Format_ARGB32);
 		// Resolution of the image is 600 dpi by default
-		image->setDotsPerMeterX(600*254);
-		image->setDotsPerMeterY(600*254);
 		painter->begin(image);
 		canvas->render(painter);
 		painter->end();

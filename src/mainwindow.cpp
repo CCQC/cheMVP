@@ -232,7 +232,7 @@ QWidget *MainWindow::createAppearanceWidget()
     backgroundColorGroupBox->setLayout(backgroundColorLayout);
     layout->addWidget(backgroundColorGroupBox);
 
-    QWidget *zoomWidget = new QWidget;
+    QGroupBox *zoomGroupBox = new QGroupBox(tr("Drawing Size"));
     QGridLayout *zoomLayout = new QGridLayout;
     QLabel *zoomTitle = new QLabel(tr("Zoom:"));
     zoomSpinBox = new QSpinBox();
@@ -243,8 +243,8 @@ QWidget *MainWindow::createAppearanceWidget()
     connect(zoomSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
     zoomLayout->addWidget(zoomTitle, 0, 0);
     zoomLayout->addWidget(zoomSpinBox, 0, 1);
-    zoomWidget->setLayout(zoomLayout);
-    layout->addWidget(zoomWidget);
+    zoomGroupBox->setLayout(zoomLayout);
+    layout->addWidget(zoomGroupBox);
     
     widget->setLayout(layout);
     return widget;	
@@ -269,8 +269,13 @@ QWidget *MainWindow::createBondsWidget()
     QGridLayout *layout = new QGridLayout;
 
     // The bond labels    
+    QGroupBox *bondLabelsGroupBox = new QGroupBox(tr("Labels"));
+    QGridLayout *bondLabelsLayout = new QGridLayout;
     toggleBondLabelsButton = new QPushButton(tr("Toggle Bond Labels"));
-    layout->addWidget(toggleBondLabelsButton);
+    toggleBondLabelsButton->setToolTip(tr("Toggle the bond length labels of the selected bonds"));
+    bondLabelsLayout->addWidget(toggleBondLabelsButton);
+    bondLabelsGroupBox->setLayout(bondLabelsLayout);
+    layout->addWidget(bondLabelsGroupBox);
     connect(toggleBondLabelsButton, SIGNAL(pressed()),
                 canvas, SLOT(toggleBondLabels()));
 
@@ -281,6 +286,7 @@ QWidget *MainWindow::createBondsWidget()
 
     // The bond dashing
     toggleBondDashingButton = new QPushButton(tr("Toggle Bond Dashing"));
+    toggleBondDashingButton->setToolTip(tr("Toggle dashed / solid bonds for the selected bonds"));
     bondSizeLayout->addWidget(toggleBondDashingButton, 0, 0, 1, 2);
     connect(toggleBondDashingButton, SIGNAL(pressed()),
                 canvas, SLOT(toggleBondDashing()));
@@ -309,7 +315,7 @@ QWidget *MainWindow::createAtomsWidget()
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
     
-    QWidget *atomSizeWidget     = new QWidget;
+    QGroupBox *atomSizeGroupBox = new QGroupBox(tr("Size"));
     QGridLayout *atomSizeLayout = new QGridLayout;
     QLabel *atomSizeLabel       = new QLabel("Atom size = ");
     atomSizeSpinBox             = new QDoubleSpinBox();
@@ -322,8 +328,8 @@ QWidget *MainWindow::createAtomsWidget()
     atomSizeLayout->addWidget(atomSizeLabel, 0, 0);
     atomSizeLayout->addWidget(atomSizeSpinBox, 0, 1);
     connect(atomSizeSpinBox, SIGNAL(valueChanged(double)), this, SLOT(changeAtomSize()));
-    atomSizeWidget->setLayout(atomSizeLayout);
-    layout->addWidget(atomSizeWidget);
+    atomSizeGroupBox->setLayout(atomSizeLayout);
+    layout->addWidget(atomSizeGroupBox);
 
 
     QGroupBox *drawingStyleBox 	    = new QGroupBox(tr("Drawing Style"));    
@@ -392,12 +398,18 @@ QWidget *MainWindow::createAnglesWidget()
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
 
+    //The labels
+    QGroupBox *labelsGroupBox = new QGroupBox(tr("Labels"));
+    QGridLayout *labelsGroupBoxLayout = new QGridLayout;
     toggleAngleLabelsButton = new QPushButton(tr("Toggle Angle Labels"));
     toggleAngleLabelsButton->setToolTip(tr("Select three or more atoms to toggle the angle markers and labels.  Only angles between bonds will be drawn"));
-    layout->addWidget(toggleAngleLabelsButton);
     connect(toggleAngleLabelsButton, SIGNAL(pressed()),
-                canvas, SLOT(toggleAngleLabels()));
-
+                    canvas, SLOT(toggleAngleLabels()));
+    labelsGroupBoxLayout->addWidget(toggleAngleLabelsButton, 0, 0);
+    labelsGroupBox->setLayout(labelsGroupBoxLayout);
+    
+    layout->addWidget(labelsGroupBox);
+    
     widget->setLayout(layout);
     return widget;	
 }
@@ -475,6 +487,13 @@ void MainWindow::createMenus()
 
 void MainWindow::createToolbars()
 {
+	// The "File" menus
+    fileToolBar = addToolBar(tr("File"));
+    fileToolBar->addAction(openAction);
+    fileToolBar->addAction(saveAction);
+    fileToolBar->addAction(saveAsAction);
+    
+    // The "Mouse Mode" menus
     mouseModeToolBar = addToolBar(tr("Mouse Mode"));
     mouseModeButtonGroup = new QButtonGroup;
     connect(mouseModeButtonGroup, SIGNAL(buttonClicked(int)),
@@ -511,10 +530,6 @@ void MainWindow::createToolbars()
     
     connect(canvas, SIGNAL(mouseModeChanged(int)), this, SLOT(mouseModeButtonGroupClicked(int)));
 
-    fileToolBar = addToolBar(tr("File"));
-    fileToolBar->addAction(openAction);
-    fileToolBar->addAction(saveAction);
-    fileToolBar->addAction(saveAsAction);
     
 }
 
