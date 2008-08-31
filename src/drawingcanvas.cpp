@@ -56,7 +56,6 @@ void DrawingCanvas::unselectAll()
 {
     foreach(QGraphicsItem *item, items()) {
         item->setSelected(false);
-    	std::cout<<"setting normal"<<std::endl;
         if(item->type() == Label::AngleLabelType || 
            item->type() == Label::BondLabelType){
         	Label *label = dynamic_cast<Label*>(item);
@@ -64,6 +63,7 @@ void DrawingCanvas::unselectAll()
             cursor.clearSelection();
             label->setTextCursor(cursor);
         	label->setTextInteractionFlags(Qt::NoTextInteraction);
+        	label->clearFocus();
         }
     }
     
@@ -185,7 +185,10 @@ void DrawingCanvas::setMode(Mode mode)
 
 void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
- 	
+ 	if(items().size() == 0){
+ 		unselectAll();
+ 		return;
+ 	}
 	mouseOrigin = mouseEvent->scenePos();
 	numMouseMoves = 0;
     switch (myMode) {
@@ -222,7 +225,7 @@ void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 //	                QGraphicsScene::mousePressEvent(mouseEvent);
     			}
     		}else{
-    			clearSelection();
+    			unselectAll();
 	        	selectionRectangle = new QGraphicsRectItem(QRectF(mouseEvent->scenePos(),
 	        	                                         mouseEvent->scenePos()));
 	        	selectionRectangle->setPen(QPen(Qt::black, 1,Qt::DashLine));
