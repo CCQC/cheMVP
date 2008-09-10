@@ -60,6 +60,11 @@ void DrawingCanvas::unselectAll()
            item->type() == Label::BondLabelType){
         	Label *label = dynamic_cast<Label*>(item);
             QTextCursor cursor = label->textCursor();
+        	if(cursor.isNull()){
+        		std::cout << "no selection" << std::endl;
+        	}else{
+        		std::cout << "selection" << cursor.selectedText().toStdString() << std::endl;
+        	}
             cursor.clearSelection();
             label->setTextCursor(cursor);
         	label->setTextInteractionFlags(Qt::NoTextInteraction);
@@ -459,19 +464,6 @@ void DrawingCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 			;
 	}
 //    QGraphicsScene::mouseReleaseEvent(mouseEvent);
-}
-
-void DrawingCanvas::editorLostFocus(Label *label)
-{
-    QTextCursor cursor = label->textCursor();
-    cursor.clearSelection();
-    label->setTextCursor(cursor);
-
-//    if (item->toPlainText().isEmpty()) {
-//        removeItem(item);
-//        deleteitem->deleteLater();
-//    }
-    // TODO figure out how to safely delete this
 }
 
 

@@ -43,7 +43,6 @@ public slots:
     void toggleBondLabels();
     void toggleAngleLabels();
     void setAtomDrawingStyle(int style);
-    void editorLostFocus(Label *label);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
