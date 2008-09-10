@@ -1,14 +1,14 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
     <file>../images/addarrow.png</file>
+    <file>../images/addbond.png</file>
     <file>../images/delete.png</file>
-    <file>../images/linepointer.png</file>
+    <file>../images/exit.png</file>
     <file>../images/open.png</file>
-    <file>../images/pointer.png</file>
     <file>../images/rotate.png</file>
     <file>../images/save.png</file>
     <file>../images/saveas.png</file>
-    <file>../images/exit.png</file>
+    <file>../images/select.png</file>
     <file>../images/splash.png</file>
 </qresource>
 </RCC>

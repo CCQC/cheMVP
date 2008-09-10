@@ -503,7 +503,7 @@ void MainWindow::createToolbars()
     selectButton->setToolTip(tr("Select / Move"));
     selectButton->setCheckable(true);
     selectButton->setChecked(true);
-    selectButton->setIcon(QIcon(":/images/pointer.png"));
+    selectButton->setIcon(QIcon(":/images/select.png"));
     mouseModeButtonGroup->addButton(selectButton, int(DrawingCanvas::Select));
     mouseModeToolBar->addWidget(selectButton);
 
@@ -517,7 +517,7 @@ void MainWindow::createToolbars()
     QToolButton *addBondButton = new QToolButton;
     addBondButton->setToolTip(tr("Add Bond"));
     addBondButton->setCheckable(true);
-    addBondButton->setIcon(QIcon(":/images/linepointer.png"));
+    addBondButton->setIcon(QIcon(":/images/addbond.png"));
     mouseModeButtonGroup->addButton(addBondButton, int(DrawingCanvas::AddBond));
     mouseModeToolBar->addWidget(addBondButton);
 
