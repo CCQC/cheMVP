@@ -75,6 +75,7 @@ private:
     
     QToolBar *mouseModeToolBar;
     QToolBar *fileToolBar;
+    QToolBar *editSelectedTextToolBar;
 
     DrawingCanvas *canvas;
     QGraphicsView *view;
@@ -97,6 +98,10 @@ private:
     QPushButton *toggleAngleLabelsButton;
     QPushButton *toggleAtomNumberSubscriptsButton;
     QPushButton *backgroundColorButton;
+
+    QToolButton *boldTextButton;
+    QToolButton *italicTextButton;
+    QToolButton *underlineTextButton;
     
     QRadioButton *simpleAtomDrawingButton;
     QRadioButton *houkMolAtomDrawingButton;

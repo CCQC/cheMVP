@@ -17,8 +17,8 @@ class DrawingCanvas : public QGraphicsScene
     Q_OBJECT
 
 public:
-    enum Mode { AddBond, AddArrow, Select, Rotate, TempMove, TempMoveAll };
-
+    enum Mode { AddBond, AddArrow, AddText, Select, Rotate, TempMove, TempMoveAll };
+    
     DrawingCanvas(QMenu *itemMenu, DrawingInfo *drawingInfo, FileParser *parser, QObject *parent = 0);
     void setElementToAdd(const QString &element) {elementToAdd = element;}
     void clearAll();
