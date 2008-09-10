@@ -27,7 +27,9 @@
      double z() const {return myZ;}
      double scaleFactor() const {return myScaleFactor;}
      double effectiveRadius() const {return myEffectiveRadius;}
-     QString label() {return (myLabelSubscript.size() ? myLabel + "_" + myLabelSubscript : myLabel);}
+     QString label() {return ( myLabel + 
+                              (myLabelSubscript.size() ? "_" + myLabelSubscript : "") +
+                              (myLabelSuperscript.size() ? "^" + myLabelSuperscript : ""));}
      const QFont& labelFont() {return myLabelFont;}
      void computeRadius();
      void setLabelSubscript(const QString &string) {myLabelSubscript = string;}

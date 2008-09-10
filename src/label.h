@@ -30,20 +30,13 @@
      void setPrecision(int val) {myPrecision = val; updateLabel();}
      void setFontSize(int val) {myFontSize = val; myFont.setPointSizeF(double(val)*myDrawingInfo->scaleFactor()/150.0);}
      void setFont(const QString &font) {myFont.setFamily(font);}
-
-//     void paint(QPainter *painter,
-//                 const QStyleOptionGraphicsItem *option, QWidget *widget);
       
  signals:
      void lostFocus(Label *item);
      void selectedChange(QGraphicsItem *item);
 
  protected:
-//     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-     void focusOutEvent(QFocusEvent *event);
-     void mousePressEvent(QGraphicsSceneMouseEvent *event);
-//     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-//     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+     void keyPressEvent(QKeyEvent *event);
      void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
  private:
 	 LabelType myType;

@@ -17,8 +17,8 @@ class DrawingCanvas : public QGraphicsScene
     Q_OBJECT
 
 public:
-    enum Mode { AddBond, AddArrow, Select, Rotate, TempMove, TempMoveAll };
-
+    enum Mode { AddBond, AddArrow, AddText, Select, Rotate, TempMove, TempMoveAll };
+    
     DrawingCanvas(QMenu *itemMenu, DrawingInfo *drawingInfo, FileParser *parser, QObject *parent = 0);
     void setElementToAdd(const QString &element) {elementToAdd = element;}
     void clearAll();
@@ -43,7 +43,6 @@ public slots:
     void toggleBondLabels();
     void toggleAngleLabels();
     void setAtomDrawingStyle(int style);
-    void editorLostFocus(Label *label);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
