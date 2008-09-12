@@ -27,10 +27,12 @@ public slots:
    void setZRotation(int phi);
 
 private slots:
+	void insertTextAtCursor(QAction *action);
 	void updateMenus();
 	void setAtomLabels();
 	void changeAtomSize();
 	void changeBondSize();
+	void setTextBoxFonts();
 //    void periodicTableButtonGroupClicked(QAbstractButton *button);
     void deleteItem();
     void mouseModeButtonGroupClicked(int);
@@ -42,8 +44,8 @@ private slots:
 
 private:
 	void createToolBox();
-  void createActions();
-      void createMenus();
+	void createActions();
+    void createMenus();
     void createToolbars();
     FileType determineFileType(const QString &fileName);
     void saveImage(const QString &fileName);
@@ -83,15 +85,22 @@ private:
     FileParser *parser;
 
     QComboBox *atomLabelFontSizeCombo;
+    QComboBox *textFontSizeCombo;
     
     QFontComboBox *atomLabelFontCombo;
+    QFontComboBox *textFontCombo;
+    
+    QActionGroup *insertTextActionGroup;
     QAction *deleteAction;
     QAction *openAction;
     QAction *exitAction;
     QAction *saveAction;
     QAction *saveAsAction;
-    
+    QAction *insertAngstromAction;
+    QAction *insertDegreeAction;
+    QAction *insertPlusMinusAction;
     QAction *addArrowAction;
+    
 
     QPushButton *toggleBondLabelsButton;
     QPushButton *toggleBondDashingButton;
@@ -124,6 +133,7 @@ private:
     QMenu *fileMenu;
     QMenu *itemMenu;
     QMenu *insertMenu;
+    QMenu *insertSymbolMenu;
 
     QToolBox *toolBox;
     

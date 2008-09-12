@@ -60,18 +60,12 @@ void DrawingCanvas::unselectAll()
            item->type() == Label::BondLabelType){
         	Label *label = dynamic_cast<Label*>(item);
             QTextCursor cursor = label->textCursor();
-        	if(cursor.isNull()){
-        		std::cout << "no selection" << std::endl;
-        	}else{
-        		std::cout << "selection" << cursor.selectedText().toStdString() << std::endl;
-        	}
             cursor.clearSelection();
             label->setTextCursor(cursor);
         	label->setTextInteractionFlags(Qt::NoTextInteraction);
         	label->clearFocus();
         }
-    }
-    
+    }    
     update();
 }
 

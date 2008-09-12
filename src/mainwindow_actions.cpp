@@ -29,4 +29,21 @@ void MainWindow::createActions()
     addArrowAction = new QAction(QIcon(":/images/addarrow.png"), tr("Add Arrow"), this);
     addArrowAction->setStatusTip(tr("Add Arrow"));
     connect(addArrowAction, SIGNAL(triggered(bool)), this, SLOT(setAddArrowMode()));
+    
+    insertTextActionGroup = new QActionGroup(this);
+
+    insertAngstromAction = new QAction(insertTextActionGroup);
+    insertAngstromAction->setIconText(QChar((ushort)0x00C5));
+    insertAngstromAction->setToolTip(tr("Insert ")+QChar((ushort)0x00C5)+tr(" at current cursor position"));
+    
+    insertDegreeAction = new QAction(insertTextActionGroup);
+    insertDegreeAction->setIconText(QChar((ushort)0x00B0));
+    insertDegreeAction->setToolTip(tr("Insert ")+QChar((ushort)0x00B0)+tr(" at current cursor position"));
+    
+    insertPlusMinusAction = new QAction(insertTextActionGroup);
+    insertPlusMinusAction->setIconText(QChar((ushort)0x00B1));
+    insertPlusMinusAction->setToolTip(tr("Insert ")+QChar((ushort)0x00B1)+tr(" at current cursor position"));
+    
+    connect(insertTextActionGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertTextAtCursor(QAction *)));
+
 }

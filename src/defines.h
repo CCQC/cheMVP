@@ -47,5 +47,6 @@
 
 #define ANGLE_MARKER_OFFSET 0.4
 
+#define ITEM_IS_LABEL item->type() == Label::AngleLabelType || item->type() == Label::BondLabelType
 
 #endif /*DEFINES_H_*/

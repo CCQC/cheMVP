@@ -16,31 +16,40 @@
      setFlag(QGraphicsItem::ItemIsMovable, true);
      setFlag(QGraphicsItem::ItemIsSelectable, true);
      setFlag(QGraphicsItem::ItemIsFocusable, true);
-     setTextInteractionFlags(Qt::TextEditable);
+     setTextInteractionFlags(Qt::NoTextInteraction);
      setZValue(1000.0);
      updateLabel();
-     setFont(DEFAULT_LABEL_FONT);
-     setFontSize(DEFAULT_LABEL_FONT_SIZE);
+     setFont(QFont(DEFAULT_LABEL_FONT));
 
  }
 
+  
+// void Label::paint(QPainter * painter, QStyleOptionGraphicsItem *option, QWidget *widget)
+// {
+//	 QFont myFont(font());
+// 	 myFont.setPointSizeF(double(myFontSize)*myDrawingInfo->scaleFactor()/150.0);
+// 	 setFont(myFont);
+//// 	 painter->setFont(myFont);
+//// 	 painter->drawText(pos(),toPlainText());
+// 	 QGraphicsTextItem::paint(painter, option, widget);
+// }
  
- void Label::keyPressEvent(QKeyEvent *event)
- {
-	 if(event->key() == Qt::Key_Tab){
-		 std::cout<< "received a tab" << std::endl;
-		 textCursor().insertText("\t");
-	 }else{
-		 QGraphicsTextItem::keyPressEvent(event);
-	 }
- }
+ 
+// void Label::keyPressEvent(QKeyEvent *event)
+// {
+//	 if(event->key() == Qt::Key_Tab){
+//		 std::cout<< "received a tab" << std::endl;
+//		 textCursor().insertText("\t");
+//	 }else{
+//		 QGraphicsTextItem::keyPressEvent(event);
+//	 }
+// }
  
  
  void Label::updateLabel()
  {
 	 myString.setNum(myValue, 'f', myPrecision);
 	 setPlainText(myString);
-	 QGraphicsTextItem::setFont(myFont);
  }
 
  
@@ -48,7 +57,7 @@
  {
 	 if (textInteractionFlags() == Qt::NoTextInteraction){
 	   setTextInteractionFlags(Qt::TextEditorInteraction);
-	   grabKeyboard();
+//	   grabKeyboard();
 	 }
-	 QGraphicsTextItem::mouseDoubleClickEvent(event);
+//	 QGraphicsTextItem::mouseDoubleClickEvent(event);
  }

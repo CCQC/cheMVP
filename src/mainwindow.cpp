@@ -61,6 +61,70 @@ MainWindow::MainWindow(FileParser *parser_in):
 //    view->update();
 //}
 
+void MainWindow::insertTextAtCursor(QAction *action)
+{
+	foreach(QGraphicsItem* item,canvas->items()){
+		if(ITEM_IS_LABEL){
+			Label *label = dynamic_cast<Label*>(item);
+			if(label->textInteractionFlags() & Qt::TextEditorInteraction){
+				QTextCursor cursor = label->textCursor();
+				cursor.insertText(action->iconText());
+			}
+		}
+	}	
+	update();
+}
+
+
+void MainWindow::setTextBoxFonts()
+{
+	// Start by looking to see if one of the labels is being edited
+	bool hasLabel = false;
+	Label *labelBeingEdited = 0;
+	foreach(QGraphicsItem* item,canvas->items()){
+		if(ITEM_IS_LABEL){
+			hasLabel = true;
+			Label *label = dynamic_cast<Label*>(item);
+			if(label->textInteractionFlags() & Qt::TextEditorInteraction){
+				labelBeingEdited = label;
+				break;
+			}
+		}
+	}
+	
+	// Nothing to edit - bail now
+	if(!hasLabel) return;
+	
+	if(labelBeingEdited!=0){
+		// One of the labels is being edited - operate only on this selection
+		QTextCursor cursor = labelBeingEdited->textCursor();
+		QTextCharFormat format(cursor.blockCharFormat());
+		format.setFontWeight((boldTextButton->isChecked() ? QFont::Bold : QFont::Normal));
+		format.setFontItalic(italicTextButton->isChecked());
+		format.setFontUnderline((underlineTextButton->isChecked() ?
+				                 QTextCharFormat::SingleUnderline : QTextCharFormat::NoUnderline));
+		format.setFontFamily(textFontCombo->currentFont().family());
+	    cursor.mergeCharFormat(format);
+	}else{
+		// No editor - operate on selected text boxes
+		foreach(QGraphicsItem* item,canvas->items()){
+			if(ITEM_IS_LABEL){
+				Label *label = dynamic_cast<Label*>(item);	
+				if(label->isSelected()){
+					QFont myFont(label->font());
+					myFont.setUnderline(underlineTextButton->isChecked());
+					myFont.setItalic(italicTextButton->isChecked());
+					myFont.setWeight((boldTextButton->isChecked() ? QFont::Bold : QFont::Normal));
+					myFont.setFamily(textFontCombo->currentFont().family());
+					label->setFontSize(textFontSizeCombo->currentText().toInt());
+					label->setFont(myFont);
+				}
+			}
+		}		
+	}
+	update();
+}
+
 
 void MainWindow::openFile()
 {
@@ -447,9 +511,13 @@ void MainWindow::createMenus()
     
     
     insertMenu = menuBar()->addMenu(tr("&Insert"));
+    insertMenu->addAction(addArrowAction);
     //insertMenu->addAction(addBondAction);
     //insertMenu->addAction(addArrowAction);
-    insertMenu->addAction(addArrowAction);
+    insertSymbolMenu = insertMenu->addMenu(tr("Special Symbol"));
+    insertSymbolMenu->addAction(insertAngstromAction);
+    insertSymbolMenu->addAction(insertDegreeAction);
+    insertSymbolMenu->addAction(insertPlusMinusAction);
     
 }
 
@@ -623,6 +691,7 @@ void MainWindow::setAtomLabels()
 
 
 void MainWindow::updateMenus()
+// TODO Add text controls
 {
 	// The aim here is to what the properties of the selected items are
 	QList<double> atomScaleFactors;

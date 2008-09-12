@@ -72,6 +72,7 @@ void DrawingCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
     		break;
 		case TempMove:
             if(myTempMoveItem != 0){
+            	// TODO implement with IS_LABEL macro
             	if(myTempMoveItem->type() == Label::AngleLabelType ||
             	   myTempMoveItem->type() == Label::BondLabelType){
             		Label *label = dynamic_cast<Label*>(myTempMoveItem);
