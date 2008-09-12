@@ -10,6 +10,7 @@
      myPrecision(precision),
      myDrawingInfo(info),
      myColor(Qt::black),
+     myFontSize(DEFAULT_LABEL_FONT_SIZE),
      myDY(0.0),
      myDX(0.0)
  {
@@ -20,19 +21,19 @@
      setZValue(1000.0);
      updateLabel();
      setFont(QFont(DEFAULT_LABEL_FONT));
-
+     updateFontSize();
+     // If the zoom factor changes or the window size changes, we need to adjust
+     // the size of the font for the labels accordingly
+     connect(myDrawingInfo, SIGNAL(scaleFactorChanged()), this, SLOT(updateFontSize()));
  }
 
   
-// void Label::paint(QPainter * painter, QStyleOptionGraphicsItem *option, QWidget *widget)
-// {
-//	 QFont myFont(font());
-// 	 myFont.setPointSizeF(double(myFontSize)*myDrawingInfo->scaleFactor()/150.0);
-// 	 setFont(myFont);
-//// 	 painter->setFont(myFont);
-//// 	 painter->drawText(pos(),toPlainText());
-// 	 QGraphicsTextItem::paint(painter, option, widget);
-// }
+ void Label::updateFontSize()
+ {
+	 QFont myFont(font());
+ 	 myFont.setPointSizeF(double(myFontSize)*myDrawingInfo->scaleFactor()/150.0);
+ 	 setFont(myFont);
+ }
  
  
 // void Label::keyPressEvent(QKeyEvent *event)

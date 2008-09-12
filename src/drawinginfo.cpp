@@ -30,4 +30,5 @@ void DrawingInfo::determineScaleFactor()
 	// To make the the user scale factor run from 0 to 100%, divide by 100, and we need to double the radius
 	// of the molecule to find the circumference - the 200 is not a random number!
 	myAngToSceneScale = (myWidth>myHeight ? myHeight : myWidth) / (200.0 * myMoleculeMaxDimension);
+	emit scaleFactorChanged();
 }

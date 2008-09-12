@@ -50,6 +50,7 @@ private:
     FileType determineFileType(const QString &fileName);
     void saveImage(const QString &fileName);
     void loadFile();
+    QIcon textToIcon(const QString &string);
 
 //	QToolButton *makeAtomButton(const char *label);
 	QSlider *createSlider();

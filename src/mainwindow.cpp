@@ -320,7 +320,17 @@ QWidget *MainWindow::createAnnotationWidget()
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
     
-    
+    QGroupBox *insertSymbolBox 	    = new QGroupBox(tr("Insert Symbol"));    
+//    QGridLayout *insertSymbolLayout = new QGridLayout;
+//    insertSymbolLayout->addWidget(insertAngstromAction, 0, 1);
+//    insertSymbolLayout->addWidget(insertDegreeAction, 0, 1);
+//    insertSymbolLayout->addWidget(insertPlusMinusAction, 0, 1);
+//    insertSymbolBox->setLayout(insertSymbolLayout);
+    insertSymbolBox->addAction(insertAngstromAction);
+    insertSymbolBox->addAction(insertDegreeAction);
+    insertSymbolBox->addAction(insertPlusMinusAction);
+    layout->addWidget(insertSymbolBox);
+    widget->addAction(insertPlusMinusAction);
 
     widget->setLayout(layout);
     return widget;	
@@ -693,7 +703,12 @@ void MainWindow::setAtomLabels()
 void MainWindow::updateMenus()
 // TODO Add text controls
 {
-	// The aim here is to what the properties of the selected items are
+	// The aim here is to what the properties of the selected items are.  If they are all the
+	// same, the menus should be updated to reflect that setting.  If the selected items have 
+	// different properties, the menus should appear blank to indicate this.  This is easy to do
+	// in most cases, but comboboxes don't seem to have an easy mechanism for setting text, so 
+	// a hack is used, involving the special text property, which is displayed when the minimum
+	// value is reached.
 	QList<double> atomScaleFactors;
 	QList<double> bondScaleFactors;
 	QList<QString> atomLabels;

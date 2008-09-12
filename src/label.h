@@ -22,7 +22,6 @@
      Label(LabelType type, double value, int precision, DrawingInfo *info, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
 
      int type() const { return myType; }
-//     void paint(QPainter * painter, QStyleOptionGraphicsItem *option, QWidget *widget);
      double dX() {return myDX;}
      double dY() {return myDY;}
      void setDX(double val) {myDX = val;}
@@ -34,7 +33,8 @@
  signals:
 //     void lostFocus(Label *item);
      void selectedChange(QGraphicsItem *item);
-
+ public slots:
+ 	void updateFontSize();
  protected:
 //     void keyPressEvent(QKeyEvent *event);
      void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);

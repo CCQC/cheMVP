@@ -1,11 +1,14 @@
 #ifndef DRAWINGINFO_H_
 #define DRAWINGINFO_H_
 
-#include <QTransform>
+#include <QObject>
 #include "defines.h"
 
-class DrawingInfo: public QTransform
+class DrawingInfo: public QObject
 {
+	
+	Q_OBJECT
+	
 public:
 	DrawingInfo();
 	~DrawingInfo();
@@ -26,7 +29,7 @@ public:
 	double scaleFactor() const {return myUserScaleFactor * myAngToSceneScale;}
 	double perspective() const {return myPerspectiveScale;}
 	void determineScaleFactor();
-    void setZoom(int val) { myUserScaleFactor = (double)val; }
+    void setZoom(int val) { myUserScaleFactor = (double)val; emit scaleFactorChanged();}
 private:
 	int myXRot;
 	int myYRot;
@@ -43,5 +46,7 @@ private:
 	double myPerspectiveScale;
 	double myMoleculeMaxDimension;
 	double myAngToSceneScale;
+signals:
+	void scaleFactorChanged();
 };
 #endif /*DRAWINGINFO_H_*/
