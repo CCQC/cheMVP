@@ -77,19 +77,22 @@ void MainWindow::createToolbars()
     connect(underlineTextButton, SIGNAL(clicked(bool)), this, SLOT(setTextBoxFonts()));
     // Font
     textFontCombo = new QFontComboBox();
-    textFontCombo->setEditText(tr("Select Atoms"));
+    textFontCombo->setFontFilters(QFontComboBox::MonospacedFonts);
+    textFontCombo->setEditText(tr("Select Labels"));
     textFontCombo->setToolTip(tr("The font for the selected atoms"));
+    textFontCombo->setFocusPolicy(Qt::ClickFocus);
     editSelectedTextToolBar->addWidget(textFontCombo);
     connect(textFontCombo, SIGNAL(currentFontChanged(const QFont &)),
             this, SLOT(setTextBoxFonts()));
     // The label font size
     textFontSizeCombo = new QComboBox;
+    textFontSizeCombo->setFocusPolicy(Qt::ClickFocus);
     textFontSizeCombo->setEditable(true);
     textFontSizeCombo->setToolTip(tr("The font size for the selected text"));
     for (int i = 4; i < 20; ++i){
       textFontSizeCombo->addItem(QString().setNum(i));
     }
-    textFontSizeCombo->setEditText(tr("Select Label(s)"));
+    textFontSizeCombo->setEditText(tr(""));
     editSelectedTextToolBar->addWidget(textFontSizeCombo);
     connect(textFontSizeCombo, SIGNAL(currentIndexChanged(const QString &)),
             this, SLOT(setTextBoxFonts()));

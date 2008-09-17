@@ -28,6 +28,7 @@ public slots:
 
 private slots:
 	void insertTextAtCursor(QAction *action);
+	void updateTextLabelMenus();
 	void updateMenus();
 	void setAtomLabels();
 	void changeAtomSize();

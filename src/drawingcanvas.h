@@ -20,7 +20,8 @@ public:
     enum Mode { AddBond, AddArrow, AddText, Select, Rotate, TempMove, TempMoveAll };
     
     DrawingCanvas(QMenu *itemMenu, DrawingInfo *drawingInfo, FileParser *parser, QObject *parent = 0);
-    void setElementToAdd(const QString &element) {elementToAdd = element;}
+
+//    void setElementToAdd(const QString &element) {elementToAdd = element;}
     void clearAll();
     void unselectAll();
     void performRotation();
@@ -32,6 +33,8 @@ public:
     void refresh();
     void setAtomLabels(QString text);
     void drawBackground(QPainter *painter, const QRectF &rect);
+    const QCursor& rotateCursor() {return myRotateCursor;}
+    const QCursor& selectCursor() {return mySelectCursor;}
 public slots:
 	void setBackgroundOpacity(int val);
 	void setBackgroundColor();
@@ -78,9 +81,12 @@ private:
     QGraphicsLineItem *bondline;
     Arrow *myArrow;
     QGraphicsRectItem *selectionRectangle;
-    QString elementToAdd;
+//    QString elementToAdd;
     QPointF mouseOrigin;
     QColor myBackgroundColor;
+    QCursor myMoveCursor;
+    QCursor myRotateCursor;
+    QCursor mySelectCursor;
     int myBackgroundAlpha;
     int numMouseMoves;
     bool myAtomNumberSubscripts;

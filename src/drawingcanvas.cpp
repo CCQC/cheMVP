@@ -9,11 +9,14 @@
 
 DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_parser, QObject *parent):
     QGraphicsScene(parent),
-    elementToAdd("C"),
+//    elementToAdd("C"),
     drawingInfo(info),
     myAtomNumberSubscripts(false),
     myBackgroundColor(Qt::white),
     myBackgroundAlpha(0),
+    myMoveCursor(QPixmap(":/images/cursor_move.png")),
+    myRotateCursor(QPixmap(":/images/cursor_rotate.png")),
+    mySelectCursor(QPixmap(":/images/cursor_select.png")),
     parser(in_parser)
 {
     myItemMenu 			= itemMenu;
@@ -31,6 +34,7 @@ DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_
     	loadFromParser();
     }
 }
+
 
 void DrawingCanvas::drawBackground(QPainter *painter, const QRectF &rect)
 {
@@ -52,6 +56,7 @@ void DrawingCanvas::clearAll()
 	arrowsList.clear();
 }
 
+
 void DrawingCanvas::unselectAll()
 {
     foreach(QGraphicsItem *item, items()) {
@@ -68,6 +73,7 @@ void DrawingCanvas::unselectAll()
     }    
     update();
 }
+
 
 void DrawingCanvas::setAtomLabels(QString text)
 {
@@ -369,7 +375,7 @@ void DrawingCanvas::toggleBondLabels()
 
 void DrawingCanvas::performRotation()
 {
-	// Assumes the cartesians are centered about the center of mass
+	// Assumes the cartesians are centered at the center of mass
 	double zMax = -10000.0;
 	int nAtoms = atomsList.size();
 	
@@ -484,6 +490,7 @@ void DrawingCanvas::setBackgroundColor()
 	update();
 	
 }
+
 
 void DrawingCanvas::setBackgroundOpacity(int val)
 {

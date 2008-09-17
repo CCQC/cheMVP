@@ -18,6 +18,13 @@ void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 //            addItem(atom);
 //            myMode = MoveSelection;
 //            break;
+        case AddText:
+        	Label *label;
+        	label = new Label(Label::TextLabelType, 0, 0, drawingInfo);
+        	addItem(label);
+        	label->setPos(mouseEvent->scenePos());
+        	label->setTextInteractionFlags(Qt::TextEditorInteraction);
+        	break;
     	case AddArrow:
     		Arrow *arrow;
     		arrow = new Arrow(mouseEvent->scenePos().x(), mouseEvent->scenePos().y(), drawingInfo);
@@ -36,6 +43,7 @@ void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         case Select:
 	        // Is there an item under the cursor?
 	        if(items(mouseEvent->scenePos()).size()){
+	        	QApplication::setOverrideCursor(myMoveCursor);
 	        	if(items(mouseEvent->scenePos())[0]->type() == Atom::Type){
 	        		setMode(TempMoveAll);
 	        	}else{
@@ -56,6 +64,7 @@ void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     }
 }
 
+
 void DrawingCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	switch (myMode) {
@@ -72,9 +81,9 @@ void DrawingCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
     		break;
 		case TempMove:
             if(myTempMoveItem != 0){
-            	// TODO implement with IS_LABEL macro
-            	if(myTempMoveItem->type() == Label::AngleLabelType ||
-            	   myTempMoveItem->type() == Label::BondLabelType){
+            	QGraphicsItem *item;
+            	item = myTempMoveItem;
+            	if(ITEM_IS_LABEL){
             		Label *label = dynamic_cast<Label*>(myTempMoveItem);
 		        	label->setDX(label->dX() + mouseEvent->scenePos().x() - mouseOrigin.x());
 		        	label->setDY(label->dY() + mouseEvent->scenePos().y() - mouseOrigin.y());
@@ -186,6 +195,7 @@ void DrawingCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 			selectionRectangle = 0;
 			break;
 		case TempMove:
+			QApplication::restoreOverrideCursor();
 			// If the mouse didn't move, we just want to to toggle selections
 			if(!numMouseMoves){
 				myTempMoveItem->setSelected((myTempMoveItem->isSelected() ? false : true));
@@ -211,6 +221,7 @@ void DrawingCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 			emit mouseModeChanged(int(Select));
 			break;
 		case TempMoveAll:
+			QApplication::restoreOverrideCursor();
 			// If the mouse didn't move, we just want to to toggle selections
 			if(!numMouseMoves){
 				QGraphicsItem *item;

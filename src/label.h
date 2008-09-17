@@ -17,17 +17,20 @@
      Q_OBJECT
 
  public:
-     enum LabelType { BondLabelType = UserType + BONDLABELTYPE, AngleLabelType = UserType + ANGLELABELTYPE };
+     enum LabelType { BondLabelType = UserType + BONDLABELTYPE, AngleLabelType = UserType + ANGLELABELTYPE,
+    	 			  TextLabelType = UserType + TEXTLABELTYPE};
 
      Label(LabelType type, double value, int precision, DrawingInfo *info, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
-
+//     bool sceneEvent(QEvent *event);
+     void focusOutEvent (QFocusEvent *event);
      int type() const { return myType; }
      double dX() {return myDX;}
      double dY() {return myDY;}
      void setDX(double val) {myDX = val;}
      void setDY(double val) {myDY = val;}
      void setPrecision(int val) {myPrecision = val; updateLabel();}
-     void setFontSize(int val) {myFontSize = val;}
+     void setFontSize(int val) {myFontSize = val; updateFontSize();}
+     int fontSize() const {return myFontSize;}
 //     void setFont(const QString &font) {myFont.setFamily(font);}
       
  signals:
