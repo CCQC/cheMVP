@@ -77,7 +77,7 @@ void MainWindow::createToolbars()
     connect(underlineTextButton, SIGNAL(clicked(bool)), this, SLOT(setTextBoxFonts()));
     // Font
     textFontCombo = new QFontComboBox();
-    textFontCombo->setFontFilters(QFontComboBox::MonospacedFonts);
+//    textFontCombo->setFontFilters(QFontComboBox::MonospacedFonts);
     textFontCombo->setEditText(tr("Select Labels"));
     textFontCombo->setToolTip(tr("The font for the selected atoms"));
     textFontCombo->setFocusPolicy(Qt::ClickFocus);

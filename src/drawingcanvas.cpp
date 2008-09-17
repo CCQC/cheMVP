@@ -54,6 +54,7 @@ void DrawingCanvas::clearAll()
 	bondsList.clear();
 	anglesList.clear();
 	arrowsList.clear();
+	textLabelsList.clear();
 }
 
 
@@ -61,8 +62,7 @@ void DrawingCanvas::unselectAll()
 {
     foreach(QGraphicsItem *item, items()) {
         item->setSelected(false);
-        if(item->type() == Label::AngleLabelType || 
-           item->type() == Label::BondLabelType){
+        if(ITEM_IS_LABEL){
         	Label *label = dynamic_cast<Label*>(item);
             QTextCursor cursor = label->textCursor();
             cursor.clearSelection();
@@ -162,6 +162,14 @@ void DrawingCanvas::updateBonds()
 {
 	foreach(Bond *bond, bondsList){
 		bond->updatePosition();
+	}
+}
+
+
+void DrawingCanvas::updateTextLabels()
+{
+	foreach(Label *label, textLabelsList){
+		label->setPos(drawingInfo->dX()+label->dX(), drawingInfo->dY()+label->dY());
 	}
 }
 
@@ -469,6 +477,7 @@ void DrawingCanvas::refresh()
     updateBonds();
     updateAngles();
     updateArrows();
+    updateTextLabels();
 	update();
 }
 

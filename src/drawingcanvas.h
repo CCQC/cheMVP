@@ -28,6 +28,7 @@ public:
     void updateBonds();
     void updateAngles();
     void updateArrows();
+    void updateTextLabels();
     void setAcceptsHovers(bool arg);
     void loadFromParser();
     void refresh();
@@ -93,7 +94,8 @@ private:
     std::vector<Atom*> atomsList;
     std::vector<Bond*> bondsList;
     std::vector<Angle*> anglesList;
-    std::vector<Arrow *> arrowsList;
+    std::vector<Arrow*> arrowsList;
+    std::vector<Label*> textLabelsList;
 };
 
 #endif

@@ -96,19 +96,21 @@
      arrowHead.clear();
      arrowHead << line().p2() << arrowP1 << arrowP2;
      
-     //TODO Stop the line at the butt of the arrowhead, not the tip
+     // Stop the line at the butt of the arrowhead, not the tip
      if(line().length() > arrowSize){
 		 setLine(QLineF(line().p1(), 
 				 	    line().p2() + QPointF(-cos(angle)*arrowSize*sqrt(3.0)/2.0,
 				 	                           sin(angle)*arrowSize*sqrt(3.0)/2.0)));
      }
+     // In case the scale factor changed, recompute the thickness 
+     setThickness(myThickness);
  }
  
  
  void Arrow::paint(QPainter *painter,
             const QStyleOptionGraphicsItem *option, QWidget *widget)
  {
-	myPen.setWidthF(hoverOver ? 10.0 * effectiveWidth : effectiveWidth); 	
+	myPen.setWidthF(hoverOver ? 2.0 * effectiveWidth : effectiveWidth); 	
  	myPen.setColor(Qt::black);
  	// Draw the line
 	painter->setPen(myPen);

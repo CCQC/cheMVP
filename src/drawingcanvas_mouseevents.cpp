@@ -18,13 +18,6 @@ void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 //            addItem(atom);
 //            myMode = MoveSelection;
 //            break;
-        case AddText:
-        	Label *label;
-        	label = new Label(Label::TextLabelType, 0, 0, drawingInfo);
-        	addItem(label);
-        	label->setPos(mouseEvent->scenePos());
-        	label->setTextInteractionFlags(Qt::TextEditorInteraction);
-        	break;
     	case AddArrow:
     		Arrow *arrow;
     		arrow = new Arrow(mouseEvent->scenePos().x(), mouseEvent->scenePos().y(), drawingInfo);
@@ -231,6 +224,18 @@ void DrawingCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 			}
 			setMode(Select);
 			break;
+        case AddText:
+        	Label *label;
+        	label = new Label(Label::TextLabelType, 0.0, 0, drawingInfo);
+        	addItem(label);
+        	textLabelsList.push_back(label);
+        	label->setDX(mouseEvent->scenePos().x()-drawingInfo->dX());
+        	label->setDY(mouseEvent->scenePos().y()-drawingInfo->dY());
+        	label->setPos(mouseEvent->scenePos());
+        	label->setTextInteractionFlags(Qt::TextEditorInteraction);
+        	label->setFocus();
+			emit mouseModeChanged(int(Select));
+        	break;
     	case AddArrow:
     		myArrow = 0;
 			emit mouseModeChanged(int(Select));
