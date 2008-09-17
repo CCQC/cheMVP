@@ -229,6 +229,10 @@ void MainWindow::createMenus()
     fileMenu->addAction(saveAsAction);
     fileMenu->addAction(exitAction);
 
+    editMenu = menuBar()->addMenu(tr("&Edit"));
+    editMenu->addAction(selectAllAction);
+    editMenu->addAction(unselectAllAction);
+    
     itemMenu = menuBar()->addMenu(tr("&Item"));
     itemMenu->addAction(deleteAction);
     itemMenu->addSeparator();

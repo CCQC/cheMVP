@@ -23,9 +23,22 @@ void MainWindow::createActions()
     connect(saveAction, SIGNAL(triggered()), this, SLOT(save()));
 
     saveAsAction = new QAction(QIcon(":/images/saveas.png"), tr("&Save As"), this);
+    saveAsAction->setShortcut(tr("Ctrl+Shift+S"));
     saveAsAction->setStatusTip(tr("Save under a new name"));
     connect(saveAsAction, SIGNAL(triggered()), this, SLOT(saveAs()));
     
+    selectAllAction = new QAction(this);
+    selectAllAction->setShortcut(tr("Ctrl+A"));
+    selectAllAction->setStatusTip(tr("Select All"));
+    selectAllAction->setText(tr("Select All"));
+    connect(selectAllAction, SIGNAL(triggered()), canvas, SLOT(selectAll()));
+
+    unselectAllAction = new QAction(this);
+    unselectAllAction->setShortcut(tr("Ctrl+Shift+A"));
+    unselectAllAction->setStatusTip(tr("Unselect All"));
+    unselectAllAction->setText(tr("Unselect All"));
+    connect(unselectAllAction, SIGNAL(triggered()), canvas, SLOT(unselectAll()));
+
     addArrowAction = new QAction(QIcon(":/images/addarrow.png"), tr("Add Arrow"), this);
     addArrowAction->setStatusTip(tr("Add Arrow"));
     connect(addArrowAction, SIGNAL(triggered(bool)), this, SLOT(setAddArrowMode()));

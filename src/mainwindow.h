@@ -102,6 +102,8 @@ private:
     QAction *insertDegreeAction;
     QAction *insertPlusMinusAction;
     QAction *addArrowAction;
+    QAction *unselectAllAction;
+    QAction *selectAllAction;
     
 
     QPushButton *toggleBondLabelsButton;
@@ -134,6 +136,7 @@ private:
     QString currentSaveFile;
     QMenu *fileMenu;
     QMenu *itemMenu;
+    QMenu *editMenu;
     QMenu *insertMenu;
     QMenu *insertSymbolMenu;
 

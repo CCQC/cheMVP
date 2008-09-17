@@ -75,6 +75,15 @@ void DrawingCanvas::unselectAll()
 }
 
 
+void DrawingCanvas::selectAll()
+{
+    foreach(QGraphicsItem *item, items()) {
+        item->setSelected(true);
+    }    
+    update();
+}
+
+
 void DrawingCanvas::setAtomLabels(QString text)
 {
 	foreach(Atom *atom, atomsList)

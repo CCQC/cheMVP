@@ -23,7 +23,6 @@ public:
 
 //    void setElementToAdd(const QString &element) {elementToAdd = element;}
     void clearAll();
-    void unselectAll();
     void performRotation();
     void updateBonds();
     void updateAngles();
@@ -37,6 +36,8 @@ public:
     const QCursor& rotateCursor() {return myRotateCursor;}
     const QCursor& selectCursor() {return mySelectCursor;}
 public slots:
+	void unselectAll();
+	void selectAll();
 	void setBackgroundOpacity(int val);
 	void setBackgroundColor();
 	void toggleBondDashing();
