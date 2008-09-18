@@ -4,7 +4,10 @@
  DragBox::DragBox(double x, double y, DrawingInfo *info, QGraphicsItem *parent)
      : QGraphicsRectItem(parent),
      drawingInfo(info),
-     hoverOver(false)
+     hoverOver(false),
+     // On input, x and y are in scene coordinates
+     myDX(x - drawingInfo->dX()),
+     myDY(y - drawingInfo->dY())
  {
      setFlag(QGraphicsItem::ItemIsSelectable, false);
 	 setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -12,7 +15,7 @@
 	 setZValue(1001.0);
 	 double dimension = 0.1 * drawingInfo->scaleFactor();
 	 setRect(-dimension/2.0, -dimension/2.0, dimension, dimension);
-	 setPos(x, y);
+ 	 setPos(myDX + drawingInfo->dX(), myDY + drawingInfo->dY());
  }
 
 
@@ -70,10 +73,11 @@
  }
 
  
- Arrow::~Arrow()
+ void Arrow::updatePosition(double x, double y)
  {
-	delete myStartBox;
-	delete myEndBox;
+	 myEndBox->setDX(x-drawingInfo->dX());
+	 myEndBox->setDY(y-drawingInfo->dY());
+	 updatePosition();
  }
  
  
@@ -81,6 +85,11 @@
  {
      double angle = (line().length() == 0.0 ? 0.0 : acos(line().dx() / line().length()));
      double arrowSize = 0.08 * drawingInfo->scaleFactor();
+     // Update the arrow position
+     myStartBox->setPos(drawingInfo->dX() + myStartBox->dX(), 
+    		 	        drawingInfo->dY() + myStartBox->dY());
+     myEndBox->setPos(drawingInfo->dX() + myEndBox->dX(), 
+    		 	      drawingInfo->dY() + myEndBox->dY());
 	 setLine(QLineF(myStartBox->scenePos().x(),
 			 	    myStartBox->scenePos().y(), 
 			        myEndBox->scenePos().x(),

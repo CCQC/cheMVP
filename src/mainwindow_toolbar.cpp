@@ -78,6 +78,7 @@ void MainWindow::createToolbars()
     // Font
     textFontCombo = new QFontComboBox();
 //    textFontCombo->setFontFilters(QFontComboBox::MonospacedFonts);
+    textFontCombo->setCurrentFont(QFont(DEFAULT_LABEL_FONT));
     textFontCombo->setEditText(tr("Select Labels"));
     textFontCombo->setToolTip(tr("The font for the selected atoms"));
     textFontCombo->setFocusPolicy(Qt::ClickFocus);

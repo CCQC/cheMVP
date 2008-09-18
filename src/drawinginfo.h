@@ -31,18 +31,25 @@ public:
 	void determineScaleFactor();
     void setZoom(int val) { myUserScaleFactor = (double)val; emit scaleFactorChanged();}
 private:
+	// The rotation about the axes
 	int myXRot;
 	int myYRot;
 	int myZRot;
+	// The overall translation from the origin of all objects in the scene
 	int myDX;
 	int myDY;
+	// The translation from the center
 	int myUserDX;
 	int myUserDY;
+	// The midpoint of the window
 	int myMidX;
 	int myMidY;
+	// The width and height of the scene
 	double myWidth;
 	double myHeight;
+	// Essentially, just a zoom
 	double myUserScaleFactor;
+	// The difference in the size of the close and distant atoms
 	double myPerspectiveScale;
 	double myMoleculeMaxDimension;
 	double myAngToSceneScale;
