@@ -81,6 +81,7 @@ private:
     
     QToolBar *mouseModeToolBar;
     QToolBar *fileToolBar;
+    QToolBar *editToolBar;
     QToolBar *editSelectedTextToolBar;
 
     DrawingCanvas *canvas;
@@ -106,6 +107,8 @@ private:
     QAction *addArrowAction;
     QAction *unselectAllAction;
     QAction *selectAllAction;
+    QAction *undoAction;
+    QAction *redoAction;
     
 
     QPushButton *toggleBondLabelsButton;

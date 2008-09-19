@@ -8,6 +8,11 @@ void MainWindow::createToolbars()
     fileToolBar->addAction(saveAction);
     fileToolBar->addAction(saveAsAction);
     
+	// The "Edit" menus
+    editToolBar = addToolBar(tr("Edit"));
+    editToolBar->addAction(undoAction);
+    editToolBar->addAction(redoAction);
+
     // The "Mouse Mode" menus
     mouseModeToolBar = addToolBar(tr("Mouse Mode"));
     mouseModeButtonGroup = new QButtonGroup;

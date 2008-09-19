@@ -10,6 +10,7 @@ RemoveItemCommand::RemoveItemCommand(DrawingCanvas *canvas, QUndoCommand *parent
 
  void RemoveItemCommand::undo()
  {
+	 // TODO also remove from atomslist, and add back in later
 	 foreach(QGraphicsItem *item, myList){
 	     myCanvas->addItem(item);		 
 	 }

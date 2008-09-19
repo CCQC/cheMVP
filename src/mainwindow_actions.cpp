@@ -2,10 +2,23 @@
 
 void MainWindow::createActions()
 {
-    deleteAction = new QAction(QIcon(":/images/delete.png"),
+	
+    undoAction = new QAction(QIcon(":/images/undo.png"),tr("&Undo"), this);
+    undoAction->setShortcut(tr("Ctrl+Z"));
+    undoAction->setEnabled(false);
+    connect(undoAction, SIGNAL(triggered()), undoStack, SLOT(undo()));
+
+    redoAction = new QAction(QIcon(":/images/redo.png"), tr("&Redo"), this);
+    QList<QKeySequence> redoShortcuts;
+    redoShortcuts << tr("Ctrl+Y") << tr("Shift+Ctrl+Z");
+    redoAction->setShortcuts(redoShortcuts);
+    redoAction->setEnabled(false);
+    connect(redoAction, SIGNAL(triggered()), undoStack, SLOT(redo()));
+	
+	deleteAction = new QAction(QIcon(":/images/delete.png"),
                                tr("&Delete"), this);
     deleteAction->setShortcut(tr("Delete"));
-    deleteAction->setStatusTip(tr("Delete item from diagram"));
+    deleteAction->setStatusTip(tr("Delete selected item(s) from drawing"));
     connect(deleteAction, SIGNAL(triggered()), this, SLOT(deleteItem()));
     
     openAction = new QAction(QIcon(":/images/open.png"), tr("&Open"), this);

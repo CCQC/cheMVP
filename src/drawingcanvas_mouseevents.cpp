@@ -36,6 +36,7 @@ void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         case Select:
 	        // Is there an item under the cursor?
 	        if(items(mouseEvent->scenePos()).size()){
+//	        	QApplication::setOverrideCursor(Qt::SizeAllCursor);
 	        	QApplication::setOverrideCursor(myMoveCursor);
 	        	if(items(mouseEvent->scenePos())[0]->type() == Atom::Type){
 	        		setMode(TempMoveAll);
@@ -46,6 +47,7 @@ void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     			}
     		}else{
     			unselectAll();
+	        	QApplication::setOverrideCursor(Qt::CrossCursor);
 	        	selectionRectangle = new QGraphicsRectItem(QRectF(mouseEvent->scenePos(),
 	        	                                         mouseEvent->scenePos()));
 	        	selectionRectangle->setPen(QPen(Qt::black, 1,Qt::DashLine));
@@ -197,6 +199,7 @@ void DrawingCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 				delete selectionRectangle;
 			}
 			selectionRectangle = 0;
+			QApplication::restoreOverrideCursor();
 			break;
 		case TempMove:
 			QApplication::restoreOverrideCursor();

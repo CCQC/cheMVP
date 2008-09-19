@@ -11,15 +11,14 @@
 MainWindow::MainWindow(FileParser *parser_in):
 	parser(parser_in)
 {
-	undoStack = new QUndoStack();
-	
+    undoStack = new QUndoStack();
     drawingInfo = new DrawingInfo();
     canvas = new DrawingCanvas(itemMenu, drawingInfo, parser);
 	// Selecting items causes an update of the menus to reflect the current
 	// selected items' settings
     connect(canvas, SIGNAL(selectionChanged()), this, SLOT(updateMenus()));
 
-    setCursor(canvas->selectCursor());
+//    setCursor(canvas->selectCursor());
     
     createActions();
     createToolBox();
@@ -54,6 +53,12 @@ MainWindow::MainWindow(FileParser *parser_in):
     setCentralWidget(widget);
 
     loadFile();
+
+    // The undo/redo framework needs to update the buttons appropriately
+    connect(undoStack, SIGNAL(canRedoChanged(bool)),
+            redoAction, SLOT(setEnabled(bool)));
+    connect(undoStack, SIGNAL(canUndoChanged(bool)),
+            undoAction, SLOT(setEnabled(bool)));
     
 }
 
@@ -231,21 +236,24 @@ void MainWindow::createMenus()
     fileMenu->addAction(openAction);
     fileMenu->addAction(saveAction);
     fileMenu->addAction(saveAsAction);
+    fileMenu->addSeparator();
     fileMenu->addAction(exitAction);
 
     editMenu = menuBar()->addMenu(tr("&Edit"));
     editMenu->addAction(selectAllAction);
     editMenu->addAction(unselectAllAction);
+    editMenu->addSeparator();
+    editMenu->addAction(undoAction);
+    editMenu->addAction(redoAction);
     
     itemMenu = menuBar()->addMenu(tr("&Item"));
     itemMenu->addAction(deleteAction);
-    itemMenu->addSeparator();
     
     
     insertMenu = menuBar()->addMenu(tr("&Insert"));
     insertMenu->addAction(addArrowAction);
     //insertMenu->addAction(addBondAction);
-    //insertMenu->addAction(addArrowAction);
+    insertMenu->addSeparator();
     insertSymbolMenu = insertMenu->addMenu(tr("Special Symbol"));
     insertSymbolMenu->addAction(insertAngstromAction);
     insertSymbolMenu->addAction(insertDegreeAction);
