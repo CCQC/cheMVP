@@ -9,9 +9,11 @@
 #include <QToolButton>
 #include <QSlider>
 #include <QLabel>
+#include <QUndoCommand>
 #include "drawingcanvas.h"
 #include "drawinginfo.h"
 #include "fileparser.h"
+#include "undo_delete.h"
 
 class MainWindow : public QMainWindow
 {
@@ -142,6 +144,7 @@ private:
 
     QToolBox *toolBox;
     
+    QUndoStack *undoStack;
 };
 
 #endif

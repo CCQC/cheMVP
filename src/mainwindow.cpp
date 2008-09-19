@@ -11,6 +11,8 @@
 MainWindow::MainWindow(FileParser *parser_in):
 	parser(parser_in)
 {
+	undoStack = new QUndoStack();
+	
     drawingInfo = new DrawingInfo();
     canvas = new DrawingCanvas(itemMenu, drawingInfo, parser);
 	// Selecting items causes an update of the menus to reflect the current
@@ -84,7 +86,7 @@ void MainWindow::setTextBoxFonts()
 	// Start by looking to see if one of the labels is being edited
 	bool hasLabel = false;
 	Label *labelBeingEdited = 0;
-	foreach(QGraphicsItem* item,canvas->items()){
+	foreach(QGraphicsItem* item, canvas->items()){
 		if(ITEM_IS_LABEL){
 			hasLabel = true;
 			Label *label = dynamic_cast<Label*>(item);
@@ -158,9 +160,11 @@ void MainWindow::loadFile()
 
 void MainWindow::deleteItem()
 {
-    foreach (QGraphicsItem *item, canvas->selectedItems()) {
-        canvas->removeItem(item);
-    }
+	 if (canvas->selectedItems().isEmpty())
+	     return;
+	
+	 QUndoCommand *removeItemCommand = new RemoveItemCommand(canvas);
+	 undoStack->push(removeItemCommand);
 }
 
 

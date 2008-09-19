@@ -50,7 +50,9 @@
  void Label::updateFontSize()
  {
 	 QFont myFont(font());
- 	 myFont.setPointSizeF(double(myFontSize)*myDrawingInfo->scaleFactor()/100.0);
+	 // The denominator is completely arbitrary and is chosen to make the font size
+	 // appear on a reasonable scale
+ 	 myFont.setPointSizeF(double(myFontSize)*myDrawingInfo->scaleFactor()/80.0);
  	 setFont(myFont);
  }
  
