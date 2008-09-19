@@ -69,6 +69,7 @@
 	 setZValue(1000.0);
 	 myStartBox = new DragBox(x, y, drawingInfo);
 	 myEndBox   = new DragBox(x, y, drawingInfo);
+	 std::cout<<"constructed "<<myStartBox->dX()<<" "<<myEndBox->dX()<<" "<<myStartBox->dY()<<" "<<myEndBox->dY()<<std::endl;
 	 setThickness(DEFAULT_ARROW_THICKNESS);
  }
 
@@ -119,7 +120,9 @@
  void Arrow::paint(QPainter *painter,
             const QStyleOptionGraphicsItem *option, QWidget *widget)
  {
-	myPen.setWidthF(hoverOver ? 2.0 * effectiveWidth : effectiveWidth); 	
+	myPen.setWidthF(hoverOver ? 2.0 * effectiveWidth : effectiveWidth); 
+ 	// So that the width of the line is correct when determining the shape
+ 	setPen(myPen);
  	myPen.setColor(Qt::black);
  	// Draw the line
 	painter->setPen(myPen);

@@ -4,6 +4,7 @@
 #include <QtGui>
 #include <QGraphicsItem>
 #include <cmath>
+#include <iostream>
 
 #include "drawinginfo.h"
 #include "defines.h"
@@ -49,6 +50,8 @@ public:
                QWidget *widget = 0);
 
     void setColor(const QColor &color)     { myColor = color; }
+    void incDX(double val) {myStartBox->setDX(myStartBox->dX()+val); myEndBox->setDX(myEndBox->dX()+val);}
+    void incDY(double val) {myStartBox->setDY(myStartBox->dY()+val); myEndBox->setDY(myEndBox->dY()+val);}
     void setThickness(const double val) {myThickness = val; effectiveWidth = drawingInfo->scaleFactor() * val;}
     void updatePosition(double x, double y);
     void updatePosition();

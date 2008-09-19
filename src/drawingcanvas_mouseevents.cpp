@@ -99,6 +99,17 @@ void DrawingCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		            ++numMouseMoves;
 	    			updateArrows();
 	    			update();
+            	}else if(item->type() == Arrow::Type){
+            		Arrow *arrow = dynamic_cast<Arrow*>(arrow);
+		        	arrow->incDX(mouseEvent->scenePos().x() - mouseOrigin.x());
+		        	arrow->incDY(mouseEvent->scenePos().y() - mouseOrigin.y());
+		            if(numMouseMoves==1){
+		            	numMouseMoves = 0;
+		                mouseOrigin = mouseEvent->scenePos();            	
+		            }
+		            ++numMouseMoves;
+	    			updateArrows();
+	    			update();
             	}else if((myTempMoveItem->flags() & QGraphicsItem::ItemIsMovable)){
 	    			myTempMoveItem->setPos(mouseEvent->scenePos());
 	    			updateArrows();
