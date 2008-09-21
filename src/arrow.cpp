@@ -69,7 +69,6 @@
 	 setZValue(1000.0);
 	 myStartBox = new DragBox(x, y, drawingInfo);
 	 myEndBox   = new DragBox(x, y, drawingInfo);
-	 std::cout<<"constructed "<<myStartBox->dX()<<" "<<myEndBox->dX()<<" "<<myStartBox->dY()<<" "<<myEndBox->dY()<<std::endl;
 	 setThickness(DEFAULT_ARROW_THICKNESS);
  	 // So that the width of the line is correct when determining the shape
 	 myPen.setWidth(3.0*effectiveWidth);

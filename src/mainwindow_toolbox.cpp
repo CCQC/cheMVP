@@ -207,15 +207,15 @@ QWidget *MainWindow::createAtomsWidget()
     layout->addWidget(atomSizeGroupBox);
 
 
-    QGroupBox *drawingStyleBox 	    = new QGroupBox(tr("Drawing Style"));    
-    atomDrawingStyleButtonGroup     = new QButtonGroup;
-    QGridLayout *drawingStyleLayout = new QGridLayout;
-    simpleAtomDrawingButton 	    = new QRadioButton(tr("Simple"));
+    QGroupBox *drawingStyleBox 	     = new QGroupBox(tr("Drawing Style"));    
+    atomDrawingStyleButtonGroup      = new QButtonGroup;
+    QGridLayout *drawingStyleLayout  = new QGridLayout;
+    simpleAtomDrawingButton 	     = new QRadioButton(tr("Simple"));
+    houkMolAtomDrawingButton 	     = new QRadioButton(tr("HoukMol"));
+    simpleColoredAtomDrawingButton 	 = new QRadioButton(tr("Simple Colored"));
+    gradientColoredAtomDrawingButton = new QRadioButton(tr("Gradient"));
+    largeLabelAtomDrawingButton 	 = new QRadioButton(tr("Large Label"));
     simpleAtomDrawingButton->setChecked(true);
-    houkMolAtomDrawingButton 	    = new QRadioButton(tr("HoukMol"));
-    simpleColoredAtomDrawingButton 	= new QRadioButton(tr("Simple Colored"));
-    gradientColoredAtomDrawingButton 	= new QRadioButton(tr("Gradient"));
-    largeLabelAtomDrawingButton 	= new QRadioButton(tr("Large Label"));
     atomDrawingStyleButtonGroup->addButton(simpleAtomDrawingButton, int(Atom::Simple));
     atomDrawingStyleButtonGroup->addButton(simpleColoredAtomDrawingButton, int(Atom::SimpleColored));
     atomDrawingStyleButtonGroup->addButton(houkMolAtomDrawingButton, int(Atom::HoukMol));

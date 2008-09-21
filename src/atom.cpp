@@ -147,9 +147,10 @@ std::map<QString, QColor> Atom::labelToColor;
      // The circle defnining the atom
      if(myDrawingStyle == Gradient){
          // Define a gradient pattern to fill the atom
-	     QRadialGradient gradient(QPointF(0.0, 0.0), myEffectiveRadius, QPointF(myEffectiveRadius/2.1, -myEffectiveRadius/2.1));
-	     gradient.setColorAt(1, fill_color);
-	     gradient.setColorAt(0, Qt::white);
+	     QRadialGradient gradient(QPointF(0.0, 0.0), myEffectiveRadius, 
+	    		                  QPointF(myEffectiveRadius/2.1, -myEffectiveRadius/2.1));
+	     gradient.setColorAt(0.0, Qt::white);
+	     gradient.setColorAt(1.0, fill_color);
 	     // PDF looks bad when rendering gradient - here's a workaround
     	 painter->setPen(Qt::transparent);
 	     painter->setBrush(gradient);
@@ -440,7 +441,7 @@ std::map<QString, QColor> Atom::labelToColor;
 	  labelToColor.insert(std::make_pair(QString("Li"), QColor(178,  34,  34)));
 	  labelToColor.insert(std::make_pair(QString("Be"), QColor( 34, 139,  34)));
 	  labelToColor.insert(std::make_pair(QString("B" ), QColor(  0, 255,   0)));
-	  labelToColor.insert(std::make_pair(QString("C" ), QColor(112, 128, 144)));
+	  labelToColor.insert(std::make_pair(QString("C" ), QColor(142, 158, 174)));
 	  labelToColor.insert(std::make_pair(QString("N" ), QColor(  0, 191, 255)));
 	  labelToColor.insert(std::make_pair(QString("O" ), QColor(255,   0,   0)));
 	  labelToColor.insert(std::make_pair(QString("F" ), QColor(218, 165,  32)));

@@ -100,7 +100,7 @@ void DrawingCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	    			updateArrows();
 	    			update();
             	}else if(item->type() == Arrow::Type){
-            		Arrow *arrow = dynamic_cast<Arrow*>(arrow);
+            		Arrow *arrow = dynamic_cast<Arrow*>(item);
 		        	arrow->incDX(mouseEvent->scenePos().x() - mouseOrigin.x());
 		        	arrow->incDY(mouseEvent->scenePos().y() - mouseOrigin.y());
 		            if(numMouseMoves==1){
