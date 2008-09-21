@@ -13,7 +13,8 @@
  {
  public:
 	 enum { Type = UserType + ATOMTYPE};
-	 enum DrawingStyle { Simple, SimpleColored, HoukMol, Gradient, LargeLabel };
+	 enum DrawingStyle {Simple, SimpleColored, HoukMol, Gradient};
+	 enum FontSizeStyle {SmallLabel, LargeLabel};
      Atom(QString element, DrawingInfo *drawingInfo, QGraphicsItem *parent = 0);
 
      QRectF boundingRect() const;
@@ -42,6 +43,7 @@
      void setLabel(const QString &text);
      void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptsHoverEvents(arg);}
      void setDrawingStyle(DrawingStyle style);
+     void setFontSizeStyle(FontSizeStyle style);
  protected:
      static std::map<QString, double> labelToVdwRadius;
      static std::map<QString, double> labelToMass;
@@ -55,6 +57,7 @@
 
 	 double myEffectiveRadius;
 	 DrawingStyle myDrawingStyle;
+	 FontSizeStyle myFontSizeStyle;
 	 double myMass;
 	 double myRadius;
 	 double myX;

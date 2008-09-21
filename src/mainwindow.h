@@ -75,6 +75,7 @@ private:
 //	QButtonGroup *periodicTableButtonGroup;
     QButtonGroup *mouseModeButtonGroup;
     QButtonGroup *atomDrawingStyleButtonGroup;
+    QButtonGroup *atomFontSizeButtonGroup;
 
     
     QLineEdit *atomLabelInput;
@@ -126,6 +127,7 @@ private:
     QRadioButton *simpleColoredAtomDrawingButton;
     QRadioButton *gradientColoredAtomDrawingButton;
     QRadioButton *largeLabelAtomDrawingButton;
+    QRadioButton *smallLabelAtomDrawingButton;
     
     QSpinBox	   *backgroundOpacitySpinBox;
     QSpinBox       *zoomSpinBox;

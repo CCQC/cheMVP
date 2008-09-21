@@ -214,18 +214,15 @@ QWidget *MainWindow::createAtomsWidget()
     houkMolAtomDrawingButton 	     = new QRadioButton(tr("HoukMol"));
     simpleColoredAtomDrawingButton 	 = new QRadioButton(tr("Simple Colored"));
     gradientColoredAtomDrawingButton = new QRadioButton(tr("Gradient"));
-    largeLabelAtomDrawingButton 	 = new QRadioButton(tr("Large Label"));
     simpleAtomDrawingButton->setChecked(true);
     atomDrawingStyleButtonGroup->addButton(simpleAtomDrawingButton, int(Atom::Simple));
     atomDrawingStyleButtonGroup->addButton(simpleColoredAtomDrawingButton, int(Atom::SimpleColored));
     atomDrawingStyleButtonGroup->addButton(houkMolAtomDrawingButton, int(Atom::HoukMol));
     atomDrawingStyleButtonGroup->addButton(gradientColoredAtomDrawingButton, int(Atom::Gradient));
-    atomDrawingStyleButtonGroup->addButton(largeLabelAtomDrawingButton, int(Atom::LargeLabel));
     drawingStyleLayout->addWidget(simpleAtomDrawingButton, 0, 0);
     drawingStyleLayout->addWidget(simpleColoredAtomDrawingButton, 0, 1);
-    drawingStyleLayout->addWidget(houkMolAtomDrawingButton, 0, 2);
-    drawingStyleLayout->addWidget(gradientColoredAtomDrawingButton, 1, 0);
-    drawingStyleLayout->addWidget(largeLabelAtomDrawingButton, 1, 1);
+    drawingStyleLayout->addWidget(houkMolAtomDrawingButton, 1, 0);
+    drawingStyleLayout->addWidget(gradientColoredAtomDrawingButton, 1, 1);
     connect(atomDrawingStyleButtonGroup, SIGNAL(buttonClicked(int)),
                  canvas, SLOT(setAtomDrawingStyle(int)));
     drawingStyleBox->setLayout(drawingStyleLayout);
@@ -238,20 +235,20 @@ QWidget *MainWindow::createAtomsWidget()
     // The atom numbers as label subscripts    
     toggleAtomNumberSubscriptsButton = new QPushButton(tr("Toggle Atom Number Subscripts"));
     toggleAtomNumberSubscriptsButton->setToolTip(tr("Add/remove atom numbers as a subscript to the selected atoms"));
-    labelStyleLayout->addWidget(toggleAtomNumberSubscriptsButton, 0, 0);
+    labelStyleLayout->addWidget(toggleAtomNumberSubscriptsButton, 0, 0, 1, 2);
     connect(toggleAtomNumberSubscriptsButton, SIGNAL(pressed()),
                 canvas, SLOT(toggleAtomNumberSubscripts()));
     // The label text
     atomLabelInput = new QLineEdit;
 	atomLabelInput->setText(tr("Select Atoms"));
 	atomLabelInput->setToolTip(tr("Text entered here will be used as the label for the selected atom(s).  Anything appended after an underscore will be used as a subscript, anything after a carat is a superscript"));
-    labelStyleLayout->addWidget(atomLabelInput, 1, 0);
+    labelStyleLayout->addWidget(atomLabelInput, 1, 0, 1, 2);
     connect(atomLabelInput, SIGNAL(returnPressed()), this, SLOT(setAtomLabels()));
     // The label font
     atomLabelFontCombo = new QFontComboBox();
     atomLabelFontCombo->setEditText(tr("Select Atoms"));
     atomLabelFontCombo->setToolTip(tr("The font for the selected atoms"));
-    labelStyleLayout->addWidget(atomLabelFontCombo, 2, 0);
+    labelStyleLayout->addWidget(atomLabelFontCombo, 2, 0, 1, 2);
     connect(atomLabelFontCombo, SIGNAL(currentFontChanged(const QFont &)),
             canvas, SLOT(atomLabelFontChanged(const QFont &)));
     // The label font size
@@ -262,9 +259,21 @@ QWidget *MainWindow::createAtomsWidget()
       atomLabelFontSizeCombo->addItem(QString().setNum(i));
     }
     atomLabelFontSizeCombo->setEditText(tr("Select Atoms"));
-    labelStyleLayout->addWidget(atomLabelFontSizeCombo, 3, 0);
+    labelStyleLayout->addWidget(atomLabelFontSizeCombo, 3, 0, 1, 2);
     connect(atomLabelFontSizeCombo, SIGNAL(currentIndexChanged(const QString &)),
             canvas, SLOT(atomLabelFontSizeChanged(const QString &)));
+
+    atomFontSizeButtonGroup      	 = new QButtonGroup;
+    smallLabelAtomDrawingButton 	 = new QRadioButton(tr("Small Label"));
+    largeLabelAtomDrawingButton 	 = new QRadioButton(tr("Large Label"));
+    smallLabelAtomDrawingButton->setChecked(true);
+    atomFontSizeButtonGroup->addButton(smallLabelAtomDrawingButton, int(Atom::SmallLabel));
+    atomFontSizeButtonGroup->addButton(largeLabelAtomDrawingButton, int(Atom::LargeLabel));
+    labelStyleLayout->addWidget(smallLabelAtomDrawingButton, 4, 0);
+    labelStyleLayout->addWidget(largeLabelAtomDrawingButton, 4, 1);
+    connect(atomFontSizeButtonGroup, SIGNAL(buttonClicked(int)),
+                 canvas, SLOT(setAtomFontSizeStyle(int)));
+
     
     labelStyleBox->setLayout(labelStyleLayout);
     layout->addWidget(labelStyleBox);    

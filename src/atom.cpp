@@ -16,6 +16,7 @@ std::map<QString, QColor> Atom::labelToColor;
      fill_color(Qt::white),
      myScaleFactor(DEFAULT_ATOM_SCALE_FACTOR),
      myDrawingStyle(Simple),
+     myFontSizeStyle(SmallLabel),
      myX(0.0),
      myY(0.0),
      myZ(0.0),
@@ -83,20 +84,25 @@ std::map<QString, QColor> Atom::labelToColor;
  
  void Atom::setDrawingStyle(DrawingStyle style)
  {
-	if(style == Simple || style == LargeLabel){
+	if(style == Simple){
 	     fill_color = Qt::white;
 	}else{
 	     fill_color = labelToColor[mySymbol];
  	}
-	
 	myDrawingStyle = style;
+ }
+     
+
+ void Atom::setFontSizeStyle(FontSizeStyle style)
+ {
 	if(style == LargeLabel){
 		setLabelFontSize(DEFAULT_LARGE_ATOM_LABEL_FONT_SIZE);
 	}else{
 		setLabelFontSize(DEFAULT_ATOM_LABEL_FONT_SIZE);
 	}
+	myFontSizeStyle = style;
  }
-     
+ 
  
  void Atom::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
  {
@@ -163,20 +169,21 @@ std::map<QString, QColor> Atom::labelToColor;
          painter->drawEllipse(rect());    	 
      }
 
-     // These boxes define the path of the two arcs
-     QRectF h_line_box(-myEffectiveRadius,     -myEffectiveRadius/2.0, 2.0*myEffectiveRadius, myEffectiveRadius);
-     QRectF v_line_box(-myEffectiveRadius/2.0, -myEffectiveRadius,     myEffectiveRadius,     2.0*myEffectiveRadius);
-     // 2880 is 180 degrees: QT wants angles in 1/16ths of a degree
-     if(myDrawingStyle != LargeLabel){
+     // Draw the arcs for the "3D" look
+     if(myFontSizeStyle != LargeLabel){
+         // These boxes define the path of the two arcs
+         QRectF h_line_box(-myEffectiveRadius,     -myEffectiveRadius/2.0, 2.0*myEffectiveRadius, myEffectiveRadius);
+         QRectF v_line_box(-myEffectiveRadius/2.0, -myEffectiveRadius,     myEffectiveRadius,     2.0*myEffectiveRadius);
+         // 2880 is 180 degrees: QT wants angles in 1/16ths of a degree
     	 painter->drawArc(h_line_box, 0, -2880);
+	     // The direction of the vertical arc depends on the style
+	     if(myDrawingStyle == Simple || myDrawingStyle == SimpleColored  || myDrawingStyle == Gradient){
+		     painter->drawArc(v_line_box, 1440, 2880);
+	     }else if(myDrawingStyle == HoukMol){
+		     painter->drawArc(v_line_box, 1440, -2880);
+	     }
      }
-     // The direction of the vertical arc depends on the style
-     if(myDrawingStyle == Simple || myDrawingStyle == SimpleColored  || myDrawingStyle == Gradient){
-	     painter->drawArc(v_line_box, 1440, 2880);
-     }else if(myDrawingStyle == HoukMol){
-	     painter->drawArc(v_line_box, 1440, -2880);
-     }
-
+     
      // Draw the blob for HoukMol rip-off
      if(myDrawingStyle == HoukMol){
     	 QPointF startPoint(-myEffectiveRadius/1.8, -myEffectiveRadius/20.0);
@@ -207,7 +214,7 @@ std::map<QString, QColor> Atom::labelToColor;
 	 QFontMetricsF labelFM(myLabelFont);
 // TODO check these offsets.  I think there's a bug in the height reported by fontmetrics
      QPointF labelPos;
-     if(myDrawingStyle == LargeLabel){
+     if(myFontSizeStyle == LargeLabel){
 		 labelPos = QPointF(-labelFM.boundingRect(myLabel).width()/2.0, labelFM.boundingRect(myLabel).height()/3.0);    	 
      }else{
     	 labelPos = QPointF(-labelFM.boundingRect(myLabel).width()/2.0, labelFM.boundingRect(myLabel).height()/3.5);

@@ -105,6 +105,15 @@ void DrawingCanvas::setAtomDrawingStyle(int style)
 }
 
 
+void DrawingCanvas::setAtomFontSizeStyle(int style)
+{
+	foreach(Atom *atom, atomsList){
+		atom->setFontSizeStyle(Atom::FontSizeStyle(style));
+	}
+	update();
+}
+
+
 double DrawingCanvas::bondLength(Atom* atom1, Atom* atom2)
 {
 	  return(sqrt(	pow(atom1->x()-atom2->x(),2.0)+

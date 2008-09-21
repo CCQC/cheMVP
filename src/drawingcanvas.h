@@ -48,7 +48,8 @@ public slots:
     void toggleBondLabels();
     void toggleAngleLabels();
     void setAtomDrawingStyle(int style);
-
+    void setAtomFontSizeStyle(int style);
+    
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
