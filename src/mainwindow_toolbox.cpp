@@ -214,12 +214,18 @@ QWidget *MainWindow::createAtomsWidget()
     simpleAtomDrawingButton->setChecked(true);
     houkMolAtomDrawingButton 	    = new QRadioButton(tr("HoukMol"));
     simpleColoredAtomDrawingButton 	= new QRadioButton(tr("Simple Colored"));
+    gradientColoredAtomDrawingButton 	= new QRadioButton(tr("Gradient"));
+    largeLabelAtomDrawingButton 	= new QRadioButton(tr("Large Label"));
     atomDrawingStyleButtonGroup->addButton(simpleAtomDrawingButton, int(Atom::Simple));
     atomDrawingStyleButtonGroup->addButton(simpleColoredAtomDrawingButton, int(Atom::SimpleColored));
     atomDrawingStyleButtonGroup->addButton(houkMolAtomDrawingButton, int(Atom::HoukMol));
+    atomDrawingStyleButtonGroup->addButton(gradientColoredAtomDrawingButton, int(Atom::Gradient));
+    atomDrawingStyleButtonGroup->addButton(largeLabelAtomDrawingButton, int(Atom::LargeLabel));
     drawingStyleLayout->addWidget(simpleAtomDrawingButton, 0, 0);
     drawingStyleLayout->addWidget(simpleColoredAtomDrawingButton, 0, 1);
     drawingStyleLayout->addWidget(houkMolAtomDrawingButton, 0, 2);
+    drawingStyleLayout->addWidget(gradientColoredAtomDrawingButton, 1, 0);
+    drawingStyleLayout->addWidget(largeLabelAtomDrawingButton, 1, 1);
     connect(atomDrawingStyleButtonGroup, SIGNAL(buttonClicked(int)),
                  canvas, SLOT(setAtomDrawingStyle(int)));
     drawingStyleBox->setLayout(drawingStyleLayout);
@@ -252,7 +258,7 @@ QWidget *MainWindow::createAtomsWidget()
     atomLabelFontSizeCombo = new QComboBox;
     atomLabelFontSizeCombo->setEditable(true);
     atomLabelFontSizeCombo->setToolTip(tr("The font size for the selected atoms"));
-    for (int i = 4; i < 20; ++i){
+    for (int i = 4; i < 35; ++i){
       atomLabelFontSizeCombo->addItem(QString().setNum(i));
     }
     atomLabelFontSizeCombo->setEditText(tr("Select Atoms"));

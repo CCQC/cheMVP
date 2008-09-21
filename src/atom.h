@@ -13,7 +13,7 @@
  {
  public:
 	 enum { Type = UserType + ATOMTYPE};
-	 enum DrawingStyle { Simple, SimpleColored, HoukMol };
+	 enum DrawingStyle { Simple, SimpleColored, HoukMol, Gradient, LargeLabel };
      Atom(QString element, DrawingInfo *drawingInfo, QGraphicsItem *parent = 0);
 
      QRectF boundingRect() const;

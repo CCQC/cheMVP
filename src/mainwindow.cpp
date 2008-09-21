@@ -7,7 +7,7 @@
 #include "drawingcanvas.h"
 #include "defines.h"
 
-
+// TODO Only set cursor within canvas
 MainWindow::MainWindow(FileParser *parser_in):
 	parser(parser_in)
 {

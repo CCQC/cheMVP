@@ -16,7 +16,11 @@
      setFlag(QGraphicsItem::ItemIsSelectable, true);
 	 setAcceptsHoverEvents(true);
 	 updatePosition();
-	 myPen.setWidthF(hoverOver ? 1.5*effectiveWidth : effectiveWidth); 	
+  	 // So that the width of the line is correct when determining the shape
+	 myPen.setWidth(effectiveWidth);
+ 	 setPen(myPen);
+	 myPen.setWidthF(hoverOver ? 1.5*effectiveWidth : effectiveWidth);
+	 
      myLength = computeLength(); 
  }
 
@@ -112,6 +116,7 @@
 	    labelPos.setY(myLabel->dY() + y1 + rMidPoint*sinTheta*cosPhi);    
 	    myLabel->setPos(labelPos);
 	}
+
  }
  
  
@@ -139,8 +144,6 @@
  {
 	myPen.setWidthF(hoverOver ? 1.5*effectiveWidth : effectiveWidth);
  	myPen.setColor(myColor);
- 	// So that the width of the line is correct when determining the shape
- 	setPen(myPen);
 	painter->setBrush(myColor);
 	painter->setPen(myPen);
  	painter->drawLine(line());

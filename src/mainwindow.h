@@ -124,6 +124,8 @@ private:
     QRadioButton *simpleAtomDrawingButton;
     QRadioButton *houkMolAtomDrawingButton;
     QRadioButton *simpleColoredAtomDrawingButton;
+    QRadioButton *gradientColoredAtomDrawingButton;
+    QRadioButton *largeLabelAtomDrawingButton;
     
     QSpinBox	   *backgroundOpacitySpinBox;
     QSpinBox       *zoomSpinBox;

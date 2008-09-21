@@ -71,7 +71,7 @@ private:
     bool isBonded(Atom* atom1, Atom* atom2);
     std::vector<Angle*>::iterator angleExists(Atom* atom1, Atom* atom2, Atom* atom3);
 
-    
+    // TODO add new falfkasf;laksjf
     QMenu *myItemMenu;
     FileParser *parser;
     DrawingInfo *drawingInfo;

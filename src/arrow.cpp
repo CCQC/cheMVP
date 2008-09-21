@@ -71,6 +71,10 @@
 	 myEndBox   = new DragBox(x, y, drawingInfo);
 	 std::cout<<"constructed "<<myStartBox->dX()<<" "<<myEndBox->dX()<<" "<<myStartBox->dY()<<" "<<myEndBox->dY()<<std::endl;
 	 setThickness(DEFAULT_ARROW_THICKNESS);
+ 	 // So that the width of the line is correct when determining the shape
+	 myPen.setWidth(3.0*effectiveWidth);
+ 	 setPen(myPen);
+
  }
 
  
@@ -121,8 +125,6 @@
             const QStyleOptionGraphicsItem *option, QWidget *widget)
  {
 	myPen.setWidthF(hoverOver ? 2.0 * effectiveWidth : effectiveWidth); 
- 	// So that the width of the line is correct when determining the shape
- 	setPen(myPen);
  	myPen.setColor(Qt::black);
  	// Draw the line
 	painter->setPen(myPen);
