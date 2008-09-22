@@ -93,7 +93,6 @@ private:
     QCursor myRotateCursor;
     int myBackgroundAlpha;
     int numMouseMoves;
-    bool myAtomNumberSubscripts;
     QList<Atom*> atomsList;
     QList<Bond*> bondsList;
     QList<Angle*> anglesList;

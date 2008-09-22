@@ -52,16 +52,6 @@ std::map<QString, QColor> Atom::labelToColor;
 
 
  void Atom::setLabel(const QString &text){
-     /*
-	 int pos = text.indexOf("_");
-	 if(pos == -1){
-		 myLabel = text;
-		 myLabelSubscript.clear();
-	 }else{
-		 myLabel = text.section('_', 0, 0);
-		 myLabelSubscript = text.section('_', 1, 1);
-	 }
-	 */
 	 // Regular expression to match C_x^y
 	 QRegExp rx("([A-Za-z0-9]*)([_^][A-Za-z0-9]+)?([_^]\\w+)?", Qt::CaseInsensitive, QRegExp::RegExp2);
      myLabel.clear();

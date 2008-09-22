@@ -26,14 +26,19 @@
      double x() const {return myX;}
      double y() const {return myY;}
      double z() const {return myZ;}
+     bool labelHasSubscript() {return !myLabelSubscript.isEmpty();}
+     bool labelHasSuperscript() {return !myLabelSubscript.isEmpty();}
+     int ID() const {return myID;}
      double scaleFactor() const {return myScaleFactor;}
      double effectiveRadius() const {return myEffectiveRadius;}
+     QString symbol() const {return mySymbol;}
      QString label() {return ( myLabel + 
                               (myLabelSubscript.size() ? "_" + myLabelSubscript : "") +
                               (myLabelSuperscript.size() ? "^" + myLabelSuperscript : ""));}
      const QFont& labelFont() {return myLabelFont;}
      void computeRadius();
      void setLabelSubscript(const QString &string) {myLabelSubscript = string;}
+     void setLabelSuperscript(const QString &string) {myLabelSuperscript = string;}
      void setLabelFontSize(int val) {myFontSize = val; myLabelFont.setPointSizeF(double(val)*myEffectiveRadius/20.0);}
      void setLabelFont(const QString &font) {myLabelFont.setFamily(font);}
      void setScaleFactor(double val) {myScaleFactor = val;}

@@ -11,7 +11,6 @@ DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_
     QGraphicsScene(parent),
 //    elementToAdd("C"),
     drawingInfo(info),
-    myAtomNumberSubscripts(false),
     myBackgroundColor(Qt::white),
     myBackgroundAlpha(0),
     myMoveCursor(QPixmap(":/images/cursor_move.png")),
@@ -88,6 +87,7 @@ void DrawingCanvas::setBondLabelPrecision(int val)
 	foreach(Bond *bond, bondsList){
 		bond->setLabelPrecision(val);
 	}
+	update();
 }
 
 
@@ -96,6 +96,7 @@ void DrawingCanvas::setAngleLabelPrecision(int val)
 	foreach(Angle *angle, anglesList){
 		angle->setLabelPrecision(val);
 	}
+	update();
 }
 
 
@@ -243,30 +244,23 @@ void DrawingCanvas::atomLabelFontChanged(const QFont &font)
 
 void DrawingCanvas::toggleAtomNumberSubscripts()
 {
-	// TODO Improve this algorithm - check case-by-case for existing subscripts
-	if(myAtomNumberSubscripts){
-		myAtomNumberSubscripts = false;
-		foreach(Atom *atom, atomsList){
-			if(!atom->isSelected()) continue;
-			if(atom->label().indexOf('_') == -1){
-				atom->setLabelSubscript(QString());
+	foreach(Atom *atom, atomsList){
+		if(!atom->isSelected()) continue;
+		if(atom->symbol() == "H"){
+			// This is a hydrogen - default behavior is to not use subscripts
+			if(atom->label().isEmpty()){
+				atom->setLabel(QString::number(atom->ID()));
+			}else{
 				atom->setLabel(QString());
-			}else{
+			}
+		}else{
+			// This is not a hydrogen - default behavior is to use subscripts
+			if(atom->labelHasSubscript()){
 				atom->setLabelSubscript(QString());
-			}
-		}
-	}else{
-		myAtomNumberSubscripts = true;	
-		for(int atom = 0; atom < atomsList.size(); ++atom){
-			if(!atomsList[atom]->isSelected()) continue;
-			if(!atomsList[atom]->label().size()){
-				// If there's no label, assign the number to the label
-				atomsList[atom]->setLabel(QString().setNum(atom+1));
-				atomsList[atom]->setLabelSubscript(QString());
 			}else{
-				atomsList[atom]->setLabelSubscript(QString().setNum(atom+1));
-			}
-		}
+				atom->setLabelSubscript(QString::number(atom->ID()));
+			}			
+		}	
 	}
 	update();
 }
