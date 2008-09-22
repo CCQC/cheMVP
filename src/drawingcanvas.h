@@ -35,7 +35,6 @@ public:
     void setAtomLabels(QString text);
     void drawBackground(QPainter *painter, const QRectF &rect);
     const QCursor& rotateCursor() {return myRotateCursor;}
-    const QCursor& selectCursor() {return mySelectCursor;}
 public slots:
 	void unselectAll();
 	void selectAll();
@@ -50,6 +49,8 @@ public slots:
     void toggleAngleLabels();
     void setAtomDrawingStyle(int style);
     void setAtomFontSizeStyle(int style);
+    void setBondLabelPrecision(int val);
+    void setAngleLabelPrecision(int val);
     
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
@@ -90,7 +91,6 @@ private:
     QColor myBackgroundColor;
     QCursor myMoveCursor;
     QCursor myRotateCursor;
-    QCursor mySelectCursor;
     int myBackgroundAlpha;
     int numMouseMoves;
     bool myAtomNumberSubscripts;

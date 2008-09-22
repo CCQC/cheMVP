@@ -10,6 +10,7 @@
      hoverOver(false),
      myPen(Qt::black),
      myThickness(DEFAULT_BOND_THICKNESS),
+     myLabelPrecision(DEFAULT_BOND_LABEL_PRECISION),
      dashedLine(false),
      myLabel(0)
  {
@@ -40,7 +41,7 @@
  void Bond::toggleLabel()
  {
 	 if(myLabel == 0){
-		 myLabel = new Label(Label::BondLabelType, myLength, DEFAULT_BOND_LABEL_PRECISION, drawingInfo);
+		 myLabel = new Label(Label::BondLabelType, myLength, myLabelPrecision, drawingInfo);
 //		 connect(myLabel, SIGNAL(lostFocus(Label*)), mainWindow, SLOT(editorLostFocus(Label*)));
 		 // Time to figure out how to make the bond labels appear correctly
 		 updatePosition();

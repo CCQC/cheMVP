@@ -2,41 +2,17 @@
 
 void MainWindow::createToolBox()
 {
-//    QWidget *builderWidget 		= createBuilderWidget();
-    QWidget *appearanceWidget 	= createAppearanceWidget();
-    QWidget *bondsWidget        = createBondsWidget();
-//    QWidget *anglesWidget       = createAnglesWidget();
-    QWidget *atomsWidget        = createAtomsWidget();
-//    QWidget *annotationWidget   = createAnnotationWidget();
+    QWidget *appearanceWidget 	   = createAppearanceWidget();
+    QWidget *bondsAndAnglesWidget  = createBondsAndAnglesWidget();
+    QWidget *atomsWidget           = createAtomsWidget();
 
     toolBox = new QToolBox;
-//    toolBox->addItem(builderWidget, tr("Builder"));
-//    toolBox->addItem(anglesWidget, tr("Angles"));
 //    toolBox->addItem(annotationWidget, tr("Annotation"));
     toolBox->addItem(appearanceWidget, tr("Appearance"));
     toolBox->addItem(atomsWidget, tr("Atoms"));
-    toolBox->addItem(bondsWidget, tr("Angles and Bonds"));
+    toolBox->addItem(bondsAndAnglesWidget, tr("Angles and Bonds"));
     toolBox->setCurrentWidget(atomsWidget);
 }
-
-
-//QWidget *MainWindow::createBuilderWidget()
-//{
-//    QGridLayout *layout = new QGridLayout;
-//
-//    periodicTableButtonGroup = new QButtonGroup;
-//    connect(periodicTableButtonGroup, SIGNAL(buttonClicked(QAbstractButton *)),
-//                this, SLOT(periodicTableButtonGroupClicked(QAbstractButton *)));
-//    layout->addWidget(createPeriodicTable(), 0, 0);
-//    layout->setRowStretch(3, 10);
-//    layout->setColumnStretch(2, 10);
-//
-//    
-//    QWidget *widget = new QWidget;
-//    widget->setLayout(layout);
-//
-//    return widget;	
-//}
 
 
 QWidget *MainWindow::createAppearanceWidget()
@@ -139,26 +115,41 @@ QWidget *MainWindow::createAnnotationWidget()
 }
 
 
-QWidget *MainWindow::createBondsWidget()
+QWidget *MainWindow::createBondsAndAnglesWidget()
 {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
 
     // The label buttons
-    QGroupBox *bondLabelsGroupBox = new QGroupBox(tr("Labels"));
-    QGridLayout *bondLabelsLayout = new QGridLayout;
+    QGroupBox *labelsGroupBox = new QGroupBox(tr("Labels"));
+    QGridLayout *labelsLayout = new QGridLayout;
     // The bond labels    
     toggleBondLabelsButton = new QPushButton(tr("Toggle Bond Labels"));
     toggleBondLabelsButton->setToolTip(tr("Toggle the bond length labels of the selected bonds"));
     connect(toggleBondLabelsButton, SIGNAL(pressed()), canvas, SLOT(toggleBondLabels()));
-    bondLabelsLayout->addWidget(toggleBondLabelsButton);
+    labelsLayout->addWidget(toggleBondLabelsButton, 0, 0, 1, 2);
+    bondLabelsPrecisionBox = new QSpinBox(); 
+    bondLabelsPrecisionBox->setToolTip(tr("Set the precision of the bond length labels"));
+    bondLabelsPrecisionBox->setValue(DEFAULT_BOND_LABEL_PRECISION);
+    connect(bondLabelsPrecisionBox, SIGNAL(valueChanged(int)), canvas, SLOT(setBondLabelPrecision(int)));
+    QLabel *bondLabelsPrecisionLabel = new QLabel(tr("Bond label precision:"));
+    labelsLayout->addWidget(bondLabelsPrecisionLabel, 1, 0);
+    labelsLayout->addWidget(bondLabelsPrecisionBox, 1, 1);
     // The angle labels
     toggleAngleLabelsButton = new QPushButton(tr("Toggle Angle Labels"));
     toggleAngleLabelsButton->setToolTip(tr("Select three or more atoms to toggle the angle markers and labels.  Only angles between bonds will be drawn"));
     connect(toggleAngleLabelsButton, SIGNAL(pressed()), canvas, SLOT(toggleAngleLabels()));
-    bondLabelsLayout->addWidget(toggleAngleLabelsButton);
-    bondLabelsGroupBox->setLayout(bondLabelsLayout);
-    layout->addWidget(bondLabelsGroupBox);
+    labelsLayout->addWidget(toggleAngleLabelsButton, 2, 0, 1, 2);
+    angleLabelsPrecisionBox = new QSpinBox(); 
+    angleLabelsPrecisionBox->setToolTip(tr("Set the precision of the angle labels"));
+    angleLabelsPrecisionBox->setValue(DEFAULT_ANGLE_LABEL_PRECISION);
+    connect(angleLabelsPrecisionBox, SIGNAL(valueChanged(int)), canvas, SLOT(setAngleLabelPrecision(int)));
+    QLabel *angleLabelsPrecisionLabel = new QLabel(tr("Angle label precision:"));
+    labelsLayout->addWidget(angleLabelsPrecisionLabel, 3, 0);
+    labelsLayout->addWidget(angleLabelsPrecisionBox, 3, 1);
+
+    labelsGroupBox->setLayout(labelsLayout);
+    layout->addWidget(labelsGroupBox);
 
     // The bond appearance
     QGroupBox *bondSizeWidget   = new QGroupBox(tr("Bond Appearance"));
@@ -282,28 +273,6 @@ QWidget *MainWindow::createAtomsWidget()
     
     labelStyleBox->setLayout(labelStyleLayout);
     layout->addWidget(labelStyleBox);    
-    
-    widget->setLayout(layout);
-    return widget;	
-}
-
-
-QWidget *MainWindow::createAnglesWidget()
-{
-    QWidget *widget = new QWidget;
-    QGridLayout *layout = new QGridLayout;
-
-    //The labels
-    QGroupBox *labelsGroupBox = new QGroupBox(tr("Labels"));
-    QGridLayout *labelsGroupBoxLayout = new QGridLayout;
-//    toggleAngleLabelsButton = new QPushButton(tr("Toggle Angle Labels"));
-//    toggleAngleLabelsButton->setToolTip(tr("Select three or more atoms to toggle the angle markers and labels.  Only angles between bonds will be drawn"));
-//    connect(toggleAngleLabelsButton, SIGNAL(pressed()),
-//                    canvas, SLOT(toggleAngleLabels()));
-//    labelsGroupBoxLayout->addWidget(toggleAngleLabelsButton, 0, 0);
-    labelsGroupBox->setLayout(labelsGroupBoxLayout);
-    
-    layout->addWidget(labelsGroupBox);
     
     widget->setLayout(layout);
     return widget;	

@@ -16,7 +16,6 @@ DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_
     myBackgroundAlpha(0),
     myMoveCursor(QPixmap(":/images/cursor_move.png")),
     myRotateCursor(QPixmap(":/images/cursor_rotate.png")),
-    mySelectCursor(QPixmap(":/images/cursor_select.png")),
     parser(in_parser)
 {
     myItemMenu 			= itemMenu;
@@ -81,6 +80,22 @@ void DrawingCanvas::selectAll()
         item->setSelected(true);
     }    
     update();
+}
+
+
+void DrawingCanvas::setBondLabelPrecision(int val)
+{
+	foreach(Bond *bond, bondsList){
+		bond->setLabelPrecision(val);
+	}
+}
+
+
+void DrawingCanvas::setAngleLabelPrecision(int val)
+{
+	foreach(Angle *angle, anglesList){
+		angle->setLabelPrecision(val);
+	}
 }
 
 

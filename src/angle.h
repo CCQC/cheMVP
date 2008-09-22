@@ -30,6 +30,7 @@ public:
     Atom *endAtom() const { return myEndAtom; }
     AngleMarker *marker1() {return myMarker1;}
     AngleMarker *marker2() {return myMarker2;}
+    void setLabelPrecision(int val) {myLabelPrecision=val; myLabel->setPrecision(val);}
 
 protected:
 	void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -48,6 +49,7 @@ protected:
     QColor myColor;
     bool hoverOver;
     QPen myPen;
+    int myLabelPrecision;
     Label *myLabel;
     double computeValue();
 };

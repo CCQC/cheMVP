@@ -7,7 +7,6 @@
 #include "drawingcanvas.h"
 #include "defines.h"
 
-// TODO Only set cursor within canvas
 MainWindow::MainWindow(FileParser *parser_in):
 	parser(parser_in)
 {
@@ -18,8 +17,6 @@ MainWindow::MainWindow(FileParser *parser_in):
 	// selected items' settings
     connect(canvas, SIGNAL(selectionChanged()), this, SLOT(updateMenus()));
 
-//    setCursor(canvas->selectCursor());
-    
     createActions();
     createToolBox();
     createMenus();
@@ -188,10 +185,13 @@ void MainWindow::mouseModeButtonGroupClicked(int buttonID)
     	canvas->setAcceptsHovers(true);
     }
     if(mouseModeButtonGroup->checkedId() == DrawingCanvas::Rotate){
-    	QApplication::setOverrideCursor(canvas->rotateCursor());
+    	view->setCursor(canvas->rotateCursor());
+    }
+    if(mouseModeButtonGroup->checkedId() == DrawingCanvas::AddText){
+    	view->setCursor(Qt::IBeamCursor);
     }
     if(mouseModeButtonGroup->checkedId() == DrawingCanvas::Select){
-    	QApplication::restoreOverrideCursor();
+    	view->setCursor(Qt::ArrowCursor);
     }
 }
 

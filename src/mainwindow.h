@@ -55,29 +55,21 @@ private:
     void loadFile();
     QIcon textToIcon(const QString &string);
 
-//	QToolButton *makeAtomButton(const char *label);
 	QSlider *createSlider();
-//	QWidget *createPeriodicTable();
-//	QWidget *createBuilderWidget();
 	QWidget *createAppearanceWidget();
-	QWidget *createAnglesWidget();
-	QWidget *createBondsWidget();
+	QWidget *createBondsAndAnglesWidget();
 	QWidget *createAtomsWidget();
 	QWidget *createAnnotationWidget();
 
-//    QWidget *builderWidget;
     QWidget *appearanceWidget;
-    QWidget *bondsWidget;
-    QWidget *anglesWidget;
+    QWidget *bondsAndAnglesWidget;
     QWidget *atomsWidget;
     QWidget *annotationWidget;
 
-//	QButtonGroup *periodicTableButtonGroup;
     QButtonGroup *mouseModeButtonGroup;
     QButtonGroup *atomDrawingStyleButtonGroup;
     QButtonGroup *atomFontSizeButtonGroup;
 
-    
     QLineEdit *atomLabelInput;
     
     QToolBar *mouseModeToolBar;
@@ -131,6 +123,8 @@ private:
     
     QSpinBox	   *backgroundOpacitySpinBox;
     QSpinBox       *zoomSpinBox;
+    QSpinBox       *bondLabelsPrecisionBox;
+    QSpinBox       *angleLabelsPrecisionBox;
     QDoubleSpinBox *atomSizeSpinBox;
     QDoubleSpinBox *bondSizeSpinBox;
     
