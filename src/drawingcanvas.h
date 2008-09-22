@@ -3,6 +3,7 @@
 
 #include <QGraphicsScene>
 #include <QMenu>
+#include <QList>
 #include <math.h>
 #include "atom.h"
 #include "bond.h"
@@ -70,7 +71,7 @@ private:
     void setZRotation(int phi);
     double bondLength(Atom* atom1, Atom* atom2);
     bool isBonded(Atom* atom1, Atom* atom2);
-    std::vector<Angle*>::iterator angleExists(Atom* atom1, Atom* atom2, Atom* atom3);
+    QList<Angle*>::iterator angleExists(Atom* atom1, Atom* atom2, Atom* atom3);
 
     // TODO add new falfkasf;laksjf
     QMenu *myItemMenu;
@@ -93,11 +94,11 @@ private:
     int myBackgroundAlpha;
     int numMouseMoves;
     bool myAtomNumberSubscripts;
-    std::vector<Atom*> atomsList;
-    std::vector<Bond*> bondsList;
-    std::vector<Angle*> anglesList;
-    std::vector<Arrow*> arrowsList;
-    std::vector<Label*> textLabelsList;
+    QList<Atom*> atomsList;
+    QList<Bond*> bondsList;
+    QList<Angle*> anglesList;
+    QList<Arrow*> arrowsList;
+    QList<Label*> textLabelsList;
 };
 
 #endif

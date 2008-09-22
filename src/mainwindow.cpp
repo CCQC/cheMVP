@@ -35,7 +35,6 @@ MainWindow::MainWindow(FileParser *parser_in):
 
     toolBox->setGeometry(0, 0, DEFAULT_TOOLBOX_WIDTH, DEFAULT_SCENE_SIZE_Y);
     toolBox->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    toolBox->setCurrentIndex(toolBox->indexOf(appearanceWidget));
 
 	drawingInfo->setHeight(view->sceneRect().height());
 	drawingInfo->setWidth(view->sceneRect().width());

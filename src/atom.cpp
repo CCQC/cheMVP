@@ -20,6 +20,7 @@ std::map<QString, QColor> Atom::labelToColor;
      myX(0.0),
      myY(0.0),
      myZ(0.0),
+     myID(0),
      hoverOver(false)
  {
 	 fillLabelToVdwRadiusMap();

@@ -44,6 +44,7 @@
      void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptsHoverEvents(arg);}
      void setDrawingStyle(DrawingStyle style);
      void setFontSizeStyle(FontSizeStyle style);
+     void setID(int val) {myID = val;}
  protected:
      static std::map<QString, double> labelToVdwRadius;
      static std::map<QString, double> labelToMass;
@@ -69,6 +70,7 @@
  	 QString myLabelSubscript;
      QString myLabelSuperscript;
  	 int myFontSize;
+ 	 int myID;
  	 bool hoverOver;
  	 QFont myLabelFont;
      QColor line_color; 

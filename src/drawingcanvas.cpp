@@ -145,6 +145,7 @@ void DrawingCanvas::loadFromParser()
 		atom->setX(atoms[i]->x);
 		atom->setY(atoms[i]->y);
 		atom->setZ(atoms[i]->z);
+		atom->setID(i+1);
 		addItem(atom);
 		atomsList.push_back(atom);
 	}
@@ -311,8 +312,8 @@ bool DrawingCanvas::isBonded(Atom *atom1, Atom *atom2){
 }
 
 
-std::vector<Angle*>::iterator DrawingCanvas::angleExists(Atom *atom1, Atom *atom2, Atom *atom3){
-	std::vector<Angle*>::iterator pos;
+QList<Angle*>::iterator DrawingCanvas::angleExists(Atom *atom1, Atom *atom2, Atom *atom3){
+	QList<Angle*>::iterator pos;
 	for(pos = anglesList.begin(); pos != anglesList.end(); ++pos){
 		Angle *angle = *pos;
 		if((angle->startAtom() == atom1 && angle->centerAtom() == atom2 && angle->endAtom() == atom3) ||
@@ -342,7 +343,7 @@ void DrawingCanvas::toggleAngleLabels()
 				if(!atom3->isSelected()) continue;
 				if(a1 == a2 || a2 == a3) continue;
 				if(isBonded(atom1, atom2) && isBonded(atom2, atom3)){
-					std::vector<Angle*>::iterator anglePos = angleExists(atom1, atom2, atom3); 
+					QList<Angle*>::iterator anglePos = angleExists(atom1, atom2, atom3); 
 					if(anglePos <= anglesList.end()){
 						// Remove angle
 						Angle *angle = *anglePos;

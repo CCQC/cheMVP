@@ -5,17 +5,18 @@ void MainWindow::createToolBox()
 //    QWidget *builderWidget 		= createBuilderWidget();
     QWidget *appearanceWidget 	= createAppearanceWidget();
     QWidget *bondsWidget        = createBondsWidget();
-    QWidget *anglesWidget       = createAnglesWidget();
+//    QWidget *anglesWidget       = createAnglesWidget();
     QWidget *atomsWidget        = createAtomsWidget();
-    QWidget *annotationWidget   = createAnnotationWidget();
+//    QWidget *annotationWidget   = createAnnotationWidget();
 
     toolBox = new QToolBox;
 //    toolBox->addItem(builderWidget, tr("Builder"));
-    toolBox->addItem(anglesWidget, tr("Angles"));
-    toolBox->addItem(annotationWidget, tr("Annotation"));
+//    toolBox->addItem(anglesWidget, tr("Angles"));
+//    toolBox->addItem(annotationWidget, tr("Annotation"));
     toolBox->addItem(appearanceWidget, tr("Appearance"));
     toolBox->addItem(atomsWidget, tr("Atoms"));
-    toolBox->addItem(bondsWidget, tr("Bonds"));
+    toolBox->addItem(bondsWidget, tr("Angles and Bonds"));
+    toolBox->setCurrentWidget(atomsWidget);
 }
 
 
@@ -143,17 +144,21 @@ QWidget *MainWindow::createBondsWidget()
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
 
-    // The bond labels    
+    // The label buttons
     QGroupBox *bondLabelsGroupBox = new QGroupBox(tr("Labels"));
     QGridLayout *bondLabelsLayout = new QGridLayout;
+    // The bond labels    
     toggleBondLabelsButton = new QPushButton(tr("Toggle Bond Labels"));
     toggleBondLabelsButton->setToolTip(tr("Toggle the bond length labels of the selected bonds"));
+    connect(toggleBondLabelsButton, SIGNAL(pressed()), canvas, SLOT(toggleBondLabels()));
     bondLabelsLayout->addWidget(toggleBondLabelsButton);
+    // The angle labels
+    toggleAngleLabelsButton = new QPushButton(tr("Toggle Angle Labels"));
+    toggleAngleLabelsButton->setToolTip(tr("Select three or more atoms to toggle the angle markers and labels.  Only angles between bonds will be drawn"));
+    connect(toggleAngleLabelsButton, SIGNAL(pressed()), canvas, SLOT(toggleAngleLabels()));
+    bondLabelsLayout->addWidget(toggleAngleLabelsButton);
     bondLabelsGroupBox->setLayout(bondLabelsLayout);
     layout->addWidget(bondLabelsGroupBox);
-    connect(toggleBondLabelsButton, SIGNAL(pressed()),
-                canvas, SLOT(toggleBondLabels()));
-
 
     // The bond appearance
     QGroupBox *bondSizeWidget   = new QGroupBox(tr("Bond Appearance"));
@@ -291,11 +296,11 @@ QWidget *MainWindow::createAnglesWidget()
     //The labels
     QGroupBox *labelsGroupBox = new QGroupBox(tr("Labels"));
     QGridLayout *labelsGroupBoxLayout = new QGridLayout;
-    toggleAngleLabelsButton = new QPushButton(tr("Toggle Angle Labels"));
-    toggleAngleLabelsButton->setToolTip(tr("Select three or more atoms to toggle the angle markers and labels.  Only angles between bonds will be drawn"));
-    connect(toggleAngleLabelsButton, SIGNAL(pressed()),
-                    canvas, SLOT(toggleAngleLabels()));
-    labelsGroupBoxLayout->addWidget(toggleAngleLabelsButton, 0, 0);
+//    toggleAngleLabelsButton = new QPushButton(tr("Toggle Angle Labels"));
+//    toggleAngleLabelsButton->setToolTip(tr("Select three or more atoms to toggle the angle markers and labels.  Only angles between bonds will be drawn"));
+//    connect(toggleAngleLabelsButton, SIGNAL(pressed()),
+//                    canvas, SLOT(toggleAngleLabels()));
+//    labelsGroupBoxLayout->addWidget(toggleAngleLabelsButton, 0, 0);
     labelsGroupBox->setLayout(labelsGroupBoxLayout);
     
     layout->addWidget(labelsGroupBox);
