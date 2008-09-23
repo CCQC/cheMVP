@@ -146,6 +146,9 @@ void DrawingCanvas::setAcceptsHovers(bool arg)
 	foreach(Bond *bond, bondsList){
 		bond->setAcceptsHovers(arg);
 	}
+	foreach(Arrow *arrow, arrowsList){
+		arrow->setAcceptsHovers(arg);
+	}
 	// TODO angles, labels, arrows...
 }
 
