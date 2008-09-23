@@ -20,9 +20,21 @@ class DrawingCanvas : public QGraphicsScene
 public:
     enum Mode { AddBond, AddArrow, AddText, Select, Rotate, TempMove, TempMoveAll };
     
+    /* A quick explanation of the modes:-
+     * AddBond     - Adds a bond
+     * AddArrow    - Adds an arrow
+     * AddText     - Adds a text box
+     * Rotate      - Rotates the molecule about its center of mass
+     * Select      - does many things, depending what is clicked:-
+     * 		- empty space deselects everything, unless the mouse is dragged which draws a selection box
+     * 		- an atom,  the atom is (de)selected, unless the mouse moves which triggers the TempMoveAll mode
+     * 		- any other moveable item clicking (de)selects, unless the mouse is moved which triggers TempMove
+     * TempMove    - The select mode has clicked an object and requested a move, so only this object is moved
+     * TempMoveAll - If the object clicked was an atom, everything moves
+     */	
+    
     DrawingCanvas(QMenu *itemMenu, DrawingInfo *drawingInfo, FileParser *parser, QObject *parent = 0);
 
-//    void setElementToAdd(const QString &element) {elementToAdd = element;}
     void clearAll();
     void performRotation();
     void updateBonds();
@@ -59,7 +71,6 @@ protected:
     void translateToCenterOfMass();
 
 signals:
-//    void itemSelected(QGraphicsItem *item);
     void xRotChanged(int phi);
     void yRotChanged(int phi);
     void zRotChanged(int phi);
@@ -85,7 +96,6 @@ private:
     QGraphicsLineItem *bondline;
     Arrow *myArrow;
     QGraphicsRectItem *selectionRectangle;
-//    QString elementToAdd;
     QPointF mouseOrigin;
     QColor myBackgroundColor;
     QCursor myMoveCursor;

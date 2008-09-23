@@ -9,7 +9,6 @@
 
 DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_parser, QObject *parent):
     QGraphicsScene(parent),
-//    elementToAdd("C"),
     drawingInfo(info),
     myBackgroundColor(Qt::white),
     myBackgroundAlpha(0),

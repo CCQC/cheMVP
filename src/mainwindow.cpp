@@ -47,25 +47,17 @@ MainWindow::MainWindow(FileParser *parser_in):
     QWidget *widget = new QWidget;
     widget->setLayout(layout);
     setCentralWidget(widget);
+    
+    setFocusPolicy(Qt::ClickFocus);
+    toolBox->setFocusPolicy(Qt::ClickFocus);
 
     loadFile();
 
     // The undo/redo framework needs to update the buttons appropriately
-    connect(undoStack, SIGNAL(canRedoChanged(bool)),
-            redoAction, SLOT(setEnabled(bool)));
-    connect(undoStack, SIGNAL(canUndoChanged(bool)),
-            undoAction, SLOT(setEnabled(bool)));
-    
+    connect(undoStack, SIGNAL(canRedoChanged(bool)), redoAction, SLOT(setEnabled(bool)));
+    connect(undoStack, SIGNAL(canUndoChanged(bool)), undoAction, SLOT(setEnabled(bool)));
 }
 
-
-//void MainWindow::periodicTableButtonGroupClicked(QAbstractButton *button)
-//{
-//    canvas->setElementToAdd(button->text());
-//    canvas->setMode(DrawingCanvas::InsertAtom);
-//    canvas->update();
-//    view->update();
-//}
 
 void MainWindow::insertTextAtCursor(QAction *action)
 {
@@ -267,168 +259,6 @@ void MainWindow::setAtomLabels()
 {
 	canvas->setAtomLabels(atomLabelInput->text());
 }
-
-
-//QToolButton *MainWindow::makeAtomButton(const char *label)
-//{
-//    int dimension1 = 14;
-//    int dimension2 = 12;
-//	
-//    QSize icon_box(dimension1, dimension2);
-//	// Start by drawing the button icon
-//	QPixmap icon(icon_box);
-//    icon.fill(Qt::transparent);
-//    QPainter painter(&icon);
-//    QString text(label);
-//	QFont font;
-//	font.setPointSize(12);
-//	painter.setFont(font);
-//	painter.drawText(QRectF(0, 0, dimension1, dimension2), Qt::AlignCenter, text); 
-//	
-//	// Now make the button and set it up
-//	QToolButton *button = new QToolButton;
-//	button->setIcon(icon);
-//	button->setText(text);
-//    button->setIconSize(icon_box);
-//    button->setCheckable(true);
-//    periodicTableButtonGroup->addButton(button);
-//    
-//    return button;
-//}
-//
-
-//QWidget *MainWindow::createPeriodicTable()
-//{
-//    QGridLayout *layout = new QGridLayout;
-//    layout->setSpacing(0);
-//    
-//    layout->addWidget(makeAtomButton("H" ), 0, 0, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("He"), 0, 9, Qt::AlignHCenter);
-//
-//    layout->addWidget(makeAtomButton("Li"), 1, 0, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Be"), 1, 1, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("B" ), 1, 4, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("C" ), 1, 5, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("N" ), 1, 6, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("O" ), 1, 7, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("F" ), 1, 8, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Ne"), 1, 9, Qt::AlignHCenter);
-//
-//    layout->addWidget(makeAtomButton("Na"), 2, 0, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Mg"), 2, 1, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Al"), 2, 4, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Si"), 2, 5, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("P" ), 2, 6, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("S" ), 2, 7, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Cl"), 2, 8, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Ar"), 2, 9, Qt::AlignHCenter);
-//    
-//    layout->addWidget(makeAtomButton("K" ), 3, 0, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Ca"), 3, 1, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Ga"), 3, 4, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Ge"), 3, 5, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("As"), 3, 6, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Se"), 3, 7, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Br"), 3, 8, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Kr"), 3, 9, Qt::AlignHCenter);
-//
-//    layout->addWidget(makeAtomButton("Rb"), 4, 0, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Sr"), 4, 1, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("In"), 4, 4, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Sn"), 4, 5, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Sb"), 4, 6, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Te"), 4, 7, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("I" ), 4, 8, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Xe"), 4, 9, Qt::AlignHCenter);
-//
-//    layout->addWidget(makeAtomButton("Cs"), 5, 0, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Ba"), 5, 1, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Tl"), 5, 4, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Pb"), 5, 5, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Bi"), 5, 6, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Po"), 5, 7, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("At"), 5, 8, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Rn"), 5, 9, Qt::AlignHCenter);
-//
-//    layout->addWidget(makeAtomButton("Fr"), 6, 0, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Ra"), 6, 1, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Ac"), 6, 1, Qt::AlignHCenter);
-//
-//    layout->addItem(new QSpacerItem(10,10), 7, 1);
-//
-//    layout->addWidget(makeAtomButton("Sc"), 8, 0, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Ti"), 8, 1, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("V" ), 8, 2, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Cr"), 8, 3, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Mn"), 8, 4, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Fe"), 8, 5, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Co"), 8, 6, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Ni"), 8, 7, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Cu"), 8, 8, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Zn"), 8, 9, Qt::AlignHCenter);
-//
-//    layout->addWidget(makeAtomButton("Y" ), 9, 0, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Zr"), 9, 1, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Nb"), 9, 2, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Mo"), 9, 3, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Tc"), 9, 4, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Ru"), 9, 5, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Rh"), 9, 6, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Pd"), 9, 7, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Ag"), 9, 8, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Cd"), 9, 9, Qt::AlignHCenter);
-//
-//    layout->addWidget(makeAtomButton("La"), 10, 0, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Hf"), 10, 1, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Ta"), 10, 2, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("W" ), 10, 3, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Re"), 10, 4, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Os"), 10, 5, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Ir"), 10, 6, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Pt"), 10, 7, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Au"), 10, 8, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Hg"), 10, 9, Qt::AlignHCenter);
-    
-//    layout->addItem(new QSpacerItem(10,10), 11, 1);
-//
-//    layout->addWidget(makeAtomButton("Ce"), 12, 0, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Pr"), 12, 1, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Nd"), 12, 2, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Pm"), 12, 3, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Sm"), 12, 4, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Eu"), 12, 5, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Gd"), 12, 6, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Tb"), 12, 7, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Dy"), 12, 8, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Ho"), 12, 9, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Er"), 12, 10, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Tm"), 12, 11, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Yb"), 12, 12, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Lu"), 12, 13, Qt::AlignHCenter);
-//
-//    layout->addWidget(makeAtomButton("Th"), 13, 0, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Pa"), 13, 1, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("U" ), 13, 2, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Np"), 13, 3, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Pu"), 13, 4, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Am"), 13, 5, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Cm"), 13, 6, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Bk"), 13, 7, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Cf"), 13, 8, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Es"), 13, 9, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Fm"), 13, 10, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Md"), 13, 11, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("No"), 13, 12, Qt::AlignHCenter);
-//    layout->addWidget(makeAtomButton("Lr"), 13, 13, Qt::AlignHCenter);
-
-//    QWidget *widget = new QWidget;
-//    widget->setLayout(layout);
-//
-//    return widget;
-//	
-//}
-
-
 
 
 void MainWindow::changeAtomSize()
