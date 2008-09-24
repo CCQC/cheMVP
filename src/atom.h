@@ -13,7 +13,8 @@
  {
  public:
 	 enum { Type = UserType + ATOMTYPE};
-	 enum DrawingStyle { Simple, SimpleColored, HoukMol };
+	 enum DrawingStyle {Simple, SimpleColored, HoukMol, Gradient};
+	 enum FontSizeStyle {SmallLabel, LargeLabel};
      Atom(QString element, DrawingInfo *drawingInfo, QGraphicsItem *parent = 0);
 
      QRectF boundingRect() const;
@@ -25,14 +26,19 @@
      double x() const {return myX;}
      double y() const {return myY;}
      double z() const {return myZ;}
+     bool labelHasSubscript() {return !myLabelSubscript.isEmpty();}
+     bool labelHasSuperscript() {return !myLabelSubscript.isEmpty();}
+     int ID() const {return myID;}
      double scaleFactor() const {return myScaleFactor;}
      double effectiveRadius() const {return myEffectiveRadius;}
+     QString symbol() const {return mySymbol;}
      QString label() {return ( myLabel + 
                               (myLabelSubscript.size() ? "_" + myLabelSubscript : "") +
                               (myLabelSuperscript.size() ? "^" + myLabelSuperscript : ""));}
      const QFont& labelFont() {return myLabelFont;}
      void computeRadius();
      void setLabelSubscript(const QString &string) {myLabelSubscript = string;}
+     void setLabelSuperscript(const QString &string) {myLabelSuperscript = string;}
      void setLabelFontSize(int val) {myFontSize = val; myLabelFont.setPointSizeF(double(val)*myEffectiveRadius/20.0);}
      void setLabelFont(const QString &font) {myLabelFont.setFamily(font);}
      void setScaleFactor(double val) {myScaleFactor = val;}
@@ -42,6 +48,8 @@
      void setLabel(const QString &text);
      void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptsHoverEvents(arg);}
      void setDrawingStyle(DrawingStyle style);
+     void setFontSizeStyle(FontSizeStyle style);
+     void setID(int val) {myID = val;}
  protected:
      static std::map<QString, double> labelToVdwRadius;
      static std::map<QString, double> labelToMass;
@@ -55,6 +63,7 @@
 
 	 double myEffectiveRadius;
 	 DrawingStyle myDrawingStyle;
+	 FontSizeStyle myFontSizeStyle;
 	 double myMass;
 	 double myRadius;
 	 double myX;
@@ -66,6 +75,7 @@
  	 QString myLabelSubscript;
      QString myLabelSuperscript;
  	 int myFontSize;
+ 	 int myID;
  	 bool hoverOver;
  	 QFont myLabelFont;
      QColor line_color; 

@@ -1,4 +1,5 @@
 #include <QtGui>
+#include <QtDebug>
 
  #include "label.h"
  #include "drawingcanvas.h"
@@ -10,29 +11,49 @@
      myPrecision(precision),
      myDrawingInfo(info),
      myColor(Qt::black),
+     myFontSize(DEFAULT_LABEL_FONT_SIZE),
      myDY(0.0),
      myDX(0.0)
  {
-     setFlag(QGraphicsItem::ItemIsMovable, true);
-     setFlag(QGraphicsItem::ItemIsSelectable, true);
-     setFlag(QGraphicsItem::ItemIsFocusable, true);
-     setTextInteractionFlags(Qt::TextEditable);
+     setFlag(QGraphicsItem::ItemIsMovable);
+     setFlag(QGraphicsItem::ItemIsSelectable);
+     setFlag(QGraphicsItem::ItemIsFocusable);
+	 setTextInteractionFlags(Qt::NoTextInteraction);    	 
      setZValue(1000.0);
-     updateLabel();
-     setFont(DEFAULT_LABEL_FONT);
-     setFontSize(DEFAULT_LABEL_FONT_SIZE);
-
+     if(myType != TextLabelType){
+    	 updateLabel();
+     }
+     setFont(QFont(DEFAULT_LABEL_FONT));
+     updateFontSize();
+     // If the zoom factor changes or the window size changes, we need to adjust
+     // the size of the font for the labels accordingly
+	 connect(myDrawingInfo, SIGNAL(scaleFactorChanged()), this, SLOT(updateFontSize()));
+	 setToolTip(tr("Double click to edit"));
  }
 
  
- void Label::keyPressEvent(QKeyEvent *event)
+ void Label::focusOutEvent(QFocusEvent *event)
  {
-	 if(event->key() == Qt::Key_Tab){
-		 std::cout<< "received a tab" << std::endl;
-		 textCursor().insertText("\t");
+	 qDebug() <<"focus out";
+	 if(event->reason()==Qt::TabFocusReason && textInteractionFlags() == Qt::TextEditorInteraction){
+  		 textCursor().insertText("\t");
+//  		 QFocusEvent *focusIn = new QFocusEvent(QEvent::FocusIn);
+//  		 QGraphicsTextItem::focusInEvent(focusIn);
+  		 setTextInteractionFlags(Qt::TextEditorInteraction);
 	 }else{
-		 QGraphicsTextItem::keyPressEvent(event);
+  		 setTextInteractionFlags(Qt::NoTextInteraction);
+		 QGraphicsTextItem::focusOutEvent(event);
 	 }
+ }
+
+  
+ void Label::updateFontSize()
+ {
+	 QFont myFont(font());
+	 // The denominator is completely arbitrary and is chosen to make the font size
+	 // appear on a reasonable scale
+ 	 myFont.setPointSizeF(double(myFontSize)*myDrawingInfo->scaleFactor()/80.0);
+ 	 setFont(myFont);
  }
  
  
@@ -40,15 +61,14 @@
  {
 	 myString.setNum(myValue, 'f', myPrecision);
 	 setPlainText(myString);
-	 QGraphicsTextItem::setFont(myFont);
  }
 
  
  void Label::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
  {
+	 qDebug() <<"double click";
 	 if (textInteractionFlags() == Qt::NoTextInteraction){
 	   setTextInteractionFlags(Qt::TextEditorInteraction);
-	   grabKeyboard();
 	 }
 	 QGraphicsTextItem::mouseDoubleClickEvent(event);
  }

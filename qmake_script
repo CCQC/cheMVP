@@ -14,8 +14,9 @@ QMakeFile.puts "HEADERS = " + Dir["../src/*.h"].join("  \\ \n")
 if(ResourceArray.size)
     QMakeFile.puts "RESOURCES = " + ResourceArray.join("  \\ \n")
 end
-QMakeFile.puts "CONFIG += qt warn_on debug"
-QMakeFile.puts "QMAKE_CXXFLAGS_DEBUG = \"-O0 -g\""
+QMakeFile.puts "CONFIG += release"
+QMakeFile.puts "QMAKE_CXXFLAGS_DEBUG = \" -O0 -g\""
+QMakeFile.puts "QMAKE_LFLAGS = -w"
 QMakeFile.puts "QT += svg"
 QMakeFile.close
 

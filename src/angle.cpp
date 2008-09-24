@@ -9,6 +9,7 @@
      drawingInfo(info),
      myColor(Qt::black),
      hoverOver(false),
+     myLabelPrecision(DEFAULT_ANGLE_LABEL_PRECISION),
      myPen(Qt::black),
      penWidth(0.2)
 {
@@ -17,7 +18,7 @@
 	 effectiveWidth = 0.05 * drawingInfo->scaleFactor();
 	 myPen.setWidthF(hoverOver ? 1.5*effectiveWidth : effectiveWidth); 	
      myValue = computeValue();
-	 myLabel = new Label(Label::AngleLabelType, myValue, DEFAULT_ANGLE_LABEL_PRECISION, drawingInfo);
+	 myLabel = new Label(Label::AngleLabelType, myValue, myLabelPrecision, drawingInfo);
 	 // Time to figure out how to make the Angle labels appear correctly
 	 myMarker1 = new AngleMarker(drawingInfo);
 	 myMarker2 = new AngleMarker(drawingInfo);

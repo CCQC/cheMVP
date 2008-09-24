@@ -32,6 +32,7 @@ public:
     double length() const { return myLength; } 
     double thickness() const {return myThickness;}
     void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptsHoverEvents(arg);}
+    void setLabelPrecision(int val) {myLabelPrecision = val; if(myLabel!=0) myLabel->setPrecision(val);}
 
 protected:
 	void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -49,6 +50,7 @@ protected:
     bool dashedLine;
     QPen myPen;
     Label *myLabel;
+    int myLabelPrecision;
     double computeLength();
 };
 

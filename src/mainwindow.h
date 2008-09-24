@@ -9,9 +9,11 @@
 #include <QToolButton>
 #include <QSlider>
 #include <QLabel>
+#include <QUndoCommand>
 #include "drawingcanvas.h"
 #include "drawinginfo.h"
 #include "fileparser.h"
+#include "undo_delete.h"
 
 class MainWindow : public QMainWindow
 {
@@ -27,10 +29,13 @@ public slots:
    void setZRotation(int phi);
 
 private slots:
+	void insertTextAtCursor(QAction *action);
+	void updateTextLabelMenus();
 	void updateMenus();
 	void setAtomLabels();
 	void changeAtomSize();
 	void changeBondSize();
+	void setTextBoxFonts();
 //    void periodicTableButtonGroupClicked(QAbstractButton *button);
     void deleteItem();
     void mouseModeButtonGroupClicked(int);
@@ -42,39 +47,34 @@ private slots:
 
 private:
 	void createToolBox();
-  void createActions();
-      void createMenus();
+	void createActions();
+    void createMenus();
     void createToolbars();
     FileType determineFileType(const QString &fileName);
     void saveImage(const QString &fileName);
     void loadFile();
+    QIcon textToIcon(const QString &string);
 
-//	QToolButton *makeAtomButton(const char *label);
 	QSlider *createSlider();
-//	QWidget *createPeriodicTable();
-//	QWidget *createBuilderWidget();
 	QWidget *createAppearanceWidget();
-	QWidget *createAnglesWidget();
-	QWidget *createBondsWidget();
+	QWidget *createBondsAndAnglesWidget();
 	QWidget *createAtomsWidget();
 	QWidget *createAnnotationWidget();
 
-//    QWidget *builderWidget;
     QWidget *appearanceWidget;
-    QWidget *bondsWidget;
-    QWidget *anglesWidget;
+    QWidget *bondsAndAnglesWidget;
     QWidget *atomsWidget;
     QWidget *annotationWidget;
 
-//	QButtonGroup *periodicTableButtonGroup;
     QButtonGroup *mouseModeButtonGroup;
     QButtonGroup *atomDrawingStyleButtonGroup;
+    QButtonGroup *atomFontSizeButtonGroup;
 
-    
     QLineEdit *atomLabelInput;
     
     QToolBar *mouseModeToolBar;
     QToolBar *fileToolBar;
+    QToolBar *editToolBar;
     QToolBar *editSelectedTextToolBar;
 
     DrawingCanvas *canvas;
@@ -83,15 +83,26 @@ private:
     FileParser *parser;
 
     QComboBox *atomLabelFontSizeCombo;
+    QComboBox *textFontSizeCombo;
     
     QFontComboBox *atomLabelFontCombo;
+    QFontComboBox *textFontCombo;
+    
+    QActionGroup *insertTextActionGroup;
     QAction *deleteAction;
     QAction *openAction;
     QAction *exitAction;
     QAction *saveAction;
     QAction *saveAsAction;
-    
+    QAction *insertAngstromAction;
+    QAction *insertDegreeAction;
+    QAction *insertPlusMinusAction;
     QAction *addArrowAction;
+    QAction *unselectAllAction;
+    QAction *selectAllAction;
+    QAction *undoAction;
+    QAction *redoAction;
+    
 
     QPushButton *toggleBondLabelsButton;
     QPushButton *toggleBondDashingButton;
@@ -106,9 +117,14 @@ private:
     QRadioButton *simpleAtomDrawingButton;
     QRadioButton *houkMolAtomDrawingButton;
     QRadioButton *simpleColoredAtomDrawingButton;
+    QRadioButton *gradientColoredAtomDrawingButton;
+    QRadioButton *largeLabelAtomDrawingButton;
+    QRadioButton *smallLabelAtomDrawingButton;
     
     QSpinBox	   *backgroundOpacitySpinBox;
     QSpinBox       *zoomSpinBox;
+    QSpinBox       *bondLabelsPrecisionBox;
+    QSpinBox       *angleLabelsPrecisionBox;
     QDoubleSpinBox *atomSizeSpinBox;
     QDoubleSpinBox *bondSizeSpinBox;
     
@@ -123,10 +139,13 @@ private:
     QString currentSaveFile;
     QMenu *fileMenu;
     QMenu *itemMenu;
+    QMenu *editMenu;
     QMenu *insertMenu;
+    QMenu *insertSymbolMenu;
 
     QToolBox *toolBox;
     
+    QUndoStack *undoStack;
 };
 
 #endif

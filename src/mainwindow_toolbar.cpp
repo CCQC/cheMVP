@@ -8,6 +8,11 @@ void MainWindow::createToolbars()
     fileToolBar->addAction(saveAction);
     fileToolBar->addAction(saveAsAction);
     
+	// The "Edit" menus
+    editToolBar = addToolBar(tr("Edit"));
+    editToolBar->addAction(undoAction);
+    editToolBar->addAction(redoAction);
+
     // The "Mouse Mode" menus
     mouseModeToolBar = addToolBar(tr("Mouse Mode"));
     mouseModeButtonGroup = new QButtonGroup;
@@ -54,20 +59,47 @@ void MainWindow::createToolbars()
     
     // The text settings
     editSelectedTextToolBar = addToolBar("Edit Selected Text");
-
+    // Bold
     boldTextButton = new QToolButton;
     boldTextButton->setIcon(QIcon(":/images/boldtext.png"));
     boldTextButton->setToolTip(tr("Bold text"));
+    boldTextButton->setCheckable(true);
     editSelectedTextToolBar->addWidget(boldTextButton);
-
+    connect(boldTextButton, SIGNAL(clicked(bool)), this, SLOT(setTextBoxFonts()));
+    // Italic
     italicTextButton = new QToolButton;
     italicTextButton->setIcon(QIcon(":/images/italictext.png"));
     italicTextButton->setToolTip(tr("Italic text"));
+    italicTextButton->setCheckable(true);
     editSelectedTextToolBar->addWidget(italicTextButton);
-
+    connect(italicTextButton, SIGNAL(clicked(bool)), this, SLOT(setTextBoxFonts()));
+    // Underline
     underlineTextButton = new QToolButton;
     underlineTextButton->setIcon(QIcon(":/images/underlinetext.png"));
     underlineTextButton->setToolTip(tr("Underline text"));
+    underlineTextButton->setCheckable(true);
     editSelectedTextToolBar->addWidget(underlineTextButton);
-
+    connect(underlineTextButton, SIGNAL(clicked(bool)), this, SLOT(setTextBoxFonts()));
+    // Font
+    textFontCombo = new QFontComboBox();
+//    textFontCombo->setFontFilters(QFontComboBox::MonospacedFonts);
+    textFontCombo->setCurrentFont(QFont(DEFAULT_LABEL_FONT));
+    textFontCombo->setEditText(tr("Select Labels"));
+    textFontCombo->setToolTip(tr("The font for the selected atoms"));
+    textFontCombo->setFocusPolicy(Qt::ClickFocus);
+    editSelectedTextToolBar->addWidget(textFontCombo);
+    connect(textFontCombo, SIGNAL(currentFontChanged(const QFont &)),
+            this, SLOT(setTextBoxFonts()));
+    // The label font size
+    textFontSizeCombo = new QComboBox;
+    textFontSizeCombo->setFocusPolicy(Qt::ClickFocus);
+    textFontSizeCombo->setEditable(true);
+    textFontSizeCombo->setToolTip(tr("The font size for the selected text"));
+    for (int i = 4; i < 20; ++i){
+      textFontSizeCombo->addItem(QString().setNum(i));
+    }
+    textFontSizeCombo->setEditText(tr(""));
+    editSelectedTextToolBar->addWidget(textFontSizeCombo);
+    connect(textFontSizeCombo, SIGNAL(currentIndexChanged(const QString &)),
+            this, SLOT(setTextBoxFonts()));
 }

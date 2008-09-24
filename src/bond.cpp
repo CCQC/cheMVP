@@ -10,13 +10,18 @@
      hoverOver(false),
      myPen(Qt::black),
      myThickness(DEFAULT_BOND_THICKNESS),
+     myLabelPrecision(DEFAULT_BOND_LABEL_PRECISION),
      dashedLine(false),
      myLabel(0)
  {
      setFlag(QGraphicsItem::ItemIsSelectable, true);
 	 setAcceptsHoverEvents(true);
 	 updatePosition();
-	 myPen.setWidthF(hoverOver ? 1.5*effectiveWidth : effectiveWidth); 	
+  	 // So that the width of the line is correct when determining the shape
+	 myPen.setWidth(effectiveWidth);
+ 	 setPen(myPen);
+	 myPen.setWidthF(hoverOver ? 1.5*effectiveWidth : effectiveWidth);
+	 
      myLength = computeLength(); 
  }
 
@@ -36,7 +41,7 @@
  void Bond::toggleLabel()
  {
 	 if(myLabel == 0){
-		 myLabel = new Label(Label::BondLabelType, myLength, DEFAULT_BOND_LABEL_PRECISION, drawingInfo);
+		 myLabel = new Label(Label::BondLabelType, myLength, myLabelPrecision, drawingInfo);
 //		 connect(myLabel, SIGNAL(lostFocus(Label*)), mainWindow, SLOT(editorLostFocus(Label*)));
 		 // Time to figure out how to make the bond labels appear correctly
 		 updatePosition();
@@ -112,6 +117,7 @@
 	    labelPos.setY(myLabel->dY() + y1 + rMidPoint*sinTheta*cosPhi);    
 	    myLabel->setPos(labelPos);
 	}
+
  }
  
  

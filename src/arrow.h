@@ -4,6 +4,7 @@
 #include <QtGui>
 #include <QGraphicsItem>
 #include <cmath>
+#include <iostream>
 
 #include "drawinginfo.h"
 #include "defines.h"
@@ -21,6 +22,10 @@ public:
                QWidget *widget = 0);
 
     void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptsHoverEvents(arg);}
+    double dX() {return myDX;}
+    double dY() {return myDY;}
+    void setDX(double val) {myDX = val;}
+    void setDY(double val) {myDY = val;}
 
 protected:
 	void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -30,6 +35,8 @@ protected:
     bool hoverOver;
     DrawingInfo *drawingInfo;
     QPen myPen;
+    double myDX;
+    double myDY;
 };
 
 class Arrow : public QGraphicsLineItem
@@ -39,13 +46,14 @@ public:
 	int type() const {return Type;}
 
     Arrow(double x, double y, DrawingInfo *drawingInfo, QGraphicsItem *parent = 0);
-    ~Arrow();
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = 0);
 
     void setColor(const QColor &color)     { myColor = color; }
+    void incDX(double val) {myStartBox->setDX(myStartBox->dX()+val); myEndBox->setDX(myEndBox->dX()+val);}
+    void incDY(double val) {myStartBox->setDY(myStartBox->dY()+val); myEndBox->setDY(myEndBox->dY()+val);}
     void setThickness(const double val) {myThickness = val; effectiveWidth = drawingInfo->scaleFactor() * val;}
-    void updatePosition(double x, double y) {myEndBox->setPos(x,y); updatePosition();}
+    void updatePosition(double x, double y);
     void updatePosition();
     DragBox* startBox() const { return myStartBox; }
     DragBox* endBox() const { return myEndBox; }

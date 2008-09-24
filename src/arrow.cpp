@@ -4,7 +4,10 @@
  DragBox::DragBox(double x, double y, DrawingInfo *info, QGraphicsItem *parent)
      : QGraphicsRectItem(parent),
      drawingInfo(info),
-     hoverOver(false)
+     hoverOver(false),
+     // On input, x and y are in scene coordinates
+     myDX(x - drawingInfo->dX()),
+     myDY(y - drawingInfo->dY())
  {
      setFlag(QGraphicsItem::ItemIsSelectable, false);
 	 setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -12,7 +15,7 @@
 	 setZValue(1001.0);
 	 double dimension = 0.1 * drawingInfo->scaleFactor();
 	 setRect(-dimension/2.0, -dimension/2.0, dimension, dimension);
-	 setPos(x, y);
+ 	 setPos(myDX + drawingInfo->dX(), myDY + drawingInfo->dY());
  }
 
 
@@ -67,13 +70,18 @@
 	 myStartBox = new DragBox(x, y, drawingInfo);
 	 myEndBox   = new DragBox(x, y, drawingInfo);
 	 setThickness(DEFAULT_ARROW_THICKNESS);
+ 	 // So that the width of the line is correct when determining the shape
+	 myPen.setWidth(3.0*effectiveWidth);
+ 	 setPen(myPen);
+
  }
 
  
- Arrow::~Arrow()
+ void Arrow::updatePosition(double x, double y)
  {
-	delete myStartBox;
-	delete myEndBox;
+	 myEndBox->setDX(x-drawingInfo->dX());
+	 myEndBox->setDY(y-drawingInfo->dY());
+	 updatePosition();
  }
  
  
@@ -81,6 +89,11 @@
  {
      double angle = (line().length() == 0.0 ? 0.0 : acos(line().dx() / line().length()));
      double arrowSize = 0.08 * drawingInfo->scaleFactor();
+     // Update the arrow position
+     myStartBox->setPos(drawingInfo->dX() + myStartBox->dX(), 
+    		 	        drawingInfo->dY() + myStartBox->dY());
+     myEndBox->setPos(drawingInfo->dX() + myEndBox->dX(), 
+    		 	      drawingInfo->dY() + myEndBox->dY());
 	 setLine(QLineF(myStartBox->scenePos().x(),
 			 	    myStartBox->scenePos().y(), 
 			        myEndBox->scenePos().x(),
@@ -96,19 +109,21 @@
      arrowHead.clear();
      arrowHead << line().p2() << arrowP1 << arrowP2;
      
-     //TODO Stop the line at the butt of the arrowhead, not the tip
+     // Stop the line at the butt of the arrowhead, not the tip
      if(line().length() > arrowSize){
 		 setLine(QLineF(line().p1(), 
 				 	    line().p2() + QPointF(-cos(angle)*arrowSize*sqrt(3.0)/2.0,
 				 	                           sin(angle)*arrowSize*sqrt(3.0)/2.0)));
      }
+     // In case the scale factor changed, recompute the thickness 
+     setThickness(myThickness);
  }
  
  
  void Arrow::paint(QPainter *painter,
             const QStyleOptionGraphicsItem *option, QWidget *widget)
  {
-	myPen.setWidthF(hoverOver ? 10.0 * effectiveWidth : effectiveWidth); 	
+	myPen.setWidthF(hoverOver ? 2.0 * effectiveWidth : effectiveWidth); 
  	myPen.setColor(Qt::black);
  	// Draw the line
 	painter->setPen(myPen);

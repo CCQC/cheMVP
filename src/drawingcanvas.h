@@ -3,6 +3,7 @@
 
 #include <QGraphicsScene>
 #include <QMenu>
+#include <QList>
 #include <math.h>
 #include "atom.h"
 #include "bond.h"
@@ -19,20 +20,36 @@ class DrawingCanvas : public QGraphicsScene
 public:
     enum Mode { AddBond, AddArrow, AddText, Select, Rotate, TempMove, TempMoveAll };
     
+    /* A quick explanation of the modes:-
+     * AddBond     - Adds a bond
+     * AddArrow    - Adds an arrow
+     * AddText     - Adds a text box
+     * Rotate      - Rotates the molecule about its center of mass
+     * Select      - does many things, depending what is clicked:-
+     * 		- empty space deselects everything, unless the mouse is dragged which draws a selection box
+     * 		- an atom,  the atom is (de)selected, unless the mouse moves which triggers the TempMoveAll mode
+     * 		- any other moveable item clicking (de)selects, unless the mouse is moved which triggers TempMove
+     * TempMove    - The select mode has clicked an object and requested a move, so only this object is moved
+     * TempMoveAll - If the object clicked was an atom, everything moves
+     */	
+    
     DrawingCanvas(QMenu *itemMenu, DrawingInfo *drawingInfo, FileParser *parser, QObject *parent = 0);
-    void setElementToAdd(const QString &element) {elementToAdd = element;}
+
     void clearAll();
-    void unselectAll();
     void performRotation();
     void updateBonds();
     void updateAngles();
     void updateArrows();
+    void updateTextLabels();
     void setAcceptsHovers(bool arg);
     void loadFromParser();
     void refresh();
     void setAtomLabels(QString text);
     void drawBackground(QPainter *painter, const QRectF &rect);
+    const QCursor& rotateCursor() {return myRotateCursor;}
 public slots:
+	void unselectAll();
+	void selectAll();
 	void setBackgroundOpacity(int val);
 	void setBackgroundColor();
 	void toggleBondDashing();
@@ -43,7 +60,10 @@ public slots:
     void toggleBondLabels();
     void toggleAngleLabels();
     void setAtomDrawingStyle(int style);
-
+    void setAtomFontSizeStyle(int style);
+    void setBondLabelPrecision(int val);
+    void setAngleLabelPrecision(int val);
+    
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
@@ -51,7 +71,6 @@ protected:
     void translateToCenterOfMass();
 
 signals:
-//    void itemSelected(QGraphicsItem *item);
     void xRotChanged(int phi);
     void yRotChanged(int phi);
     void zRotChanged(int phi);
@@ -64,9 +83,8 @@ private:
     void setZRotation(int phi);
     double bondLength(Atom* atom1, Atom* atom2);
     bool isBonded(Atom* atom1, Atom* atom2);
-    std::vector<Angle*>::iterator angleExists(Atom* atom1, Atom* atom2, Atom* atom3);
+    QList<Angle*>::iterator angleExists(Atom* atom1, Atom* atom2, Atom* atom3);
 
-    
     QMenu *myItemMenu;
     FileParser *parser;
     DrawingInfo *drawingInfo;
@@ -78,16 +96,17 @@ private:
     QGraphicsLineItem *bondline;
     Arrow *myArrow;
     QGraphicsRectItem *selectionRectangle;
-    QString elementToAdd;
     QPointF mouseOrigin;
     QColor myBackgroundColor;
+    QCursor myMoveCursor;
+    QCursor myRotateCursor;
     int myBackgroundAlpha;
     int numMouseMoves;
-    bool myAtomNumberSubscripts;
-    std::vector<Atom*> atomsList;
-    std::vector<Bond*> bondsList;
-    std::vector<Angle*> anglesList;
-    std::vector<Arrow *> arrowsList;
+    QList<Atom*> atomsList;
+    QList<Bond*> bondsList;
+    QList<Angle*> anglesList;
+    QList<Arrow*> arrowsList;
+    QList<Label*> textLabelsList;
 };
 
 #endif

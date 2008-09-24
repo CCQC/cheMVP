@@ -16,9 +16,11 @@ std::map<QString, QColor> Atom::labelToColor;
      fill_color(Qt::white),
      myScaleFactor(DEFAULT_ATOM_SCALE_FACTOR),
      myDrawingStyle(Simple),
+     myFontSizeStyle(SmallLabel),
      myX(0.0),
      myY(0.0),
      myZ(0.0),
+     myID(0),
      hoverOver(false)
  {
 	 fillLabelToVdwRadiusMap();
@@ -50,16 +52,6 @@ std::map<QString, QColor> Atom::labelToColor;
 
 
  void Atom::setLabel(const QString &text){
-     /*
-	 int pos = text.indexOf("_");
-	 if(pos == -1){
-		 myLabel = text;
-		 myLabelSubscript.clear();
-	 }else{
-		 myLabel = text.section('_', 0, 0);
-		 myLabelSubscript = text.section('_', 1, 1);
-	 }
-	 */
 	 // Regular expression to match C_x^y
 	 QRegExp rx("([A-Za-z0-9]*)([_^][A-Za-z0-9]+)?([_^]\\w+)?", Qt::CaseInsensitive, QRegExp::RegExp2);
      myLabel.clear();
@@ -85,13 +77,23 @@ std::map<QString, QColor> Atom::labelToColor;
  {
 	if(style == Simple){
 	     fill_color = Qt::white;
-	}else if(style == HoukMol || style == SimpleColored){
+	}else{
 	     fill_color = labelToColor[mySymbol];
  	}
-	
 	myDrawingStyle = style;
  }
      
+
+ void Atom::setFontSizeStyle(FontSizeStyle style)
+ {
+	if(style == LargeLabel){
+		setLabelFontSize(DEFAULT_LARGE_ATOM_LABEL_FONT_SIZE);
+	}else{
+		setLabelFontSize(DEFAULT_ATOM_LABEL_FONT_SIZE);
+	}
+	myFontSizeStyle = style;
+ }
+ 
  
  void Atom::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
  {
@@ -136,24 +138,43 @@ std::map<QString, QColor> Atom::labelToColor;
      QPen linestyle;
      // If we're hovering over the item, use thicker lines
      linestyle.setWidthF((hoverOver ? drawingInfo->scaleFactor()*0.03 : drawingInfo->scaleFactor()*0.01));
+     linestyle.setColor(Qt::black);
      painter->setPen(linestyle);
 
      // The circle defnining the atom
-     painter->setBrush(fill_color);
-     painter->drawEllipse(rect());
-     
-     // These boxes define the path of the two arcs
-     QRectF h_line_box(-myEffectiveRadius,     -myEffectiveRadius/2.0, 2.0*myEffectiveRadius, myEffectiveRadius);
-     QRectF v_line_box(-myEffectiveRadius/2.0, -myEffectiveRadius,     myEffectiveRadius,     2.0*myEffectiveRadius);
-     // 2880 is 180 degrees: QT wants angles in 1/16ths of a degree
-     painter->drawArc(h_line_box, 0, -2880);
-     // The direction of the vertical arc depends on the style
-     if(myDrawingStyle == Simple || myDrawingStyle == SimpleColored){
-	     painter->drawArc(v_line_box, 1440, 2880);
-     }else if(myDrawingStyle == HoukMol){
-	     painter->drawArc(v_line_box, 1440, -2880);
+     if(myDrawingStyle == Gradient){
+         // Define a gradient pattern to fill the atom
+	     QRadialGradient gradient(QPointF(0.0, 0.0), myEffectiveRadius, 
+	    		                  QPointF(myEffectiveRadius/2.1, -myEffectiveRadius/2.1));
+	     gradient.setColorAt(0.0, Qt::white);
+	     gradient.setColorAt(1.0, fill_color);
+	     // PDF looks bad when rendering gradient - here's a workaround
+    	 painter->setPen(Qt::transparent);
+	     painter->setBrush(gradient);
+         painter->drawEllipse(rect());    	 
+         painter->setBrush(Qt::NoBrush);
+         painter->setPen(linestyle);
+         painter->drawEllipse(rect());    	 
+     }else{
+	     painter->setBrush(fill_color);
+         painter->drawEllipse(rect());    	 
      }
 
+     // Draw the arcs for the "3D" look
+     if(myFontSizeStyle != LargeLabel){
+         // These boxes define the path of the two arcs
+         QRectF h_line_box(-myEffectiveRadius,     -myEffectiveRadius/2.0, 2.0*myEffectiveRadius, myEffectiveRadius);
+         QRectF v_line_box(-myEffectiveRadius/2.0, -myEffectiveRadius,     myEffectiveRadius,     2.0*myEffectiveRadius);
+         // 2880 is 180 degrees: QT wants angles in 1/16ths of a degree
+    	 painter->drawArc(h_line_box, 0, -2880);
+	     // The direction of the vertical arc depends on the style
+	     if(myDrawingStyle == Simple || myDrawingStyle == SimpleColored  || myDrawingStyle == Gradient){
+		     painter->drawArc(v_line_box, 1440, 2880);
+	     }else if(myDrawingStyle == HoukMol){
+		     painter->drawArc(v_line_box, 1440, -2880);
+	     }
+     }
+     
      // Draw the blob for HoukMol rip-off
      if(myDrawingStyle == HoukMol){
     	 QPointF startPoint(-myEffectiveRadius/1.8, -myEffectiveRadius/20.0);
@@ -182,8 +203,13 @@ std::map<QString, QColor> Atom::labelToColor;
      // Now draw the atomic symbol on there
      setLabelFontSize(myFontSize);
 	 QFontMetricsF labelFM(myLabelFont);
-
-     QPointF labelPos(-labelFM.boundingRect(myLabel).width()/2.0, labelFM.boundingRect(myLabel).height()/3.5);
+// TODO check these offsets.  I think there's a bug in the height reported by fontmetrics
+     QPointF labelPos;
+     if(myFontSizeStyle == LargeLabel){
+		 labelPos = QPointF(-labelFM.boundingRect(myLabel).width()/2.0, labelFM.boundingRect(myLabel).height()/3.0);    	 
+     }else{
+    	 labelPos = QPointF(-labelFM.boundingRect(myLabel).width()/2.0, labelFM.boundingRect(myLabel).height()/3.5);
+     }
      painter->setPen(text_color);
      painter->setBrush(text_color);
      painter->setFont(myLabelFont);
@@ -413,7 +439,7 @@ std::map<QString, QColor> Atom::labelToColor;
 	  labelToColor.insert(std::make_pair(QString("Li"), QColor(178,  34,  34)));
 	  labelToColor.insert(std::make_pair(QString("Be"), QColor( 34, 139,  34)));
 	  labelToColor.insert(std::make_pair(QString("B" ), QColor(  0, 255,   0)));
-	  labelToColor.insert(std::make_pair(QString("C" ), QColor(112, 128, 144)));
+	  labelToColor.insert(std::make_pair(QString("C" ), QColor(142, 158, 174)));
 	  labelToColor.insert(std::make_pair(QString("N" ), QColor(  0, 191, 255)));
 	  labelToColor.insert(std::make_pair(QString("O" ), QColor(255,   0,   0)));
 	  labelToColor.insert(std::make_pair(QString("F" ), QColor(218, 165,  32)));

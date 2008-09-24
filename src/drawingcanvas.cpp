@@ -9,11 +9,11 @@
 
 DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_parser, QObject *parent):
     QGraphicsScene(parent),
-    elementToAdd("C"),
     drawingInfo(info),
-    myAtomNumberSubscripts(false),
     myBackgroundColor(Qt::white),
     myBackgroundAlpha(0),
+    myMoveCursor(QPixmap(":/images/cursor_move.png")),
+    myRotateCursor(QPixmap(":/images/cursor_rotate.png")),
     parser(in_parser)
 {
     myItemMenu 			= itemMenu;
@@ -31,6 +31,7 @@ DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_
     	loadFromParser();
     }
 }
+
 
 void DrawingCanvas::drawBackground(QPainter *painter, const QRectF &rect)
 {
@@ -50,30 +51,53 @@ void DrawingCanvas::clearAll()
 	bondsList.clear();
 	anglesList.clear();
 	arrowsList.clear();
+	textLabelsList.clear();
 }
+
 
 void DrawingCanvas::unselectAll()
 {
     foreach(QGraphicsItem *item, items()) {
         item->setSelected(false);
-        if(item->type() == Label::AngleLabelType || 
-           item->type() == Label::BondLabelType){
+        if(ITEM_IS_LABEL){
         	Label *label = dynamic_cast<Label*>(item);
             QTextCursor cursor = label->textCursor();
-        	if(cursor.isNull()){
-        		std::cout << "no selection" << std::endl;
-        	}else{
-        		std::cout << "selection" << cursor.selectedText().toStdString() << std::endl;
-        	}
             cursor.clearSelection();
             label->setTextCursor(cursor);
         	label->setTextInteractionFlags(Qt::NoTextInteraction);
         	label->clearFocus();
         }
-    }
-    
+    }    
     update();
 }
+
+
+void DrawingCanvas::selectAll()
+{
+    foreach(QGraphicsItem *item, items()) {
+        item->setSelected(true);
+    }    
+    update();
+}
+
+
+void DrawingCanvas::setBondLabelPrecision(int val)
+{
+	foreach(Bond *bond, bondsList){
+		bond->setLabelPrecision(val);
+	}
+	update();
+}
+
+
+void DrawingCanvas::setAngleLabelPrecision(int val)
+{
+	foreach(Angle *angle, anglesList){
+		angle->setLabelPrecision(val);
+	}
+	update();
+}
+
 
 void DrawingCanvas::setAtomLabels(QString text)
 {
@@ -96,6 +120,15 @@ void DrawingCanvas::setAtomDrawingStyle(int style)
 }
 
 
+void DrawingCanvas::setAtomFontSizeStyle(int style)
+{
+	foreach(Atom *atom, atomsList){
+		atom->setFontSizeStyle(Atom::FontSizeStyle(style));
+	}
+	update();
+}
+
+
 double DrawingCanvas::bondLength(Atom* atom1, Atom* atom2)
 {
 	  return(sqrt(	pow(atom1->x()-atom2->x(),2.0)+
@@ -112,6 +145,9 @@ void DrawingCanvas::setAcceptsHovers(bool arg)
 	foreach(Bond *bond, bondsList){
 		bond->setAcceptsHovers(arg);
 	}
+	foreach(Arrow *arrow, arrowsList){
+		arrow->setAcceptsHovers(arg);
+	}
 	// TODO angles, labels, arrows...
 }
 
@@ -127,6 +163,7 @@ void DrawingCanvas::loadFromParser()
 		atom->setX(atoms[i]->x);
 		atom->setY(atoms[i]->y);
 		atom->setZ(atoms[i]->z);
+		atom->setID(i+1);
 		addItem(atom);
 		atomsList.push_back(atom);
 	}
@@ -166,6 +203,14 @@ void DrawingCanvas::updateBonds()
 }
 
 
+void DrawingCanvas::updateTextLabels()
+{
+	foreach(Label *label, textLabelsList){
+		label->setPos(drawingInfo->dX()+label->dX(), drawingInfo->dY()+label->dY());
+	}
+}
+
+
 void DrawingCanvas::updateAngles()
 {
 	foreach(Angle *angle, anglesList){
@@ -201,30 +246,23 @@ void DrawingCanvas::atomLabelFontChanged(const QFont &font)
 
 void DrawingCanvas::toggleAtomNumberSubscripts()
 {
-	// TODO Improve this algorithm - check case-by-case for existing subscripts
-	if(myAtomNumberSubscripts){
-		myAtomNumberSubscripts = false;
-		foreach(Atom *atom, atomsList){
-			if(!atom->isSelected()) continue;
-			if(atom->label().indexOf('_') == -1){
-				atom->setLabelSubscript(QString());
+	foreach(Atom *atom, atomsList){
+		if(!atom->isSelected()) continue;
+		if(atom->symbol() == "H"){
+			// This is a hydrogen - default behavior is to not use subscripts
+			if(atom->label().isEmpty()){
+				atom->setLabel(QString::number(atom->ID()));
+			}else{
 				atom->setLabel(QString());
-			}else{
+			}
+		}else{
+			// This is not a hydrogen - default behavior is to use subscripts
+			if(atom->labelHasSubscript()){
 				atom->setLabelSubscript(QString());
-			}
-		}
-	}else{
-		myAtomNumberSubscripts = true;	
-		for(int atom = 0; atom < atomsList.size(); ++atom){
-			if(!atomsList[atom]->isSelected()) continue;
-			if(!atomsList[atom]->label().size()){
-				// If there's no label, assign the number to the label
-				atomsList[atom]->setLabel(QString().setNum(atom+1));
-				atomsList[atom]->setLabelSubscript(QString());
 			}else{
-				atomsList[atom]->setLabelSubscript(QString().setNum(atom+1));
-			}
-		}
+				atom->setLabelSubscript(QString::number(atom->ID()));
+			}			
+		}	
 	}
 	update();
 }
@@ -285,8 +323,8 @@ bool DrawingCanvas::isBonded(Atom *atom1, Atom *atom2){
 }
 
 
-std::vector<Angle*>::iterator DrawingCanvas::angleExists(Atom *atom1, Atom *atom2, Atom *atom3){
-	std::vector<Angle*>::iterator pos;
+QList<Angle*>::iterator DrawingCanvas::angleExists(Atom *atom1, Atom *atom2, Atom *atom3){
+	QList<Angle*>::iterator pos;
 	for(pos = anglesList.begin(); pos != anglesList.end(); ++pos){
 		Angle *angle = *pos;
 		if((angle->startAtom() == atom1 && angle->centerAtom() == atom2 && angle->endAtom() == atom3) ||
@@ -316,7 +354,7 @@ void DrawingCanvas::toggleAngleLabels()
 				if(!atom3->isSelected()) continue;
 				if(a1 == a2 || a2 == a3) continue;
 				if(isBonded(atom1, atom2) && isBonded(atom2, atom3)){
-					std::vector<Angle*>::iterator anglePos = angleExists(atom1, atom2, atom3); 
+					QList<Angle*>::iterator anglePos = angleExists(atom1, atom2, atom3); 
 					if(anglePos <= anglesList.end()){
 						// Remove angle
 						Angle *angle = *anglePos;
@@ -375,7 +413,7 @@ void DrawingCanvas::toggleBondLabels()
 
 void DrawingCanvas::performRotation()
 {
-	// Assumes the cartesians are centered about the center of mass
+	// Assumes the cartesians are centered at the center of mass
 	double zMax = -10000.0;
 	int nAtoms = atomsList.size();
 	
@@ -469,6 +507,7 @@ void DrawingCanvas::refresh()
     updateBonds();
     updateAngles();
     updateArrows();
+    updateTextLabels();
 	update();
 }
 
@@ -490,6 +529,7 @@ void DrawingCanvas::setBackgroundColor()
 	update();
 	
 }
+
 
 void DrawingCanvas::setBackgroundOpacity(int val)
 {

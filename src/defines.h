@@ -4,12 +4,13 @@
 //These are the types used in the enums to distinguish drawing types
 #define ATOMTYPE  1
 #define BONDTYPE  2
-#define ANGLELABELTYPE 3
-#define BONDLABELTYPE 4
-#define ANGLETYPE 5
-#define ANGLEMARKERTYPE 6
-#define ARROWTYPE 7
-#define DRAGBOXTYPE 8
+#define ANGLETYPE 3
+#define ANGLEMARKERTYPE 4
+#define ARROWTYPE 5
+#define DRAGBOXTYPE 6
+#define ANGLELABELTYPE 7
+#define BONDLABELTYPE 8
+#define TEXTLABELTYPE 9
 
 #define TINY 0.00001
 
@@ -22,6 +23,7 @@
 
 #define DEFAULT_ATOM_LABEL_FONT "Helvetica"
 #define DEFAULT_ATOM_LABEL_FONT_SIZE 14
+#define DEFAULT_LARGE_ATOM_LABEL_FONT_SIZE 22
 
 
 #define DEFAULT_SCENE_SIZE_X 750.0
@@ -37,7 +39,7 @@
 #define DEFAULT_BOND_THICKNESS 0.2
 #define DEFAULT_DASHED_BOND_THICKNESS 0.05
 
-#define DEFAULT_ARROW_THICKNESS 0.005
+#define DEFAULT_ARROW_THICKNESS 0.013
 
 #define BOHR_TO_ANG 0.529177249
 #define ANG_TO_BOHR 1.889725989
@@ -47,5 +49,6 @@
 
 #define ANGLE_MARKER_OFFSET 0.4
 
+#define ITEM_IS_LABEL item->type() == Label::AngleLabelType || item->type() == Label::BondLabelType || item->type() == Label::TextLabelType
 
 #endif /*DEFINES_H_*/

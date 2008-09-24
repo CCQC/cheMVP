@@ -11,13 +11,6 @@ void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	mouseOrigin = mouseEvent->scenePos();
 	numMouseMoves = 0;
     switch (myMode) {
-//        case InsertAtom:
-//            Atom *atom;
-//            atom = new Atom(elementToAdd, drawingInfo);
-//            atom->setPos(mouseEvent->scenePos());
-//            addItem(atom);
-//            myMode = MoveSelection;
-//            break;
     	case AddArrow:
     		Arrow *arrow;
     		arrow = new Arrow(mouseEvent->scenePos().x(), mouseEvent->scenePos().y(), drawingInfo);
@@ -36,15 +29,16 @@ void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         case Select:
 	        // Is there an item under the cursor?
 	        if(items(mouseEvent->scenePos()).size()){
+	        	QApplication::setOverrideCursor(myMoveCursor);
 	        	if(items(mouseEvent->scenePos())[0]->type() == Atom::Type){
 	        		setMode(TempMoveAll);
 	        	}else{
 	        		setMode(TempMove);
 	        		myTempMoveItem = items(mouseEvent->scenePos())[0];
-//	                QGraphicsScene::mousePressEvent(mouseEvent);
     			}
     		}else{
     			unselectAll();
+	        	QApplication::setOverrideCursor(Qt::CrossCursor);
 	        	selectionRectangle = new QGraphicsRectItem(QRectF(mouseEvent->scenePos(),
 	        	                                         mouseEvent->scenePos()));
 	        	selectionRectangle->setPen(QPen(Qt::black, 1,Qt::DashLine));
@@ -56,6 +50,7 @@ void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     }
 }
 
+
 void DrawingCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	switch (myMode) {
@@ -64,6 +59,8 @@ void DrawingCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		        QLineF newLine(bondline->line().p1(), mouseEvent->scenePos());
 		        bondline->setLine(newLine);
 			}
+			// This is so that hover events are emitted correctly
+			QGraphicsScene::mouseMoveEvent(mouseEvent);
 			break;
     	case AddArrow:
     		if(myArrow != 0){
@@ -72,8 +69,9 @@ void DrawingCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
     		break;
 		case TempMove:
             if(myTempMoveItem != 0){
-            	if(myTempMoveItem->type() == Label::AngleLabelType ||
-            	   myTempMoveItem->type() == Label::BondLabelType){
+            	QGraphicsItem *item;
+            	item = myTempMoveItem;
+            	if(ITEM_IS_LABEL){
             		Label *label = dynamic_cast<Label*>(myTempMoveItem);
 		        	label->setDX(label->dX() + mouseEvent->scenePos().x() - mouseOrigin.x());
 		        	label->setDY(label->dY() + mouseEvent->scenePos().y() - mouseOrigin.y());
@@ -83,6 +81,28 @@ void DrawingCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		            }
 		            ++numMouseMoves;
 		            refresh();
+            	}else if(item->type() == DragBox::Type){
+            		DragBox *dragBox = dynamic_cast<DragBox*>(item);
+		        	dragBox->setDX(dragBox->dX() + mouseEvent->scenePos().x() - mouseOrigin.x());
+		        	dragBox->setDY(dragBox->dY() + mouseEvent->scenePos().y() - mouseOrigin.y());
+		            if(numMouseMoves==1){
+		            	numMouseMoves = 0;
+		                mouseOrigin = mouseEvent->scenePos();            	
+		            }
+		            ++numMouseMoves;
+	    			updateArrows();
+	    			update();
+            	}else if(item->type() == Arrow::Type){
+            		Arrow *arrow = dynamic_cast<Arrow*>(item);
+		        	arrow->incDX(mouseEvent->scenePos().x() - mouseOrigin.x());
+		        	arrow->incDY(mouseEvent->scenePos().y() - mouseOrigin.y());
+		            if(numMouseMoves==1){
+		            	numMouseMoves = 0;
+		                mouseOrigin = mouseEvent->scenePos();            	
+		            }
+		            ++numMouseMoves;
+	    			updateArrows();
+	    			update();
             	}else if((myTempMoveItem->flags() & QGraphicsItem::ItemIsMovable)){
 	    			myTempMoveItem->setPos(mouseEvent->scenePos());
 	    			updateArrows();
@@ -183,33 +203,20 @@ void DrawingCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 				delete selectionRectangle;
 			}
 			selectionRectangle = 0;
+			QApplication::restoreOverrideCursor();
 			break;
 		case TempMove:
+			QApplication::restoreOverrideCursor();
 			// If the mouse didn't move, we just want to to toggle selections
 			if(!numMouseMoves){
 				myTempMoveItem->setSelected((myTempMoveItem->isSelected() ? false : true));
-//		        foreach(QGraphicsItem *item, items(mouseEvent->scenePos())){
-//	        		item->setSelected((item->isSelected() ? false : true));
-//		        }
 			}else{
-//	        	int dX;
-//	        	int dY;
-//	        	dX = mouseEvent->scenePos().x() - mouseOrigin.x();
-//	        	dY = mouseEvent->scenePos().y() - mouseOrigin.y();
-//	        	
-//	        	if(!items(mouseEvent->scenePos()).size()) return;
-//        		if(items(mouseEvent->scenePos())[0]->type()==Label::AngleLabelType ||
-//        		   items(mouseEvent->scenePos())[0]->type()==Label::BondLabelType){
-//        			Label *label = dynamic_cast<Label*>(items(mouseEvent->scenePos())[0]);
-//        			label->setDX(label->dX() + dX);
-//        			label->setDY(label->dY() + dY);
-//        		}
 			}
-//    		QGraphicsScene::mouseReleaseEvent(mouseEvent);
 			myTempMoveItem = 0;
 			emit mouseModeChanged(int(Select));
 			break;
 		case TempMoveAll:
+			QApplication::restoreOverrideCursor();
 			// If the mouse didn't move, we just want to to toggle selections
 			if(!numMouseMoves){
 				QGraphicsItem *item;
@@ -219,6 +226,18 @@ void DrawingCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 			}
 			setMode(Select);
 			break;
+        case AddText:
+        	Label *label;
+        	label = new Label(Label::TextLabelType, 0.0, 0, drawingInfo);
+        	addItem(label);
+        	textLabelsList.push_back(label);
+        	label->setDX(mouseEvent->scenePos().x()-drawingInfo->dX());
+        	label->setDY(mouseEvent->scenePos().y()-drawingInfo->dY());
+        	label->setPos(mouseEvent->scenePos());
+        	label->setTextInteractionFlags(Qt::TextEditorInteraction);
+        	label->setFocus();
+			emit mouseModeChanged(int(Select));
+        	break;
     	case AddArrow:
     		myArrow = 0;
 			emit mouseModeChanged(int(Select));
@@ -226,6 +245,5 @@ void DrawingCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		default:
 			;
 	}
-//    QGraphicsScene::mouseReleaseEvent(mouseEvent);
 }
 

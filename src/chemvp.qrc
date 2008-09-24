@@ -4,16 +4,21 @@
     <file>../images/addbond.png</file>
     <file>../images/addtext.png</file>
     <file>../images/boldtext.png</file>
+    <file>../images/cursor_move.png</file>
+    <file>../images/cursor_rotate.png</file>
+    <file>../images/cursor_select.png</file>
     <file>../images/delete.png</file>
     <file>../images/exit.png</file>
     <file>../images/italictext.png</file>
     <file>../images/open.png</file>
     <file>../images/rotate.png</file>
+    <file>../images/redo.png</file>
     <file>../images/save.png</file>
     <file>../images/saveas.png</file>
     <file>../images/select.png</file>
     <file>../images/splash.png</file>
     <file>../images/underlinetext.png</file>
+    <file>../images/undo.png</file>
 </qresource>
 </RCC>
 
