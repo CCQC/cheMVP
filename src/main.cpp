@@ -22,7 +22,7 @@ int main(int argv, char *args[])
     	cmd_line_arg = "";
     }else{
       cmd_line_arg=args[1];
-      if(cmd_line_arg == "--help" || cmd_line_arg == "-h" || argv>2){
+      if(cmd_line_arg == "--help" || cmd_line_arg == "-h" || argv>3){
         std::cout<<"Usage: chemvp [coordfile]"<<std::endl<<"Where coordfile is an xyz file"<<std::endl;
         exit(EXIT_FAILURE);
       }else{
@@ -37,5 +37,9 @@ int main(int argv, char *args[])
     mainWindow.setGeometry(30, 50, 1200, 700);
     mainWindow.showNormal();
 
+    if(argv == 3){
+    	mainWindow.setCurrentSaveFile(args[2]);
+    	mainWindow.saveAndExit();
+    }
     return app.exec();
 }

@@ -23,6 +23,7 @@
      Label(LabelType type, double value, int precision, DrawingInfo *info, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
 //     bool sceneEvent(QEvent *event);
      void focusOutEvent (QFocusEvent *event);
+//     void keyPressEvent(QKeyEvent * event);
      int type() const { return myType; }
      double dX() {return myDX;}
      double dY() {return myDY;}
@@ -32,6 +33,7 @@
      void setFontSize(int val) {myFontSize = val; updateFontSize();}
      int fontSize() const {return myFontSize;}
 //     void setFont(const QString &font) {myFont.setFamily(font);}
+//     bool eventFilter(QObject* object, QEvent* event);
       
  signals:
 //     void lostFocus(Label *item);
@@ -39,8 +41,12 @@
  public slots:
  	void updateFontSize();
  protected:
-//     void keyPressEvent(QKeyEvent *event);
+	 void keyPressEvent(QKeyEvent *event);
+//	 void keyReleaseEvent(QKeyEvent *event);
      void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+     void mousePressEvent(QGraphicsSceneMouseEvent *event);
+
  private:
 	 LabelType myType;
 	 QString myString;

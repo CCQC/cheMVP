@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-
+// TODO deactivate bond and angle buttons unless selection is appropriate
 void MainWindow::updateTextLabelMenus()
 {
 	// This is just like the update menus function, but is called seperately, as it should be 

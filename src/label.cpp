@@ -17,7 +17,6 @@
  {
      setFlag(QGraphicsItem::ItemIsMovable);
      setFlag(QGraphicsItem::ItemIsSelectable);
-     setFlag(QGraphicsItem::ItemIsFocusable);
 	 setTextInteractionFlags(Qt::NoTextInteraction);    	 
      setZValue(1000.0);
      if(myType != TextLabelType){
@@ -32,21 +31,34 @@
  }
 
  
+ void Label::keyPressEvent(QKeyEvent *event)
+ {
+	 std::cout<<"key press event "<<event->key()<<"  "<<Qt::Key_Tab<<std::endl;
+	 if(event->key()==Qt::Key_Tab){
+		 QTextCursor t = textCursor();
+		 t.insertText("\t");
+		 setTextCursor(t);
+		 std::cout<<"inserting tab"<<std::endl;
+		 setTextInteractionFlags(Qt::TextEditorInteraction);
+	 }else{
+		 QGraphicsTextItem::keyPressEvent(event);
+	 }
+ }
+ 
+ 
  void Label::focusOutEvent(QFocusEvent *event)
  {
-	 qDebug() <<"focus out";
-	 if(event->reason()==Qt::TabFocusReason && textInteractionFlags() == Qt::TextEditorInteraction){
-  		 textCursor().insertText("\t");
-//  		 QFocusEvent *focusIn = new QFocusEvent(QEvent::FocusIn);
-//  		 QGraphicsTextItem::focusInEvent(focusIn);
-  		 setTextInteractionFlags(Qt::TextEditorInteraction);
+		std::cout<<"Label focus out"<<std::endl;
+	 if(event->reason()==Qt::TabFocusReason){
+  		 QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
+  		 QGraphicsTextItem::keyPressEvent(newEvent);
+  		 event->accept();
 	 }else{
-  		 setTextInteractionFlags(Qt::NoTextInteraction);
 		 QGraphicsTextItem::focusOutEvent(event);
 	 }
  }
 
-  
+ 
  void Label::updateFontSize()
  {
 	 QFont myFont(font());
@@ -66,9 +78,21 @@
  
  void Label::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
  {
-	 qDebug() <<"double click";
 	 if (textInteractionFlags() == Qt::NoTextInteraction){
 	   setTextInteractionFlags(Qt::TextEditorInteraction);
+//	   setFlag(QGraphicsItem::ItemIsFocusable,false);
 	 }
 	 QGraphicsTextItem::mouseDoubleClickEvent(event);
+ }
+
+ 
+ void Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+ {
+	// A null event to prevent unwanted deselection
+ }
+
+
+ void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
+ {
+	// A null event to prevent unwanted deselection
  }

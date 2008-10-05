@@ -9,7 +9,8 @@ class DrawingDisplay : public QGraphicsView
 {
 public:
 	DrawingDisplay(DrawingCanvas *scene, DrawingInfo *info);
-	void resizeEvent (QResizeEvent * event);  
+	void resizeEvent (QResizeEvent *event);
+	void focusOutEvent (QFocusEvent *event); 
 private:
 	DrawingInfo *drawingInfo;
 	DrawingCanvas *canvas;

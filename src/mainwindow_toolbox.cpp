@@ -16,7 +16,7 @@ void MainWindow::createToolBox()
 
 
 QWidget *MainWindow::createAppearanceWidget()
-{
+{	
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
     
@@ -78,7 +78,7 @@ QWidget *MainWindow::createAppearanceWidget()
     QGridLayout *zoomLayout = new QGridLayout;
     QLabel *zoomTitle = new QLabel(tr("Zoom:"));
     zoomSpinBox = new QSpinBox();
-    zoomSpinBox->setRange(0, 500);
+    zoomSpinBox->setRange(0, 50000);
     zoomSpinBox->setSuffix("%");
     zoomSpinBox->setAccelerated(true);
     zoomSpinBox->setValue(100);
@@ -99,11 +99,6 @@ QWidget *MainWindow::createAnnotationWidget()
     QGridLayout *layout = new QGridLayout;
     
     QGroupBox *insertSymbolBox 	    = new QGroupBox(tr("Insert Symbol"));    
-//    QGridLayout *insertSymbolLayout = new QGridLayout;
-//    insertSymbolLayout->addWidget(insertAngstromAction, 0, 1);
-//    insertSymbolLayout->addWidget(insertDegreeAction, 0, 1);
-//    insertSymbolLayout->addWidget(insertPlusMinusAction, 0, 1);
-//    insertSymbolBox->setLayout(insertSymbolLayout);
     insertSymbolBox->addAction(insertAngstromAction);
     insertSymbolBox->addAction(insertDegreeAction);
     insertSymbolBox->addAction(insertPlusMinusAction);
@@ -131,6 +126,7 @@ QWidget *MainWindow::createBondsAndAnglesWidget()
     bondLabelsPrecisionBox = new QSpinBox(); 
     bondLabelsPrecisionBox->setToolTip(tr("Set the precision of the bond length labels"));
     bondLabelsPrecisionBox->setValue(DEFAULT_BOND_LABEL_PRECISION);
+    bondLabelsPrecisionBox->setFocusPolicy(Qt::NoFocus);
     connect(bondLabelsPrecisionBox, SIGNAL(valueChanged(int)), canvas, SLOT(setBondLabelPrecision(int)));
     QLabel *bondLabelsPrecisionLabel = new QLabel(tr("Bond label precision:"));
     labelsLayout->addWidget(bondLabelsPrecisionLabel, 1, 0);
@@ -143,6 +139,7 @@ QWidget *MainWindow::createBondsAndAnglesWidget()
     angleLabelsPrecisionBox = new QSpinBox(); 
     angleLabelsPrecisionBox->setToolTip(tr("Set the precision of the angle labels"));
     angleLabelsPrecisionBox->setValue(DEFAULT_ANGLE_LABEL_PRECISION);
+    angleLabelsPrecisionBox->setFocusPolicy(Qt::NoFocus);
     connect(angleLabelsPrecisionBox, SIGNAL(valueChanged(int)), canvas, SLOT(setAngleLabelPrecision(int)));
     QLabel *angleLabelsPrecisionLabel = new QLabel(tr("Angle label precision:"));
     labelsLayout->addWidget(angleLabelsPrecisionLabel, 3, 0);
@@ -168,6 +165,7 @@ QWidget *MainWindow::createBondsAndAnglesWidget()
     bondSizeSpinBox->setDecimals(3);
     bondSizeSpinBox->setSingleStep(0.005);
     bondSizeSpinBox->setSpecialValueText(tr("Select Bonds"));
+    bondSizeSpinBox->setFocusPolicy(Qt::NoFocus);
     bondSizeSpinBox->setValue(bondSizeSpinBox->minimum());
     bondSizeSpinBox->setAccelerated(true);
     bondSizeLayout->addWidget(bondSizeLabel, 1, 0);
@@ -195,6 +193,7 @@ QWidget *MainWindow::createAtomsWidget()
     atomSizeSpinBox->setSingleStep(0.02);
     atomSizeSpinBox->setSpecialValueText(tr("Select Atoms"));
     atomSizeSpinBox->setValue(atomSizeSpinBox->minimum());
+    atomSizeSpinBox->setFocusPolicy(Qt::NoFocus);
     atomSizeSpinBox->setAccelerated(true);
     atomSizeLayout->addWidget(atomSizeLabel, 0, 0);
     atomSizeLayout->addWidget(atomSizeSpinBox, 0, 1);
@@ -210,7 +209,6 @@ QWidget *MainWindow::createAtomsWidget()
     houkMolAtomDrawingButton 	     = new QRadioButton(tr("HoukMol"));
     simpleColoredAtomDrawingButton 	 = new QRadioButton(tr("Simple Colored"));
     gradientColoredAtomDrawingButton = new QRadioButton(tr("Gradient"));
-    simpleAtomDrawingButton->setChecked(true);
     atomDrawingStyleButtonGroup->addButton(simpleAtomDrawingButton, int(Atom::Simple));
     atomDrawingStyleButtonGroup->addButton(simpleColoredAtomDrawingButton, int(Atom::SimpleColored));
     atomDrawingStyleButtonGroup->addButton(houkMolAtomDrawingButton, int(Atom::HoukMol));
@@ -219,8 +217,8 @@ QWidget *MainWindow::createAtomsWidget()
     drawingStyleLayout->addWidget(simpleColoredAtomDrawingButton, 0, 1);
     drawingStyleLayout->addWidget(houkMolAtomDrawingButton, 1, 0);
     drawingStyleLayout->addWidget(gradientColoredAtomDrawingButton, 1, 1);
-    connect(atomDrawingStyleButtonGroup, SIGNAL(buttonClicked(int)),
-                 canvas, SLOT(setAtomDrawingStyle(int)));
+    connect(atomDrawingStyleButtonGroup, SIGNAL(buttonClicked(int)), canvas, SLOT(setAtomDrawingStyle(int)));
+    gradientColoredAtomDrawingButton->setChecked(true);
     drawingStyleBox->setLayout(drawingStyleLayout);
     layout->addWidget(drawingStyleBox);
     
@@ -238,12 +236,14 @@ QWidget *MainWindow::createAtomsWidget()
     atomLabelInput = new QLineEdit;
 	atomLabelInput->setText(tr("Select Atoms"));
 	atomLabelInput->setToolTip(tr("Text entered here will be used as the label for the selected atom(s).  Anything appended after an underscore will be used as a subscript, anything after a carat is a superscript"));
+    atomLabelInput->setFocusPolicy(Qt::NoFocus);
     labelStyleLayout->addWidget(atomLabelInput, 1, 0, 1, 2);
     connect(atomLabelInput, SIGNAL(returnPressed()), this, SLOT(setAtomLabels()));
     // The label font
     atomLabelFontCombo = new QFontComboBox();
     atomLabelFontCombo->setEditText(tr("Select Atoms"));
     atomLabelFontCombo->setToolTip(tr("The font for the selected atoms"));
+    atomLabelFontCombo->setFocusPolicy(Qt::NoFocus);
     labelStyleLayout->addWidget(atomLabelFontCombo, 2, 0, 1, 2);
     connect(atomLabelFontCombo, SIGNAL(currentFontChanged(const QFont &)),
             canvas, SLOT(atomLabelFontChanged(const QFont &)));
@@ -255,6 +255,7 @@ QWidget *MainWindow::createAtomsWidget()
       atomLabelFontSizeCombo->addItem(QString().setNum(i));
     }
     atomLabelFontSizeCombo->setEditText(tr("Select Atoms"));
+    atomLabelFontSizeCombo->setFocusPolicy(Qt::NoFocus);
     labelStyleLayout->addWidget(atomLabelFontSizeCombo, 3, 0, 1, 2);
     connect(atomLabelFontSizeCombo, SIGNAL(currentIndexChanged(const QString &)),
             canvas, SLOT(atomLabelFontSizeChanged(const QString &)));

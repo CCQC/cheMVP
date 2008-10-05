@@ -5,6 +5,7 @@
 
 #include <map>
 #include <QString>
+#include <iostream>
 #include "error.h"
 #include "defines.h"
 #include "drawinginfo.h"
@@ -50,6 +51,7 @@
      void setDrawingStyle(DrawingStyle style);
      void setFontSizeStyle(FontSizeStyle style);
      void setID(int val) {myID = val;}
+//     void processProjectFile(QSettings &settings, bool saveFile);
  protected:
      static std::map<QString, double> labelToVdwRadius;
      static std::map<QString, double> labelToMass;

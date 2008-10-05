@@ -28,6 +28,8 @@ MainWindow::FileType MainWindow::determineFileType(const QString &fileName)
 	if(re.exactMatch(fileName)) return TIFF;
 	re.setPattern(".*\\.png");
 	if(re.exactMatch(fileName)) return PNG;
+	re.setPattern(".*\\.cvp");
+	if(re.exactMatch(fileName)) return CVP;
 	
 	return Unknown;
 }
@@ -94,6 +96,8 @@ void MainWindow::saveImage(const QString &fileName)
 		painter->end();
 		delete painter;
 		delete printer;
+	}else if(fileType == CVP){
+		processProjectFile(fileName, true);
 	}else{
 		QString message("Unsupported file type:\n\n");
 		message += fileName;
@@ -103,3 +107,19 @@ void MainWindow::saveImage(const QString &fileName)
 }
 
 
+void MainWindow::processProjectFile(const QString &fileName, bool saveFile)
+{
+	// This function will call all of the objects in turn to get/put settings
+	// The read and write functions are written together for convenience
+	
+	QSettings settings(fileName, QSettings::IniFormat);
+	// DrawingInfo
+	settings.beginGroup("drawingInfo");
+	drawingInfo->processProjectFile(settings, saveFile);
+	settings.endGroup();
+
+	// The drawing canvas settings
+	settings.beginGroup("canvas");
+	canvas->processProjectFile(settings, saveFile);
+	settings.endGroup();
+}

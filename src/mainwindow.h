@@ -10,6 +10,8 @@
 #include <QSlider>
 #include <QLabel>
 #include <QUndoCommand>
+#include <QDebug>
+#include <QSettings>
 #include "drawingcanvas.h"
 #include "drawinginfo.h"
 #include "fileparser.h"
@@ -21,12 +23,14 @@ class MainWindow : public QMainWindow
 
 public:
    MainWindow(FileParser *parser);
-   enum FileType {TIFF, PNG, PDF, PostScript, SVG, Unknown};
+   enum FileType {TIFF, PNG, PDF, PostScript, SVG, CVP, Unknown};
 
 public slots:
    void setXRotation(int phi);
    void setYRotation(int phi);
    void setZRotation(int phi);
+   void setCurrentSaveFile(QString file) {currentSaveFile = file;}
+   void saveAndExit();
 
 private slots:
 	void insertTextAtCursor(QAction *action);
@@ -46,10 +50,12 @@ private slots:
     void setAddArrowMode();
 
 private:
+	void focusOutEvent(QFocusEvent *event);
 	void createToolBox();
 	void createActions();
     void createMenus();
     void createToolbars();
+    void processProjectFile(const QString &fileName, bool saveFile);
     FileType determineFileType(const QString &fileName);
     void saveImage(const QString &fileName);
     void loadFile();

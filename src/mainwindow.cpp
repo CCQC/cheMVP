@@ -43,19 +43,38 @@ MainWindow::MainWindow(FileParser *parser_in):
     splitter->addWidget(view);
     splitter->addWidget(toolBox);
     layout->addWidget(splitter);
-    
+
     QWidget *widget = new QWidget;
     widget->setLayout(layout);
     setCentralWidget(widget);
-    
-    setFocusPolicy(Qt::ClickFocus);
-    toolBox->setFocusPolicy(Qt::ClickFocus);
-
+   
     loadFile();
 
     // The undo/redo framework needs to update the buttons appropriately
     connect(undoStack, SIGNAL(canRedoChanged(bool)), redoAction, SLOT(setEnabled(bool)));
     connect(undoStack, SIGNAL(canUndoChanged(bool)), undoAction, SLOT(setEnabled(bool)));
+    
+}
+
+
+void MainWindow::saveAndExit()
+{
+	if(currentSaveFile.size()){
+		std::cout<<"Saving file..."<<currentSaveFile.toStdString()<<std::endl;
+		save();
+		exit(0);
+	}
+}
+
+void MainWindow::focusOutEvent(QFocusEvent *event)
+{
+	std::cout<<"Main window focus out"<<std::endl;
+	if(event->reason() != Qt::TabFocusReason){
+		QMainWindow::focusOutEvent(event);
+	}else{
+	    QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
+	    QMainWindow::keyPressEvent(newEvent);
+	}
 }
 
 

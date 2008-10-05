@@ -40,6 +40,7 @@
 #define DEFAULT_DASHED_BOND_THICKNESS 0.05
 
 #define DEFAULT_ARROW_THICKNESS 0.013
+#define DEFAULT_PERSPECTIVE_SCALE 0.0015
 
 #define BOHR_TO_ANG 0.529177249
 #define ANG_TO_BOHR 1.889725989
@@ -48,6 +49,8 @@
 #define PI 3.14159265
 
 #define ANGLE_MARKER_OFFSET 0.4
+
+#define COMPANY_NAME "Center for Computational Chemistry @ UGA"
 
 #define ITEM_IS_LABEL item->type() == Label::AngleLabelType || item->type() == Label::BondLabelType || item->type() == Label::TextLabelType
 

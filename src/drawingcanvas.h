@@ -47,6 +47,7 @@ public:
     void setAtomLabels(QString text);
     void drawBackground(QPainter *painter, const QRectF &rect);
     const QCursor& rotateCursor() {return myRotateCursor;}
+    void processProjectFile(QSettings &settings, bool saveFile);
 public slots:
 	void unselectAll();
 	void selectAll();
@@ -69,6 +70,7 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void translateToCenterOfMass();
+	void focusOutEvent (QFocusEvent *event); 
 
 signals:
     void xRotChanged(int phi);

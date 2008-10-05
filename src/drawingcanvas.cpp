@@ -33,6 +33,18 @@ DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_
 }
 
 
+void DrawingCanvas::focusOutEvent(QFocusEvent *event)
+{
+	std::cout<<"Drawing canvas focus out"<<std::endl;
+	if(event->reason() != Qt::TabFocusReason){
+		QGraphicsScene::focusOutEvent(event);
+	}else{
+	    QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
+	    QGraphicsScene::keyPressEvent(newEvent);
+	}
+}
+
+
 void DrawingCanvas::drawBackground(QPainter *painter, const QRectF &rect)
 {
 	if(myBackgroundColor.alpha() == 0) return;
@@ -536,4 +548,32 @@ void DrawingCanvas::setBackgroundOpacity(int val)
 	myBackgroundAlpha = (int)(255*val/100);
 	myBackgroundColor.setAlpha(myBackgroundAlpha);
 	update();
+}
+
+void DrawingCanvas::processProjectFile(QSettings &settings, bool saveFile)
+{
+	// The atomsList
+	if(saveFile){
+		settings.setValue("NumAtoms", atomsList.size());
+		for(int i = 0; i < atomsList.size(); ++i){
+			settings.beginGroup(QString("atom%1").arg(i));
+			Atom *atom = atomsList[i];
+			settings.setValue("Symbol",atom->symbol());
+			settings.setValue("Label",atom->label());
+			settings.setValue("x",atom->x());
+			settings.setValue("y",atom->y());
+			settings.setValue("z",atom->z());
+			settings.endGroup();
+		}
+	}else{
+		for(int i = 0; i < settings.value("NumAtoms",0).toInt(); ++i){
+//			settings.beginGroup(QString("atom%1").arg(i));
+//			settings.setValue("Symbol",atom->symbol();)
+//			settings.setValue("x",atom->x());
+//			settings.setValue("y",atom->y());
+//			settings.setValue("z",atom->z());
+////			atom *Atom = new Atom()
+//			settings.endGroup();
+		}
+	}
 }

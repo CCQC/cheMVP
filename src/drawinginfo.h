@@ -2,6 +2,7 @@
 #define DRAWINGINFO_H_
 
 #include <QObject>
+#include <QSettings>
 #include "defines.h"
 
 class DrawingInfo: public QObject
@@ -30,6 +31,7 @@ public:
 	double perspective() const {return myPerspectiveScale;}
 	void determineScaleFactor();
     void setZoom(int val) { myUserScaleFactor = (double)val; emit scaleFactorChanged();}
+    void processProjectFile(QSettings &settings, bool saveFile);
 private:
 	// The rotation about the axes
 	int myXRot;

@@ -15,7 +15,7 @@ std::map<QString, QColor> Atom::labelToColor;
      text_color(Qt::black),
      fill_color(Qt::white),
      myScaleFactor(DEFAULT_ATOM_SCALE_FACTOR),
-     myDrawingStyle(Simple),
+     myDrawingStyle(Gradient),
      myFontSizeStyle(SmallLabel),
      myX(0.0),
      myY(0.0),
@@ -27,6 +27,8 @@ std::map<QString, QColor> Atom::labelToColor;
 	 fillLabelToMassMap();
 	 fillLabelToColorMap();
 
+	 setDrawingStyle(myDrawingStyle);
+	 
      myLabel = (mySymbol == "H" ? "" : mySymbol);
 
 	 //This is a bit of a hack.  All atoms after Xe have Xe's vdW radius
@@ -110,6 +112,7 @@ std::map<QString, QColor> Atom::labelToColor;
 	 update();
  }
 
+ 
  QRectF Atom::boundingRect() const
  {
      return rect();
@@ -128,7 +131,6 @@ std::map<QString, QColor> Atom::labelToColor;
  {
      Q_UNUSED(option);
      Q_UNUSED(widget);
-     
      computeRadius();
      
      //The myEffectiveRadius changes on zooming/rotation so we must always update it
@@ -547,3 +549,13 @@ std::map<QString, QColor> Atom::labelToColor;
 	  labelToColor.insert(std::make_pair(QString("Rg"), QColor(183, 189, 199)));
 	}
 }
+
+ 
+//void Atom::processProjectFile(QSettings &settings, bool saveFile)
+//{
+//	if(saveFile){
+//		project.setValue("element",mySymbol);
+//	}else{
+//		
+//	}
+//}

@@ -1,6 +1,6 @@
 #include "drawingcanvas.h"
 
-
+// TODO add double click events to make text selection easier
 
 void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
@@ -35,6 +35,8 @@ void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	        	}else{
 	        		setMode(TempMove);
 	        		myTempMoveItem = items(mouseEvent->scenePos())[0];
+	        		// This is essential for getting the double click events 
+	        		QGraphicsScene::mousePressEvent(mouseEvent);
     			}
     		}else{
     			unselectAll();
