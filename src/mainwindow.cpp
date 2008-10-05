@@ -48,9 +48,6 @@ MainWindow::MainWindow(FileParser *parser_in):
     widget->setLayout(layout);
     setCentralWidget(widget);
     
-    setFocusPolicy(Qt::ClickFocus);
-    toolBox->setFocusPolicy(Qt::ClickFocus);
-
     loadFile();
 
     // The undo/redo framework needs to update the buttons appropriately
