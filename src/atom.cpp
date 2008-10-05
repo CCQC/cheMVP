@@ -208,9 +208,9 @@ std::map<QString, QColor> Atom::labelToColor;
 // TODO check these offsets.  I think there's a bug in the height reported by fontmetrics
      QPointF labelPos;
      if(myFontSizeStyle == LargeLabel){
-		 labelPos = QPointF(-labelFM.boundingRect(myLabel).width()/2.0, labelFM.boundingRect(myLabel).height()/3.0);    	 
+		 labelPos = QPointF(-labelFM.width(myLabel)/2.0, labelFM.height()/3.0);    	 
      }else{
-    	 labelPos = QPointF(-labelFM.boundingRect(myLabel).width()/2.0, labelFM.boundingRect(myLabel).height()/3.5);
+    	 labelPos = QPointF(-labelFM.width(myLabel)/2.0, labelFM.height()/3.5);
      }
      painter->setPen(text_color);
      painter->setBrush(text_color);
@@ -220,9 +220,9 @@ std::map<QString, QColor> Atom::labelToColor;
      if(myLabelSubscript.size()){
     	 QFont subscriptFont(myLabelFont.family(), myLabelFont.pointSizeF()/2.0);
     	 painter->setFont(subscriptFont);
-    	 qreal hOffset = labelFM.boundingRect(myLabel).width();
+    	 qreal hOffset = labelFM.width(myLabel);
     	 QFontMetricsF subscriptFM(subscriptFont);
-    	 qreal vOffset = subscriptFM.boundingRect(myLabel).height()/3.0;
+    	 qreal vOffset = subscriptFM.height()/3.0;
     	 
     	 painter->drawText(labelPos + QPointF(hOffset, vOffset), myLabelSubscript);
      }
@@ -231,10 +231,10 @@ std::map<QString, QColor> Atom::labelToColor;
      if(myLabelSuperscript.size()){
     	 QFont superscriptFont(myLabelFont.family(), myLabelFont.pointSizeF()/2.0);
     	 painter->setFont(superscriptFont);
-    	 qreal hOffset  = labelFM.boundingRect(myLabel).width();
-         qreal vOffset2 = labelFM.boundingRect(myLabel).height();
+    	 qreal hOffset  = labelFM.width(myLabel);
+         qreal vOffset2 = labelFM.height();
     	 QFontMetricsF superscriptFM(superscriptFont);
-    	 qreal vOffset = superscriptFM.boundingRect(myLabel).height()/3.0;
+    	 qreal vOffset = superscriptFM.height()/3.0;
     	 
     	 painter->drawText(labelPos + QPointF(hOffset, - vOffset2 + 2.0*vOffset), myLabelSuperscript);
      }

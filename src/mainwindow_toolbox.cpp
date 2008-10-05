@@ -236,7 +236,7 @@ QWidget *MainWindow::createAtomsWidget()
     atomLabelInput = new QLineEdit;
 	atomLabelInput->setText(tr("Select Atoms"));
 	atomLabelInput->setToolTip(tr("Text entered here will be used as the label for the selected atom(s).  Anything appended after an underscore will be used as a subscript, anything after a carat is a superscript"));
-    atomLabelInput->setFocusPolicy(Qt::NoFocus);
+//    atomLabelInput->setFocusPolicy(Qt::NoFocus);
     labelStyleLayout->addWidget(atomLabelInput, 1, 0, 1, 2);
     connect(atomLabelInput, SIGNAL(returnPressed()), this, SLOT(setAtomLabels()));
     // The label font
