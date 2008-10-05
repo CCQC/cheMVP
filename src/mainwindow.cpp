@@ -47,7 +47,6 @@ MainWindow::MainWindow(FileParser *parser_in):
     QWidget *widget = new QWidget;
     widget->setLayout(layout);
     setCentralWidget(widget);
-   
     loadFile();
 
     // The undo/redo framework needs to update the buttons appropriately
