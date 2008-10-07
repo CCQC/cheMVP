@@ -16,8 +16,6 @@ if(ResourceArray.size)
 end
 QMakeFile.puts "CONFIG += release static"
 QMakeFile.puts "QMAKE_CXXFLAGS_DEBUG = \" -O0 -g\""
-QMakeFile.puts "QMAKE_LFLAGS += \" -static\""
-QMakeFile.puts "QMAKE_LIBS += \"-L/usr/lib64 -lfreetype -lexpat -lSM /usr/lib64/gcc/x86_64-suse-linux/4.1.2/libstdc++.a \""
 QMakeFile.puts "QT += svg"
 QMakeFile.close
 
