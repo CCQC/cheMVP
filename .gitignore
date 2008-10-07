@@ -17,3 +17,8 @@
 
 # Ignore all of the compilation folders
 compilation*
+
+# Ignore the executables
+mac_osx_intel64
+linux_x86_64
+win32
