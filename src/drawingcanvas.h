@@ -79,7 +79,8 @@ signals:
     void mouseModeChanged(int mode);
 
 private:
-	void getAngleInBounds(int &phi);
+	void getAngleInBounds180(int &phi);
+	void getAngleInBounds360(int &phi);
     void setXRotation(int phi);
     void setYRotation(int phi);
     void setZRotation(int phi);

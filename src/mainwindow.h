@@ -61,7 +61,7 @@ private:
     void loadFile();
     QIcon textToIcon(const QString &string);
 
-	QSlider *createSlider();
+	QSlider *createSlider(int max);
 	QWidget *createAppearanceWidget();
 	QWidget *createBondsAndAnglesWidget();
 	QWidget *createAtomsWidget();

@@ -432,45 +432,30 @@ void DrawingCanvas::performRotation()
     double phiX = drawingInfo->xRot() * DEG_TO_RAD;
     double phiY = drawingInfo->yRot() * DEG_TO_RAD;
     double phiZ = drawingInfo->zRot() * DEG_TO_RAD;
-	for(int atom = 0; atom < nAtoms; ++atom){
-	  Atom *pAtom = atomsList[atom];
-	  double x = pAtom->x();
-	  double y = -pAtom->y();
-	  double z = pAtom->z();
-	  // There's some great info about the various coordinate systems at
-	  // http://www.stellarsoftware.com/euler3.htm
-	  // For now I want to use simple lab-fixed Cartesian axes, but this might change
+	foreach(Atom *atom, atomsList){
+	  double x = atom->x();
+	  double z = atom->y();
+	  double y = atom->z();
+	  // Don't be fooled by the notation - these are Euler angles, not Cartesian axes
+	  // TODO update notation to reflect this
 
       double cx = cos(phiX);
-	  double sx = sin(-phiX);
+	  double sx = sin(phiX);
 	  double cy = cos(phiY);
 	  double sy = sin(phiY);
 	  double cz = cos(phiZ);
 	  double sz = sin(phiZ);
 	  
-//	  double cr = cz;
-//	  double sr = sz;
-//	  double ct = cx;
-//	  double st = sx;
-//	  double cp = cy;
-//	  double sp = sy;
-//	  double xVal = (     cp*cr*x       +     -sr*cp*y       +    sp*z ) * drawingInfo->scaleFactor();
-//	  double yVal = ( st*sp*cr+ct*sr*x  +   ct*cr-sr*st*sp*y + -cp*st*z) * drawingInfo->scaleFactor();
-//    double zVal = (-sp*ct*cr+st*sr *x +  sp*sr*ct+st*cr*y  +  ct*cp*z) * drawingInfo->scaleFactor();
-   	  // RZ RY RX 
-//  	  double xVal = ( cy*cz*x - cx*sz*y + sx*sz*z + cz*sy*(sx*y + cx*z)		) * drawingInfo->scaleFactor();
-//  	  double yVal = ( cy*sz*x + cx*cz*y + sx*sy*sz*y - cz*sx*z + cx*sy*sz*z	) * drawingInfo->scaleFactor();
-//  	  double zVal = ( -(sy*x) + cy*sx*y + cx*cy*z							) * drawingInfo->scaleFactor();
-	  // RX RY RZ 
-  	  double xVal = ( cy*cz*x - cy*sz*y + sy*z									) * drawingInfo->scaleFactor();
-  	  double yVal = ( cx*sz*x + cz*(sx*sy*x + cx*y) - sx*(sy*sz*y + cy*z)		) * drawingInfo->scaleFactor();
-  	  double zVal = ( -(cx*cz*sy*x) + sx*sz*x + cz*sx*y + cx*sy*sz*y + cx*cy*z	) * drawingInfo->scaleFactor();
-	  pAtom->setPos(xVal + drawingInfo->dX(), yVal + drawingInfo->dY());
-	  pAtom->setZValue(zVal);
+  	  double xVal = ( cx*cy*cz*x - sy*sz*x - cy*cx*sz*y - sy*cz*y + sx*cy*z ) * drawingInfo->scaleFactor();
+  	  double zVal = ( sy*cx*cz*x + cy*sz*x - sy*cx*sz*y + cy*cz*y + sx*sy*z ) * drawingInfo->scaleFactor();
+  	  double yVal = -( -cz*sx*x             + sz*sx*y              + cx*z    ) * drawingInfo->scaleFactor();
+
+	  atom->setPos(xVal + drawingInfo->dX(), yVal + drawingInfo->dY());
+	  atom->setZValue(zVal);
 	  // TODO this will need to be normalized to make drawings that come from files and those that
 	  // are drawn by the user.  i.e. scene coordinates have a different scale to cartesians
-	  if(pAtom->z() > zMax){
-		  zMax = pAtom->zValue();
+	  if(atom->z() > zMax){
+		  zMax = atom->zValue();
 	  }
 	}
 
@@ -485,7 +470,7 @@ void DrawingCanvas::performRotation()
 
 void DrawingCanvas::setXRotation(int phi)
 {
-	getAngleInBounds(phi);
+	getAngleInBounds180(phi);
 	drawingInfo->setXRot(phi);
 	// Emitting this signal causes the main window's setXRotation to be triggered
 	// which will call the performRotation() and update() routines automatically
@@ -495,7 +480,7 @@ void DrawingCanvas::setXRotation(int phi)
 
 void DrawingCanvas::setYRotation(int phi)
 {
-	getAngleInBounds(phi);
+	getAngleInBounds360(phi);
 	drawingInfo->setYRot(phi);
 	// Emitting this signal causes the main window's setYRotation to be triggered
 	// which will call the performRotation() and update() routines automatically
@@ -505,7 +490,7 @@ void DrawingCanvas::setYRotation(int phi)
 
 void DrawingCanvas::setZRotation(int phi)
 {
-	getAngleInBounds(phi);
+	getAngleInBounds360(phi);
 	drawingInfo->setZRot(phi);
 	// Emitting this signal causes the main window's setZRotation to be triggered
 	// which will call the performRotation() and update() routines automatically
@@ -524,14 +509,24 @@ void DrawingCanvas::refresh()
 }
 
 
-void DrawingCanvas::getAngleInBounds(int &angle)
+void DrawingCanvas::getAngleInBounds360(int &angle)
 {
-    while (angle < -180)
+	// Just to be safe...
+	while (angle < 0)
          angle += 360;
-    while (angle > 180)
+    while (angle > 360)
          angle -= 360;
 }
 
+
+void DrawingCanvas::getAngleInBounds180(int &angle)
+{
+	// Just to be safe...
+	while (angle < 0)
+         angle += 180;
+    while (angle > 180)
+         angle -= 180;
+}
 
 void DrawingCanvas::setBackgroundColor()
 {

@@ -21,13 +21,13 @@ QWidget *MainWindow::createAppearanceWidget()
     QGridLayout *layout = new QGridLayout;
     
     // The Orientation Sliders
-    xSlider = createSlider();
-    ySlider = createSlider();
-    zSlider = createSlider();
+    xSlider = createSlider(180);
+    ySlider = createSlider(360);
+    zSlider = createSlider(360);
 
-    QLabel *xTitle = new QLabel("x");
-    QLabel *yTitle = new QLabel("y");
-    QLabel *zTitle = new QLabel("z");
+    QLabel *xTitle = new QLabel(QChar((ushort)0x03B8));
+    QLabel *yTitle = new QLabel(QChar((ushort)0x03D5));
+    QLabel *zTitle = new QLabel(QChar((ushort)0x03C7));
     xLabel = new QLabel();
     yLabel = new QLabel();
     zLabel = new QLabel();
@@ -280,10 +280,10 @@ QWidget *MainWindow::createAtomsWidget()
 }
 
 
-QSlider *MainWindow::createSlider()
+QSlider *MainWindow::createSlider(int max)
 {
     QSlider *slider = new QSlider(Qt::Horizontal);
-    slider->setRange(-180, 180);
+    slider->setRange(0, max);
     slider->setSingleStep(1);
     slider->setPageStep(15);
     return slider;		
