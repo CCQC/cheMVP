@@ -5,12 +5,14 @@ void MainWindow::createToolBox()
     QWidget *appearanceWidget 	   = createAppearanceWidget();
     QWidget *bondsAndAnglesWidget  = createBondsAndAnglesWidget();
     QWidget *atomsWidget           = createAtomsWidget();
-
+    QWidget *animationWidget       = createAnimationWidget();
+    
     toolBox = new QToolBox;
 //    toolBox->addItem(annotationWidget, tr("Annotation"));
     toolBox->addItem(appearanceWidget, tr("Appearance"));
     toolBox->addItem(atomsWidget, tr("Atoms"));
     toolBox->addItem(bondsAndAnglesWidget, tr("Angles and Bonds"));
+    toolBox->addItem(animationWidget, tr("Animation"));
     toolBox->setCurrentWidget(atomsWidget);
 }
 
@@ -178,6 +180,25 @@ QWidget *MainWindow::createBondsAndAnglesWidget()
     return widget;	
 }
 
+QWidget *MainWindow::createAnimationWidget()
+{
+    QWidget *widget = new QWidget;
+    QGridLayout *layout = new QGridLayout;
+    
+    QGridLayout *animationLayout = new QGridLayout;
+    QGroupBox *animationGroupBox = new QGroupBox(tr("Steps"));
+    QLabel *animationLabel = new QLabel("Step Number = ");
+    animationSlider = createSlider(0);
+    animationLayout->addWidget(animationLabel, 0, 0);
+    animationLayout->addWidget(animationSlider, 0, 1);
+    animationGroupBox->setLayout(animationLayout);
+    
+    connect(animationSlider, SIGNAL(valueChanged(int)), this, SLOT(setGeometryStep(int)));
+    
+    layout->addWidget(animationGroupBox);
+    widget->setLayout(layout);
+    return widget;
+}
 
 QWidget *MainWindow::createAtomsWidget()
 {

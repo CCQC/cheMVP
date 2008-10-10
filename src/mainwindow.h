@@ -29,6 +29,7 @@ public slots:
    void setXRotation(int phi);
    void setYRotation(int phi);
    void setZRotation(int phi);
+   void setGeometryStep(int);
    void setCurrentSaveFile(QString file) {currentSaveFile = file;}
    void saveAndExit();
 
@@ -66,11 +67,14 @@ private:
 	QWidget *createBondsAndAnglesWidget();
 	QWidget *createAtomsWidget();
 	QWidget *createAnnotationWidget();
-
-    QWidget *appearanceWidget;
-    QWidget *bondsAndAnglesWidget;
-    QWidget *atomsWidget;
-    QWidget *annotationWidget;
+    QWidget *createAnimationWidget();
+    
+    // Not needed. -Jet
+    // QWidget *appearanceWidget;
+    // QWidget *bondsAndAnglesWidget;
+    // QWidget *atomsWidget;
+    // QWidget *annotationWidget;
+    // QWidget *animationWidget;
 
     QButtonGroup *mouseModeButtonGroup;
     QButtonGroup *atomDrawingStyleButtonGroup;
@@ -142,6 +146,8 @@ private:
     QLabel *yLabel;
     QLabel *zLabel;
 
+    QSlider *animationSlider;
+    
     QString currentSaveFile;
     QMenu *fileMenu;
     QMenu *itemMenu;
