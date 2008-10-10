@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <assert.h>
 #include "mainwindow.h"
 #include "drawingdisplay.h"
 #include "drawingcanvas.h"
