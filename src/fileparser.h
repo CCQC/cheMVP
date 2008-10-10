@@ -28,6 +28,8 @@ public:
 	Molecule* molecule() {return myMoleculeList[currentGeometry];}
 
 	int numMolecules() {return myMoleculeList.size();}
+    int current() const { return currentGeometry; }
+    void setCurrent(int curr) { currentGeometry = curr; }
 	void setFileName(const QString name) {myFileName = name;}
 	
 	const QString& fileName() {return myFileName;}

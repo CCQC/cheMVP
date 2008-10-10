@@ -159,12 +159,13 @@ void MainWindow::openFile()
 
 void MainWindow::loadFile()
 {
-	
 	if (!parser->fileName().isEmpty()) {
 	    parser->readFile();
 	    canvas->clearAll();
 	    canvas->loadFromParser();
 	    setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
+        animationSlider->setRange(0, parser->numMolecules() - 1);
+        animationSlider->setValue(parser->current());
 	}
 }
 
@@ -232,6 +233,14 @@ void MainWindow::setZRotation(int phi)
 	canvas->refresh();
 }
 
+void MainWindow::setGeometryStep(int geom)
+{
+    assert(geom >= 0 && geom < parser->numMolecules());
+    parser->setCurrent(geom);
+    canvas->clearAll();
+    canvas->loadFromParser();
+    setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
+}
 
 void MainWindow::setAddArrowMode()
 {
