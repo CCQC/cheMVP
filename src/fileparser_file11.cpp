@@ -13,13 +13,6 @@ static char *atomic_labels[]=
   
 void FileParser::readFile11()
 {
-    std::ifstream infile(myFileName.toLatin1());
-    
-    if (!infile) {
-        QString errorMessage = "Unable to open " + myFileName + " for reading";
-        error(errorMessage, __FILE__, __LINE__);
-    }
-    
     std::string tempString;
     int numAtoms;
     
