@@ -26,7 +26,7 @@ release.
 
 INPUT FORMATS
 =============
-Currently, only xyz files are supported.  These take the form
+Currently, xyz files are supported.  These take the form
 
 NumberOfAtoms  [bohr or au]
 Comment Line
@@ -39,6 +39,8 @@ the optional argument after the number of atoms is only necessary if the units
 are atomic units.  Eventually the code will parse output files.  Soon it will
 be able to load from its own project files (.cvp).  MAB-ACESII (now called
 Cfour) produces a JMOL.plot file, which is readable by cheMVP.
+
+GAMESS, PSI3, and Q-Chem 3.1 optimization outputs and File11 files are able to be read by cheMVP.
 
 COMPILING
 =========

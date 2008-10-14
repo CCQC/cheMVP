@@ -18,7 +18,7 @@
 
 class FileParser
 {
-	enum FileType {XYZ, PSI3, FILE11, QCHEM3_1};
+	enum FileType {UNKNOWN, XYZ, PSI3, FILE11, QCHEM3_1, GAMESS, ACES2};
 	enum UnitsType {Angstrom, Bohr};
 
 public:
@@ -28,6 +28,8 @@ public:
 	Molecule* molecule() {return myMoleculeList[currentGeometry];}
 
 	int numMolecules() {return myMoleculeList.size();}
+    int current() const { return currentGeometry; }
+    void setCurrent(int curr) { currentGeometry = curr; }
 	void setFileName(const QString name) {myFileName = name;}
 	
 	const QString& fileName() {return myFileName;}
@@ -38,7 +40,12 @@ protected:
 	void determineFileType();
 	void readXYZ();
     void readFile11();
-
+    void readPsi3();
+    void readGamess();
+    void readACES2();
+    void readQchem31();
+        
+    std::ifstream infile;
 	FileType fileType;
 	UnitsType myUnits;
 	QString myFileName;
