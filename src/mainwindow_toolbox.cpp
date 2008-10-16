@@ -5,7 +5,7 @@ void MainWindow::createToolBox()
     QWidget *appearanceWidget 	   = createAppearanceWidget();
     QWidget *bondsAndAnglesWidget  = createBondsAndAnglesWidget();
     QWidget *atomsWidget           = createAtomsWidget();
-    QWidget *animationWidget       = createAnimationWidget();
+             animationWidget       = createAnimationWidget();
     
     toolBox = new QToolBox;
 //    toolBox->addItem(annotationWidget, tr("Annotation"));

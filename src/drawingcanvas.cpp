@@ -1,4 +1,5 @@
 #include <QtGui>
+#include <QMessageBox>
 
 #include "drawingcanvas.h"
 #include "fileparser.h"
@@ -166,6 +167,13 @@ void DrawingCanvas::setAcceptsHovers(bool arg)
 
 void DrawingCanvas::loadFromParser()
 {
+    // Do nothing if there are no molecules to display.
+    if (parser->numMolecules() == 0) {
+        // Tell the user about it.
+        QMessageBox::warning(NULL, tr("Warning"), tr("No coordinates were read in. Try again."));
+        return;
+    }
+        
 	Molecule *molecule = parser->molecule();
 	std::vector<AtomEntry*> atoms = molecule->atomsList();
 	int nAtoms = atoms.size();
