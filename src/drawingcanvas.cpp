@@ -445,10 +445,10 @@ void DrawingCanvas::performRotation()
 	  double sy = sin(phiY);
 	  double cz = cos(phiZ);
 	  double sz = sin(phiZ);
-	  
-  	  double xVal = ( cx*cy*cz*x - sy*sz*x - cy*cx*sz*y - sy*cz*y + sx*cy*z ) * drawingInfo->scaleFactor();
   	  double zVal = ( sy*cx*cz*x + cy*sz*x - sy*cx*sz*y + cy*cz*y + sx*sy*z ) * drawingInfo->scaleFactor();
-  	  double yVal = -( -cz*sx*x             + sz*sx*y              + cx*z    ) * drawingInfo->scaleFactor();
+	  double perspective = (1.0 + zVal * drawingInfo->perspective());
+  	  double xVal = perspective*( cx*cy*cz*x - sy*sz*x - cy*cx*sz*y - sy*cz*y + sx*cy*z ) * drawingInfo->scaleFactor();
+  	  double yVal = -perspective*( -cz*sx*x             + sz*sx*y              + cx*z    ) * drawingInfo->scaleFactor();
 
 	  atom->setPos(xVal + drawingInfo->dX(), yVal + drawingInfo->dY());
 	  atom->setZValue(zVal);
