@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 
+// TODO Add a warning if the current step is not the final one.
+
 void MainWindow::save()
 {
     if (currentSaveFile.isEmpty()) {
