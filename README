@@ -1,14 +1,28 @@
 ABOUT
 =====
-cheMVP is free, open-source software designed to make clean, simple molecule drawings suitable for publications and presentations.  The program is written in C++, using the QT library and some cursors from the SVG icons project.
+cheMVP is free, open-source software designed to make clean, simple molecule
+drawings suitable for publications and presentations.  The program is written
+in C++, using the QT library and some icons from the SVG icons project.
 
 OUTPUT FORMATS
 ==============
-cheMVP can generate PDF, SVG, EPS, PS, PNG and Tiff images.  The PDF, SVG and PostScript formats are recommended, as they are vector formats, which means that they are scalable and can be manipulated with software such as InkScape (free) or Adobe Illustrator (not free, but very powerful).  PNG files seem to be smaller than Tiffs, so they are probably a bit better.  The file type is determined by the extension used in the filename.  An experimental CVP format is being developed to save the project, allowing the user to save the project's state and load it again.
+cheMVP can generate PDF, SVG, EPS, PS, PNG and Tiff images.  The PDF, SVG and
+PostScript formats are recommended, as they are vector formats, which means
+that they are scalable and can be manipulated with software such as InkScape
+(free) or Adobe Illustrator (not free, but very powerful).  PNG files seem to
+be smaller than Tiffs, so they are probably a bit better.  The file type is
+determined by the extension used in the filename.  An experimental CVP format
+is being developed to save the project, allowing the user to save the project's
+state and load it again.
 
 BASIC USAGE
 ===========
-Most buttons and settings apply only to the selected items.  In select mode, clicking outside of the molecule and dragging a rectangle over molecule components will select them, or clicking individual components will select/deselect them.  To add a bond, click the "add bond" mode button, click the first atom and drag the mouse over the second atom to be bonded and release.
+Most buttons and settings apply only to the selected items.  In select mode,
+clicking outside of the molecule and dragging a rectangle over molecule
+components will select them, or clicking individual components will
+select/deselect them.  To add a bond, click the "add bond" mode button, click
+the first atom and drag the mouse over the second atom to be bonded and
+release.
 
 INPUT FORMATS
 =============
@@ -21,13 +35,17 @@ Atom2Symbol Atom2XCoordinate Atom2YCoordinate Atom2ZCoordinate
 Atom3Symbol Atom3XCoordinate Atom3YCoordinate Atom3ZCoordinate
 etc..
 
-the optional argument after the number of atoms is only necessary if the units are atomic units.  Eventually the code will parse output files.  Soon it will be able to load from its own project files (.cvp).  MAB-ACESII (now called Cfour) produces a JMOL.plot file, which is readable by cheMVP.
+the optional argument after the number of atoms is only necessary if the units
+are atomic units.  Eventually the code will parse output files.  Soon it will
+be able to load from its own project files (.cvp).  MAB-ACESII (now called
+Cfour) produces a JMOL.plot file, which is readable by cheMVP.
 
 GAMESS, PSI3, and Q-Chem 3.1 optimization outputs and File11 files are able to be read by cheMVP.
 
 COMPILING
 =========
-If you can't find a pre-compiled binary for your OS, then to compile from source is pretty simple.
+If you can't find a pre-compiled binary for your OS, then to compile from
+source is pretty simple.
 
 1) Download and install QT from http://trolltech.com/downloads/opensource/appdev
 2) Head into the compilation directory in the chemvp source folder
@@ -39,7 +57,7 @@ WARRANTY
 ========
 cheMVP - A molecule rendering program
 
-Copyright Andrew Simmonett 2008
+Copyright Andrew C. Simmonett 2008
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -54,16 +72,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Please contact me with any updates/modifications you have made, so that I can incorporate them into the code.
+Please contact me with any updates/modifications you have made, so that I can
+incorporate them into the code.
 
 
 LINKS
 =====
-A number of valuable open-source programs have been used to create this code, they are:-
+A number of valuable open-source programs have been used to create this code,
+they are:- 
 Qt (GUI library)  - http://trolltech.com
 SVG Icons (the icons)  - http://svgicons.sourceforge.net
 GIT (code synchronization) - http://git.or.cz
 
-AUTHOR
-======
+AUTHORS
+=======
 Andy Simmonett andysim@ccc.uga.edu
+Justin M. Turney jturney@ccc.uga.edu
