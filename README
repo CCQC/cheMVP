@@ -57,7 +57,7 @@ WARRANTY
 ========
 cheMVP - A molecule rendering program
 
-Copyright Andrew Simmonett 2008
+Copyright Andrew C. Simmonett 2008
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -84,6 +84,7 @@ Qt (GUI library)  - http://trolltech.com
 SVG Icons (the icons)  - http://svgicons.sourceforge.net
 GIT (code synchronization) - http://git.or.cz
 
-AUTHOR
-======
+AUTHORS
+=======
 Andy Simmonett andysim@ccc.uga.edu
+Justin M. Turney jturney@ccc.uga.edu
