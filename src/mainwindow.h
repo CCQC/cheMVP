@@ -74,7 +74,7 @@ private:
     // QWidget *bondsAndAnglesWidget;
     // QWidget *atomsWidget;
     // QWidget *annotationWidget;
-    // QWidget *animationWidget;
+    QWidget *animationWidget;
 
     QButtonGroup *mouseModeButtonGroup;
     QButtonGroup *atomDrawingStyleButtonGroup;

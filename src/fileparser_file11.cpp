@@ -58,9 +58,10 @@ void FileParser::readFile11()
         // Read in atom information
         rx.setPattern("(?:\\s*)(\\d+.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s*)");
         for (int i=0; i<numAtoms; ++i) {
-            AtomEntry *atom = new AtomEntry;
             getline(infile, tempString);
             if (rx.exactMatch(tempString.c_str()) == true) {
+                AtomEntry *atom = new AtomEntry;
+                
                 atom->Label = atomic_labels[int(rx.cap(1).toDouble())];
                 atom->x = rx.cap(2).toDouble();
                 atom->y = rx.cap(3).toDouble();
@@ -68,14 +69,15 @@ void FileParser::readFile11()
                 atom->x *= BOHR_TO_ANG;
 				atom->y *= BOHR_TO_ANG;
 				atom->z *= BOHR_TO_ANG;
+				
+				#ifdef QT_DEBUG
+                std::cout 	<< std::setw(5) << atom->Label.toStdString() 
+        			<< " " << std::setw(16) << std::setprecision(10) << atom->x 
+        			<< " " << std::setw(16) << std::setprecision(10) << atom->y 
+        			<< " " << std::setw(16) << std::setprecision(10) << atom->z << std::endl; 
+                #endif
+                molecule->addAtom(atom);
             }
-            #ifdef QT_DEBUG
-            std::cout 	<< std::setw(5) << atom->Label.toStdString() 
-    			<< " " << std::setw(16) << std::setprecision(10) << atom->x 
-    			<< " " << std::setw(16) << std::setprecision(10) << atom->y 
-    			<< " " << std::setw(16) << std::setprecision(10) << atom->z << std::endl; 
-            #endif
-            molecule->addAtom(atom);
         }
         
         for (int i=0; i<numAtoms; ++i) {

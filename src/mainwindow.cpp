@@ -165,6 +165,14 @@ void MainWindow::loadFile()
 	    canvas->clearAll();
 	    canvas->loadFromParser();
 	    setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
+	    
+	    // Enable the widgets in the animation tab if there are multiple geometries
+	    if (parser->numMolecules() <= 1)
+            animationWidget->setEnabled(false);
+        else
+            animationWidget->setEnabled(true);
+        
+        // Set the sliders range and current value.
         animationSlider->setRange(0, parser->numMolecules() - 1);
         animationSlider->setValue(parser->current());
 	}

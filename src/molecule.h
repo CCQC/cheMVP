@@ -22,9 +22,9 @@ public:
 	void setComment(QString comment) {myComment = comment;}
 	std::vector<AtomEntry*>& atomsList() {return myMolecule;}
 
+    int numAtoms() const { return myMolecule.size(); }
 private:
 	std::vector<AtomEntry*> myMolecule;
 	QString myComment;
-	int numAtoms;
 };
 #endif /*MOLECULE_H_*/
