@@ -205,6 +205,9 @@ void MainWindow::mouseModeButtonGroupClicked(int buttonID)
     if(mouseModeButtonGroup->checkedId() == DrawingCanvas::Select){
     	view->setCursor(Qt::ArrowCursor);
     }
+    if(mouseModeButtonGroup->checkedId() == DrawingCanvas::AddBond){
+    	view->setCursor(Qt::ArrowCursor);
+    }
 }
 
 
