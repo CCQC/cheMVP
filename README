@@ -36,7 +36,7 @@ Atom3Symbol Atom3XCoordinate Atom3YCoordinate Atom3ZCoordinate
 etc..
 
 the optional argument after the number of atoms is only necessary if the units
-are atomic units.  Eventually the code will parse output files.  Soon it will
+are atomic units.  Eventually the code will parse all output files.  Soon it will
 be able to load from its own project files (.cvp).  MAB-ACESII (now called
 Cfour) produces a JMOL.plot file, which is readable by cheMVP.
 

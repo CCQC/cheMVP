@@ -47,7 +47,8 @@ void FileParser::determineFileType()
                 fileType = ACES2;
                 break;
             }
-            else if (tempString.contains("Q-Chem, Version 3.1", Qt::CaseInsensitive)) {
+            else if (tempString.contains("Q-Chem, Version 3.0", Qt::CaseInsensitive)
+            		|| tempString.contains("Q-Chem, Version 3.1", Qt::CaseInsensitive)) {
                 fileType = QCHEM3_1;
                 break;
             }

@@ -67,7 +67,10 @@ void FileParser::readGamess()
             getline(infile, tempString);
             if (rx.exactMatch(tempString.c_str()) == true) {
                 AtomEntry *atom = new AtomEntry;
-                atom->Label = rx.cap(1);
+                QString symbol = rx.cap(1);
+                // GAMESS capitalizes EVERYTHING, make sure the symbol is correct
+                if(symbol.size()>1) symbol[1] = symbol[1].toLower();
+                atom->Label = symbol;
                 atom->x = rx.cap(2).toDouble();
                 atom->y = rx.cap(3).toDouble();
                 atom->z = rx.cap(4).toDouble();
