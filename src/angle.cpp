@@ -17,8 +17,9 @@
 	 setAcceptsHoverEvents(true);
 	 effectiveWidth = 0.05 * drawingInfo->scaleFactor();
 	 myPen.setWidthF(hoverOver ? 1.5*effectiveWidth : effectiveWidth); 	
-     myValue = computeValue();
-	 myLabel = new Label(Label::AngleLabelType, myValue, myLabelPrecision, drawingInfo);
+         myValue = computeValue();
+	 myLabel = new Label(Label::AngleLabelType, myValue, myLabelPrecision,
+                             drawingInfo);
 	 // Time to figure out how to make the Angle labels appear correctly
 	 myMarker1 = new AngleMarker(drawingInfo);
 	 myMarker2 = new AngleMarker(drawingInfo);
@@ -27,7 +28,6 @@
 	 myMarker1->setOtherMarker(myMarker2);
 	 myMarker2->setOtherMarker(myMarker1);
 	 updatePosition();
-
  }
 
  
