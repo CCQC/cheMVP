@@ -47,6 +47,10 @@ void FileParser::determineFileType()
                 fileType = ACES2;
                 break;
             }
+            else if (tempString.contains("Northwest Computational Chemistry Package", Qt::CaseInsensitive)) {
+                fileType = NWCHEM;
+                break;
+            }
             else if (tempString.contains("Q-Chem, Version 3.0", Qt::CaseInsensitive)
             		|| tempString.contains("Q-Chem, Version 3.1", Qt::CaseInsensitive)) {
                 fileType = QCHEM3_1;
@@ -93,6 +97,12 @@ void FileParser::readFile()
             std::cout << "Reading in Psi3." << std::endl; 
             #endif
             readPsi3();
+            break;
+        case NWCHEM:
+		    #ifdef QT_DEBUG
+            std::cout << "Reading in NWChem." << std::endl; 
+            #endif
+            readNWChem();
             break;
         case GAMESS:
             readGamess();

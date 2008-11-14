@@ -6,6 +6,7 @@
 #include <fstream>
 #include <QRegExp>
 #include <limits>
+#include <string>
 #include "molecule.h"
 #include "defines.h"
 #include "error.h"
@@ -18,7 +19,7 @@
 
 class FileParser
 {
-	enum FileType {UNKNOWN, XYZ, PSI3, FILE11, QCHEM3_1, GAMESS, ACES2};
+	enum FileType {UNKNOWN, XYZ, PSI3, FILE11, QCHEM3_1, GAMESS, ACES2, NWCHEM};
 	enum UnitsType {Angstrom, Bohr};
 
 public:
@@ -43,6 +44,7 @@ protected:
     void readPsi3();
     void readGamess();
     void readACES2();
+    void readNWChem();
     void readQchem31();
         
     std::ifstream infile;
