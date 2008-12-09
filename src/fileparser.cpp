@@ -51,6 +51,10 @@ void FileParser::determineFileType()
                 fileType = NWCHEM;
                 break;
             }
+            else if (tempString.contains("O   R   C   A", Qt::CaseInsensitive)) {
+                fileType = ORCA;
+                break;
+            }
             else if (tempString.contains("Q-Chem, Version 3.0", Qt::CaseInsensitive)
             		|| tempString.contains("Q-Chem, Version 3.1", Qt::CaseInsensitive)) {
                 fileType = QCHEM3_1;
@@ -97,6 +101,12 @@ void FileParser::readFile()
             std::cout << "Reading in Psi3." << std::endl; 
             #endif
             readPsi3();
+            break;
+        case ORCA:
+		    #ifdef QT_DEBUG
+            std::cout << "Reading in ORCA." << std::endl; 
+            #endif
+            readORCA();
             break;
         case NWCHEM:
 		    #ifdef QT_DEBUG

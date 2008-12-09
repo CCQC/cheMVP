@@ -40,7 +40,8 @@ are atomic units.  Eventually the code will parse all output files.  Soon it wil
 be able to load from its own project files (.cvp).  MAB-ACESII (now called
 Cfour) produces a JMOL.plot file, which is readable by cheMVP.
 
-GAMESS, NWChem, PSI3, and Q-Chem 3.1 optimization outputs and File11 files are able to be read by cheMVP.
+GAMESS, NWChem, ORCA, PSI3, and Q-Chem 3.1 optimization outputs and File11 files are able to be read by cheMVP.
+
 
 COMPILING
 =========

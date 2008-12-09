@@ -19,7 +19,7 @@
 
 class FileParser
 {
-	enum FileType {UNKNOWN, XYZ, PSI3, FILE11, QCHEM3_1, GAMESS, ACES2, NWCHEM};
+	enum FileType {UNKNOWN, XYZ, PSI3, FILE11, QCHEM3_1, GAMESS, ORCA, ACES2, NWCHEM};
 	enum UnitsType {Angstrom, Bohr};
 
 public:
@@ -44,6 +44,7 @@ protected:
     void readPsi3();
     void readGamess();
     void readACES2();
+    void readORCA();
     void readNWChem();
     void readQchem31();
         
