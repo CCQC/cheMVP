@@ -58,7 +58,7 @@ void FileParser::readGamess()
         getline(infile, tempString);
         getline(infile, tempString);
         
-        // qchem31 is reported in Angstroms
+        // Gamess geometry is reported in Angstroms
         myUnits = Angstrom;
         
         // Read in atom information

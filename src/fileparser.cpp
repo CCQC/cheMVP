@@ -43,6 +43,12 @@ void FileParser::determineFileType()
                 fileType = GAMESS;
                 break;
             }
+            else if (tempString.contains("PROGRAM SYSTEM MOLPRO", Qt::CaseInsensitive) ||
+                            tempString.contains("Running default procedure", Qt::CaseInsensitive)) {
+                // The log file doesn't produce a header, so I'll assume that this is always present..
+                fileType = MOLPRO;
+                break;
+            }
             else if (tempString.contains("aces2", Qt::CaseInsensitive)) {
                 fileType = ACES2;
                 break;
@@ -114,6 +120,12 @@ void FileParser::readFile()
             #endif
             readNWChem();
             break;
+        case MOLPRO:
+            #ifdef QT_DEBUG
+            std::cout << "Reading in Molpro." << std::endl; 
+            #endif
+            readMolpro();
+            break;
         case GAMESS:
             readGamess();
             break;
@@ -127,6 +139,8 @@ void FileParser::readFile()
             readQchem31();
             break;
 		default:
+	        QString errorMessage = "Unknown file type for " + myFileName;
+	        error(errorMessage, __FILE__, __LINE__);
 		    #ifdef QT_DEBUG
             std::cout << "Unknown file type." << std::endl; 
             #endif

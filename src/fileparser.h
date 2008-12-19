@@ -19,7 +19,7 @@
 
 class FileParser
 {
-	enum FileType {UNKNOWN, XYZ, PSI3, FILE11, QCHEM3_1, GAMESS, ORCA, ACES2, NWCHEM};
+	enum FileType {UNKNOWN, XYZ, PSI3, FILE11, QCHEM3_1, GAMESS, ORCA, ACES2, NWCHEM, MOLPRO};
 	enum UnitsType {Angstrom, Bohr};
 
 public:
@@ -47,6 +47,7 @@ protected:
     void readORCA();
     void readNWChem();
     void readQchem31();
+    void readMolpro();
         
     std::ifstream infile;
 	FileType fileType;
