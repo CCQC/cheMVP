@@ -45,18 +45,19 @@ public:
     void loadFromParser();
     void refresh();
     void setAtomLabels(QString text);
+    void rotateFromInitialCoordinates();
     void drawBackground(QPainter *painter, const QRectF &rect);
     const QCursor& rotateCursor() {return myRotateCursor;}
     void processProjectFile(QSettings &settings, bool saveFile);
 public slots:
-	void unselectAll();
-	void selectAll();
-	void setBackgroundOpacity(int val);
-	void setBackgroundColor();
-	void toggleBondDashing();
-	void toggleAtomNumberSubscripts();
-	void atomLabelFontChanged(const QFont &);
-	void atomLabelFontSizeChanged(const QString &);
+    void unselectAll();
+    void selectAll();
+    void setBackgroundOpacity(int val);
+    void setBackgroundColor();
+    void toggleBondDashing();
+    void toggleAtomNumberSubscripts();
+    void atomLabelFontChanged(const QFont &);
+    void atomLabelFontSizeChanged(const QString &);
     void setMode(Mode mode);
     void toggleBondLabels();
     void toggleAngleLabels();
@@ -70,7 +71,7 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void translateToCenterOfMass();
-	void focusOutEvent (QFocusEvent *event); 
+    void focusOutEvent (QFocusEvent *event);
 
 signals:
     void xRotChanged(int phi);
@@ -79,27 +80,22 @@ signals:
     void mouseModeChanged(int mode);
 
 private:
-	void getAngleInBounds180(int &phi);
-	void getAngleInBounds360(int &phi);
-    void setXRotation(int phi);
-    void setYRotation(int phi);
-    void setZRotation(int phi);
     double bondLength(Atom* atom1, Atom* atom2);
     bool isBonded(Atom* atom1, Atom* atom2);
     QList<Angle*>::iterator angleExists(Atom* atom1, Atom* atom2, Atom* atom3);
 
+    bool leftButtonDown;
     QMenu *myItemMenu;
     FileParser *parser;
     DrawingInfo *drawingInfo;
     QGraphicsItem *myTempMoveItem;
     Mode myMode;
-    bool leftButtonDown;
+    Arrow *myArrow;
     QPointF startPoint;
     QPointF lastMousePosition;
-    QGraphicsLineItem *bondline;
-    Arrow *myArrow;
-    QGraphicsRectItem *selectionRectangle;
     QPointF mouseOrigin;
+    QGraphicsLineItem *bondline;
+    QGraphicsRectItem *selectionRectangle;
     QColor myBackgroundColor;
     QCursor myMoveCursor;
     QCursor myRotateCursor;

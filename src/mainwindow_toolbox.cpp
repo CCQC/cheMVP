@@ -5,10 +5,10 @@ void MainWindow::createToolBox()
     QWidget *appearanceWidget 	   = createAppearanceWidget();
     QWidget *bondsAndAnglesWidget  = createBondsAndAnglesWidget();
     QWidget *atomsWidget           = createAtomsWidget();
-             animationWidget       = createAnimationWidget();
+    animationWidget       = createAnimationWidget();
     
     toolBox = new QToolBox;
-//    toolBox->addItem(annotationWidget, tr("Annotation"));
+    //    toolBox->addItem(annotationWidget, tr("Annotation"));
     toolBox->addItem(appearanceWidget, tr("Appearance"));
     toolBox->addItem(atomsWidget, tr("Atoms"));
     toolBox->addItem(bondsAndAnglesWidget, tr("Angles and Bonds"));
@@ -22,41 +22,32 @@ QWidget *MainWindow::createAppearanceWidget()
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
     
-    // The Orientation Sliders
-    xSlider = createSlider(180);
-    ySlider = createSlider(360);
-    zSlider = createSlider(360);
-
-    QLabel *xTitle = new QLabel(QChar((ushort)0x03B8));
-    QLabel *yTitle = new QLabel(QChar((ushort)0x03D5));
-    QLabel *zTitle = new QLabel(QChar((ushort)0x03C7));
-    xLabel = new QLabel();
-    yLabel = new QLabel();
-    zLabel = new QLabel();
-    setXRotation(0);
-    setYRotation(0);
-    setZRotation(0);
-
-    connect(xSlider, SIGNAL(valueChanged(int)), this, SLOT(setXRotation(int)));
-    connect(ySlider, SIGNAL(valueChanged(int)), this, SLOT(setYRotation(int)));
-    connect(zSlider, SIGNAL(valueChanged(int)), this, SLOT(setZRotation(int)));
-    connect(canvas,   SIGNAL(xRotChanged(int)), this, SLOT(setXRotation(int)));
-    connect(canvas,   SIGNAL(yRotChanged(int)), this, SLOT(setYRotation(int)));
-    connect(canvas,   SIGNAL(zRotChanged(int)), this, SLOT(setZRotation(int)));
-   
+    // The Orientation Box
     QGroupBox *rotationGroupBox = new QGroupBox(tr("Rotation"));
-    QGridLayout *sliderLayout = new QGridLayout;
-    sliderLayout->addWidget(xTitle,  0, 0);
-    sliderLayout->addWidget(yTitle,  1, 0);
-    sliderLayout->addWidget(zTitle,  2, 0);
-    sliderLayout->addWidget(xSlider, 0, 1);
-    sliderLayout->addWidget(ySlider, 1, 1);
-    sliderLayout->addWidget(zSlider, 2, 1);
-    sliderLayout->addWidget(xLabel,  0, 2);
-    sliderLayout->addWidget(yLabel,  1, 2);
-    sliderLayout->addWidget(zLabel,  2, 2);
-    sliderLayout->setColumnMinimumWidth(2,32);
-    rotationGroupBox->setLayout(sliderLayout);
+    QGridLayout *rotationLayout = new QGridLayout;
+    QValidator *intValidator = new QIntValidator(0, 360, this);
+    xRotationBox = new QLineEdit("0");
+    yRotationBox = new QLineEdit("0");
+    zRotationBox = new QLineEdit("0");
+    xRotationBox->setValidator(intValidator);
+    yRotationBox->setValidator(intValidator);
+    zRotationBox->setValidator(intValidator);
+    xRotationBox->setToolTip(tr("Type in an angle (in degrees) to rotate the molecule from its initial orientation"));
+    yRotationBox->setToolTip(tr("Type in an angle (in degrees) to rotate the molecule from its initial orientation"));
+    zRotationBox->setToolTip(tr("Type in an angle (in degrees) to rotate the molecule from its initial orientation"));
+    connect(xRotationBox, SIGNAL(textChanged(const QString&)), this, SLOT(rotateFromInitialCoordinates()));
+    connect(yRotationBox, SIGNAL(textChanged(const QString&)), this, SLOT(rotateFromInitialCoordinates()));
+    connect(zRotationBox, SIGNAL(textChanged(const QString&)), this, SLOT(rotateFromInitialCoordinates()));
+    xLabel = new QLabel("X:");
+    yLabel = new QLabel("Y:");
+    zLabel = new QLabel("Z:");
+    rotationLayout->addWidget(xLabel,0,0);
+    rotationLayout->addWidget(xRotationBox,0,1);
+    rotationLayout->addWidget(yLabel,0,2);
+    rotationLayout->addWidget(yRotationBox,0,3);
+    rotationLayout->addWidget(zLabel,0,4);
+    rotationLayout->addWidget(zRotationBox,0,5);
+    rotationGroupBox->setLayout(rotationLayout);
     layout->addWidget(rotationGroupBox);
 
     QGroupBox *backgroundColorGroupBox = new QGroupBox(tr("Background"));
@@ -159,7 +150,7 @@ QWidget *MainWindow::createBondsAndAnglesWidget()
     toggleBondDashingButton->setToolTip(tr("Toggle dashed / solid bonds for the selected bonds"));
     bondSizeLayout->addWidget(toggleBondDashingButton, 0, 0, 1, 2);
     connect(toggleBondDashingButton, SIGNAL(pressed()),
-                canvas, SLOT(toggleBondDashing()));
+            canvas, SLOT(toggleBondDashing()));
     // The bond thickness
     QLabel *bondSizeLabel       = new QLabel("Bond thickness = ");
     bondSizeSpinBox             = new QDoubleSpinBox();
@@ -252,12 +243,12 @@ QWidget *MainWindow::createAtomsWidget()
     toggleAtomNumberSubscriptsButton->setToolTip(tr("Add/remove atom numbers as a subscript to the selected atoms"));
     labelStyleLayout->addWidget(toggleAtomNumberSubscriptsButton, 0, 0, 1, 2);
     connect(toggleAtomNumberSubscriptsButton, SIGNAL(pressed()),
-                canvas, SLOT(toggleAtomNumberSubscripts()));
+            canvas, SLOT(toggleAtomNumberSubscripts()));
     // The label text
     atomLabelInput = new QLineEdit;
-	atomLabelInput->setText(tr("Select Atoms"));
-	atomLabelInput->setToolTip(tr("Text entered here will be used as the label for the selected atom(s).  Anything appended after an underscore will be used as a subscript, anything after a carat is a superscript"));
-//    atomLabelInput->setFocusPolicy(Qt::NoFocus);
+    atomLabelInput->setText(tr("Select Atoms"));
+    atomLabelInput->setToolTip(tr("Text entered here will be used as the label for the selected atom(s).  Anything appended after an underscore will be used as a subscript, anything after a carat is a superscript"));
+    //    atomLabelInput->setFocusPolicy(Qt::NoFocus);
     labelStyleLayout->addWidget(atomLabelInput, 1, 0, 1, 2);
     connect(atomLabelInput, SIGNAL(returnPressed()), this, SLOT(setAtomLabels()));
     // The label font
@@ -273,7 +264,7 @@ QWidget *MainWindow::createAtomsWidget()
     atomLabelFontSizeCombo->setEditable(true);
     atomLabelFontSizeCombo->setToolTip(tr("The font size for the selected atoms"));
     for (int i = 4; i < 35; ++i){
-      atomLabelFontSizeCombo->addItem(QString().setNum(i));
+        atomLabelFontSizeCombo->addItem(QString().setNum(i));
     }
     atomLabelFontSizeCombo->setEditText(tr("Select Atoms"));
     atomLabelFontSizeCombo->setFocusPolicy(Qt::NoFocus);
@@ -290,7 +281,7 @@ QWidget *MainWindow::createAtomsWidget()
     labelStyleLayout->addWidget(smallLabelAtomDrawingButton, 4, 0);
     labelStyleLayout->addWidget(largeLabelAtomDrawingButton, 4, 1);
     connect(atomFontSizeButtonGroup, SIGNAL(buttonClicked(int)),
-                 canvas, SLOT(setAtomFontSizeStyle(int)));
+            canvas, SLOT(setAtomFontSizeStyle(int)));
 
     
     labelStyleBox->setLayout(labelStyleLayout);
@@ -307,5 +298,5 @@ QSlider *MainWindow::createSlider(int max)
     slider->setRange(0, max);
     slider->setSingleStep(1);
     slider->setPageStep(15);
-    return slider;		
+    return slider;
 }

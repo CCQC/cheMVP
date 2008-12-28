@@ -9,13 +9,13 @@
 #include "defines.h"
 
 MainWindow::MainWindow(FileParser *parser_in):
-	parser(parser_in)
+        parser(parser_in)
 {
     undoStack = new QUndoStack();
     drawingInfo = new DrawingInfo();
     canvas = new DrawingCanvas(itemMenu, drawingInfo, parser);
-	// Selecting items causes an update of the menus to reflect the current
-	// selected items' settings
+    // Selecting items causes an update of the menus to reflect the current
+    // selected items' settings
     connect(canvas, SIGNAL(selectionChanged()), this, SLOT(updateMenus()));
 
     createActions();
@@ -34,12 +34,12 @@ MainWindow::MainWindow(FileParser *parser_in):
     toolBox->setGeometry(0, 0, DEFAULT_TOOLBOX_WIDTH, DEFAULT_SCENE_SIZE_Y);
     toolBox->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
-	drawingInfo->setHeight(view->sceneRect().height());
-	drawingInfo->setWidth(view->sceneRect().width());
-	drawingInfo->determineScaleFactor();
-	canvas->setSceneRect(view->sceneRect());
-	canvas->refresh();
-	
+    drawingInfo->setHeight(view->sceneRect().height());
+    drawingInfo->setWidth(view->sceneRect().width());
+    drawingInfo->determineScaleFactor();
+    canvas->setSceneRect(view->sceneRect());
+    canvas->refresh();
+
     QSplitter *splitter = new QSplitter(Qt::Horizontal);
     splitter->addWidget(view);
     splitter->addWidget(toolBox);
@@ -59,115 +59,115 @@ MainWindow::MainWindow(FileParser *parser_in):
 
 void MainWindow::saveAndExit()
 {
-	if(currentSaveFile.size()){
-		std::cout<<"Saving file..."<<currentSaveFile.toStdString()<<std::endl;
-		save();
-		exit(0);
-	}
+    if(currentSaveFile.size()){
+        std::cout<<"Saving file..."<<currentSaveFile.toStdString()<<std::endl;
+        save();
+        exit(0);
+    }
 }
 
 void MainWindow::focusOutEvent(QFocusEvent *event)
 {
-	std::cout<<"Main window focus out"<<std::endl;
-	if(event->reason() != Qt::TabFocusReason){
-		QMainWindow::focusOutEvent(event);
-	}else{
-	    QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
-	    QMainWindow::keyPressEvent(newEvent);
-	}
+    std::cout<<"Main window focus out"<<std::endl;
+    if(event->reason() != Qt::TabFocusReason){
+        QMainWindow::focusOutEvent(event);
+    }else{
+        QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
+        QMainWindow::keyPressEvent(newEvent);
+    }
 }
 
 
 void MainWindow::insertTextAtCursor(QAction *action)
 {
-	foreach(QGraphicsItem* item,canvas->items()){
-		if(ITEM_IS_LABEL){
-			Label *label = dynamic_cast<Label*>(item);
-			if(label->textInteractionFlags() & Qt::TextEditorInteraction){
-				QTextCursor cursor = label->textCursor();
-				cursor.insertText(action->iconText());
-			}
-		}
-	}	
-	update();
+    foreach(QGraphicsItem* item,canvas->items()){
+        if(ITEM_IS_LABEL){
+            Label *label = dynamic_cast<Label*>(item);
+            if(label->textInteractionFlags() & Qt::TextEditorInteraction){
+                QTextCursor cursor = label->textCursor();
+                cursor.insertText(action->iconText());
+            }
+        }
+    }
+    update();
 }
 
 
 void MainWindow::setTextBoxFonts()
 {
-	// Start by looking to see if one of the labels is being edited
-	bool hasLabel = false;
-	Label *labelBeingEdited = 0;
-	foreach(QGraphicsItem* item, canvas->items()){
-		if(ITEM_IS_LABEL){
-			hasLabel = true;
-			Label *label = dynamic_cast<Label*>(item);
-			if(label->textInteractionFlags() & Qt::TextEditorInteraction){
-				labelBeingEdited = label;
-				break;
-			}
-		}
-	}
-	
-	// Nothing to edit - bail now
-	if(!hasLabel) return;
-	
-	if(labelBeingEdited!=0){
-		// One of the labels is being edited - operate only on this selection
-		QTextCursor cursor = labelBeingEdited->textCursor();
-		QTextCharFormat format(cursor.blockCharFormat());
-		format.setFontWeight((boldTextButton->isChecked() ? QFont::Bold : QFont::Normal));
-		format.setFontItalic(italicTextButton->isChecked());
-		format.setFontUnderline((underlineTextButton->isChecked() ?
-				                 QTextCharFormat::SingleUnderline : QTextCharFormat::NoUnderline));
-		format.setFontFamily(textFontCombo->currentFont().family());
-	    cursor.mergeCharFormat(format);
-	    // TODO This will change the entire label's size.  Think about allowing different sizes within labels.
-		if(textFontSizeCombo->currentText().size()){
-			labelBeingEdited->setFontSize(textFontSizeCombo->currentText().toInt());
-		}
-	}else{
-		// No editor - operate on selected text boxes
-		foreach(QGraphicsItem* item,canvas->items()){
-			if(ITEM_IS_LABEL){
-				Label *label = dynamic_cast<Label*>(item);	
-				if(label->isSelected()){
-					QFont myFont(label->font());
-					myFont.setUnderline(underlineTextButton->isChecked());
-					myFont.setItalic(italicTextButton->isChecked());
-					myFont.setWeight((boldTextButton->isChecked() ? QFont::Bold : QFont::Normal));
-					myFont.setFamily(textFontCombo->currentFont().family());
-					if(textFontSizeCombo->currentText().size()){
-						label->setFontSize(textFontSizeCombo->currentText().toInt());
-					}
-					label->setFont(myFont);
-				}
-			}
-		}		
-	}
-	drawingInfo->determineScaleFactor();
-	canvas->refresh();
+    // Start by looking to see if one of the labels is being edited
+    bool hasLabel = false;
+    Label *labelBeingEdited = 0;
+    foreach(QGraphicsItem* item, canvas->items()){
+        if(ITEM_IS_LABEL){
+            hasLabel = true;
+            Label *label = dynamic_cast<Label*>(item);
+            if(label->textInteractionFlags() & Qt::TextEditorInteraction){
+                labelBeingEdited = label;
+                break;
+            }
+        }
+    }
+
+    // Nothing to edit - bail now
+    if(!hasLabel) return;
+
+    if(labelBeingEdited!=0){
+        // One of the labels is being edited - operate only on this selection
+        QTextCursor cursor = labelBeingEdited->textCursor();
+        QTextCharFormat format(cursor.blockCharFormat());
+        format.setFontWeight((boldTextButton->isChecked() ? QFont::Bold : QFont::Normal));
+        format.setFontItalic(italicTextButton->isChecked());
+        format.setFontUnderline((underlineTextButton->isChecked() ?
+                                 QTextCharFormat::SingleUnderline : QTextCharFormat::NoUnderline));
+        format.setFontFamily(textFontCombo->currentFont().family());
+        cursor.mergeCharFormat(format);
+        // TODO This will change the entire label's size.  Think about allowing different sizes within labels.
+        if(textFontSizeCombo->currentText().size()){
+            labelBeingEdited->setFontSize(textFontSizeCombo->currentText().toInt());
+        }
+    }else{
+        // No editor - operate on selected text boxes
+        foreach(QGraphicsItem* item,canvas->items()){
+            if(ITEM_IS_LABEL){
+                Label *label = dynamic_cast<Label*>(item);
+                if(label->isSelected()){
+                    QFont myFont(label->font());
+                    myFont.setUnderline(underlineTextButton->isChecked());
+                    myFont.setItalic(italicTextButton->isChecked());
+                    myFont.setWeight((boldTextButton->isChecked() ? QFont::Bold : QFont::Normal));
+                    myFont.setFamily(textFontCombo->currentFont().family());
+                    if(textFontSizeCombo->currentText().size()){
+                        label->setFontSize(textFontSizeCombo->currentText().toInt());
+                    }
+                    label->setFont(myFont);
+                }
+            }
+        }
+    }
+    drawingInfo->determineScaleFactor();
+    canvas->refresh();
 }
 
 
 void MainWindow::openFile()
 {
-     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"));
-   	 parser->setFileName(fileName);
-     loadFile();
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"));
+    parser->setFileName(fileName);
+    loadFile();
 }
 
 
 void MainWindow::loadFile()
 {
-	if (!parser->fileName().isEmpty()) {
-	    parser->readFile();
-	    canvas->clearAll();
-	    canvas->loadFromParser();
-	    setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
-	    
-	    // Enable the widgets in the animation tab if there are multiple geometries
-	    if (parser->numMolecules() <= 1)
+    if (!parser->fileName().isEmpty()) {
+        parser->readFile();
+        canvas->clearAll();
+        canvas->loadFromParser();
+        setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
+
+        // Enable the widgets in the animation tab if there are multiple geometries
+        if (parser->numMolecules() <= 1)
             animationWidget->setEnabled(false);
         else
             animationWidget->setEnabled(true);
@@ -175,74 +175,56 @@ void MainWindow::loadFile()
         // Set the sliders range and current value.
         animationSlider->setRange(0, parser->numMolecules() - 1);
         animationSlider->setValue(parser->current());
-	}
+    }
 }
 
 
 void MainWindow::deleteItem()
 {
-	 if (canvas->selectedItems().isEmpty())
-	     return;
-	
-	 QUndoCommand *removeItemCommand = new RemoveItemCommand(canvas);
-	 undoStack->push(removeItemCommand);
+    if (canvas->selectedItems().isEmpty())
+        return;
+
+    QUndoCommand *removeItemCommand = new RemoveItemCommand(canvas);
+    undoStack->push(removeItemCommand);
+}
+
+
+void MainWindow::rotateFromInitialCoordinates()
+{
+    drawingInfo->setXRot(xRotationBox->text().toDouble());
+    drawingInfo->setYRot(yRotationBox->text().toDouble());
+    drawingInfo->setZRot(zRotationBox->text().toDouble());
+    canvas->rotateFromInitialCoordinates();
 }
 
 
 void MainWindow::mouseModeButtonGroupClicked(int buttonID)
 {
-	// This is just in case the mode was changed automatically by the canvas
-	foreach(QAbstractButton *button, mouseModeButtonGroup->buttons()){
-		if(mouseModeButtonGroup->id(button) == buttonID){
-			button->setChecked(true);
-		}
-	}
-	
+    // This is just in case the mode was changed automatically by the canvas
+    foreach(QAbstractButton *button, mouseModeButtonGroup->buttons()){
+        if(mouseModeButtonGroup->id(button) == buttonID){
+            button->setChecked(true);
+        }
+    }
+
     canvas->setMode(DrawingCanvas::Mode(mouseModeButtonGroup->checkedId()));
     if(mouseModeButtonGroup->checkedId() == DrawingCanvas::Rotate){
-    	canvas->setAcceptsHovers(false);
+        canvas->setAcceptsHovers(false);
     }else{
-    	canvas->setAcceptsHovers(true);
+        canvas->setAcceptsHovers(true);
     }
     if(mouseModeButtonGroup->checkedId() == DrawingCanvas::Rotate){
-    	view->setCursor(canvas->rotateCursor());
+        view->setCursor(canvas->rotateCursor());
     }
     if(mouseModeButtonGroup->checkedId() == DrawingCanvas::AddText){
-    	view->setCursor(Qt::IBeamCursor);
+        view->setCursor(Qt::IBeamCursor);
     }
     if(mouseModeButtonGroup->checkedId() == DrawingCanvas::Select){
-    	view->setCursor(Qt::ArrowCursor);
+        view->setCursor(Qt::ArrowCursor);
     }
     if(mouseModeButtonGroup->checkedId() == DrawingCanvas::AddBond){
-    	view->setCursor(Qt::ArrowCursor);
+        view->setCursor(Qt::ArrowCursor);
     }
-}
-
-
-void MainWindow::setXRotation(int phi)
-{
-	xLabel->setText(QString::number(phi));
-	xSlider->setValue(phi);
-	drawingInfo->setXRot(phi);
-	canvas->refresh();
-}
-
-
-void MainWindow::setYRotation(int phi)
-{
-	yLabel->setText(QString::number(phi));	
-	ySlider->setValue(phi);
-	drawingInfo->setYRot(phi);
-	canvas->refresh();
-}
-
-
-void MainWindow::setZRotation(int phi)
-{
-	zLabel->setText(QString::number(phi));	
-	zSlider->setValue(phi);
-	drawingInfo->setZRot(phi);
-	canvas->refresh();
 }
 
 void MainWindow::setGeometryStep(int geom)
@@ -256,7 +238,7 @@ void MainWindow::setGeometryStep(int geom)
 
 void MainWindow::setAddArrowMode()
 {
-  mouseModeButtonGroupClicked((int) DrawingCanvas::AddArrow);
+    mouseModeButtonGroupClicked((int) DrawingCanvas::AddArrow);
 }
 
 
@@ -296,47 +278,47 @@ void MainWindow::createMenus()
 
 void MainWindow::setAtomLabels()
 {
-	canvas->setAtomLabels(atomLabelInput->text());
+    canvas->setAtomLabels(atomLabelInput->text());
 }
 
 
 void MainWindow::changeAtomSize()
 {
-	if(atomSizeSpinBox->value() == atomSizeSpinBox->minimum()) return;
+    if(atomSizeSpinBox->value() == atomSizeSpinBox->minimum()) return;
 
-	if(atomSizeSpinBox->specialValueText().size()){
-		atomSizeSpinBox->setSpecialValueText(tr(""));
-		atomSizeSpinBox->setValue(DEFAULT_ATOM_SCALE_FACTOR);
-	}else{
-		QGraphicsItem *item;
-		foreach(item, canvas->selectedItems()){
-			if(item->type() == Atom::Type){
-				Atom *atom = dynamic_cast<Atom*>(item);
-				atom->setScaleFactor(atomSizeSpinBox->value()); 
-			}
-		}
-		canvas->refresh();
-	}	
+    if(atomSizeSpinBox->specialValueText().size()){
+        atomSizeSpinBox->setSpecialValueText(tr(""));
+        atomSizeSpinBox->setValue(DEFAULT_ATOM_SCALE_FACTOR);
+    }else{
+        QGraphicsItem *item;
+        foreach(item, canvas->selectedItems()){
+            if(item->type() == Atom::Type){
+                Atom *atom = dynamic_cast<Atom*>(item);
+                atom->setScaleFactor(atomSizeSpinBox->value());
+            }
+        }
+        canvas->refresh();
+    }
 }
 
 
 void MainWindow::changeBondSize()
 {
-	if(bondSizeSpinBox->value() == bondSizeSpinBox->minimum()) return;
+    if(bondSizeSpinBox->value() == bondSizeSpinBox->minimum()) return;
 
-	if(bondSizeSpinBox->specialValueText().size()){
-		bondSizeSpinBox->setSpecialValueText(tr(""));
-		bondSizeSpinBox->setValue(DEFAULT_BOND_THICKNESS);
-	}else{
-		QGraphicsItem *item;
-		foreach(item, canvas->selectedItems()){
-			if(item->type() == Bond::Type){
-				Bond *bond = dynamic_cast<Bond*>(item);
-				bond->setThickness(bondSizeSpinBox->value()); 
-			}
-		}
-		canvas->refresh();
-	}	
+    if(bondSizeSpinBox->specialValueText().size()){
+        bondSizeSpinBox->setSpecialValueText(tr(""));
+        bondSizeSpinBox->setValue(DEFAULT_BOND_THICKNESS);
+    }else{
+        QGraphicsItem *item;
+        foreach(item, canvas->selectedItems()){
+            if(item->type() == Bond::Type){
+                Bond *bond = dynamic_cast<Bond*>(item);
+                bond->setThickness(bondSizeSpinBox->value());
+            }
+        }
+        canvas->refresh();
+    }
 }
 
 void MainWindow::changeZoom(int val)

@@ -9,13 +9,13 @@
 #include "defines.h"
 
 DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_parser, QObject *parent):
-    QGraphicsScene(parent),
-    drawingInfo(info),
-    myBackgroundColor(Qt::white),
-    myBackgroundAlpha(0),
-    myMoveCursor(QPixmap(":/images/cursor_move.png")),
-    myRotateCursor(QPixmap(":/images/cursor_rotate.png")),
-    parser(in_parser)
+        QGraphicsScene(parent),
+        drawingInfo(info),
+        myBackgroundColor(Qt::white),
+        myBackgroundAlpha(0),
+        myMoveCursor(QPixmap(":/images/cursor_move.png")),
+        myRotateCursor(QPixmap(":/images/cursor_rotate.png")),
+        parser(in_parser)
 {
     myItemMenu 			= itemMenu;
     myMode 				= Select;
@@ -29,42 +29,42 @@ DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_
 
     //If the user provided a filename from the command line, there's a molecule in the parser
     if(parser->numMolecules()){
-    	loadFromParser();
+        loadFromParser();
     }
 }
 
 
 void DrawingCanvas::focusOutEvent(QFocusEvent *event)
 {
-	std::cout<<"Drawing canvas focus out"<<std::endl;
-	if(event->reason() != Qt::TabFocusReason){
-		QGraphicsScene::focusOutEvent(event);
-	}else{
-	    QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
-	    QGraphicsScene::keyPressEvent(newEvent);
-	}
+    std::cout<<"Drawing canvas focus out"<<std::endl;
+    if(event->reason() != Qt::TabFocusReason){
+        QGraphicsScene::focusOutEvent(event);
+    }else{
+        QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
+        QGraphicsScene::keyPressEvent(newEvent);
+    }
 }
 
 
 void DrawingCanvas::drawBackground(QPainter *painter, const QRectF &rect)
 {
-	if(myBackgroundColor.alpha() == 0) return;
-	painter->setBrush(myBackgroundColor);
-	painter->drawRect(sceneRect());
+    if(myBackgroundColor.alpha() == 0) return;
+    painter->setBrush(myBackgroundColor);
+    painter->drawRect(sceneRect());
 }
 
 
 void DrawingCanvas::clearAll()
 {
-	foreach(QGraphicsItem *item, items()){
-		removeItem(item);
-		delete item;
-	}
-	atomsList.clear();
-	bondsList.clear();
-	anglesList.clear();
-	arrowsList.clear();
-	textLabelsList.clear();
+    foreach(QGraphicsItem *item, items()){
+        removeItem(item);
+        delete item;
+    }
+    atomsList.clear();
+    bondsList.clear();
+    anglesList.clear();
+    arrowsList.clear();
+    textLabelsList.clear();
 }
 
 
@@ -73,12 +73,12 @@ void DrawingCanvas::unselectAll()
     foreach(QGraphicsItem *item, items()) {
         item->setSelected(false);
         if(ITEM_IS_LABEL){
-        	Label *label = dynamic_cast<Label*>(item);
+            Label *label = dynamic_cast<Label*>(item);
             QTextCursor cursor = label->textCursor();
             cursor.clearSelection();
             label->setTextCursor(cursor);
-        	label->setTextInteractionFlags(Qt::NoTextInteraction);
-        	label->clearFocus();
+            label->setTextInteractionFlags(Qt::NoTextInteraction);
+            label->clearFocus();
         }
     }    
     update();
@@ -96,72 +96,72 @@ void DrawingCanvas::selectAll()
 
 void DrawingCanvas::setBondLabelPrecision(int val)
 {
-	foreach(Bond *bond, bondsList){
-		bond->setLabelPrecision(val);
-	}
-	update();
+    foreach(Bond *bond, bondsList){
+        bond->setLabelPrecision(val);
+    }
+    update();
 }
 
 
 void DrawingCanvas::setAngleLabelPrecision(int val)
 {
-	foreach(Angle *angle, anglesList){
-		angle->setLabelPrecision(val);
-	}
-	update();
+    foreach(Angle *angle, anglesList){
+        angle->setLabelPrecision(val);
+    }
+    update();
 }
 
 
 void DrawingCanvas::setAtomLabels(QString text)
 {
-	foreach(Atom *atom, atomsList)
-	{
-		if(atom->isSelected()){
-			atom->setLabel(text);
-		}
-	}
-	update();
+    foreach(Atom *atom, atomsList)
+    {
+        if(atom->isSelected()){
+            atom->setLabel(text);
+        }
+    }
+    update();
 }
 
 
 void DrawingCanvas::setAtomDrawingStyle(int style)
 {
-	foreach(Atom *atom, atomsList){
-		atom->setDrawingStyle(Atom::DrawingStyle(style));
-	}
-	update();
+    foreach(Atom *atom, atomsList){
+        atom->setDrawingStyle(Atom::DrawingStyle(style));
+    }
+    update();
 }
 
 
 void DrawingCanvas::setAtomFontSizeStyle(int style)
 {
-	foreach(Atom *atom, atomsList){
-		atom->setFontSizeStyle(Atom::FontSizeStyle(style));
-	}
-	update();
+    foreach(Atom *atom, atomsList){
+        atom->setFontSizeStyle(Atom::FontSizeStyle(style));
+    }
+    update();
 }
 
 
 double DrawingCanvas::bondLength(Atom* atom1, Atom* atom2)
 {
-	  return(sqrt(	pow(atom1->x()-atom2->x(),2.0)+
-			  		pow(atom1->y()-atom2->y(),2.0)+
-			  		pow(atom1->z()-atom2->z(),2.0)));
+    return(sqrt(	pow(atom1->x()-atom2->x(),2.0)+
+                        pow(atom1->y()-atom2->y(),2.0)+
+                        pow(atom1->z()-atom2->z(),2.0)));
 }
 
 
 void DrawingCanvas::setAcceptsHovers(bool arg)
 {
-	foreach(Atom *atom, atomsList){
-		atom->setAcceptsHovers(arg);
-	}
-	foreach(Bond *bond, bondsList){
-		bond->setAcceptsHovers(arg);
-	}
-	foreach(Arrow *arrow, arrowsList){
-		arrow->setAcceptsHovers(arg);
-	}
-	// TODO angles, labels, arrows...
+    foreach(Atom *atom, atomsList){
+        atom->setAcceptsHovers(arg);
+    }
+    foreach(Bond *bond, bondsList){
+        bond->setAcceptsHovers(arg);
+    }
+    foreach(Arrow *arrow, arrowsList){
+        arrow->setAcceptsHovers(arg);
+    }
+    // TODO angles, labels, arrows...
 }
 
 
@@ -173,77 +173,95 @@ void DrawingCanvas::loadFromParser()
         QMessageBox::warning(NULL, tr("Warning"), tr("No coordinates were read in. Try again."));
         return;
     }
-        
-	Molecule *molecule = parser->molecule();
-	std::vector<AtomEntry*> atoms = molecule->atomsList();
-	int nAtoms = atoms.size();
-	// First add the Atoms
-	for(int i = 0; i < nAtoms; ++i){
-		Atom* atom = new Atom(atoms[i]->Label, drawingInfo);
-		atom->setX(atoms[i]->x);
-		atom->setY(atoms[i]->y);
-		atom->setZ(atoms[i]->z);
-		atom->setID(i+1);
-		addItem(atom);
-		atomsList.push_back(atom);
-	}
 
-	// Once we've found the center of mass, we know the molecule extents
-	translateToCenterOfMass();
-	
-	// Having determined the size and scale factor, update the radii and label sizes 
-	foreach(Atom *atom, atomsList){
-		atom->computeRadius();
-		atom->setLabelFontSize(DEFAULT_ATOM_LABEL_FONT_SIZE);
-		atom->setLabelFont(DEFAULT_ATOM_LABEL_FONT);
-	}
+    Molecule *molecule = parser->molecule();
+    std::vector<AtomEntry*> atoms = molecule->atomsList();
+    int nAtoms = atoms.size();
+    // First add the Atoms
+    for(int i = 0; i < nAtoms; ++i){
+        Atom* atom = new Atom(atoms[i]->Label, drawingInfo);
+        atom->setX(atoms[i]->x);
+        atom->setY(atoms[i]->y);
+        atom->setZ(atoms[i]->z);
+        atom->setID(i+1);
+        addItem(atom);
+        atomsList.push_back(atom);
+    }
 
-	// Now add the Bonds
-	double cutoffScale = 1.2;
-	for(int atom1 = 0; atom1 < nAtoms; ++atom1){
-	  for(int atom2 = 0; atom2 < atom1; ++atom2){
-		if(bondLength(atomsList[atom1],atomsList[atom2])<
-	      (atomsList[atom1]->radius()+atomsList[atom2]->radius())*cutoffScale){
-	       Bond* bond = new Bond(atomsList[atom1], atomsList[atom2], drawingInfo);
-	       addItem(bond);
-	       bondsList.push_back(bond);
-		}
-	  }
-	}	
-	performRotation();
-	refresh();
+    // Once we've found the center of mass, we know the molecule extents
+    translateToCenterOfMass();
+
+    // Having determined the size and scale factor, update the radii and label sizes
+    foreach(Atom *atom, atomsList){
+        atom->computeRadius();
+        atom->setLabelFontSize(DEFAULT_ATOM_LABEL_FONT_SIZE);
+        atom->setLabelFont(DEFAULT_ATOM_LABEL_FONT);
+    }
+
+    // Now add the Bonds
+    double cutoffScale = 1.2;
+    for(int atom1 = 0; atom1 < nAtoms; ++atom1){
+        for(int atom2 = 0; atom2 < atom1; ++atom2){
+            if(bondLength(atomsList[atom1],atomsList[atom2])<
+               (atomsList[atom1]->radius()+atomsList[atom2]->radius())*cutoffScale){
+                Bond* bond = new Bond(atomsList[atom1], atomsList[atom2], drawingInfo);
+                addItem(bond);
+                bondsList.push_back(bond);
+            }
+        }
+    }
+    refresh();
+}
+
+
+void DrawingCanvas::rotateFromInitialCoordinates()
+{
+    // This function just updates the coordinates back to the input orientation
+    // before rotating by the angles stored in drawinginfo
+    Molecule *molecule = parser->molecule();
+    std::vector<AtomEntry*> atoms = molecule->atomsList();
+    int nAtoms = atoms.size();
+    // Restore the input orientation
+    for(int i = 0; i < nAtoms; ++i){
+        atomsList[i]->setX(atoms[i]->x);
+        atomsList[i]->setY(atoms[i]->y);
+        atomsList[i]->setZ(atoms[i]->z);
+    }
+    // Once we've found the center of mass, we know the molecule extents
+    translateToCenterOfMass();
+    refresh();
 }
 
 
 void DrawingCanvas::updateBonds()
 {
-	foreach(Bond *bond, bondsList){
-		bond->updatePosition();
-	}
+    foreach(Bond *bond, bondsList){
+        bond->updatePosition();
+    }
 }
 
 
 void DrawingCanvas::updateTextLabels()
 {
-	foreach(Label *label, textLabelsList){
-		label->setPos(drawingInfo->dX()+label->dX(), drawingInfo->dY()+label->dY());
-	}
+    foreach(Label *label, textLabelsList){
+        label->setPos(drawingInfo->dX()+label->dX(), drawingInfo->dY()+label->dY());
+    }
 }
 
 
 void DrawingCanvas::updateAngles()
 {
-	foreach(Angle *angle, anglesList){
-		angle->updatePosition();
-	}
+    foreach(Angle *angle, anglesList){
+        angle->updatePosition();
+    }
 }
 
 
 void DrawingCanvas::updateArrows()
 {
-	foreach(Arrow *arrow, arrowsList){
-		arrow->updatePosition();
-	}
+    foreach(Arrow *arrow, arrowsList){
+        arrow->updatePosition();
+    }
 }
 
 
@@ -255,328 +273,286 @@ void DrawingCanvas::setMode(Mode mode)
 
 void DrawingCanvas::atomLabelFontChanged(const QFont &font)
 {
-	foreach(Atom *atom, atomsList){
-		if(atom->isSelected()){
-			atom->setLabelFont(font.family());
-		}
-	}
-	update();
+    foreach(Atom *atom, atomsList){
+        if(atom->isSelected()){
+            atom->setLabelFont(font.family());
+        }
+    }
+    update();
 }
 
 
 void DrawingCanvas::toggleAtomNumberSubscripts()
 {
-	foreach(Atom *atom, atomsList){
-		if(!atom->isSelected()) continue;
-		if(atom->symbol() == "H"){
-			// This is a hydrogen - default behavior is to not use subscripts
-			if(atom->label().isEmpty()){
-				atom->setLabel(QString::number(atom->ID()));
-			}else{
-				atom->setLabel(QString());
-			}
-		}else{
-			// This is not a hydrogen - default behavior is to use subscripts
-			if(atom->labelHasSubscript()){
-				atom->setLabelSubscript(QString());
-			}else{
-				atom->setLabelSubscript(QString::number(atom->ID()));
-			}			
-		}	
-	}
-	update();
+    foreach(Atom *atom, atomsList){
+        if(!atom->isSelected()) continue;
+        if(atom->symbol() == "H"){
+            // This is a hydrogen - default behavior is to not use subscripts
+            if(atom->label().isEmpty()){
+                atom->setLabel(QString::number(atom->ID()));
+            }else{
+                atom->setLabel(QString());
+            }
+        }else{
+            // This is not a hydrogen - default behavior is to use subscripts
+            if(atom->labelHasSubscript()){
+                atom->setLabelSubscript(QString());
+            }else{
+                atom->setLabelSubscript(QString::number(atom->ID()));
+            }
+        }
+    }
+    update();
 }
 
 
 void DrawingCanvas::atomLabelFontSizeChanged(const QString &size)
 {
-	foreach(Atom *atom, atomsList){
-		if(atom->isSelected()){
-			atom->setLabelFontSize(size.toInt());
-		}
-	}
-	update();
+    foreach(Atom *atom, atomsList){
+        if(atom->isSelected()){
+            atom->setLabelFontSize(size.toInt());
+        }
+    }
+    update();
 }
 
 
 void DrawingCanvas::translateToCenterOfMass()
 {
-	double xCOM = 0.0;
-	double yCOM = 0.0;
-	double zCOM = 0.0;
-	double totalMass = 0.0;
-	
-	// Start by computing the center of mass
-	foreach(Atom *atom, atomsList){
-		xCOM += atom->x() * atom->mass();
-		yCOM += atom->y() * atom->mass();
-		zCOM += atom->z() * atom->mass();
-		totalMass += atom->mass();
-	}
-	xCOM /= totalMass;
-	yCOM /= totalMass;
-	zCOM /= totalMass;
-	double rMax = 0.0;
-	foreach(Atom *atom, atomsList){
-		double tempX = atom->x();
-		atom->setX(tempX - xCOM);
-		double tempY = atom->y();
-		atom->setY(tempY - yCOM);
-		double tempZ = atom->z();
-		atom->setZ(tempZ - zCOM);
-		double r = sqrt(atom->x()*atom->x() + atom->y()*atom->y() + atom->z()*atom->z());
-		rMax = (r>rMax ? r : rMax);
-	}
-	drawingInfo->setMoleculeMaxDimension(rMax + EXTRA_DRAWING_SPACE);
-	drawingInfo->determineScaleFactor();
+    double xCOM = 0.0;
+    double yCOM = 0.0;
+    double zCOM = 0.0;
+    double totalMass = 0.0;
+
+    // Start by computing the center of mass
+    foreach(Atom *atom, atomsList){
+        xCOM += atom->x() * atom->mass();
+        yCOM += atom->y() * atom->mass();
+        zCOM += atom->z() * atom->mass();
+        totalMass += atom->mass();
+    }
+    xCOM /= totalMass;
+    yCOM /= totalMass;
+    zCOM /= totalMass;
+    double rMax = 0.0;
+    foreach(Atom *atom, atomsList){
+        double tempX = atom->x();
+        atom->setX(tempX - xCOM);
+        double tempY = atom->y();
+        atom->setY(tempY - yCOM);
+        double tempZ = atom->z();
+        atom->setZ(tempZ - zCOM);
+        double r = sqrt(atom->x()*atom->x() + atom->y()*atom->y() + atom->z()*atom->z());
+        rMax = (r>rMax ? r : rMax);
+    }
+    drawingInfo->setMoleculeMaxDimension(rMax + EXTRA_DRAWING_SPACE);
+    drawingInfo->determineScaleFactor();
 }
 
 
 bool DrawingCanvas::isBonded(Atom *atom1, Atom *atom2){
-	foreach(Bond *bond, bondsList){
-		if((bond->startAtom() == atom1 && bond->endAtom() == atom2) ||
-		   (bond->startAtom() == atom2 && bond->endAtom() == atom1)){
-			return true;
-		}
-	}
-	return false;
+    foreach(Bond *bond, bondsList){
+        if((bond->startAtom() == atom1 && bond->endAtom() == atom2) ||
+           (bond->startAtom() == atom2 && bond->endAtom() == atom1)){
+            return true;
+        }
+    }
+    return false;
 }
 
 
 QList<Angle*>::iterator DrawingCanvas::angleExists(Atom *atom1, Atom *atom2, Atom *atom3){
-	QList<Angle*>::iterator pos;
-	for(pos = anglesList.begin(); pos != anglesList.end(); ++pos){
-		Angle *angle = *pos;
-		if((angle->startAtom() == atom1 && angle->centerAtom() == atom2 && angle->endAtom() == atom3) ||
-		   (angle->startAtom() == atom3 && angle->centerAtom() == atom2 && angle->endAtom() == atom1)){
-			return pos;
-		}
-	}
-	pos = anglesList.end();
-	// Checking the bounds on the iterator later will reveal whether the angle exists in the list,
-	// as long as we return an iterator beyond the end of the list
-	return ++pos;
+    QList<Angle*>::iterator pos;
+    for(pos = anglesList.begin(); pos != anglesList.end(); ++pos){
+        Angle *angle = *pos;
+        if((angle->startAtom() == atom1 && angle->centerAtom() == atom2 && angle->endAtom() == atom3) ||
+           (angle->startAtom() == atom3 && angle->centerAtom() == atom2 && angle->endAtom() == atom1)){
+            return pos;
+        }
+    }
+    pos = anglesList.end();
+    // Checking the bounds on the iterator later will reveal whether the angle exists in the list,
+    // as long as we return an iterator beyond the end of the list
+    return ++pos;
 }
 
 
 void DrawingCanvas::toggleAngleLabels()
 {
-	// This is quite cumbersome, which stems from my reluctance to use numbers to label the atoms
-	// so I can begin removing and inserting atoms more easily should I chose to in the future...
-	for(int a1 = 0; a1 < atomsList.size(); ++a1){
-		Atom *atom1 = atomsList[a1];
-		if(!atom1->isSelected()) continue;
-		for(int a2 = 0; a2 < atomsList.size(); ++a2){
-			Atom *atom2 = atomsList[a2];
-			if(!atom2->isSelected()) continue;
-			for(int a3 = 0; a3 != a1; ++a3){
-				Atom *atom3 = atomsList[a3];
-				if(!atom3->isSelected()) continue;
-				if(a1 == a2 || a2 == a3) continue;
-				if(isBonded(atom1, atom2) && isBonded(atom2, atom3)){
-					QList<Angle*>::iterator anglePos = angleExists(atom1, atom2, atom3); 
-					if(anglePos <= anglesList.end()){
-						// Remove angle
-						Angle *angle = *anglePos;
-						removeItem(angle->label());
-						removeItem(angle->marker1());
-						removeItem(angle->marker2());
-						anglesList.erase(anglePos);
-						delete angle;
-					}else{
-						//add angle
-						Angle *angle = new Angle(atom1, atom2, atom3, drawingInfo);
-						addItem(angle->label());
-						addItem(angle->marker1());
-						addItem(angle->marker2());
-						anglesList.push_back(angle);
-					}
-				}
-			}
-		}
-	}
+    // This is quite cumbersome, which stems from my reluctance to use numbers to label the atoms
+    // so I can begin removing and inserting atoms more easily should I chose to in the future...
+    for(int a1 = 0; a1 < atomsList.size(); ++a1){
+        Atom *atom1 = atomsList[a1];
+        if(!atom1->isSelected()) continue;
+        for(int a2 = 0; a2 < atomsList.size(); ++a2){
+            Atom *atom2 = atomsList[a2];
+            if(!atom2->isSelected()) continue;
+            for(int a3 = 0; a3 != a1; ++a3){
+                Atom *atom3 = atomsList[a3];
+                if(!atom3->isSelected()) continue;
+                if(a1 == a2 || a2 == a3) continue;
+                if(isBonded(atom1, atom2) && isBonded(atom2, atom3)){
+                    QList<Angle*>::iterator anglePos = angleExists(atom1, atom2, atom3);
+                    if(anglePos <= anglesList.end()){
+                        // Remove angle
+                        Angle *angle = *anglePos;
+                        removeItem(angle->label());
+                        removeItem(angle->marker1());
+                        removeItem(angle->marker2());
+                        anglesList.erase(anglePos);
+                        delete angle;
+                    }else{
+                        //add angle
+                        Angle *angle = new Angle(atom1, atom2, atom3, drawingInfo);
+                        addItem(angle->label());
+                        addItem(angle->marker1());
+                        addItem(angle->marker2());
+                        anglesList.push_back(angle);
+                    }
+                }
+            }
+        }
+    }
 }
 
 
 void DrawingCanvas::toggleBondDashing()
 {
-	Bond *bond;
-	foreach(bond, bondsList)
-	{
-		if(bond->isSelected()){
-			if(bond->label()==0){
-				bond->toggleDashing();
-			}
-		}
-	}	
-	refresh();
+    Bond *bond;
+    foreach(bond, bondsList)
+    {
+        if(bond->isSelected()){
+            if(bond->label()==0){
+                bond->toggleDashing();
+            }
+        }
+    }
+    refresh();
 }
 
 
 void DrawingCanvas::toggleBondLabels()
 {
-	Bond *bond;
-	foreach(bond, bondsList)
-	{
-		if(bond->isSelected()){
-			if(bond->label()==0){
-				bond->toggleLabel();
-				addItem(bond->label());
-			}else{
-				removeItem(bond->label());
-				bond->toggleLabel();
-			}
-		}
-	}
+    Bond *bond;
+    foreach(bond, bondsList)
+    {
+        if(bond->isSelected()){
+            if(bond->label()==0){
+                bond->toggleLabel();
+                addItem(bond->label());
+            }else{
+                removeItem(bond->label());
+                bond->toggleLabel();
+            }
+        }
+    }
 }
 
 
 void DrawingCanvas::performRotation()
 {
-	// Assumes the cartesians are centered at the center of mass
-	double zMax = -10000.0;
-	int nAtoms = atomsList.size();
-	
+    // Assumes the cartesians are centered at the center of mass
+    double zMax = -10000.0;
+    int nAtoms = atomsList.size();
+
     double phiX = drawingInfo->xRot() * DEG_TO_RAD;
     double phiY = drawingInfo->yRot() * DEG_TO_RAD;
     double phiZ = drawingInfo->zRot() * DEG_TO_RAD;
-	foreach(Atom *atom, atomsList){
-	  double x = atom->x();
-	  double z = atom->y();
-	  double y = atom->z();
-	  // Don't be fooled by the notation - these are Euler angles, not Cartesian axes
-	  // TODO update notation to reflect this
+    foreach(Atom *atom, atomsList){
+        double x = atom->x();
+        double y = atom->y();
+        double z = atom->z();
 
-      double cx = cos(phiX);
-	  double sx = sin(phiX);
-	  double cy = cos(phiY);
-	  double sy = sin(phiY);
-	  double cz = cos(phiZ);
-	  double sz = sin(phiZ);
-  	  double zVal = ( sy*cx*cz*x + cy*sz*x - sy*cx*sz*y + cy*cz*y + sx*sy*z ) * drawingInfo->scaleFactor();
-	  double perspective = (1.0 + zVal * drawingInfo->perspective());
-  	  double xVal = perspective*( cx*cy*cz*x - sy*sz*x - cy*cx*sz*y - sy*cz*y + sx*cy*z ) * drawingInfo->scaleFactor();
-  	  double yVal = -perspective*( -cz*sx*x             + sz*sx*y              + cx*z    ) * drawingInfo->scaleFactor();
+        double cx = cos(phiX);
+        double sx = sin(phiX);
+        double cy = cos(phiY);
+        double sy = sin(phiY);
+        double cz = cos(phiZ);
+        double sz = sin(phiZ);
 
-	  atom->setPos(xVal + drawingInfo->dX(), yVal + drawingInfo->dY());
-	  atom->setZValue(zVal);
-	  // TODO this will need to be normalized to make drawings that come from files and those that
-	  // are drawn by the user.  i.e. scene coordinates have a different scale to cartesians
-	  if(atom->z() > zMax){
-		  zMax = atom->zValue();
-	  }
-	}
+        // RX RY RZ
+        double xVal = ( cy*cz*x - cy*sz*y + sy*z );
+        double yVal = ( cx*sz*x + cz*(sx*sy*x + cx*y) - sx*(sy*sz*y + cy*z) );
+        double zVal = ( -(cx*cz*sy*x) + sx*sz*x + cz*sx*y + cx*sy*sz*y + cx*cy*z );
 
-// Normalize the Z values so that the perspective stuff looks 
-//	for(int atom = 0; atom < nAtoms; ++atom){
-//	  Atom *pAtom = atomsList[atom];
-//	  double oldZ = pAtom->zValue();
-//	  pAtom->setZValue(oldZ - zMax);
-//	}
+        atom->setX(xVal);
+        atom->setY(yVal);
+        atom->setZ(zVal);
+        drawingInfo->setXRot(0.0);
+        drawingInfo->setYRot(0.0);
+        drawingInfo->setZRot(0.0);
+
+        double perspective = (1.0 + zVal * drawingInfo->scaleFactor() * drawingInfo->perspective());
+        atom->setPos(perspective*xVal*drawingInfo->scaleFactor() + drawingInfo->dX(),
+                     perspective*yVal*drawingInfo->scaleFactor() + drawingInfo->dY());
+        atom->setZValue(zVal*drawingInfo->scaleFactor());
+
+        if(atom->z() > zMax){
+            zMax = atom->zValue();
+        }
+    }
+
+    // Normalize the Z values so that the perspective stuff looks
+    //	for(int atom = 0; atom < nAtoms; ++atom){
+    //	  Atom *pAtom = atomsList[atom];
+    //	  double oldZ = pAtom->zValue();
+    //	  pAtom->setZValue(oldZ - zMax);
+    //	}
 
 }
-
-void DrawingCanvas::setXRotation(int phi)
-{
-	getAngleInBounds180(phi);
-	drawingInfo->setXRot(phi);
-	// Emitting this signal causes the main window's setXRotation to be triggered
-	// which will call the performRotation() and update() routines automatically
-	emit xRotChanged(phi);
-}
-
-
-void DrawingCanvas::setYRotation(int phi)
-{
-	getAngleInBounds360(phi);
-	drawingInfo->setYRot(phi);
-	// Emitting this signal causes the main window's setYRotation to be triggered
-	// which will call the performRotation() and update() routines automatically
-	emit yRotChanged(phi);
-}
-
-
-void DrawingCanvas::setZRotation(int phi)
-{
-	getAngleInBounds360(phi);
-	drawingInfo->setZRot(phi);
-	// Emitting this signal causes the main window's setZRotation to be triggered
-	// which will call the performRotation() and update() routines automatically
-	emit zRotChanged(phi);
-}
-
 
 void DrawingCanvas::refresh()
 {
-	performRotation();
+    performRotation();
     updateBonds();
     updateAngles();
     updateArrows();
     updateTextLabels();
-	update();
+    update();
 }
 
-
-void DrawingCanvas::getAngleInBounds360(int &angle)
-{
-	// Just to be safe...
-	while (angle < 0)
-         angle += 360;
-    while (angle > 360)
-         angle -= 360;
-}
-
-
-void DrawingCanvas::getAngleInBounds180(int &angle)
-{
-	// Just to be safe...
-	while (angle < 0)
-         angle += 180;
-    while (angle > 180)
-         angle -= 180;
-}
 
 void DrawingCanvas::setBackgroundColor()
 {
-	QColor color = QColorDialog::getColor(myBackgroundColor);
-	color.setAlpha(myBackgroundAlpha);
-	myBackgroundColor = color;
-	update();
-	
+    QColor color = QColorDialog::getColor(myBackgroundColor);
+    color.setAlpha(myBackgroundAlpha);
+    myBackgroundColor = color;
+    update();
+
 }
 
 
 void DrawingCanvas::setBackgroundOpacity(int val)
 {
-	myBackgroundAlpha = (int)(255*val/100);
-	myBackgroundColor.setAlpha(myBackgroundAlpha);
-	update();
+    myBackgroundAlpha = (int)(255*val/100);
+    myBackgroundColor.setAlpha(myBackgroundAlpha);
+    update();
 }
 
 void DrawingCanvas::processProjectFile(QSettings &settings, bool saveFile)
 {
-	// The atomsList
-	if(saveFile){
-		settings.setValue("NumAtoms", atomsList.size());
-		for(int i = 0; i < atomsList.size(); ++i){
-			settings.beginGroup(QString("atom%1").arg(i));
-			Atom *atom = atomsList[i];
-			settings.setValue("Symbol",atom->symbol());
-			settings.setValue("Label",atom->label());
-			settings.setValue("x",atom->x());
-			settings.setValue("y",atom->y());
-			settings.setValue("z",atom->z());
-			settings.endGroup();
-		}
-	}else{
-		for(int i = 0; i < settings.value("NumAtoms",0).toInt(); ++i){
-//			settings.beginGroup(QString("atom%1").arg(i));
-//			settings.setValue("Symbol",atom->symbol();)
-//			settings.setValue("x",atom->x());
-//			settings.setValue("y",atom->y());
-//			settings.setValue("z",atom->z());
-////			atom *Atom = new Atom()
-//			settings.endGroup();
-		}
-	}
+    // The atomsList
+    if(saveFile){
+        settings.setValue("NumAtoms", atomsList.size());
+        for(int i = 0; i < atomsList.size(); ++i){
+            settings.beginGroup(QString("atom%1").arg(i));
+            Atom *atom = atomsList[i];
+            settings.setValue("Symbol",atom->symbol());
+            settings.setValue("Label",atom->label());
+            settings.setValue("x",atom->x());
+            settings.setValue("y",atom->y());
+            settings.setValue("z",atom->z());
+            settings.endGroup();
+        }
+    }else{
+        for(int i = 0; i < settings.value("NumAtoms",0).toInt(); ++i){
+            //			settings.beginGroup(QString("atom%1").arg(i));
+            //			settings.setValue("Symbol",atom->symbol();)
+            //			settings.setValue("x",atom->x());
+            //			settings.setValue("y",atom->y());
+            //			settings.setValue("z",atom->z());
+            ////			atom *Atom = new Atom()
+            //			settings.endGroup();
+        }
+    }
 }

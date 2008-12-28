@@ -13,8 +13,8 @@
 class DragBox : public QGraphicsRectItem
 {
 public:
-	enum { Type = UserType + DRAGBOXTYPE};
-	int type() const {return Type;}
+    enum { Type = UserType + DRAGBOXTYPE};
+    int type() const {return Type;}
 
     DragBox(double x, double y, DrawingInfo *info, QGraphicsItem *parent = 0);
     
@@ -28,10 +28,10 @@ public:
     void setDY(double val) {myDY = val;}
 
 protected:
-	void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-	void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
     bool hoverOver;
     DrawingInfo *drawingInfo;
     QPen myPen;
@@ -42,8 +42,8 @@ protected:
 class Arrow : public QGraphicsLineItem
 {
 public:
-	enum { Type = UserType + ARROWTYPE};
-	int type() const {return Type;}
+    enum { Type = UserType + ARROWTYPE};
+    int type() const {return Type;}
 
     Arrow(double x, double y, DrawingInfo *drawingInfo, QGraphicsItem *parent = 0);
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
@@ -60,10 +60,10 @@ public:
     void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptsHoverEvents(arg);}
 
 protected:
-	void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-	void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
     DragBox *myStartBox;
     DragBox *myEndBox;
     DrawingInfo *drawingInfo;

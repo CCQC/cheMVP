@@ -22,28 +22,26 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-   MainWindow(FileParser *parser);
-   enum FileType {TIFF, PNG, PDF, PostScript, SVG, CVP, Unknown};
+    MainWindow(FileParser *parser);
+    enum FileType {TIFF, PNG, PDF, PostScript, SVG, CVP, Unknown};
 
 public slots:
-   void setXRotation(int phi);
-   void setYRotation(int phi);
-   void setZRotation(int phi);
-   void setGeometryStep(int);
-   void setCurrentSaveFile(QString file) {currentSaveFile = file;}
-   void saveAndExit();
+    void setGeometryStep(int);
+    void setCurrentSaveFile(QString file) {currentSaveFile = file;}
+    void saveAndExit();
 
 private slots:
-	void insertTextAtCursor(QAction *action);
-	void updateTextLabelMenus();
-	void updateMenus();
-	void setAtomLabels();
-	void changeAtomSize();
-	void changeBondSize();
-	void setTextBoxFonts();
-//    void periodicTableButtonGroupClicked(QAbstractButton *button);
+    void insertTextAtCursor(QAction *action);
+    void updateTextLabelMenus();
+    void updateMenus();
+    void setAtomLabels();
+    void changeAtomSize();
+    void changeBondSize();
+    void setTextBoxFonts();
+    //    void periodicTableButtonGroupClicked(QAbstractButton *button);
     void deleteItem();
     void mouseModeButtonGroupClicked(int);
+    void rotateFromInitialCoordinates();
     void openFile();
     void save();
     void saveAs();
@@ -51,9 +49,9 @@ private slots:
     void setAddArrowMode();
 
 private:
-	void focusOutEvent(QFocusEvent *event);
-	void createToolBox();
-	void createActions();
+    void focusOutEvent(QFocusEvent *event);
+    void createToolBox();
+    void createActions();
     void createMenus();
     void createToolbars();
     void processProjectFile(const QString &fileName, bool saveFile);
@@ -62,12 +60,12 @@ private:
     void loadFile();
     QIcon textToIcon(const QString &string);
 
-	QSlider *createSlider(int max);
-	QWidget *createAppearanceWidget();
-	QWidget *createBondsAndAnglesWidget();
-	QWidget *createAtomsWidget();
-	QWidget *createAnnotationWidget();
+    QWidget *createAppearanceWidget();
+    QWidget *createBondsAndAnglesWidget();
+    QWidget *createAtomsWidget();
+    QWidget *createAnnotationWidget();
     QWidget *createAnimationWidget();
+    QSlider *createSlider(int max);
     
     // Not needed. -Jet
     // QWidget *appearanceWidget;
@@ -123,7 +121,8 @@ private:
     QToolButton *boldTextButton;
     QToolButton *italicTextButton;
     QToolButton *underlineTextButton;
-    
+
+
     QRadioButton *simpleAtomDrawingButton;
     QRadioButton *houkMolAtomDrawingButton;
     QRadioButton *simpleColoredAtomDrawingButton;
@@ -138,9 +137,9 @@ private:
     QDoubleSpinBox *atomSizeSpinBox;
     QDoubleSpinBox *bondSizeSpinBox;
     
-    QSlider *xSlider;
-    QSlider *ySlider;
-    QSlider *zSlider;
+    QLineEdit *xRotationBox;
+    QLineEdit *yRotationBox;
+    QLineEdit *zRotationBox;
     
     QLabel *xLabel;
     QLabel *yLabel;
