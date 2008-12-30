@@ -34,6 +34,10 @@ int main(int argv, char *args[])
     QPixmap pixmap("../images/splash.png");
     SplashScreen splash(pixmap);
     MainWindow mainWindow(parser);
+    //Set the icon in the bar at the top of the window
+    app.setWindowIcon(QIcon("../images/icon.png"));
+    mainWindow.setWindowIconText("cheMVP");
+
     mainWindow.setGeometry(30, 50, 1200, 700);
     mainWindow.showNormal();
 

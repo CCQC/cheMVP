@@ -14,7 +14,11 @@ QMakeFile.puts "HEADERS = " + Dir["../src/*.h"].join("  \\ \n")
 if(ResourceArray.size)
     QMakeFile.puts "RESOURCES = " + ResourceArray.join("  \\ \n")
 end
-QMakeFile.puts "CONFIG += release static"
+QMakeFile.puts "macx{\n  ICON = ../images/icon.icns\n}"
+QMakeFile.puts "win32{\n RC_FILE = ../images/icon.rc\n}"
+QMakeFile.puts "CONFIG += debug_and_release static"
+QMakeFile.puts "macx{\n  CONFIG += ppc x86\n}"
+QMakeFile.puts "win32{\n  CONFIG -= debug\n}"
 QMakeFile.puts "QMAKE_CXXFLAGS_DEBUG = \" -O0 -g\""
 QMakeFile.puts "QT += svg"
 QMakeFile.close
