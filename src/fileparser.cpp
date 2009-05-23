@@ -102,6 +102,12 @@ void FileParser::readFile()
             #endif
             readFile11();
             break;
+        case ACES2:
+		    #ifdef QT_DEBUG
+            std::cout << "Reading in ACES2." << std::endl; 
+            #endif
+            readACES2();
+            break;
         case PSI3:
 		    #ifdef QT_DEBUG
             std::cout << "Reading in Psi3." << std::endl; 
