@@ -40,7 +40,8 @@ public:
     void computeRadius();
     void setLabelSubscript(const QString &string) {myLabelSubscript = string;}
     void setLabelSuperscript(const QString &string) {myLabelSuperscript = string;}
-    void setLabelFontSize(int val) {myFontSize = val; myLabelFont.setPointSizeF(double(val)*myEffectiveRadius/20.0);}
+    void setLabelFontSize(int val) {myFontSize = val;
+        myLabelFont.setPointSizeF(double(val)*myEffectiveRadius/20.0);}
     void setLabelFont(const QString &font) {myLabelFont.setFamily(font);}
     void setScaleFactor(double val) {myScaleFactor = val;}
     void setX(double val) {myX = val;}
