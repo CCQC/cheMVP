@@ -19,6 +19,6 @@
 compilation*
 
 # Ignore the executables
-mac_osx_intel64
+mac_universal
 linux_x86_64
 win32
