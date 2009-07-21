@@ -6,24 +6,23 @@ std::map<QString, double> Atom::labelToVdwRadius;
 std::map<QString, double> Atom::labelToMass;
 std::map<QString, QColor> Atom::labelToColor;
 
-
 Atom::Atom(QString element, DrawingInfo *info, QGraphicsItem *parent)
-    : QGraphicsEllipseItem(parent),
-    mySymbol(element),
-    drawingInfo(info),
-    line_color(Qt::black),
-    text_color(Qt::black),
-    fill_color(Qt::white),
-    myScaleFactor(DEFAULT_ATOM_SCALE_FACTOR),
-    myDrawingStyle(Gradient),
-    myFontSizeStyle(SmallLabel),
-    myX(0.0),
+    :QGraphicsEllipseItem(parent),
+	myDrawingStyle(Gradient),
+	myFontSizeStyle(SmallLabel),
+	myX(0.0),
     myY(0.0),
     myZ(0.0),
-    myID(0),
-    hoverOver(false)
+	myScaleFactor(DEFAULT_ATOM_SCALE_FACTOR),
+	mySymbol(element),
+	myID(0),
+	hoverOver(false),
+	line_color(Qt::black),
+	text_color(Qt::black),
+	fill_color(Qt::white),
+	drawingInfo(info)
 {
-    fillLabelToVdwRadiusMap();
+	fillLabelToVdwRadiusMap();
     fillLabelToMassMap();
     fillLabelToColorMap();
 
@@ -53,27 +52,27 @@ Atom::Atom(QString element, DrawingInfo *info, QGraphicsItem *parent)
 }
 
 
-void Atom::setLabel(const QString &text){
-    // Regular expression to match C_x^y
-    QRegExp rx("([A-Za-z0-9]*)([_^][A-Za-z0-9]+)?([_^]\\w+)?", Qt::CaseInsensitive, QRegExp::RegExp2);
-    myLabel.clear();
-    myLabelSubscript.clear();
-    myLabelSuperscript.clear();
-    if (rx.exactMatch(text) == true) {
-        myLabel = rx.cap(1);
-        if (rx.cap(2).startsWith('_')) {
-            myLabelSubscript += rx.cap(2).remove(0, 1);
-        } else if (rx.cap(2).startsWith('^')) {
-            myLabelSuperscript += rx.cap(2).remove(0, 1);
-        }
-        if (rx.cap(3).startsWith('_')) {
-            myLabelSubscript += rx.cap(3).remove(0, 1);
-        } else if (rx.cap(3).startsWith('^')) {
-            myLabelSuperscript += rx.cap(3).remove(0, 1);
-        }
-    }
+void Atom::setLabel(const QString &text)
+{
+	// Regular expression to match C_x^y
+	QRegExp rx("([A-Za-z0-9]*)([_^][A-Za-z0-9]+)?([_^]\\w+)?", Qt::CaseInsensitive, QRegExp::RegExp2);
+	myLabel.clear();
+	myLabelSubscript.clear();
+	myLabelSuperscript.clear();
+	if(rx.exactMatch(text) == true) {
+		myLabel = rx.cap(1);
+		if (rx.cap(2).startsWith('_')) {
+			myLabelSubscript += rx.cap(2).remove(0, 1);
+		} else if (rx.cap(2).startsWith('^')) {
+			myLabelSuperscript += rx.cap(2).remove(0, 1);
+		}
+		if (rx.cap(3).startsWith('_')) {
+			myLabelSubscript += rx.cap(3).remove(0, 1);
+		} else if (rx.cap(3).startsWith('^')) {
+			myLabelSuperscript += rx.cap(3).remove(0, 1);
+		}
+	}
 }
-
 
 void Atom::setDrawingStyle(DrawingStyle style)
 {
@@ -85,7 +84,6 @@ void Atom::setDrawingStyle(DrawingStyle style)
     myDrawingStyle = style;
 }
 
-
 void Atom::setFontSizeStyle(FontSizeStyle style)
 {
     if(style == LargeLabel){
@@ -96,14 +94,12 @@ void Atom::setFontSizeStyle(FontSizeStyle style)
     myFontSizeStyle = style;
 }
 
-
 void Atom::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event);
     hoverOver = true;
     update();
 }
-
 
 void Atom::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
@@ -112,19 +108,16 @@ void Atom::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     update();
 }
 
-
 QRectF Atom::boundingRect() const
 {
     return rect();
 }
-
 
 void Atom::computeRadius()
 {
     myEffectiveRadius = drawingInfo->scaleFactor() * (1.0 + zValue() * drawingInfo->perspective())
                         * myRadius * myScaleFactor;
 }
-
 
 void Atom::paint(QPainter *painter,
                  const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -245,7 +238,6 @@ void Atom::paint(QPainter *painter,
         painter->drawEllipse(rect());
     }
 }
-
 
 void Atom::fillLabelToVdwRadiusMap()
 {
@@ -549,7 +541,6 @@ void Atom::fillLabelToColorMap()
         labelToColor.insert(std::make_pair(QString("Rg"), QColor(183, 189, 199)));
     }
 }
-
 
 //void Atom::processProjectFile(QSettings &settings, bool saveFile)
 //{

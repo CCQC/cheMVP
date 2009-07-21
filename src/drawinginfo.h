@@ -26,6 +26,8 @@ public:
     void setMoleculeMaxDimension(double val) {myMoleculeMaxDimension = val;}
     double dX() const   {return myDX;}
     double dY()	const	{return myDY;}
+	double midX() const {return myMidX;}
+	double midY() const {return myMidY;}
     double moleculeMaxDimension() const {return myMoleculeMaxDimension;}
     double scaleFactor() const {return myUserScaleFactor * myAngToSceneScale;}
     double perspective() const {return myPerspectiveScale/10000.0;}

@@ -2,8 +2,7 @@
 
 void MainWindow::createActions()
 {
-	
-    undoAction = new QAction(QIcon(":/images/undo.png"),tr("&Undo"), this);
+	undoAction = new QAction(QIcon(":/images/undo.png"),tr("&Undo"), this);
     undoAction->setShortcut(tr("Ctrl+Z"));
     undoAction->setEnabled(false);
     connect(undoAction, SIGNAL(triggered()), undoStack, SLOT(undo()));
@@ -23,6 +22,7 @@ void MainWindow::createActions()
     
     openAction = new QAction(QIcon(":/images/open.png"), tr("&Open"), this);
     openAction->setStatusTip(tr("Open a File"));
+	openAction->setShortcut(tr("Ctrl+O"));
     connect(openAction, SIGNAL(triggered()), this, SLOT(openFile()));
 
     exitAction = new QAction(QIcon(":/images/exit.png"),tr("E&xit"), this);
@@ -30,6 +30,10 @@ void MainWindow::createActions()
     exitAction->setStatusTip(tr("Quit ChemVP"));
     connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
 
+	aboutAction = new QAction(tr("About CheMVP"), this);
+	aboutAction->setStatusTip(tr("About CheMVP"));
+	connect(aboutAction, SIGNAL(triggered()), this, SLOT(aboutCheMVP()));
+	
     saveAction = new QAction(QIcon(":/images/save.png"), tr("&Save"), this);
     saveAction->setShortcut(tr("Ctrl+S"));
     saveAction->setStatusTip(tr("Save"));
@@ -90,4 +94,11 @@ QIcon MainWindow::textToIcon(const QString &string)
 	painter.setFont(font);
 	painter.drawText(QRectF(0, 0, 32, 32), Qt::AlignCenter, string);
 	return QIcon(pixmap);
+}
+
+void MainWindow::aboutCheMVP()
+{
+	QPixmap pixmap("../images/splash.png");
+    SplashScreen* splash = new SplashScreen(pixmap);
+	splash->startTimer(2147483647);
 }

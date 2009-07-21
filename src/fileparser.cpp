@@ -4,8 +4,8 @@
 using namespace std;
 
 FileParser::FileParser(QString instring):
-	myFileName(instring),
 	myUnits(Angstrom),
+	myFileName(instring),
 	currentGeometry(0)
 {
 }

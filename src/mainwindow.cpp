@@ -248,13 +248,13 @@ void MainWindow::createMenus()
     fileMenu->addAction(openAction);
     fileMenu->addAction(saveAction);
     fileMenu->addAction(saveAsAction);
-    fileMenu->addSeparator();
+//  fileMenu->addSeparator(); // Unused separator - HPS
+	fileMenu->addAction(aboutAction);
     fileMenu->addAction(exitAction);
 
     editMenu = menuBar()->addMenu(tr("&Edit"));
     editMenu->addAction(selectAllAction);
     editMenu->addAction(unselectAllAction);
-    editMenu->addSeparator();
     editMenu->addAction(undoAction);
     editMenu->addAction(redoAction);
     
@@ -270,11 +270,7 @@ void MainWindow::createMenus()
     insertSymbolMenu->addAction(insertAngstromAction);
     insertSymbolMenu->addAction(insertDegreeAction);
     insertSymbolMenu->addAction(insertPlusMinusAction);
-    
 }
-
-
-
 
 void MainWindow::setAtomLabels()
 {

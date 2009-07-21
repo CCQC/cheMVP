@@ -12,6 +12,7 @@
 #include <QUndoCommand>
 #include <QDebug>
 #include <QSettings>
+#include "splashscreen.h"
 #include "drawingcanvas.h"
 #include "drawinginfo.h"
 #include "fileparser.h"
@@ -47,6 +48,7 @@ private slots:
     void saveAs();
     void changeZoom(int);
     void setAddArrowMode();
+	void aboutCheMVP();
 
 private:
     void focusOutEvent(QFocusEvent *event);
@@ -110,7 +112,7 @@ private:
     QAction *selectAllAction;
     QAction *undoAction;
     QAction *redoAction;
-    
+	QAction *aboutAction;    
 
     QPushButton *toggleBondLabelsButton;
     QPushButton *toggleBondDashingButton;
@@ -121,7 +123,6 @@ private:
     QToolButton *boldTextButton;
     QToolButton *italicTextButton;
     QToolButton *underlineTextButton;
-
 
     QRadioButton *simpleAtomDrawingButton;
     QRadioButton *houkMolAtomDrawingButton;

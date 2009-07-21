@@ -49,6 +49,9 @@ public:
     void drawBackground(QPainter *painter, const QRectF &rect);
     const QCursor& rotateCursor() {return myRotateCursor;}
     void processProjectFile(QSettings &settings, bool saveFile);
+	QList<Bond*> getBonds() {return bondsList;}
+	void addBondLabel(int i);
+	
 public slots:
     void unselectAll();
     void selectAll();
@@ -67,6 +70,7 @@ public slots:
     void setAngleLabelPrecision(int val);
     
 protected:
+	void determineRotationAngles(); //HPS
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
@@ -82,8 +86,14 @@ signals:
 private:
     double bondLength(Atom* atom1, Atom* atom2);
     bool isBonded(Atom* atom1, Atom* atom2);
+	void svdcmp(double **a, int m, int m, double w[], double **v);
+	double pythag(double a, double b);
     QList<Angle*>::iterator angleExists(Atom* atom1, Atom* atom2, Atom* atom3);
 
+	double rotationMatrix[3][3];
+	double xRot;
+	double yRot;
+	double zRot;
     bool leftButtonDown;
     QMenu *myItemMenu;
     FileParser *parser;

@@ -18,6 +18,7 @@ QMakeFile.puts "\nCONFIG += debug_and_release static"
 QMakeFile.puts "QT += svg"
 QMakeFile.puts "QMAKE_CXXFLAGS_DEBUG = \" -O0 -g\""
 QMakeFile.puts "\nmacx{"
+QMakeFile.puts "  LIBS += -llapack -lblas\n"
 QMakeFile.puts "  ICON = ../images/icon.icns\n"
 QMakeFile.puts "  CONFIG += ppc x86\n"
 QMakeFile.puts "}"
@@ -29,8 +30,4 @@ QMakeFile.puts "  QMAKE_LFLAGS_RELEASE -= -mthreads"
 QMakeFile.puts "}"
 QMakeFile.close
 
-if ENV["VENDOR"] == "apple"
-     `qmake -spec macx-g++ #{FileName}`
-else
-     `qmake #{FileName}`
-end
+`qmake -spec macx-g++ #{FileName}`
