@@ -1,5 +1,5 @@
 #include "drawingcanvas.h"
-
+	
 #define SIGN(a, b) (b >= 0 ? (a >= 0 ? a : -a) : (a >= 0 ? -a : a))
 #define MAX(a, b) (a > b ? a : b)
 #define MIN(a, b) (a < b ? a : b)
@@ -129,8 +129,9 @@ void DrawingCanvas::setAtomLabels(QString text)
 void DrawingCanvas::setAtomDrawingStyle(int style)
 {
     foreach(Atom *atom, atomsList){
-        atom->setDrawingStyle(Atom::DrawingStyle(style));
+        atom->setDrawingStyle(DrawingInfo::DrawingStyle(style));
     }
+	drawingInfo->setDrawingStyle(DrawingInfo::DrawingStyle(style));
     update();
 }
 

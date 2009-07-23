@@ -4,9 +4,9 @@ std::map<QString, double> Atom::labelToVdwRadius;
 std::map<QString, double> Atom::labelToMass;
 std::map<QString, QColor> Atom::labelToColor;
 
-Atom::Atom(QString element, DrawingInfo *info, QGraphicsItem *parent)
-    :QGraphicsEllipseItem(parent),
-	myDrawingStyle(Gradient),
+Atom::Atom(QString element, DrawingInfo *i, QGraphicsItem *parent)
+	:QGraphicsEllipseItem(parent),
+	//myDrawingStyle(Gradient),
 	myFontSizeStyle(SmallLabel),
 	myX(0.0),
     myY(0.0),
@@ -18,13 +18,13 @@ Atom::Atom(QString element, DrawingInfo *info, QGraphicsItem *parent)
 	line_color(Qt::black),
 	text_color(Qt::black),
 	fill_color(Qt::white),
-	drawingInfo(info)
+	info(i)
 {
 	fillLabelToVdwRadiusMap();
     fillLabelToMassMap();
     fillLabelToColorMap();
 
-    setDrawingStyle(myDrawingStyle);
+    setDrawingStyle(info->getDrawingStyle());
 
     myLabel = (mySymbol == "H" ? "" : mySymbol);
 
@@ -44,11 +44,10 @@ Atom::Atom(QString element, DrawingInfo *info, QGraphicsItem *parent)
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setAcceptsHoverEvents(true);
     setAcceptDrops(true);
-    myEffectiveRadius = drawingInfo->scaleFactor() * (1.0 + zValue() * drawingInfo->perspective())
+    myEffectiveRadius = info->scaleFactor() * (1.0 + zValue() * info->perspective())
                         * myRadius * myScaleFactor;
     setRect(QRectF(-myEffectiveRadius, -myEffectiveRadius, 2.0*myEffectiveRadius, 2.0*myEffectiveRadius));
 }
-
 
 void Atom::setLabel(const QString &text)
 {
@@ -72,14 +71,13 @@ void Atom::setLabel(const QString &text)
 	}
 }
 
-void Atom::setDrawingStyle(DrawingStyle style)
+void Atom::setDrawingStyle(DrawingInfo::DrawingStyle style)
 {
-    if(style == Simple){
+    if(style == DrawingInfo::Simple){
         fill_color = Qt::white;
     }else{
         fill_color = labelToColor[mySymbol];
     }
-    myDrawingStyle = style;
 }
 
 void Atom::setFontSizeStyle(FontSizeStyle style)
@@ -113,7 +111,7 @@ QRectF Atom::boundingRect() const
 
 void Atom::computeRadius()
 {
-    myEffectiveRadius = drawingInfo->scaleFactor() * (1.0 + zValue() * drawingInfo->perspective())
+    myEffectiveRadius = info->scaleFactor() * (1.0 + zValue() * info->perspective())
                         * myRadius * myScaleFactor;
 }
 
@@ -130,12 +128,12 @@ void Atom::paint(QPainter *painter,
     // If the item is selected, use a lighter color for the filling
     QPen linestyle;
     // If we're hovering over the item, use thicker lines
-    linestyle.setWidthF((hoverOver ? drawingInfo->scaleFactor()*0.03 : drawingInfo->scaleFactor()*0.01));
+    linestyle.setWidthF((hoverOver ? info->scaleFactor()*0.03 : info->scaleFactor()*0.01));
     linestyle.setColor(Qt::black);
     painter->setPen(linestyle);
 
     // The circle defnining the atom
-    if(myDrawingStyle == Gradient){
+    if(info->getDrawingStyle() == DrawingInfo::Gradient){
         // Define a gradient pattern to fill the atom
         QRadialGradient gradient(QPointF(0.0, 0.0), myEffectiveRadius,
                                  QPointF(myEffectiveRadius/2.1, -myEffectiveRadius/2.1));
@@ -161,15 +159,17 @@ void Atom::paint(QPainter *painter,
         // 2880 is 180 degrees: QT wants angles in 1/16ths of a degree
         painter->drawArc(h_line_box, 0, -2880);
         // The direction of the vertical arc depends on the style
-        if(myDrawingStyle == Simple || myDrawingStyle == SimpleColored  || myDrawingStyle == Gradient){
+        if(info->getDrawingStyle() == DrawingInfo::Simple ||
+		   info->getDrawingStyle() == DrawingInfo::SimpleColored ||
+		   info->getDrawingStyle() == DrawingInfo::Gradient) {
             painter->drawArc(v_line_box, 1440, 2880);
-        }else if(myDrawingStyle == HoukMol){
+        }else if(info->getDrawingStyle() == DrawingInfo::HoukMol){
             painter->drawArc(v_line_box, 1440, -2880);
         }
     }
 
     // Draw the blob for HoukMol rip-off
-    if(myDrawingStyle == HoukMol){
+    if(info->getDrawingStyle() == DrawingInfo::HoukMol){
         QPointF startPoint(-myEffectiveRadius/1.8, -myEffectiveRadius/20.0);
         QPointF endPoint(-myEffectiveRadius/20.0, -myEffectiveRadius/1.8);
         QPointF midPoint1(-myEffectiveRadius/1.2, -myEffectiveRadius/1.2);
@@ -180,7 +180,7 @@ void Atom::paint(QPainter *painter,
         painter->setPen(QPen(fill_color));
         painter->setBrush(Qt::white);
         painter->drawPath(path);
-    }else if(myDrawingStyle == SimpleColored){
+    }else if(info->getDrawingStyle() == DrawingInfo::SimpleColored){
         QPointF startPoint(myEffectiveRadius/1.8, -myEffectiveRadius/20.0);
         QPointF endPoint(myEffectiveRadius/20.0, -myEffectiveRadius/1.8);
         QPointF midPoint1(myEffectiveRadius/1.2, -myEffectiveRadius/1.2);

@@ -11,9 +11,12 @@ class DrawingInfo: public QObject
     Q_OBJECT
 
 public:
-    DrawingInfo();
+	DrawingInfo();
     ~DrawingInfo();
-    int xRot()		{return myXRot;}
+    
+	enum DrawingStyle {Gradient, Simple, SimpleColored, HoukMol};
+	
+	int xRot()		{return myXRot;}
     int yRot()		{return myYRot;}
     int zRot()		{return myZRot;}
     void incDX(double val) { myUserDX += val; myDX = myMidX + myUserDX;}
@@ -24,6 +27,8 @@ public:
     void setWidth(double val) { myWidth = val; myMidX = val/2; myDX = myMidX + myUserDX;}
     void setHeight(double val) { myHeight = val; myMidY = val/2; myDY = myMidY + myUserDY;}
     void setMoleculeMaxDimension(double val) {myMoleculeMaxDimension = val;}
+	void setDrawingStyle(DrawingStyle s) {style = s;}
+	DrawingStyle getDrawingStyle() {return style;}
     double dX() const   {return myDX;}
     double dY()	const	{return myDY;}
 	double midX() const {return myMidX;}
@@ -34,6 +39,7 @@ public:
     void determineScaleFactor();
     void setZoom(int val) { myUserScaleFactor = (double)val; emit scaleFactorChanged();}
     void processProjectFile(QSettings &settings, bool saveFile);
+	
 private:
     // The rotation about the axes
     int myXRot;
@@ -57,6 +63,9 @@ private:
     double myPerspectiveScale;
     double myMoleculeMaxDimension;
     double myAngToSceneScale;
+	
+	DrawingStyle style;
+	
 signals:
     void scaleFactorChanged();
 };

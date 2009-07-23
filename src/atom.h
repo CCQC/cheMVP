@@ -15,9 +15,8 @@ class Atom : public QGraphicsEllipseItem
 {
 public:
     enum { Type = UserType + ATOMTYPE};
-    enum DrawingStyle {Simple, SimpleColored, HoukMol, Gradient};
     enum FontSizeStyle {SmallLabel, LargeLabel};
-    Atom(QString element, DrawingInfo *drawingInfo, QGraphicsItem *parent = 0);
+    Atom(QString element, DrawingInfo *info, QGraphicsItem *parent = 0);
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
@@ -50,7 +49,7 @@ public:
     void setZ(double val) {myZ = val;}
     void setLabel(const QString &text);
     void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptsHoverEvents(arg);}
-    void setDrawingStyle(DrawingStyle style);
+    void setDrawingStyle(DrawingInfo::DrawingStyle style);
 	void setColor(QColor color) {fill_color = color;}
     void setFontSizeStyle(FontSizeStyle style);
     void setID(int val) {myID = val;}
@@ -68,7 +67,7 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
     double myEffectiveRadius;
-    DrawingStyle myDrawingStyle;
+ // DrawingStyle myDrawingStyle;
     FontSizeStyle myFontSizeStyle;
     double myMass;
     double myRadius;
@@ -87,7 +86,7 @@ protected:
     QColor line_color;
     QColor text_color;
     QColor fill_color;
-    DrawingInfo *drawingInfo;
+    DrawingInfo *info;
 };
 
 #endif

@@ -17,6 +17,7 @@ DrawingInfo::DrawingInfo():
 	myMoleculeMaxDimension(1.0),
 	myAngToSceneScale(1.0)
 {
+	
 }
 
 
