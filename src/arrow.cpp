@@ -1,8 +1,8 @@
 #include "arrow.h"
-#include<iostream>
+#include <iostream>
  
- DragBox::DragBox(double x, double y, DrawingInfo *info, QGraphicsItem *parent)
-    :QGraphicsRectItem(parent),
+DragBox::DragBox(double x, double y, DrawingInfo *info, QGraphicsItem *parent)
+	:QGraphicsRectItem(parent),
 	hoverOver(false),
     drawingInfo(info),
 	// On input, x and y are in scene coordinates

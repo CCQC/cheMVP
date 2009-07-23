@@ -1,7 +1,6 @@
 #include "drawingcanvas.h"
 
 // TODO add double click events to make text selection easier
-
 void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     if(items().size() == 0){
@@ -51,7 +50,6 @@ void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 			;
     }
 }
-
 
 void DrawingCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
@@ -160,7 +158,6 @@ void DrawingCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
     }
 }
 
-
 void DrawingCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     switch (myMode) {
@@ -252,4 +249,3 @@ void DrawingCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 			;
     }
 }
-

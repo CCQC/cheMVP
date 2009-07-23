@@ -16,7 +16,6 @@ void MainWindow::createToolBox()
     toolBox->setCurrentWidget(atomsWidget);
 }
 
-
 QWidget *MainWindow::createAppearanceWidget()
 {	
     QWidget *widget = new QWidget;
@@ -85,7 +84,6 @@ QWidget *MainWindow::createAppearanceWidget()
     return widget;	
 }
 
-
 QWidget *MainWindow::createAnnotationWidget()
 {
     QWidget *widget = new QWidget;
@@ -101,7 +99,6 @@ QWidget *MainWindow::createAnnotationWidget()
     widget->setLayout(layout);
     return widget;	
 }
-
 
 QWidget *MainWindow::createBondsAndAnglesWidget()
 {
@@ -299,7 +296,6 @@ QWidget *MainWindow::createAtomsWidget()
     widget->setLayout(layout);
     return widget;	
 }
-
 
 QSlider *MainWindow::createSlider(int max)
 {

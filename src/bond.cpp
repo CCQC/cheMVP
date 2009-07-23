@@ -1,5 +1,4 @@
 #include "bond.h"
-#include<iostream>
  
 Bond::Bond(Atom *atom1, Atom *atom2, DrawingInfo *info, QGraphicsItem *parent)
 	:QGraphicsLineItem(parent),

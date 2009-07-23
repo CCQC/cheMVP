@@ -64,36 +64,30 @@ void MainWindow::createActions()
 
     insertAngstromAction = new QAction(insertTextActionGroup);
     insertAngstromAction->setIconText(QChar((ushort)0x00C5));
-//    insertAngstromAction->setIcon(textToIcon(QChar((ushort)0x00C5)));
+//  insertAngstromAction->setIcon(textToIcon(QChar((ushort)0x00C5)));
     insertAngstromAction->setToolTip(tr("Insert ")+QChar((ushort)0x00C5)+tr(" at current cursor position"));
     
     insertDegreeAction = new QAction(insertTextActionGroup);
     insertDegreeAction->setIconText(QChar((ushort)0x00B0));
-//    insertDegreeAction->setIcon(textToIcon(QChar((ushort)0x00B0)));
+//  insertDegreeAction->setIcon(textToIcon(QChar((ushort)0x00B0)));
     insertDegreeAction->setToolTip(tr("Insert ")+QChar((ushort)0x00B0)+tr(" at current cursor position"));
     
     insertPlusMinusAction = new QAction(insertTextActionGroup);
     insertPlusMinusAction->setIconText(QChar((ushort)0x00B1));
-//    insertPlusMinusAction->setIcon(textToIcon(QChar((ushort)0x00B1)));
+//  insertPlusMinusAction->setIcon(textToIcon(QChar((ushort)0x00B1)));
     insertPlusMinusAction->setToolTip(tr("Insert ")+QChar((ushort)0x00B1)+tr(" at current cursor position"));
     
     connect(insertTextActionGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertTextAtCursor(QAction *)));
 
 }
 
-
-QIcon MainWindow::textToIcon(const QString &string)
+void MainWindow::deleteItem()
 {
-    QSize iconBox(32, 32);
-	// Start by drawing the button icon
-	QPixmap pixmap(iconBox);
-    pixmap.fill(Qt::transparent);
-    QPainter painter(&pixmap);
-	QFont font;
-	font.setPointSize(22);
-	painter.setFont(font);
-	painter.drawText(QRectF(0, 0, 32, 32), Qt::AlignCenter, string);
-	return QIcon(pixmap);
+    if (canvas->selectedItems().isEmpty())
+        return;
+	
+    QUndoCommand *removeItemCommand = new RemoveItemCommand(canvas);
+    undoStack->push(removeItemCommand);
 }
 
 void MainWindow::aboutCheMVP()

@@ -3,7 +3,9 @@
 
 #include <QtGui>
 #include <QGraphicsItem>
+
 #include <cmath>
+#include<iostream>
 
 #include "drawinginfo.h"
 #include "atom.h"

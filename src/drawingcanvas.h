@@ -2,16 +2,20 @@
 #define DrawingCanvas_H
 
 #include <QGraphicsScene>
+#include <QMessageBox>
+#include <QtGui>
 #include <QMenu>
 #include <QList>
+
 #include <math.h>
 #include "atom.h"
 #include "bond.h"
 #include "angle.h"
 #include "arrow.h"
+#include "defines.h"
+#include "molecule.h"
 #include "drawinginfo.h"
 #include "fileparser.h"
-
 
 class DrawingCanvas : public QGraphicsScene
 {

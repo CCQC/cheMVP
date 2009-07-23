@@ -2,9 +2,10 @@
 #define AtomDrawing_H
 
 #include <QGraphicsItem>
+#include <QString>
+#include <QtGui>
 
 #include <map>
-#include <QString>
 #include <iostream>
 #include "error.h"
 #include "defines.h"

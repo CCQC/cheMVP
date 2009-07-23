@@ -1,8 +1,8 @@
-#include <ios>
-#include <iostream>
+//#include <iostream>
 #include "fileparser.h"
 
 using namespace std;
+
 void FileParser::readNWChem()
 {    
     std::string tempString;    

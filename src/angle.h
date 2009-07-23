@@ -1,5 +1,6 @@
 #ifndef ANGLE_H_
 #define ANGLE_H_
+
 #include <QtGui>
 #include <QGraphicsItem>
 #include <cmath>

@@ -1,13 +1,5 @@
-#include <QtGui>
-#include <QMessageBox>
-
 #include "drawingcanvas.h"
-#include "fileparser.h"
-#include "molecule.h"
-#include "bond.h"
-#include "atom.h"
-#include "defines.h"
-#include <math.h>
+
 #define SIGN(a, b) (b >= 0 ? (a >= 0 ? a : -a) : (a >= 0 ? -a : a))
 #define MAX(a, b) (a > b ? a : b)
 #define MIN(a, b) (a < b ? a : b)
@@ -52,7 +44,6 @@ DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_
 //	}	
 }
 
-
 void DrawingCanvas::focusOutEvent(QFocusEvent *event)
 {
     std::cout<<"Drawing canvas focus out"<<std::endl;
@@ -64,14 +55,12 @@ void DrawingCanvas::focusOutEvent(QFocusEvent *event)
     }
 }
 
-
 void DrawingCanvas::drawBackground(QPainter *painter, const QRectF &)
 {
     if(myBackgroundColor.alpha() == 0) return;
     painter->setBrush(myBackgroundColor);
     painter->drawRect(sceneRect());
 }
-
 
 void DrawingCanvas::clearAll()
 {
@@ -85,7 +74,6 @@ void DrawingCanvas::clearAll()
     arrowsList.clear();
     textLabelsList.clear();
 }
-
 
 void DrawingCanvas::unselectAll()
 {
@@ -103,7 +91,6 @@ void DrawingCanvas::unselectAll()
     update();
 }
 
-
 void DrawingCanvas::selectAll()
 {
     foreach(QGraphicsItem *item, items()) {
@@ -111,7 +98,6 @@ void DrawingCanvas::selectAll()
     }    
     update();
 }
-
 
 void DrawingCanvas::setBondLabelPrecision(int val)
 {
@@ -121,7 +107,6 @@ void DrawingCanvas::setBondLabelPrecision(int val)
     update();
 }
 
-
 void DrawingCanvas::setAngleLabelPrecision(int val)
 {
     foreach(Angle *angle, anglesList){
@@ -129,7 +114,6 @@ void DrawingCanvas::setAngleLabelPrecision(int val)
     }
     update();
 }
-
 
 void DrawingCanvas::setAtomLabels(QString text)
 {
@@ -165,7 +149,6 @@ double DrawingCanvas::bondLength(Atom* atom1, Atom* atom2)
                 pow(atom1->z()-atom2->z(),2.0)));
 }
 
-
 void DrawingCanvas::setAcceptsHovers(bool arg)
 {
     foreach(Atom *atom, atomsList){
@@ -179,7 +162,6 @@ void DrawingCanvas::setAcceptsHovers(bool arg)
     }
     // TODO angles, labels, arrows...
 }
-
 
 void DrawingCanvas::loadFromParser()
 {
@@ -228,7 +210,6 @@ void DrawingCanvas::loadFromParser()
     }
     refresh();
 }
-
 
 void DrawingCanvas::rotateFromInitialCoordinates()
 {
@@ -748,14 +729,12 @@ void DrawingCanvas::updateBonds()
     }
 }
 
-
 void DrawingCanvas::updateTextLabels()
 {
     foreach(Label *label, textLabelsList){
         label->setPos(drawingInfo->dX()+label->dX(), drawingInfo->dY()+label->dY());
     }
 }
-
 
 void DrawingCanvas::updateAngles()
 {
@@ -764,7 +743,6 @@ void DrawingCanvas::updateAngles()
     }
 }
 
-
 void DrawingCanvas::updateArrows()
 {
     foreach(Arrow *arrow, arrowsList){
@@ -772,12 +750,10 @@ void DrawingCanvas::updateArrows()
     }
 }
 
-
 void DrawingCanvas::setMode(Mode mode)
 {
     myMode = mode;
 }
-
 
 void DrawingCanvas::atomLabelFontChanged(const QFont &font)
 {
@@ -788,7 +764,6 @@ void DrawingCanvas::atomLabelFontChanged(const QFont &font)
     }
     update();
 }
-
 
 void DrawingCanvas::toggleAtomNumberSubscripts()
 {
@@ -813,7 +788,6 @@ void DrawingCanvas::toggleAtomNumberSubscripts()
     update();
 }
 
-
 void DrawingCanvas::atomLabelFontSizeChanged(const QString &size)
 {
     foreach(Atom *atom, atomsList){
@@ -823,7 +797,6 @@ void DrawingCanvas::atomLabelFontSizeChanged(const QString &size)
     }
     update();
 }
-
 
 void DrawingCanvas::translateToCenterOfMass()
 {
@@ -857,7 +830,6 @@ void DrawingCanvas::translateToCenterOfMass()
     drawingInfo->determineScaleFactor();
 }
 
-
 bool DrawingCanvas::isBonded(Atom *atom1, Atom *atom2){
     foreach(Bond *bond, bondsList){
         if((bond->startAtom() == atom1 && bond->endAtom() == atom2) ||
@@ -867,7 +839,6 @@ bool DrawingCanvas::isBonded(Atom *atom1, Atom *atom2){
     }
     return false;
 }
-
 
 QList<Angle*>::iterator DrawingCanvas::angleExists(Atom *atom1, Atom *atom2, Atom *atom3){
     QList<Angle*>::iterator pos;
@@ -883,7 +854,6 @@ QList<Angle*>::iterator DrawingCanvas::angleExists(Atom *atom1, Atom *atom2, Ato
     // as long as we return an iterator beyond the end of the list
     return ++pos;
 }
-
 
 void DrawingCanvas::toggleAngleLabels()
 {
@@ -923,7 +893,6 @@ void DrawingCanvas::toggleAngleLabels()
     }
 }
 
-
 void DrawingCanvas::toggleBondDashing()
 {
     Bond *bond;
@@ -937,7 +906,6 @@ void DrawingCanvas::toggleBondDashing()
     }
     refresh();
 }
-
 
 void DrawingCanvas::toggleBondLabels()
 {

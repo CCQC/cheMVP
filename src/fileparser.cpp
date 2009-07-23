@@ -1,4 +1,3 @@
-#include <ios>
 #include "fileparser.h"
 
 using namespace std;
@@ -10,12 +9,10 @@ FileParser::FileParser(QString instring):
 {
 }
 
-
 FileParser::~FileParser()
 {
 	
 }
-
 
 void FileParser::determineFileType()
 {
@@ -71,7 +68,6 @@ void FileParser::determineFileType()
 	
     infile.seekg(ios_base::beg);
 }
-
 
 void FileParser::readFile()
 {

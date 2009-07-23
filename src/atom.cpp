@@ -1,5 +1,3 @@
-#include <QtGui>
-
 #include "atom.h"
 
 std::map<QString, double> Atom::labelToVdwRadius;
