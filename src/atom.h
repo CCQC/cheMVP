@@ -50,9 +50,11 @@ public:
     void setLabel(const QString &text);
     void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptsHoverEvents(arg);}
     void setDrawingStyle(DrawingStyle style);
+	void setColor(QColor color) {fill_color = color;}
     void setFontSizeStyle(FontSizeStyle style);
     void setID(int val) {myID = val;}
-    //     void processProjectFile(QSettings &settings, bool saveFile);
+//  void processProjectFile(QSettings &settings, bool saveFile);
+	
 protected:
     static std::map<QString, double> labelToVdwRadius;
     static std::map<QString, double> labelToMass;

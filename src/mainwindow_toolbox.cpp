@@ -213,7 +213,16 @@ QWidget *MainWindow::createAtomsWidget()
     atomSizeGroupBox->setLayout(atomSizeLayout);
     layout->addWidget(atomSizeGroupBox);
 
-
+	QGroupBox *atomColorGroupBox = new QGroupBox(tr("Atom Color"));
+    QGridLayout *atomColorLayout = new QGridLayout;
+    atomColorButton = new QPushButton(tr("Color Selected Atoms"));
+    atomColorButton->setToolTip(tr("Change the selected atom color"));
+    atomColorLayout->addWidget(atomColorButton, 0, 0, 1, 2);
+    connect(atomColorButton, SIGNAL(clicked()), canvas, SLOT(setAtomColors()));
+    atomColorGroupBox->setLayout(atomColorLayout);
+    layout->addWidget(atomColorGroupBox);
+	
+	
     QGroupBox *drawingStyleBox 	     = new QGroupBox(tr("Drawing Style"));    
     atomDrawingStyleButtonGroup      = new QButtonGroup;
     QGridLayout *drawingStyleLayout  = new QGridLayout;

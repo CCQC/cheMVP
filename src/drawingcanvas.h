@@ -57,6 +57,7 @@ public slots:
     void selectAll();
     void setBackgroundOpacity(int val);
     void setBackgroundColor();
+	void setAtomColors();
     void toggleBondDashing();
     void toggleAtomNumberSubscripts();
     void atomLabelFontChanged(const QFont &);

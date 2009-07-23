@@ -39,7 +39,7 @@ private slots:
     void changeAtomSize();
     void changeBondSize();
     void setTextBoxFonts();
-    //    void periodicTableButtonGroupClicked(QAbstractButton *button);
+//  void periodicTableButtonGroupClicked(QAbstractButton *button);
     void deleteItem();
     void mouseModeButtonGroupClicked(int);
     void rotateFromInitialCoordinates();
@@ -119,6 +119,7 @@ private:
     QPushButton *toggleAngleLabelsButton;
     QPushButton *toggleAtomNumberSubscriptsButton;
     QPushButton *backgroundColorButton;
+	QPushButton *atomColorButton;
 
     QToolButton *boldTextButton;
     QToolButton *italicTextButton;

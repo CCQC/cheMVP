@@ -1094,18 +1094,41 @@ void DrawingCanvas::refresh()
 void DrawingCanvas::setBackgroundColor()
 {
     QColor color = QColorDialog::getColor(myBackgroundColor);
-    color.setAlpha(myBackgroundAlpha);
-    myBackgroundColor = color;
-    update();
-
+	if(color.isValid())
+	{
+		color.setAlpha(myBackgroundAlpha);
+		myBackgroundColor = color;
+		update();	
+	}
 }
-
 
 void DrawingCanvas::setBackgroundOpacity(int val)
 {
     myBackgroundAlpha = (int)(255*val/100);
     myBackgroundColor.setAlpha(myBackgroundAlpha);
     update();
+}
+
+void DrawingCanvas::setAtomColors()
+{
+	bool selected = false;
+	foreach(Atom* atom, atomsList) {
+		if(atom->isSelected()) {
+			selected = true;
+			break;
+		}
+	}
+	
+	if(selected) {
+		QColor color = QColorDialog::getColor();
+		if(color.isValid()) {
+			foreach(Atom* atom, atomsList) {
+				if(atom->isSelected()) {
+					atom->setColor(color);
+				}
+			}
+		}
+	}
 }
 
 void DrawingCanvas::processProjectFile(QSettings &settings, bool saveFile)
