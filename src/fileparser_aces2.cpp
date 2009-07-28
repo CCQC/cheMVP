@@ -1,12 +1,12 @@
-#include <ios>
 #include "fileparser.h"
+
 using namespace std;
 
 void FileParser::readACES2()
 {    
     std::string tempString;    
     QRegExp rx("", Qt::CaseInsensitive, QRegExp::RegExp2);
-    
+    bool isFindif=false; //We only want the first geometry for finite difference frequency computations
     while (1) {
         Molecule *molecule = new Molecule();
         
@@ -24,6 +24,7 @@ void FileParser::readACES2()
         
         getline(infile, tempString);
         while (tempString.find("Symbol    Number") == string::npos && infile.eof() == false) {
+            if (tempString.find("IVIB             FINDIF") != string::npos) isFindif=true;
             getline(infile, tempString);
         }
         if (infile.eof()) 
@@ -63,5 +64,6 @@ void FileParser::readACES2()
                 break;
             }
         }
+        if(isFindif) break;
     }
 }

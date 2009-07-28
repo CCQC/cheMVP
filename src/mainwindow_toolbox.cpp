@@ -16,7 +16,6 @@ void MainWindow::createToolBox()
     toolBox->setCurrentWidget(atomsWidget);
 }
 
-
 QWidget *MainWindow::createAppearanceWidget()
 {	
     QWidget *widget = new QWidget;
@@ -67,7 +66,7 @@ QWidget *MainWindow::createAppearanceWidget()
     backgroundColorGroupBox->setLayout(backgroundColorLayout);
     layout->addWidget(backgroundColorGroupBox);
 
-    QGroupBox *zoomGroupBox = new QGroupBox(tr("Drawing Size"));
+    QGroupBox *zoomGroupBox = new QGroupBox(tr("Zoom"));
     QGridLayout *zoomLayout = new QGridLayout;
     QLabel *zoomTitle = new QLabel(tr("Zoom:"));
     zoomSpinBox = new QSpinBox();
@@ -85,7 +84,6 @@ QWidget *MainWindow::createAppearanceWidget()
     return widget;	
 }
 
-
 QWidget *MainWindow::createAnnotationWidget()
 {
     QWidget *widget = new QWidget;
@@ -101,7 +99,6 @@ QWidget *MainWindow::createAnnotationWidget()
     widget->setLayout(layout);
     return widget;	
 }
-
 
 QWidget *MainWindow::createBondsAndAnglesWidget()
 {
@@ -213,7 +210,16 @@ QWidget *MainWindow::createAtomsWidget()
     atomSizeGroupBox->setLayout(atomSizeLayout);
     layout->addWidget(atomSizeGroupBox);
 
-
+	QGroupBox *atomColorGroupBox = new QGroupBox(tr("Atom Color"));
+    QGridLayout *atomColorLayout = new QGridLayout;
+    atomColorButton = new QPushButton(tr("Color Selected Atoms"));
+    atomColorButton->setToolTip(tr("Change the selected atom color"));
+    atomColorLayout->addWidget(atomColorButton, 0, 0, 1, 2);
+    connect(atomColorButton, SIGNAL(clicked()), canvas, SLOT(setAtomColors()));
+    atomColorGroupBox->setLayout(atomColorLayout);
+    layout->addWidget(atomColorGroupBox);
+	
+	
     QGroupBox *drawingStyleBox 	     = new QGroupBox(tr("Drawing Style"));    
     atomDrawingStyleButtonGroup      = new QButtonGroup;
     QGridLayout *drawingStyleLayout  = new QGridLayout;
@@ -221,10 +227,10 @@ QWidget *MainWindow::createAtomsWidget()
     houkMolAtomDrawingButton 	     = new QRadioButton(tr("HoukMol"));
     simpleColoredAtomDrawingButton 	 = new QRadioButton(tr("Simple Colored"));
     gradientColoredAtomDrawingButton = new QRadioButton(tr("Gradient"));
-    atomDrawingStyleButtonGroup->addButton(simpleAtomDrawingButton, int(Atom::Simple));
-    atomDrawingStyleButtonGroup->addButton(simpleColoredAtomDrawingButton, int(Atom::SimpleColored));
-    atomDrawingStyleButtonGroup->addButton(houkMolAtomDrawingButton, int(Atom::HoukMol));
-    atomDrawingStyleButtonGroup->addButton(gradientColoredAtomDrawingButton, int(Atom::Gradient));
+    atomDrawingStyleButtonGroup->addButton(simpleAtomDrawingButton, int(DrawingInfo::Simple));
+    atomDrawingStyleButtonGroup->addButton(simpleColoredAtomDrawingButton, int(DrawingInfo::SimpleColored));
+    atomDrawingStyleButtonGroup->addButton(houkMolAtomDrawingButton, int(DrawingInfo::HoukMol));
+    atomDrawingStyleButtonGroup->addButton(gradientColoredAtomDrawingButton, int(DrawingInfo::Gradient));
     drawingStyleLayout->addWidget(simpleAtomDrawingButton, 0, 0);
     drawingStyleLayout->addWidget(simpleColoredAtomDrawingButton, 0, 1);
     drawingStyleLayout->addWidget(houkMolAtomDrawingButton, 1, 0);
@@ -290,7 +296,6 @@ QWidget *MainWindow::createAtomsWidget()
     widget->setLayout(layout);
     return widget;	
 }
-
 
 QSlider *MainWindow::createSlider(int max)
 {

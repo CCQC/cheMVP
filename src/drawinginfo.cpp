@@ -1,22 +1,34 @@
 #include "drawinginfo.h"
 
 DrawingInfo::DrawingInfo():
-	myXRot(0.0),
-	myYRot(0.0),
-	myZRot(0.0),
-	myUserScaleFactor(100.0),
-	myWidth(DEFAULT_SCENE_SIZE_X),
-	myHeight(DEFAULT_SCENE_SIZE_Y),
-	myMidX(DEFAULT_SCENE_SIZE_X/2.0),
-	myMidY(DEFAULT_SCENE_SIZE_Y/2.0),
-	myDX(DEFAULT_SCENE_SIZE_X/2.0),
-	myDY(DEFAULT_SCENE_SIZE_Y/2.0),
+	myXRot(0),
+	myYRot(0),
+	myZRot(0),
+	myDX((int)(DEFAULT_SCENE_SIZE_X/2.0)),
+	myDY((int)(DEFAULT_SCENE_SIZE_Y/2.0)),
 	myUserDX(0),
 	myUserDY(0),
+	myMidX((int)(DEFAULT_SCENE_SIZE_X/2.0)),
+	myMidY((int)(DEFAULT_SCENE_SIZE_Y/2.0)),
+	myWidth((int)(DEFAULT_SCENE_SIZE_X)),
+	myHeight((int)(DEFAULT_SCENE_SIZE_Y)),
+	myUserScaleFactor(100.0),
 	myPerspectiveScale(DEFAULT_PERSPECTIVE_SCALE),
 	myMoleculeMaxDimension(1.0),
-	myAngToSceneScale(1.0)
+	myAngToSceneScale(1),
+	_anglePenWidth(0.2),
+	_angleColor(Qt::black),
+	_anglePen(Qt::black),
+	_anglePrecision(DEFAULT_ANGLE_LABEL_PRECISION),
+	_bondColor(Qt::black),
+	_bondPen(Qt::black),
+    _bondPrecision(DEFAULT_BOND_LABEL_PRECISION),
+    _labelColor(Qt::black),
+    _atomLabelFont(DEFAULT_ATOM_LABEL_FONT),
+    _atomLineColor(Qt::black),
+    _atomTextColor(Qt::black)
 {
+	
 }
 
 
@@ -58,12 +70,12 @@ void DrawingInfo::processProjectFile(QSettings &settings, bool saveFile)
 		myUserScaleFactor = settings.value("Zoom", 100.0).toDouble();
 		myWidth = settings.value("sceneWidth", DEFAULT_SCENE_SIZE_X).toDouble();
 		myHeight = settings.value("sceneHeight", DEFAULT_SCENE_SIZE_Y).toDouble();
-		myMidX = settings.value("MidX", DEFAULT_SCENE_SIZE_X/2.0).toDouble();
-		myMidY = settings.value("MidY", DEFAULT_SCENE_SIZE_Y/2.0).toDouble();
-		myDX = settings.value("TotalDX", DEFAULT_SCENE_SIZE_X/2.0).toDouble();
-		myDY = settings.value("TotalDY", DEFAULT_SCENE_SIZE_Y/2.0).toDouble();
-		myDX = settings.value("UserDX", 0.0).toDouble();
-		myDY = settings.value("UserDY", 0.0).toDouble();
+		myMidX = (int)settings.value("MidX", DEFAULT_SCENE_SIZE_X/2.0).toDouble();
+		myMidY = (int)settings.value("MidY", DEFAULT_SCENE_SIZE_Y/2.0).toDouble();
+		myDX = (int)settings.value("TotalDX", DEFAULT_SCENE_SIZE_X/2.0).toDouble();
+		myDY = (int)settings.value("TotalDY", DEFAULT_SCENE_SIZE_Y/2.0).toDouble();
+		myDX = (int)settings.value("UserDX", 0.0).toDouble();
+		myDY = (int)settings.value("UserDY", 0.0).toDouble();
 		myPerspectiveScale = settings.value("Perspective", DEFAULT_PERSPECTIVE_SCALE).toDouble();
 		myMoleculeMaxDimension = settings.value("MaxDimension", 0.0).toDouble();
 		myAngToSceneScale = settings.value("SceneScale", 0.0).toDouble();		

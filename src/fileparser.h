@@ -2,11 +2,14 @@
 #define FILEPARSER_H_
 
 #include <QString>
-#include <vector>
-#include <fstream>
 #include <QRegExp>
+
+#include <ios>
 #include <limits>
 #include <string>
+#include <vector>
+#include <fstream>
+
 #include "molecule.h"
 #include "defines.h"
 #include "error.h"
@@ -15,7 +18,6 @@
 	#include <iostream>
 	#include <iomanip>
 #endif
-
 
 class FileParser
 {
@@ -30,7 +32,7 @@ public:
 
 	int numMolecules() {return myMoleculeList.size();}
     int current() const { return currentGeometry; }
-    void setCurrent(int curr) { currentGeometry = curr; }
+    void setCurrent(int curr) {currentGeometry = curr;}
 	void setFileName(const QString name) {myFileName = name;}
 	
 	const QString& fileName() {return myFileName;}
@@ -56,4 +58,5 @@ protected:
 	int currentGeometry;
 	QList<Molecule*> myMoleculeList;
 };
+
 #endif /*FILEPARSER_H_*/

@@ -19,7 +19,7 @@ QMakeFile.puts "QT += svg"
 QMakeFile.puts "QMAKE_CXXFLAGS_DEBUG = \" -O0 -g\""
 QMakeFile.puts "\nmacx{"
 QMakeFile.puts "  ICON = ../images/icon.icns\n"
-QMakeFile.puts "  CONFIG += ppc x86\n"
+QMakeFile.puts "  CONFIG += x86\n"
 QMakeFile.puts "}"
 QMakeFile.puts "\nwin32{"
 QMakeFile.puts "  RC_FILE = ../images/icon.rc"
@@ -29,8 +29,4 @@ QMakeFile.puts "  QMAKE_LFLAGS_RELEASE -= -mthreads"
 QMakeFile.puts "}"
 QMakeFile.close
 
-if ENV["VENDOR"] == "apple"
-     `qmake -spec macx-g++ #{FileName}`
-else
-     `qmake #{FileName}`
-end
+`qmake -spec macx-g++ #{FileName}`
