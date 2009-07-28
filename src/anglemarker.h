@@ -35,5 +35,4 @@ protected:
     QPen myPen;
 };
 
-
 #endif /*ANGLEMARKER_H_*/

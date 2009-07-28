@@ -2,9 +2,10 @@
 #define AtomDrawing_H
 
 #include <QGraphicsItem>
+#include <QString>
+#include <QtGui>
 
 #include <map>
-#include <QString>
 #include <iostream>
 #include "error.h"
 #include "defines.h"
@@ -13,10 +14,9 @@
 class Atom : public QGraphicsEllipseItem
 {
 public:
-    enum { Type = UserType + ATOMTYPE};
-    enum DrawingStyle {Simple, SimpleColored, HoukMol, Gradient};
+    enum {Type = UserType + ATOMTYPE};
     enum FontSizeStyle {SmallLabel, LargeLabel};
-    Atom(QString element, DrawingInfo *drawingInfo, QGraphicsItem *parent = 0);
+    Atom(QString element, DrawingInfo *info, QGraphicsItem *parent = 0);
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
@@ -33,26 +33,28 @@ public:
     double scaleFactor() const {return myScaleFactor;}
     double effectiveRadius() const {return myEffectiveRadius;}
     QString symbol() const {return mySymbol;}
-    QString label() {return ( myLabel +
-                              (myLabelSubscript.size() ? "_" + myLabelSubscript : "") +
-                              (myLabelSuperscript.size() ? "^" + myLabelSuperscript : ""));}
-    const QFont& labelFont() {return myLabelFont;}
+    QString label() {return (myLabel +
+							(myLabelSubscript.size() ? "_" + myLabelSubscript : "") +
+							(myLabelSuperscript.size() ? "^" + myLabelSuperscript : ""));}
     void computeRadius();
     void setLabelSubscript(const QString &string) {myLabelSubscript = string;}
     void setLabelSuperscript(const QString &string) {myLabelSuperscript = string;}
     void setLabelFontSize(int val) {myFontSize = val;
-        myLabelFont.setPointSizeF(double(val)*myEffectiveRadius/20.0);}
-    void setLabelFont(const QString &font) {myLabelFont.setFamily(font);}
+        _info->getAtomLabelFont().setPointSizeF(double(val)*myEffectiveRadius/20.0);}
     void setScaleFactor(double val) {myScaleFactor = val;}
     void setX(double val) {myX = val;}
     void setY(double val) {myY = val;}
     void setZ(double val) {myZ = val;}
     void setLabel(const QString &text);
     void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptsHoverEvents(arg);}
-    void setDrawingStyle(DrawingStyle style);
+    void setDrawingStyle(DrawingInfo::DrawingStyle style);
+	void setColor(QColor color) {fill_color = color;}
     void setFontSizeStyle(FontSizeStyle style);
     void setID(int val) {myID = val;}
-    //     void processProjectFile(QSettings &settings, bool saveFile);
+//  void processProjectFile(QSettings &settings, bool saveFile);
+	
+	static double bondLength(Atom*, Atom*);
+	
 protected:
     static std::map<QString, double> labelToVdwRadius;
     static std::map<QString, double> labelToMass;
@@ -65,7 +67,6 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
     double myEffectiveRadius;
-    DrawingStyle myDrawingStyle;
     FontSizeStyle myFontSizeStyle;
     double myMass;
     double myRadius;
@@ -80,11 +81,8 @@ protected:
     int myFontSize;
     int myID;
     bool hoverOver;
-    QFont myLabelFont;
-    QColor line_color;
-    QColor text_color;
     QColor fill_color;
-    DrawingInfo *drawingInfo;
+    DrawingInfo *_info;
 };
 
 #endif

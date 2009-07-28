@@ -17,47 +17,41 @@
      Q_OBJECT
 
  public:
-     enum LabelType { BondLabelType = UserType + BONDLABELTYPE, AngleLabelType = UserType + ANGLELABELTYPE,
+     enum LabelType { BondLabelType = UserType + BONDLABELTYPE,
+                      AngleLabelType = UserType + ANGLELABELTYPE,
     	 			  TextLabelType = UserType + TEXTLABELTYPE};
 
-     Label(LabelType type, double value, int precision, DrawingInfo *info, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
-//     bool sceneEvent(QEvent *event);
+     Label(LabelType type, double value, DrawingInfo *info, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
      void focusOutEvent (QFocusEvent *event);
-//     void keyPressEvent(QKeyEvent * event);
      int type() const { return myType; }
      double dX() {return myDX;}
      double dY() {return myDY;}
      void setDX(double val) {myDX = val;}
      void setDY(double val) {myDY = val;}
-     void setPrecision(int val) {myPrecision = val; updateLabel();}
      void setFontSize(int val) {myFontSize = val; updateFontSize();}
      int fontSize() const {return myFontSize;}
-//     void setFont(const QString &font) {myFont.setFamily(font);}
-//     bool eventFilter(QObject* object, QEvent* event);
+     void updateLabel();
       
  signals:
-//     void lostFocus(Label *item);
      void selectedChange(QGraphicsItem *item);
+
  public slots:
- 	void updateFontSize();
+    void updateFontSize();
+
  protected:
-	 void keyPressEvent(QKeyEvent *event);
-//	 void keyReleaseEvent(QKeyEvent *event);
-     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
-     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-     void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
  private:
 	 LabelType myType;
-	 QString myString;
-	 void updateLabel();
-	 QColor myColor;
+     QString myString;
 	 int    myFontSize;
 	 double myDX;
 	 double myDY;
-	 double myValue;
-	 int myPrecision;
-	 DrawingInfo *myDrawingInfo;
+     double myValue;
+     DrawingInfo* _info;
  };
 
 #endif /*LABEL_H_*/

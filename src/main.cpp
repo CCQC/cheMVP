@@ -33,6 +33,7 @@ int main(int argv, char *args[])
     FileParser *parser = new FileParser(cmd_line_arg);
     QPixmap pixmap("../images/splash.png");
     SplashScreen splash(pixmap);
+	splash.startTimer(3500); // ~5 sec
     MainWindow mainWindow(parser);
     //Set the icon in the bar at the top of the window
     app.setWindowIcon(QIcon("../images/icon.png"));

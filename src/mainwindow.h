@@ -12,6 +12,7 @@
 #include <QUndoCommand>
 #include <QDebug>
 #include <QSettings>
+#include "splashscreen.h"
 #include "drawingcanvas.h"
 #include "drawinginfo.h"
 #include "fileparser.h"
@@ -38,7 +39,7 @@ private slots:
     void changeAtomSize();
     void changeBondSize();
     void setTextBoxFonts();
-    //    void periodicTableButtonGroupClicked(QAbstractButton *button);
+//  void periodicTableButtonGroupClicked(QAbstractButton *button);
     void deleteItem();
     void mouseModeButtonGroupClicked(int);
     void rotateFromInitialCoordinates();
@@ -47,6 +48,7 @@ private slots:
     void saveAs();
     void changeZoom(int);
     void setAddArrowMode();
+	void aboutCheMVP();
 
 private:
     void focusOutEvent(QFocusEvent *event);
@@ -110,18 +112,18 @@ private:
     QAction *selectAllAction;
     QAction *undoAction;
     QAction *redoAction;
-    
+	QAction *aboutAction;    
 
     QPushButton *toggleBondLabelsButton;
     QPushButton *toggleBondDashingButton;
     QPushButton *toggleAngleLabelsButton;
     QPushButton *toggleAtomNumberSubscriptsButton;
     QPushButton *backgroundColorButton;
+	QPushButton *atomColorButton;
 
     QToolButton *boldTextButton;
     QToolButton *italicTextButton;
     QToolButton *underlineTextButton;
-
 
     QRadioButton *simpleAtomDrawingButton;
     QRadioButton *houkMolAtomDrawingButton;

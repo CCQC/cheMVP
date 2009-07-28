@@ -1,33 +1,28 @@
-#include <QtGui>
-
 #include "atom.h"
 
 std::map<QString, double> Atom::labelToVdwRadius;
 std::map<QString, double> Atom::labelToMass;
 std::map<QString, QColor> Atom::labelToColor;
 
-
-Atom::Atom(QString element, DrawingInfo *info, QGraphicsItem *parent)
-    : QGraphicsEllipseItem(parent),
-    mySymbol(element),
-    drawingInfo(info),
-    line_color(Qt::black),
-    text_color(Qt::black),
-    fill_color(Qt::white),
-    myScaleFactor(DEFAULT_ATOM_SCALE_FACTOR),
-    myDrawingStyle(Gradient),
-    myFontSizeStyle(SmallLabel),
-    myX(0.0),
+Atom::Atom(QString element, DrawingInfo *i, QGraphicsItem *parent)
+	:QGraphicsEllipseItem(parent),
+	//myDrawingStyle(Gradient),
+	myFontSizeStyle(SmallLabel),
+	myX(0.0),
     myY(0.0),
     myZ(0.0),
-    myID(0),
-    hoverOver(false)
+	myScaleFactor(DEFAULT_ATOM_SCALE_FACTOR),
+	mySymbol(element),
+	myID(0),
+	hoverOver(false),
+	fill_color(Qt::white),
+    _info(i)
 {
-    fillLabelToVdwRadiusMap();
+	fillLabelToVdwRadiusMap();
     fillLabelToMassMap();
     fillLabelToColorMap();
 
-    setDrawingStyle(myDrawingStyle);
+    setDrawingStyle(_info->getDrawingStyle());
 
     myLabel = (mySymbol == "H" ? "" : mySymbol);
 
@@ -47,44 +42,41 @@ Atom::Atom(QString element, DrawingInfo *info, QGraphicsItem *parent)
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setAcceptsHoverEvents(true);
     setAcceptDrops(true);
-    myEffectiveRadius = drawingInfo->scaleFactor() * (1.0 + zValue() * drawingInfo->perspective())
+    myEffectiveRadius = _info->scaleFactor() * (1.0 + zValue() * _info->perspective())
                         * myRadius * myScaleFactor;
     setRect(QRectF(-myEffectiveRadius, -myEffectiveRadius, 2.0*myEffectiveRadius, 2.0*myEffectiveRadius));
 }
 
-
-void Atom::setLabel(const QString &text){
-    // Regular expression to match C_x^y
-    QRegExp rx("([A-Za-z0-9]*)([_^][A-Za-z0-9]+)?([_^]\\w+)?", Qt::CaseInsensitive, QRegExp::RegExp2);
-    myLabel.clear();
-    myLabelSubscript.clear();
-    myLabelSuperscript.clear();
-    if (rx.exactMatch(text) == true) {
-        myLabel = rx.cap(1);
-        if (rx.cap(2).startsWith('_')) {
-            myLabelSubscript += rx.cap(2).remove(0, 1);
-        } else if (rx.cap(2).startsWith('^')) {
-            myLabelSuperscript += rx.cap(2).remove(0, 1);
-        }
-        if (rx.cap(3).startsWith('_')) {
-            myLabelSubscript += rx.cap(3).remove(0, 1);
-        } else if (rx.cap(3).startsWith('^')) {
-            myLabelSuperscript += rx.cap(3).remove(0, 1);
-        }
-    }
+void Atom::setLabel(const QString &text)
+{
+	// Regular expression to match C_x^y
+	QRegExp rx("([A-Za-z0-9]*)([_^][A-Za-z0-9]+)?([_^]\\w+)?", Qt::CaseInsensitive, QRegExp::RegExp2);
+	myLabel.clear();
+	myLabelSubscript.clear();
+	myLabelSuperscript.clear();
+	if(rx.exactMatch(text) == true) {
+		myLabel = rx.cap(1);
+		if (rx.cap(2).startsWith('_')) {
+			myLabelSubscript += rx.cap(2).remove(0, 1);
+		} else if (rx.cap(2).startsWith('^')) {
+			myLabelSuperscript += rx.cap(2).remove(0, 1);
+		}
+		if (rx.cap(3).startsWith('_')) {
+			myLabelSubscript += rx.cap(3).remove(0, 1);
+		} else if (rx.cap(3).startsWith('^')) {
+			myLabelSuperscript += rx.cap(3).remove(0, 1);
+		}
+	}
 }
 
-
-void Atom::setDrawingStyle(DrawingStyle style)
+void Atom::setDrawingStyle(DrawingInfo::DrawingStyle style)
 {
-    if(style == Simple){
+    if(style == DrawingInfo::Simple){
         fill_color = Qt::white;
     }else{
         fill_color = labelToColor[mySymbol];
     }
-    myDrawingStyle = style;
 }
-
 
 void Atom::setFontSizeStyle(FontSizeStyle style)
 {
@@ -96,14 +88,12 @@ void Atom::setFontSizeStyle(FontSizeStyle style)
     myFontSizeStyle = style;
 }
 
-
 void Atom::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event);
     hoverOver = true;
     update();
 }
-
 
 void Atom::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
@@ -112,19 +102,16 @@ void Atom::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     update();
 }
 
-
 QRectF Atom::boundingRect() const
 {
     return rect();
 }
 
-
 void Atom::computeRadius()
 {
-    myEffectiveRadius = drawingInfo->scaleFactor() * (1.0 + zValue() * drawingInfo->perspective())
+    myEffectiveRadius = _info->scaleFactor() * (1.0 + zValue() * _info->perspective())
                         * myRadius * myScaleFactor;
 }
-
 
 void Atom::paint(QPainter *painter,
                  const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -139,12 +126,12 @@ void Atom::paint(QPainter *painter,
     // If the item is selected, use a lighter color for the filling
     QPen linestyle;
     // If we're hovering over the item, use thicker lines
-    linestyle.setWidthF((hoverOver ? drawingInfo->scaleFactor()*0.03 : drawingInfo->scaleFactor()*0.01));
+    linestyle.setWidthF((hoverOver ? _info->scaleFactor()*0.03 : _info->scaleFactor()*0.01));
     linestyle.setColor(Qt::black);
     painter->setPen(linestyle);
 
     // The circle defnining the atom
-    if(myDrawingStyle == Gradient){
+    if(_info->getDrawingStyle() == DrawingInfo::Gradient){
         // Define a gradient pattern to fill the atom
         QRadialGradient gradient(QPointF(0.0, 0.0), myEffectiveRadius,
                                  QPointF(myEffectiveRadius/2.1, -myEffectiveRadius/2.1));
@@ -170,15 +157,17 @@ void Atom::paint(QPainter *painter,
         // 2880 is 180 degrees: QT wants angles in 1/16ths of a degree
         painter->drawArc(h_line_box, 0, -2880);
         // The direction of the vertical arc depends on the style
-        if(myDrawingStyle == Simple || myDrawingStyle == SimpleColored  || myDrawingStyle == Gradient){
+        if(_info->getDrawingStyle() == DrawingInfo::Simple ||
+           _info->getDrawingStyle() == DrawingInfo::SimpleColored ||
+           _info->getDrawingStyle() == DrawingInfo::Gradient) {
             painter->drawArc(v_line_box, 1440, 2880);
-        }else if(myDrawingStyle == HoukMol){
+        }else if(_info->getDrawingStyle() == DrawingInfo::HoukMol){
             painter->drawArc(v_line_box, 1440, -2880);
         }
     }
 
     // Draw the blob for HoukMol rip-off
-    if(myDrawingStyle == HoukMol){
+    if(_info->getDrawingStyle() == DrawingInfo::HoukMol){
         QPointF startPoint(-myEffectiveRadius/1.8, -myEffectiveRadius/20.0);
         QPointF endPoint(-myEffectiveRadius/20.0, -myEffectiveRadius/1.8);
         QPointF midPoint1(-myEffectiveRadius/1.2, -myEffectiveRadius/1.2);
@@ -189,7 +178,7 @@ void Atom::paint(QPainter *painter,
         painter->setPen(QPen(fill_color));
         painter->setBrush(Qt::white);
         painter->drawPath(path);
-    }else if(myDrawingStyle == SimpleColored){
+    }else if(_info->getDrawingStyle() == DrawingInfo::SimpleColored){
         QPointF startPoint(myEffectiveRadius/1.8, -myEffectiveRadius/20.0);
         QPointF endPoint(myEffectiveRadius/20.0, -myEffectiveRadius/1.8);
         QPointF midPoint1(myEffectiveRadius/1.2, -myEffectiveRadius/1.2);
@@ -204,7 +193,7 @@ void Atom::paint(QPainter *painter,
 
     // Now draw the atomic symbol on there
     setLabelFontSize(myFontSize);
-    QFontMetricsF labelFM(myLabelFont);
+    QFontMetricsF labelFM(_info->getAtomLabelFont());
     // TODO check these offsets.  I think there's a bug in the height reported by fontmetrics
     QPointF labelPos;
     if(myFontSizeStyle == LargeLabel){
@@ -212,13 +201,13 @@ void Atom::paint(QPainter *painter,
     }else{
         labelPos = QPointF(-labelFM.width(myLabel)/2.0, labelFM.height()/3.5);
     }
-    painter->setPen(text_color);
-    painter->setBrush(text_color);
-    painter->setFont(myLabelFont);
+    painter->setPen(_info->getAtomTextColor());
+    painter->setBrush(_info->getAtomTextColor());
+    painter->setFont(_info->getAtomLabelFont());
     painter->drawText(labelPos, myLabel);
     // If there's a subscript to be drawn, do it
     if(myLabelSubscript.size()){
-        QFont subscriptFont(myLabelFont.family(), myLabelFont.pointSizeF()/2.0);
+        QFont subscriptFont(_info->getAtomLabelFont().family(), (int)(_info->getAtomLabelFont().pointSizeF()/2.0));
         painter->setFont(subscriptFont);
         qreal hOffset = labelFM.width(myLabel);
         QFontMetricsF subscriptFM(subscriptFont);
@@ -229,7 +218,7 @@ void Atom::paint(QPainter *painter,
 
     // If there's a superscript to be drawn, do it
     if(myLabelSuperscript.size()){
-        QFont superscriptFont(myLabelFont.family(), myLabelFont.pointSizeF()/2.0);
+        QFont superscriptFont(_info->getAtomLabelFont().family(),(int)(_info->getAtomLabelFont().pointSizeF()/2.0));
         painter->setFont(superscriptFont);
         qreal hOffset  = labelFM.width(myLabel);
         qreal vOffset2 = labelFM.height();
@@ -246,6 +235,12 @@ void Atom::paint(QPainter *painter,
     }
 }
 
+double Atom::bondLength(Atom *s, Atom *e)
+{
+	return(sqrt(pow(s->x() - e->x(), 2.0) +
+				pow(s->y() - e->y(), 2.0) +
+				pow(s->z() - e->z(), 2.0)));	 
+}
 
 void Atom::fillLabelToVdwRadiusMap()
 {
@@ -549,7 +544,6 @@ void Atom::fillLabelToColorMap()
         labelToColor.insert(std::make_pair(QString("Rg"), QColor(183, 189, 199)));
     }
 }
-
 
 //void Atom::processProjectFile(QSettings &settings, bool saveFile)
 //{

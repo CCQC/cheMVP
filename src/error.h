@@ -1,7 +1,6 @@
 #ifndef ERROR_H_
 #define ERROR_H_
 
-#include <QErrorMessage>
 #include <QMessageBox>
 #include <QDialog>
 

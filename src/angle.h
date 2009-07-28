@@ -1,5 +1,6 @@
 #ifndef ANGLE_H_
 #define ANGLE_H_
+
 #include <QtGui>
 #include <QGraphicsItem>
 #include <cmath>
@@ -14,7 +15,7 @@
 class Angle : public QGraphicsPathItem
 {
 public:
-	enum { Type = UserType + ANGLETYPE};
+	enum {Type = UserType + ANGLETYPE};
 	int type() const {return Type;}
 
     Angle(Atom *startAtom, Atom *centerAtom, Atom *endAtom, DrawingInfo *drawingInfo,
@@ -30,26 +31,19 @@ public:
     Atom *endAtom() const { return myEndAtom; }
     AngleMarker *marker1() {return myMarker1;}
     AngleMarker *marker2() {return myMarker2;}
-    void setLabelPrecision(int val) {myLabelPrecision=val; myLabel->setPrecision(val);}
 
 protected:
 	void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
 	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-	double bondLength(Atom *startAtom, Atom *endAtom);
-    Atom *myStartAtom;
-    Atom *myCenterAtom;
-    Atom *myEndAtom;
-    AngleMarker *myMarker1;
-    AngleMarker *myMarker2;
-    DrawingInfo *drawingInfo;
-    qreal penWidth;
-    double effectiveWidth;
+    Atom* myStartAtom;
+    Atom* myCenterAtom;
+    Atom* myEndAtom;
+    AngleMarker* myMarker1;
+    AngleMarker* myMarker2;
+    DrawingInfo* _info;
     double myValue;
-    QColor myColor;
     bool hoverOver;
-    QPen myPen;
-    int myLabelPrecision;
     Label *myLabel;
     double computeValue();
 };

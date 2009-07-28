@@ -4,13 +4,13 @@
 #include <QString>
 #include <vector>
 
-struct AtomEntry{
+struct AtomEntry
+{
 	QString Label;
 	double x;
 	double y;
 	double z;
 };
-
 
 class Molecule
 {
@@ -18,13 +18,14 @@ public:
 	Molecule();
 	~Molecule();
 	
-	void addAtom(AtomEntry *atom) {myMolecule.push_back(atom);}
-	void setComment(QString comment) {myComment = comment;}
-	std::vector<AtomEntry*>& atomsList() {return myMolecule;}
+    void addAtom(AtomEntry *atom) {_molecule.push_back(atom);}
+	void setComment(QString c) {_comment = c;}
+    std::vector<AtomEntry*>& atomsList() {return _molecule;}
+    int numAtoms() const {return _molecule.size();}
 
-    int numAtoms() const { return myMolecule.size(); }
 private:
-	std::vector<AtomEntry*> myMolecule;
-	QString myComment;
+    std::vector<AtomEntry*> _molecule;
+	QString _comment;
 };
+
 #endif /*MOLECULE_H_*/

@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 
 // TODO Add a warning if the current step is not the final one.
-
 void MainWindow::save()
 {
     if (currentSaveFile.isEmpty()) {
@@ -11,41 +10,23 @@ void MainWindow::save()
     }
 }
 
-
-MainWindow::FileType MainWindow::determineFileType(const QString &fileName)
-{
-	QRegExp re(".*\\.png", Qt::CaseInsensitive, QRegExp::RegExp2);
-//	if(re.exactMatch(fileName)) return PNG;
-	re.setPattern(".*\\.pdf");
-	if(re.exactMatch(fileName)) return PDF;
-	re.setPattern(".*\\.svg");
-	if(re.exactMatch(fileName)) return SVG;
-	re.setPattern(".*\\.ps");
-	if(re.exactMatch(fileName)) return PostScript;
-	re.setPattern(".*\\.eps");
-	if(re.exactMatch(fileName)) return PostScript;
-	re.setPattern(".*\\.tif");
-	if(re.exactMatch(fileName)) return TIFF;
-	re.setPattern(".*\\.tiff");
-	if(re.exactMatch(fileName)) return TIFF;
-	re.setPattern(".*\\.png");
-	if(re.exactMatch(fileName)) return PNG;
-	re.setPattern(".*\\.cvp");
-	if(re.exactMatch(fileName)) return CVP;
-	
-	return Unknown;
-}
-
-
 void MainWindow::saveAs()
 {
     currentSaveFile = QFileDialog::getSaveFileName(this);
     if (currentSaveFile.isEmpty())
         return;
-
+	
     saveImage(currentSaveFile);
 }
 
+void MainWindow::saveAndExit()
+{
+    if(currentSaveFile.size()){
+        std::cout<<"Saving file..."<<currentSaveFile.toStdString()<<std::endl;
+        save();
+        exit(0);
+    }
+}
 
 void MainWindow::saveImage(const QString &fileName)
 {
@@ -53,7 +34,7 @@ void MainWindow::saveImage(const QString &fileName)
     
 	FileType fileType = determineFileType(fileName);
 	QSize imageDimension(canvas->sceneRect().width(), canvas->sceneRect().height());
-
+	
 	if(fileType == SVG){
 		QPainter *painter = new QPainter();
 		QSvgGenerator *svgGen = new QSvgGenerator();
@@ -108,6 +89,61 @@ void MainWindow::saveImage(const QString &fileName)
 	}
 }
 
+MainWindow::FileType MainWindow::determineFileType(const QString &fileName)
+{
+	QRegExp re(".*\\.png", Qt::CaseInsensitive, QRegExp::RegExp2);
+//	if(re.exactMatch(fileName)) return PNG;
+	re.setPattern(".*\\.pdf");
+	if(re.exactMatch(fileName)) return PDF;
+	re.setPattern(".*\\.svg");
+	if(re.exactMatch(fileName)) return SVG;
+	re.setPattern(".*\\.ps");
+	if(re.exactMatch(fileName)) return PostScript;
+	re.setPattern(".*\\.eps");
+	if(re.exactMatch(fileName)) return PostScript;
+	re.setPattern(".*\\.tif");
+	if(re.exactMatch(fileName)) return TIFF;
+	re.setPattern(".*\\.tiff");
+	if(re.exactMatch(fileName)) return TIFF;
+	re.setPattern(".*\\.png");
+	if(re.exactMatch(fileName)) return PNG;
+	re.setPattern(".*\\.cvp");
+	if(re.exactMatch(fileName)) return CVP;
+	
+	return Unknown;
+}
+
+void MainWindow::openFile()
+{
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath());
+	parser->setFileName(fileName);
+	std::cout << "X" << fileName.toStdString() << "X" << std::endl;
+	loadFile();
+}
+
+void MainWindow::loadFile()
+{
+    if (!parser->fileName().isEmpty()) {
+		parser->readFile();
+	    canvas->clearAll();
+        canvas->loadFromParser();
+        setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
+		
+        // Enable the widgets in the animation tab if there are multiple geometries
+        if (parser->numMolecules() <= 1)
+            animationWidget->setEnabled(false);
+        else
+            animationWidget->setEnabled(true);
+        
+        // Set the sliders range and current value.
+        animationSlider->setRange(0, parser->numMolecules() - 1);
+        animationSlider->setValue(parser->current());
+    }
+	else
+	{
+		std::cout << "FAILURE IN FILENAME" << std::endl;
+	}
+}
 
 void MainWindow::processProjectFile(const QString &fileName, bool saveFile)
 {

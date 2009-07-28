@@ -9,7 +9,6 @@
 #include "drawinginfo.h"
 #include "defines.h"
 
-
 class DragBox : public QGraphicsRectItem
 {
 public:

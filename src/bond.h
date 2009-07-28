@@ -3,7 +3,9 @@
 
 #include <QtGui>
 #include <QGraphicsItem>
+
 #include <cmath>
+#include<iostream>
 
 #include "drawinginfo.h"
 #include "atom.h"
@@ -21,18 +23,18 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = 0);
 
-    void setColor(const QColor &color)     { myColor = color; }
+    void setColor(const QColor &color) {_info->setBondColor(color);}
     void setThickness(const double val) {myThickness = val;}
     void toggleDashing();
     void toggleLabel();
     void updatePosition();
     Label* label() {return myLabel;};
-    Atom *startAtom() const { return myStartAtom; }
-    Atom *endAtom() const { return myEndAtom; }
-    double length() const { return myLength; } 
+    Atom *startAtom() const {return myStartAtom; }
+    Atom *endAtom() const {return myEndAtom; }
+    double length() const {return myLength; }
     double thickness() const {return myThickness;}
     void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptsHoverEvents(arg);}
-    void setLabelPrecision(int val) {myLabelPrecision = val; if(myLabel!=0) myLabel->setPrecision(val);}
+    bool hasLabel() {return (myLabel != 0);}
 
 protected:
 	void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -41,17 +43,15 @@ protected:
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
     Atom *myStartAtom;
     Atom *myEndAtom;
-    DrawingInfo *drawingInfo;
+    DrawingInfo* _info;
     double myThickness;
     double effectiveWidth;
     double myLength;
-    QColor myColor;
     bool hoverOver;
     bool dashedLine;
-    QPen myPen;
     Label *myLabel;
-    int myLabelPrecision;
-    double computeLength();
+	
+    double computeLength() {return Atom::bondLength(myStartAtom, myEndAtom);}
 };
 
 #endif /*BOND_H_*/

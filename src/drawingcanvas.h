@@ -2,16 +2,20 @@
 #define DrawingCanvas_H
 
 #include <QGraphicsScene>
+#include <QMessageBox>
+#include <QtGui>
 #include <QMenu>
 #include <QList>
+
 #include <math.h>
 #include "atom.h"
 #include "bond.h"
 #include "angle.h"
 #include "arrow.h"
+#include "defines.h"
+#include "molecule.h"
 #include "drawinginfo.h"
 #include "fileparser.h"
-
 
 class DrawingCanvas : public QGraphicsScene
 {
@@ -49,11 +53,15 @@ public:
     void drawBackground(QPainter *painter, const QRectF &rect);
     const QCursor& rotateCursor() {return myRotateCursor;}
     void processProjectFile(QSettings &settings, bool saveFile);
+	QList<Bond*> getBonds() {return bondsList;}
+	void addBondLabel(int i);
+	
 public slots:
     void unselectAll();
     void selectAll();
     void setBackgroundOpacity(int val);
     void setBackgroundColor();
+	void setAtomColors();
     void toggleBondDashing();
     void toggleAtomNumberSubscripts();
     void atomLabelFontChanged(const QFont &);
@@ -67,6 +75,7 @@ public slots:
     void setAngleLabelPrecision(int val);
     
 protected:
+	void determineRotationAngles(); //HPS
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
@@ -82,8 +91,14 @@ signals:
 private:
     double bondLength(Atom* atom1, Atom* atom2);
     bool isBonded(Atom* atom1, Atom* atom2);
+	void svdcmp(double **a, int m, int m, double w[], double **v);
+	double pythag(double a, double b);
     QList<Angle*>::iterator angleExists(Atom* atom1, Atom* atom2, Atom* atom3);
 
+	double rotationMatrix[3][3];
+	double xRot;
+	double yRot;
+	double zRot;
     bool leftButtonDown;
     QMenu *myItemMenu;
     FileParser *parser;

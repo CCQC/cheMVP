@@ -29,8 +29,4 @@ QMakeFile.puts "  QMAKE_LFLAGS_RELEASE -= -mthreads"
 QMakeFile.puts "}"
 QMakeFile.close
 
-if ENV["VENDOR"] == "apple"
-     `qmake -spec macx-g++ #{FileName}`
-else
-     `qmake #{FileName}`
-end
+`qmake -spec macx-g++ #{FileName}`

@@ -52,18 +52,7 @@ MainWindow::MainWindow(FileParser *parser_in):
 
     // The undo/redo framework needs to update the buttons appropriately
     connect(undoStack, SIGNAL(canRedoChanged(bool)), redoAction, SLOT(setEnabled(bool)));
-    connect(undoStack, SIGNAL(canUndoChanged(bool)), undoAction, SLOT(setEnabled(bool)));
-    
-}
-
-
-void MainWindow::saveAndExit()
-{
-    if(currentSaveFile.size()){
-        std::cout<<"Saving file..."<<currentSaveFile.toStdString()<<std::endl;
-        save();
-        exit(0);
-    }
+    connect(undoStack, SIGNAL(canUndoChanged(bool)), undoAction, SLOT(setEnabled(bool)));    
 }
 
 void MainWindow::focusOutEvent(QFocusEvent *event)
@@ -76,7 +65,6 @@ void MainWindow::focusOutEvent(QFocusEvent *event)
         QMainWindow::keyPressEvent(newEvent);
     }
 }
-
 
 void MainWindow::insertTextAtCursor(QAction *action)
 {
@@ -92,6 +80,19 @@ void MainWindow::insertTextAtCursor(QAction *action)
     update();
 }
 
+QIcon MainWindow::textToIcon(const QString &string)
+{
+    QSize iconBox(32, 32);
+	// Start by drawing the button icon
+	QPixmap pixmap(iconBox);
+    pixmap.fill(Qt::transparent);
+    QPainter painter(&pixmap);
+	QFont font;
+	font.setPointSize(22);
+	painter.setFont(font);
+	painter.drawText(QRectF(0, 0, 32, 32), Qt::AlignCenter, string);
+	return QIcon(pixmap);
+}
 
 void MainWindow::setTextBoxFonts()
 {
@@ -149,55 +150,6 @@ void MainWindow::setTextBoxFonts()
     canvas->refresh();
 }
 
-
-void MainWindow::openFile()
-{
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"));
-    parser->setFileName(fileName);
-    loadFile();
-}
-
-
-void MainWindow::loadFile()
-{
-    if (!parser->fileName().isEmpty()) {
-        parser->readFile();
-        canvas->clearAll();
-        canvas->loadFromParser();
-        setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
-
-        // Enable the widgets in the animation tab if there are multiple geometries
-        if (parser->numMolecules() <= 1)
-            animationWidget->setEnabled(false);
-        else
-            animationWidget->setEnabled(true);
-        
-        // Set the sliders range and current value.
-        animationSlider->setRange(0, parser->numMolecules() - 1);
-        animationSlider->setValue(parser->current());
-    }
-}
-
-
-void MainWindow::deleteItem()
-{
-    if (canvas->selectedItems().isEmpty())
-        return;
-
-    QUndoCommand *removeItemCommand = new RemoveItemCommand(canvas);
-    undoStack->push(removeItemCommand);
-}
-
-
-void MainWindow::rotateFromInitialCoordinates()
-{
-    drawingInfo->setXRot(xRotationBox->text().toDouble());
-    drawingInfo->setYRot(yRotationBox->text().toDouble());
-    drawingInfo->setZRot(zRotationBox->text().toDouble());
-    canvas->rotateFromInitialCoordinates();
-}
-
-
 void MainWindow::mouseModeButtonGroupClicked(int buttonID)
 {
     // This is just in case the mode was changed automatically by the canvas
@@ -236,51 +188,23 @@ void MainWindow::setGeometryStep(int geom)
     setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
 }
 
+void MainWindow::rotateFromInitialCoordinates()
+{
+    drawingInfo->setXRot(xRotationBox->text().toDouble());
+    drawingInfo->setYRot(yRotationBox->text().toDouble());
+    drawingInfo->setZRot(zRotationBox->text().toDouble());
+    canvas->rotateFromInitialCoordinates();
+}
+
 void MainWindow::setAddArrowMode()
 {
     mouseModeButtonGroupClicked((int) DrawingCanvas::AddArrow);
 }
 
-
-void MainWindow::createMenus()
-{
-    fileMenu = menuBar()->addMenu(tr("&File"));
-    fileMenu->addAction(openAction);
-    fileMenu->addAction(saveAction);
-    fileMenu->addAction(saveAsAction);
-    fileMenu->addSeparator();
-    fileMenu->addAction(exitAction);
-
-    editMenu = menuBar()->addMenu(tr("&Edit"));
-    editMenu->addAction(selectAllAction);
-    editMenu->addAction(unselectAllAction);
-    editMenu->addSeparator();
-    editMenu->addAction(undoAction);
-    editMenu->addAction(redoAction);
-    
-    itemMenu = menuBar()->addMenu(tr("&Item"));
-    itemMenu->addAction(deleteAction);
-    
-    
-    insertMenu = menuBar()->addMenu(tr("&Insert"));
-    insertMenu->addAction(addArrowAction);
-    //insertMenu->addAction(addBondAction);
-    insertMenu->addSeparator();
-    insertSymbolMenu = insertMenu->addMenu(tr("Special Symbol"));
-    insertSymbolMenu->addAction(insertAngstromAction);
-    insertSymbolMenu->addAction(insertDegreeAction);
-    insertSymbolMenu->addAction(insertPlusMinusAction);
-    
-}
-
-
-
-
 void MainWindow::setAtomLabels()
 {
     canvas->setAtomLabels(atomLabelInput->text());
 }
-
 
 void MainWindow::changeAtomSize()
 {
@@ -301,18 +225,17 @@ void MainWindow::changeAtomSize()
     }
 }
 
-
 void MainWindow::changeBondSize()
 {
     if(bondSizeSpinBox->value() == bondSizeSpinBox->minimum()) return;
 
-    if(bondSizeSpinBox->specialValueText().size()){
+    if(bondSizeSpinBox->specialValueText().size()) {
         bondSizeSpinBox->setSpecialValueText(tr(""));
         bondSizeSpinBox->setValue(DEFAULT_BOND_THICKNESS);
     }else{
         QGraphicsItem *item;
-        foreach(item, canvas->selectedItems()){
-            if(item->type() == Bond::Type){
+        foreach(item, canvas->selectedItems()) {
+            if(item->type() == Bond::Type) {
                 Bond *bond = dynamic_cast<Bond*>(item);
                 bond->setThickness(bondSizeSpinBox->value());
             }

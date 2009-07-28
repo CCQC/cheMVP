@@ -1,12 +1,11 @@
 #include "splashscreen.h"
 
 SplashScreen::SplashScreen(const QPixmap &image):
-	QSplashScreen(image)
+	QSplashScreen(image, Qt::WindowStaysOnTopHint)
 {
-    showMessage("Version " + QString(CHEMVP_VERSION)+"\nCreated by Andy Simmonett and Justin Turney,\nCenter for Computational Chemistry, University of Georgia",
+    showMessage("Version " + QString(CHEMVP_VERSION)+"\nCreated by Andy Simmonett, Justin Turney, and H. Parker Shelton\nCenter for Computational Chemistry, University of Georgia",
                         Qt::AlignLeft | Qt::AlignBottom, Qt::white);
     show();
-    startTimer(5000);
 }
 
 SplashScreen::~SplashScreen()
@@ -15,15 +14,18 @@ SplashScreen::~SplashScreen()
 
 void SplashScreen::timerEvent(QTimerEvent *event)
 {
+	Q_UNUSED(event);
 	close();
 }
 
-void SplashScreen::keyPressEvent(QKeyEvent *)
+void SplashScreen::keyPressEvent(QKeyEvent *event)
 {
+	Q_UNUSED(event);
 	close();
 }
 
-void SplashScreen::mousePressEvent(QMouseEvent *)
+void SplashScreen::mousePressEvent(QMouseEvent *event)
 {
+	Q_UNUSED(event);
 	close();
 }
