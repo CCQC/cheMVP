@@ -152,7 +152,7 @@ void MainWindow::setTextBoxFonts()
 
 void MainWindow::openFile()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"));
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),QDir::homePath());
     parser->setFileName(fileName);
     loadFile();
 }
