@@ -5,7 +5,7 @@ void MainWindow::createToolBox()
     QWidget *appearanceWidget 	   = createAppearanceWidget();
     QWidget *bondsAndAnglesWidget  = createBondsAndAnglesWidget();
     QWidget *atomsWidget           = createAtomsWidget();
-    animationWidget       = createAnimationWidget();
+    animationWidget                = createAnimationWidget();
     
     toolBox = new QToolBox;
     //    toolBox->addItem(annotationWidget, tr("Annotation"));
@@ -20,7 +20,31 @@ QWidget *MainWindow::createAppearanceWidget()
 {	
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
-    
+
+    QGroupBox *foggingGroupBox = new QGroupBox(tr("Fogging"));
+    useFoggingBox                    = new QCheckBox(tr("Use fogging"));
+    foggingScaleBox                  = new QSpinBox();
+    foggingScaleBox->setSuffix("%");
+    QLabel *foggingLabel             = new QLabel(tr("Opacity:"));
+    foggingLabel->setVisible(false);
+    QHBoxLayout *foggingBoxLayout    = new QHBoxLayout();
+    foggingBoxLayout->addWidget(useFoggingBox);
+    foggingBoxLayout->addStretch(20);
+    foggingBoxLayout->addWidget(foggingLabel);
+    foggingBoxLayout->addWidget(foggingScaleBox);
+    foggingScaleBox->setValue(DEFAULT_FOGGING_SCALE);
+    foggingScaleBox->setMaximum(100);
+    foggingScaleBox->setAccelerated(true);
+    foggingScaleBox->setVisible(false);
+    connect(useFoggingBox,SIGNAL(toggled(bool)),drawingInfo,SLOT(setUseFogging(bool)));
+    connect(useFoggingBox,SIGNAL(toggled(bool)),foggingScaleBox,SLOT(setVisible(bool)));
+    connect(useFoggingBox,SIGNAL(toggled(bool)),foggingLabel,SLOT(setVisible(bool)));
+    connect(useFoggingBox,SIGNAL(toggled(bool)),canvas,SLOT(refresh()));
+    connect(foggingScaleBox,SIGNAL(valueChanged(int)),drawingInfo,SLOT(setFoggingScale(int)));
+    connect(foggingScaleBox,SIGNAL(valueChanged(int)),canvas,SLOT(refresh()));
+    foggingGroupBox->setLayout(foggingBoxLayout);
+    layout->addWidget(foggingGroupBox);
+
     // The Orientation Box
     QGroupBox *rotationGroupBox = new QGroupBox(tr("Rotation"));
     QGridLayout *rotationLayout = new QGridLayout;
@@ -210,7 +234,7 @@ QWidget *MainWindow::createAtomsWidget()
     atomSizeGroupBox->setLayout(atomSizeLayout);
     layout->addWidget(atomSizeGroupBox);
 
-	QGroupBox *atomColorGroupBox = new QGroupBox(tr("Atom Color"));
+    QGroupBox *atomColorGroupBox = new QGroupBox(tr("Atom Color"));
     QGridLayout *atomColorLayout = new QGridLayout;
     atomColorButton = new QPushButton(tr("Color Selected Atoms"));
     atomColorButton->setToolTip(tr("Change the selected atom color"));
@@ -218,14 +242,14 @@ QWidget *MainWindow::createAtomsWidget()
     connect(atomColorButton, SIGNAL(clicked()), canvas, SLOT(setAtomColors()));
     atomColorGroupBox->setLayout(atomColorLayout);
     layout->addWidget(atomColorGroupBox);
-	
-	
+
+
     QGroupBox *drawingStyleBox 	     = new QGroupBox(tr("Drawing Style"));    
     atomDrawingStyleButtonGroup      = new QButtonGroup;
     QGridLayout *drawingStyleLayout  = new QGridLayout;
     simpleAtomDrawingButton 	     = new QRadioButton(tr("Simple"));
     houkMolAtomDrawingButton 	     = new QRadioButton(tr("HoukMol"));
-    simpleColoredAtomDrawingButton 	 = new QRadioButton(tr("Simple Colored"));
+    simpleColoredAtomDrawingButton   = new QRadioButton(tr("Simple Colored"));
     gradientColoredAtomDrawingButton = new QRadioButton(tr("Gradient"));
     atomDrawingStyleButtonGroup->addButton(simpleAtomDrawingButton, int(DrawingInfo::Simple));
     atomDrawingStyleButtonGroup->addButton(simpleColoredAtomDrawingButton, int(DrawingInfo::SimpleColored));

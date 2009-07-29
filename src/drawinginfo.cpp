@@ -1,6 +1,8 @@
 #include "drawinginfo.h"
 
 DrawingInfo::DrawingInfo():
+        _useFogging(false),
+        _foggingScale(DEFAULT_FOGGING_SCALE),
 	myXRot(0),
 	myYRot(0),
 	myZRot(0),
@@ -22,6 +24,10 @@ DrawingInfo::DrawingInfo():
 	_anglePrecision(DEFAULT_ANGLE_LABEL_PRECISION),
 	_bondColor(Qt::black),
 	_bondPen(Qt::black),
+        _minZ(0.0),
+        _maxZ(0.0),
+        _minBondZ(0.0),
+        _maxBondZ(0.0),
     _bondPrecision(DEFAULT_BOND_LABEL_PRECISION),
     _labelColor(Qt::black),
     _atomLabelFont(DEFAULT_ATOM_LABEL_FONT),

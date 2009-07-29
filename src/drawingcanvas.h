@@ -47,21 +47,21 @@ public:
     void updateTextLabels();
     void setAcceptsHovers(bool arg);
     void loadFromParser();
-    void refresh();
     void setAtomLabels(QString text);
     void rotateFromInitialCoordinates();
     void drawBackground(QPainter *painter, const QRectF &rect);
     const QCursor& rotateCursor() {return myRotateCursor;}
     void processProjectFile(QSettings &settings, bool saveFile);
-	QList<Bond*> getBonds() {return bondsList;}
-	void addBondLabel(int i);
-	
+    QList<Bond*> getBonds() {return bondsList;}
+    void addBondLabel(int i);
+
 public slots:
+    void refresh();
     void unselectAll();
     void selectAll();
     void setBackgroundOpacity(int val);
     void setBackgroundColor();
-	void setAtomColors();
+    void setAtomColors();
     void toggleBondDashing();
     void toggleAtomNumberSubscripts();
     void atomLabelFontChanged(const QFont &);
@@ -75,7 +75,7 @@ public slots:
     void setAngleLabelPrecision(int val);
     
 protected:
-	void determineRotationAngles(); //HPS
+    void determineRotationAngles(); //HPS
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
@@ -91,14 +91,14 @@ signals:
 private:
     double bondLength(Atom* atom1, Atom* atom2);
     bool isBonded(Atom* atom1, Atom* atom2);
-	void svdcmp(double **a, int m, int m, double w[], double **v);
-	double pythag(double a, double b);
+    void svdcmp(double **a, int m, int m, double w[], double **v);
+    double pythag(double a, double b);
     QList<Angle*>::iterator angleExists(Atom* atom1, Atom* atom2, Atom* atom3);
 
-	double rotationMatrix[3][3];
-	double xRot;
-	double yRot;
-	double zRot;
+    double rotationMatrix[3][3];
+    double xRot;
+    double yRot;
+    double zRot;
     bool leftButtonDown;
     QMenu *myItemMenu;
     FileParser *parser;

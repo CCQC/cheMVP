@@ -5,20 +5,20 @@ std::map<QString, double> Atom::labelToMass;
 std::map<QString, QColor> Atom::labelToColor;
 
 Atom::Atom(QString element, DrawingInfo *i, QGraphicsItem *parent)
-	:QGraphicsEllipseItem(parent),
-	//myDrawingStyle(Gradient),
-	myFontSizeStyle(SmallLabel),
-	myX(0.0),
-    myY(0.0),
-    myZ(0.0),
-	myScaleFactor(DEFAULT_ATOM_SCALE_FACTOR),
-	mySymbol(element),
-	myID(0),
-	hoverOver(false),
-	fill_color(Qt::white),
-    _info(i)
+        :QGraphicsEllipseItem(parent),
+        //myDrawingStyle(Gradient),
+        myFontSizeStyle(SmallLabel),
+        myX(0.0),
+        myY(0.0),
+        myZ(0.0),
+        myScaleFactor(DEFAULT_ATOM_SCALE_FACTOR),
+        mySymbol(element),
+        myID(0),
+        hoverOver(false),
+        fill_color(Qt::white),
+        _info(i)
 {
-	fillLabelToVdwRadiusMap();
+    fillLabelToVdwRadiusMap();
     fillLabelToMassMap();
     fillLabelToColorMap();
 
@@ -49,24 +49,24 @@ Atom::Atom(QString element, DrawingInfo *i, QGraphicsItem *parent)
 
 void Atom::setLabel(const QString &text)
 {
-	// Regular expression to match C_x^y
-	QRegExp rx("([A-Za-z0-9]*)([_^][A-Za-z0-9]+)?([_^]\\w+)?", Qt::CaseInsensitive, QRegExp::RegExp2);
-	myLabel.clear();
-	myLabelSubscript.clear();
-	myLabelSuperscript.clear();
-	if(rx.exactMatch(text) == true) {
-		myLabel = rx.cap(1);
-		if (rx.cap(2).startsWith('_')) {
-			myLabelSubscript += rx.cap(2).remove(0, 1);
-		} else if (rx.cap(2).startsWith('^')) {
-			myLabelSuperscript += rx.cap(2).remove(0, 1);
-		}
-		if (rx.cap(3).startsWith('_')) {
-			myLabelSubscript += rx.cap(3).remove(0, 1);
-		} else if (rx.cap(3).startsWith('^')) {
-			myLabelSuperscript += rx.cap(3).remove(0, 1);
-		}
-	}
+    // Regular expression to match C_x^y
+    QRegExp rx("([A-Za-z0-9]*)([_^][A-Za-z0-9]+)?([_^]\\w+)?", Qt::CaseInsensitive, QRegExp::RegExp2);
+    myLabel.clear();
+    myLabelSubscript.clear();
+    myLabelSuperscript.clear();
+    if(rx.exactMatch(text) == true) {
+        myLabel = rx.cap(1);
+        if (rx.cap(2).startsWith('_')) {
+            myLabelSubscript += rx.cap(2).remove(0, 1);
+        } else if (rx.cap(2).startsWith('^')) {
+            myLabelSuperscript += rx.cap(2).remove(0, 1);
+        }
+        if (rx.cap(3).startsWith('_')) {
+            myLabelSubscript += rx.cap(3).remove(0, 1);
+        } else if (rx.cap(3).startsWith('^')) {
+            myLabelSuperscript += rx.cap(3).remove(0, 1);
+        }
+    }
 }
 
 void Atom::setDrawingStyle(DrawingInfo::DrawingStyle style)
@@ -233,13 +233,23 @@ void Atom::paint(QPainter *painter,
         painter->setBrush(SELECTED_COLOR);
         painter->drawEllipse(rect());
     }
+    // Draw a semi-transparent white circle for fogging
+    if(_info->getUseFogging()){
+        double dZ = _info->maxZ() - _info->minZ();
+        double thisZ = myZ - _info->minZ();
+        double opacity = (dZ > TINY ? 10.0*(100.0-_info->getFoggingScale())*(thisZ/dZ) : 0.0);
+        opacity = (opacity < 0 ? 0 : opacity);
+        opacity = (opacity > 255 ? 255 : opacity);
+        painter->setBrush(QColor(255,255,255,255-opacity));
+        painter->drawEllipse(rect());
+    }
 }
 
 double Atom::bondLength(Atom *s, Atom *e)
 {
-	return(sqrt(pow(s->x() - e->x(), 2.0) +
-				pow(s->y() - e->y(), 2.0) +
-				pow(s->z() - e->z(), 2.0)));	 
+    return(sqrt(pow(s->x() - e->x(), 2.0) +
+                pow(s->y() - e->y(), 2.0) +
+                pow(s->z() - e->z(), 2.0)));
 }
 
 void Atom::fillLabelToVdwRadiusMap()

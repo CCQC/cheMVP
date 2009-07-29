@@ -226,6 +226,16 @@ void MainWindow::changeAtomSize()
     }
 }
 
+
+void MainWindow::foggingToggled(int useFogging)
+{
+    drawingInfo->setUseFogging(useFogging);
+    useFoggingBox->setEnabled((bool)useFogging);
+    useFoggingBox->setVisible(false);
+    std::cout<<"I was called!"<<std::endl;
+}
+
+
 void MainWindow::changeBondSize()
 {
     if(bondSizeSpinBox->value() == bondSizeSpinBox->minimum()) return;

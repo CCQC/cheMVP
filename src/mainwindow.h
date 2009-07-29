@@ -59,6 +59,7 @@ private:
     void processProjectFile(const QString &fileName, bool saveFile);
     FileType determineFileType(const QString &fileName);
     void saveImage(const QString &fileName);
+    void foggingToggled(int useFogging);
     void loadFile();
     QIcon textToIcon(const QString &string);
 
@@ -69,6 +70,7 @@ private:
     QWidget *createAnimationWidget();
     QSlider *createSlider(int max);
     
+    QCheckBox *useFoggingBox;
     // Not needed. -Jet
     // QWidget *appearanceWidget;
     // QWidget *bondsAndAnglesWidget;
@@ -136,6 +138,7 @@ private:
     QSpinBox       *zoomSpinBox;
     QSpinBox       *bondLabelsPrecisionBox;
     QSpinBox       *angleLabelsPrecisionBox;
+    QSpinBox       *foggingScaleBox;
     QDoubleSpinBox *atomSizeSpinBox;
     QDoubleSpinBox *bondSizeSpinBox;
     
