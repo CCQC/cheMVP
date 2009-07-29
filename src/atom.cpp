@@ -72,9 +72,9 @@ void Atom::setLabel(const QString &text)
 void Atom::setDrawingStyle(DrawingInfo::DrawingStyle style)
 {
     if(style == DrawingInfo::Simple){
-        fill_color = Qt::white;
+         fill_color = Qt::white;
     }else{
-        fill_color = labelToColor[mySymbol];
+         fill_color = labelToColor[mySymbol];
     }
 }
 
@@ -122,13 +122,17 @@ void Atom::paint(QPainter *painter,
 
     //The myEffectiveRadius changes on zooming/rotation so we must always update it
     setRect(QRectF(-myEffectiveRadius, -myEffectiveRadius, 2.0*myEffectiveRadius, 2.0*myEffectiveRadius));
-
     // If the item is selected, use a lighter color for the filling
     QPen linestyle;
     // If we're hovering over the item, use thicker lines
     linestyle.setWidthF((hoverOver ? _info->scaleFactor()*0.03 : _info->scaleFactor()*0.01));
     linestyle.setColor(Qt::black);
     painter->setPen(linestyle);
+    // The outline of the atom is a little bit too diffuse, here's another more diffuse circle
+    // that accounts for the width of the line so that the gradient and fogging options look pretty
+    float lineWidth = linestyle.widthF() / 2.0;
+    QRectF fillRect(-myEffectiveRadius-lineWidth, -myEffectiveRadius-lineWidth,
+                    2.0*myEffectiveRadius+2.0*lineWidth, 2.0*myEffectiveRadius+2.0*lineWidth);
 
     // The circle defnining the atom
     if(_info->getDrawingStyle() == DrawingInfo::Gradient){
@@ -137,10 +141,11 @@ void Atom::paint(QPainter *painter,
                                  QPointF(myEffectiveRadius/2.1, -myEffectiveRadius/2.1));
         gradient.setColorAt(0.0, Qt::white);
         gradient.setColorAt(1.0, fill_color);
+        gradient.setSpread(QGradient::RepeatSpread);
         // PDF looks bad when rendering gradient - here's a workaround
         painter->setPen(Qt::transparent);
         painter->setBrush(gradient);
-        painter->drawEllipse(rect());
+        painter->drawEllipse(fillRect);
         painter->setBrush(Qt::NoBrush);
         painter->setPen(linestyle);
         painter->drawEllipse(rect());
@@ -175,7 +180,7 @@ void Atom::paint(QPainter *painter,
         QPainterPath path(startPoint);
         path.quadTo(midPoint1, endPoint);
         path.quadTo(midPoint2, startPoint);
-        painter->setPen(QPen(fill_color));
+        painter->setPen(QPen());
         painter->setBrush(Qt::white);
         painter->drawPath(path);
     }else if(_info->getDrawingStyle() == DrawingInfo::SimpleColored){
@@ -186,7 +191,7 @@ void Atom::paint(QPainter *painter,
         QPainterPath path(startPoint);
         path.quadTo(midPoint1, endPoint);
         path.quadTo(midPoint2, startPoint);
-        painter->setPen(QPen(fill_color));
+        painter->setPen(QPen(Qt::transparent));
         painter->setBrush(Qt::white);
         painter->drawPath(path);
     }
@@ -240,8 +245,9 @@ void Atom::paint(QPainter *painter,
         double opacity = (dZ > TINY ? 10.0*(100.0-_info->getFoggingScale())*(thisZ/dZ) : 0.0);
         opacity = (opacity < 0 ? 0 : opacity);
         opacity = (opacity > 255 ? 255 : opacity);
+        painter->setPen(Qt::transparent);
         painter->setBrush(QColor(255,255,255,255-opacity));
-        painter->drawEllipse(rect());
+        painter->drawEllipse(fillRect);
     }
 }
 
@@ -560,6 +566,6 @@ void Atom::fillLabelToColorMap()
 //	if(saveFile){
 //		project.setValue("element",mySymbol);
 //	}else{
-//		
+//
 //	}
 //}
