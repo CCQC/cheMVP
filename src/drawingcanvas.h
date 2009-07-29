@@ -54,6 +54,7 @@ public:
     const QCursor& rotateCursor() {return myRotateCursor;}
     void processProjectFile(QSettings &settings, bool saveFile);
 	QList<Bond*> getBonds() {return bondsList;}
+	QList<Atom*> getAtoms() {return atomsList;}
 	void addBondLabel(int i);
 	
 public slots:

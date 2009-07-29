@@ -17,6 +17,8 @@ void MainWindow::createMenus()
     editMenu->addAction(unselectAllAction);
     editMenu->addAction(undoAction);
     editMenu->addAction(redoAction);
+	editMenu->addSeparator();
+	editMenu->addAction(showPreferencesAction);
     
     itemMenu = menuBar()->addMenu(tr("&Item"));
     itemMenu->addAction(deleteAction);

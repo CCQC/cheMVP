@@ -5,10 +5,10 @@ void MainWindow::createToolBox()
     QWidget *appearanceWidget 	   = createAppearanceWidget();
     QWidget *bondsAndAnglesWidget  = createBondsAndAnglesWidget();
     QWidget *atomsWidget           = createAtomsWidget();
-    animationWidget       = createAnimationWidget();
+    animationWidget       = createAnimationWidget();	
     
     toolBox = new QToolBox;
-    //    toolBox->addItem(annotationWidget, tr("Annotation"));
+//  toolBox->addItem(annotationWidget, tr("Annotation"));
     toolBox->addItem(appearanceWidget, tr("Appearance"));
     toolBox->addItem(atomsWidget, tr("Atoms"));
     toolBox->addItem(bondsAndAnglesWidget, tr("Angles and Bonds"));

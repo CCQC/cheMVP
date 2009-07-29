@@ -34,6 +34,9 @@ void MainWindow::createActions()
 	aboutAction->setStatusTip(tr("About CheMVP"));
 	connect(aboutAction, SIGNAL(triggered()), this, SLOT(aboutCheMVP()));
 	
+	showPreferencesAction = new QAction(tr("Preferences"), this);
+	connect(showPreferencesAction, SIGNAL(triggered()), this, SLOT(showPreferences()));
+	
     saveAction = new QAction(QIcon(":/images/save.png"), tr("&Save"), this);
     saveAction->setShortcut(tr("Ctrl+S"));
     saveAction->setStatusTip(tr("Save"));
@@ -95,4 +98,10 @@ void MainWindow::aboutCheMVP()
 	QPixmap pixmap("../images/splash.png");
     SplashScreen* splash = new SplashScreen(pixmap);
 	splash->startTimer(2147483647);
+}
+
+void MainWindow::showPreferences()
+{
+	Preferences* prefs = new Preferences(canvas->getAtoms(), drawingInfo->getDrawingStyle());
+	prefs->exec();
 }

@@ -40,6 +40,7 @@ int main(int argv, char *args[])
     mainWindow.setWindowIconText("cheMVP");
 
     mainWindow.setGeometry(30, 50, 1200, 700);
+	mainWindow.raise();
     mainWindow.showNormal();
 
     if(argv == 3){

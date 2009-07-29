@@ -117,7 +117,6 @@ void MainWindow::openFile()
 {
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath());
 	parser->setFileName(fileName);
-	std::cout << "X" << fileName.toStdString() << "X" << std::endl;
 	loadFile();
 }
 
@@ -139,10 +138,6 @@ void MainWindow::loadFile()
         animationSlider->setRange(0, parser->numMolecules() - 1);
         animationSlider->setValue(parser->current());
     }
-	else
-	{
-		std::cout << "FAILURE IN FILENAME" << std::endl;
-	}
 }
 
 void MainWindow::processProjectFile(const QString &fileName, bool saveFile)
