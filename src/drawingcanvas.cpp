@@ -83,6 +83,23 @@ void DrawingCanvas::clearAll()
     textLabelsList.clear();
 }
 
+void DrawingCanvas::storeLabeledBonds()
+{
+    for(int i = 0; i < bondsList.size(); i++){
+        if(bondsList[i]->label() != 0){
+            persistantBonds.push_back(i);
+        }
+    }
+}
+
+void DrawingCanvas::restoreLabeledBonds()
+{
+    foreach(int i, persistantBonds){
+        addBondLabel(i);
+    }
+    persistantBonds.clear();
+}
+
 void DrawingCanvas::unselectAll()
 {
     foreach(QGraphicsItem *item, items()) {

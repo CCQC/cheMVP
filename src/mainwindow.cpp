@@ -194,8 +194,10 @@ void MainWindow::setGeometryStep(int geom)
 {
     assert(geom >= 0 && geom < parser->numMolecules());
     parser->setCurrent(geom);
+    canvas->storeLabeledBonds();
     canvas->clearAll();
     canvas->loadFromParser();
+    canvas->restoreLabeledBonds();
     setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
 }
 

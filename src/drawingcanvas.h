@@ -40,6 +40,8 @@ public:
     DrawingCanvas(QMenu *itemMenu, DrawingInfo *drawingInfo, FileParser *parser, QObject *parent = 0);
 
     void clearAll();
+    void storeLabeledBonds();
+    void restoreLabeledBonds();
     void performRotation();
     void updateBonds();
     void updateAngles();
@@ -123,6 +125,7 @@ private:
     QList<Angle*> anglesList;
     QList<Arrow*> arrowsList;
     QList<Label*> textLabelsList;
+    QList<int> persistantBonds;
 };
 
 #endif
