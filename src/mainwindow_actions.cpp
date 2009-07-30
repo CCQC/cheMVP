@@ -102,6 +102,6 @@ void MainWindow::aboutCheMVP()
 
 void MainWindow::showPreferences()
 {
-    Preferences* prefs = new Preferences(canvas->getAtoms(), drawingInfo->getDrawingStyle());
+    Preferences* prefs = new Preferences(canvas, drawingInfo->getDrawingStyle());
     prefs->exec();
 }

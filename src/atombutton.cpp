@@ -2,10 +2,11 @@
 
 QMap<QString, QVariant> Preferences::_colorChanges;
 
-AtomButton::AtomButton(const char* label)
+AtomButton::AtomButton(DrawingCanvas* d, const char* label)
 {
     _label = label;
-
+    _canvas = d;
+    
     int dimension1 = 18;
     int dimension2 = 18;
 
@@ -26,14 +27,15 @@ AtomButton::AtomButton(const char* label)
     setIconSize(icon_box);
     setAutoExclusive(true);
 
-    connect(this, SIGNAL(clicked()), this, SLOT(setAtomDefaultColor()));
+    connect(this, SIGNAL(clicked()), this, SLOT(setAtomColor()));
     connect(this, SIGNAL(clicked()), this, SLOT(toggle()));
 }
 
-void AtomButton::setAtomDefaultColor()
+void AtomButton::setAtomColor()
 {
     QColor color = QColorDialog::getColor();
     Preferences::_colorChanges[_label] = color;
+    _canvas->updateAtomColors(Preferences::_colorChanges);
     refreshColor();
 }
 

@@ -44,6 +44,14 @@ DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_
     //	}
 }
 
+void DrawingCanvas::updateAtomColors(QMap<QString, QVariant> newColors)
+{
+    foreach(Atom *atom, atomsList){
+        atom->setColor(newColors.value(atom->symbol()).value<QColor>());
+    }
+    update();
+}
+
 void DrawingCanvas::focusOutEvent(QFocusEvent *event)
 {
     std::cout<<"Drawing canvas focus out"<<std::endl;
@@ -288,7 +296,7 @@ void DrawingCanvas::determineRotationAngles() // HPS
         old_y += oldGeom[i]->y;
         old_z += oldGeom[i]->z;
     }
-    for(unsigned int i = 0; i < newGeom.size(); i++)
+    for(int i = 0; i < newGeom.size(); i++)
     {
         new_x += newGeom[i]->x();
         new_y += newGeom[i]->y();
@@ -319,22 +327,22 @@ void DrawingCanvas::determineRotationAngles() // HPS
 
     int m = 3;
     int n = 3;
-    //double **a = block_matrix(m, n);
+//  double **a = block_matrix(m, n);
     double* a = new double[m*n];
-    char jobu = 'A';
-    char jobvt = 'A';
-    int lda = m;
-    double* s = new double[MIN(m,n)];
-    int ldu = m;
-    //	double** u = block_matrix(ldu, m);
-    double* u = new double[ldu*m];
+//  char jobu = 'A';
+//  char jobvt = 'A';
+//  int lda = m;
+//  double* s = new double[MIN(m,n)];
+//  int ldu = m;
+//	double** u = block_matrix(ldu, m);
+//  double* u = new double[ldu*m];
     int ldvt = n;
-    //	double** vt = block_matrix(ldvt, n);
+//	double** vt = block_matrix(ldvt, n);
     double* vt = new double[ldvt*n];
-    int lwork = 3*m*n; // Magic number
-    double* work = new double[lwork];
-    int info = 0;
-
+//  int lwork = 3*m*n; // Magic number
+//  double* work = new double[lwork];
+//  int info = 0;
+    
     /*	// Create correlation matrix
         for(int i = 0; i < newGeom.size(); i++)
         {
@@ -363,7 +371,7 @@ void DrawingCanvas::determineRotationAngles() // HPS
                 a[2][2] += old_z*new_z;
         }*/
     // Create correlation matrix with weighted coordinates
-    for(unsigned int i = 0; i < newGeom.size(); i++)
+    for(int i = 0; i < newGeom.size(); i++)
     {
         a[0] += oldTransformed[i]->x*newTransformed[i]->x;
         a[1] += oldTransformed[i]->y*newTransformed[i]->x;

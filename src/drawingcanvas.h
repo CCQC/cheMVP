@@ -55,6 +55,8 @@ public:
     QList<Bond*> getBonds() {return bondsList;}
     QList<Atom*> getAtoms() {return atomsList;}
     void addBondLabel(int i);
+    void updateAtomColors(QMap<QString, QVariant> n);
+    
 public slots:
     void refresh();
     void unselectAll();
