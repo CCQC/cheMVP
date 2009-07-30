@@ -22,17 +22,17 @@ MainWindow::MainWindow(FileParser *parser_in):
     createToolBox();
     createMenus();
     createToolbars();
-	
-	Atom::fillLabelToVdwRadiusMap();
-	Atom::fillLabelToMassMap();
 
-	QSettings colorSettings("Andy", "cheMVP");
-	QVariant v = colorSettings.value("Default Atom Colors", NULL);
-	if(v == NULL)
-		Atom::fillLabelToColorMap();
-	else
-		Atom::labelToColor = v.toMap();
-	
+    Atom::fillLabelToVdwRadiusMap();
+    Atom::fillLabelToMassMap();
+
+    QSettings colorSettings("Andy", "cheMVP");
+    QVariant v = colorSettings.value("Default Atom Colors", NULL);
+    if(v == NULL)
+        Atom::fillLabelToColorMap();
+    else
+        Atom::labelToColor = v.toMap();
+
     QHBoxLayout *layout = new QHBoxLayout;
     view = new DrawingDisplay(canvas, drawingInfo);
     view->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -93,15 +93,15 @@ void MainWindow::insertTextAtCursor(QAction *action)
 QIcon MainWindow::textToIcon(const QString &string)
 {
     QSize iconBox(32, 32);
-	// Start by drawing the button icon
-	QPixmap pixmap(iconBox);
+    // Start by drawing the button icon
+    QPixmap pixmap(iconBox);
     pixmap.fill(Qt::transparent);
     QPainter painter(&pixmap);
-	QFont font;
-	font.setPointSize(22);
-	painter.setFont(font);
-	painter.drawText(QRectF(0, 0, 32, 32), Qt::AlignCenter, string);
-	return QIcon(pixmap);
+    QFont font;
+    font.setPointSize(22);
+    painter.setFont(font);
+    painter.drawText(QRectF(0, 0, 32, 32), Qt::AlignCenter, string);
+    return QIcon(pixmap);
 }
 
 void MainWindow::setTextBoxFonts()

@@ -17,29 +17,29 @@
 
 class Preferences : public QDialog
 {
-	Q_OBJECT
-	
+    Q_OBJECT
+
 public:
-	Preferences(QList<Atom*> a, int s);
-	
-	static QMap<QString, QVariant> _colorChanges;
-	
+    Preferences(QList<Atom*> a, int s);
+
+    static QMap<QString, QVariant> _colorChanges;
+
 public slots:
-	void applyPreferences();
-	
+    void applyPreferences();
+
 protected:
-	QList<Atom*> _atomsList;
-	int _drawingStyle;
-	
-	QWidget* _periodicTable;
-	
-	QListWidget* _listWidget;
-	QStackedLayout* _stackedLayout;
-	QPushButton* _applyButton;
-	QPushButton* _closeButton;
-	
-	QWidget* createPeriodicTable();
-	QToolButton* makeAtomButton(const char* label);
+    QList<Atom*> _atomsList;
+    int _drawingStyle;
+
+    QWidget* _periodicTable;
+
+    QListWidget* _listWidget;
+    QStackedLayout* _stackedLayout;
+    QPushButton* _applyButton;
+    QPushButton* _closeButton;
+
+    QWidget* createPeriodicTable();
+    QToolButton* makeAtomButton(const char* label);
 };
 
 #endif /* PREFERENCES_H */

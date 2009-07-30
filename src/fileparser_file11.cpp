@@ -2,15 +2,15 @@
 
 static char *atomic_labels[]= 
 {"X","H","HE","LI","BE","B","C","N","O","F","NE","NA","MG","AL","SI",
-"P","S","CL","AR","K","CA","SC","TI","V","CR","MN","FE","CO","NI",
-"CU","ZN","GA","GE","AS","SE","BR","KR","RB","SR","Y","ZR","NB","MO",
-"TC","RU","RH","PD","AG","CD","IN","SN","SB","TE","I","XE","CS","BA",
-"LA","CE","PR","ND","PM","SM","EU","GD","TB","DY","HO","ER","TM","YB",
-"LU","HF","TA","W","RE","OS","IR","PT","AU","HG","TL","PB","BI","PO",
-"AT","RN","FR","RA","AC","TH","PA","U","NP","PU","AM","CM","BK","CF",
-"ES","FM","MD","NO","LR","RF","DB","SG","BH","HS","MT","DS","RG",
-  "UUB","UUT","UUQ","UUP","UUH","UUS","UUO"};
-  
+ "P","S","CL","AR","K","CA","SC","TI","V","CR","MN","FE","CO","NI",
+ "CU","ZN","GA","GE","AS","SE","BR","KR","RB","SR","Y","ZR","NB","MO",
+ "TC","RU","RH","PD","AG","CD","IN","SN","SB","TE","I","XE","CS","BA",
+ "LA","CE","PR","ND","PM","SM","EU","GD","TB","DY","HO","ER","TM","YB",
+ "LU","HF","TA","W","RE","OS","IR","PT","AU","HG","TL","PB","BI","PO",
+ "AT","RN","FR","RA","AC","TH","PA","U","NP","PU","AM","CM","BK","CF",
+ "ES","FM","MD","NO","LR","RF","DB","SG","BH","HS","MT","DS","RG",
+ "UUB","UUT","UUQ","UUP","UUH","UUS","UUO"};
+
 void FileParser::readFile11()
 {
     std::string tempString;
@@ -31,7 +31,7 @@ void FileParser::readFile11()
         //                            0.0000000000        0.0000000000       -0.0699176544
         //                            0.0000000000        0.0417341586        0.0349588272
         //                            0.0000000000       -0.0417341586        0.0349588272
-                                    
+
         getline(infile, tempString);
         if (infile.eof()) 
             break;
@@ -51,9 +51,9 @@ void FileParser::readFile11()
         // file11 is reported in Angstroms
         myUnits = Bohr;
         
-        #ifdef QT_DEBUG
+#ifdef QT_DEBUG
         std::cout << "Found a molecule with " << numAtoms << " atom." << std::endl;
-        #endif
+#endif
         
         // Read in atom information
         rx.setPattern("(?:\\s*)(\\d+.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s*)");
@@ -67,15 +67,15 @@ void FileParser::readFile11()
                 atom->y = rx.cap(3).toDouble();
                 atom->z = rx.cap(4).toDouble();
                 atom->x *= BOHR_TO_ANG;
-				atom->y *= BOHR_TO_ANG;
-				atom->z *= BOHR_TO_ANG;
-				
-				#ifdef QT_DEBUG
+                atom->y *= BOHR_TO_ANG;
+                atom->z *= BOHR_TO_ANG;
+
+#ifdef QT_DEBUG
                 std::cout 	<< std::setw(5) << atom->Label.toStdString() 
-        			<< " " << std::setw(16) << std::setprecision(10) << atom->x 
-        			<< " " << std::setw(16) << std::setprecision(10) << atom->y 
-        			<< " " << std::setw(16) << std::setprecision(10) << atom->z << std::endl; 
-                #endif
+                        << " " << std::setw(16) << std::setprecision(10) << atom->x
+                        << " " << std::setw(16) << std::setprecision(10) << atom->y
+                        << " " << std::setw(16) << std::setprecision(10) << atom->z << std::endl;
+#endif
                 molecule->addAtom(atom);
             }
         }
@@ -85,9 +85,9 @@ void FileParser::readFile11()
         }
         if (numAtoms) {
             myMoleculeList.push_back(molecule);
-            #ifdef QT_DEBUG
+#ifdef QT_DEBUG
             std::cout << "Adding molecule to the list" << std::endl;
-            #endif
+#endif
         }
     }
 }

@@ -12,8 +12,8 @@
 class SplashScreen : public QSplashScreen 
 {
 public:
-	SplashScreen(const QPixmap &image);
-	~SplashScreen();
+    SplashScreen(const QPixmap &image);
+    ~SplashScreen();
 
 protected:
     void timerEvent(QTimerEvent *);

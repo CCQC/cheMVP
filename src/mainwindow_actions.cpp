@@ -30,13 +30,13 @@ void MainWindow::createActions()
     exitAction->setStatusTip(tr("Quit ChemVP"));
     connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
 
-	aboutAction = new QAction(tr("About CheMVP"), this);
-	aboutAction->setStatusTip(tr("About CheMVP"));
-	connect(aboutAction, SIGNAL(triggered()), this, SLOT(aboutCheMVP()));
-	
-	showPreferencesAction = new QAction(tr("Preferences"), this);
-	connect(showPreferencesAction, SIGNAL(triggered()), this, SLOT(showPreferences()));
-	
+    aboutAction = new QAction(tr("About CheMVP"), this);
+    aboutAction->setStatusTip(tr("About CheMVP"));
+    connect(aboutAction, SIGNAL(triggered()), this, SLOT(aboutCheMVP()));
+
+    showPreferencesAction = new QAction(tr("Preferences"), this);
+    connect(showPreferencesAction, SIGNAL(triggered()), this, SLOT(showPreferences()));
+
     saveAction = new QAction(QIcon(":/images/save.png"), tr("&Save"), this);
     saveAction->setShortcut(tr("Ctrl+S"));
     saveAction->setStatusTip(tr("Save"));
@@ -102,6 +102,6 @@ void MainWindow::aboutCheMVP()
 
 void MainWindow::showPreferences()
 {
-	Preferences* prefs = new Preferences(canvas->getAtoms(), drawingInfo->getDrawingStyle());
-	prefs->exec();
+    Preferences* prefs = new Preferences(canvas->getAtoms(), drawingInfo->getDrawingStyle());
+    prefs->exec();
 }

@@ -6,26 +6,26 @@
 
 struct AtomEntry
 {
-	QString Label;
-	double x;
-	double y;
-	double z;
+    QString Label;
+    double x;
+    double y;
+    double z;
 };
 
 class Molecule
 {
 public:
-	Molecule();
-	~Molecule();
-	
+    Molecule();
+    ~Molecule();
+
     void addAtom(AtomEntry *atom) {_molecule.push_back(atom);}
-	void setComment(QString c) {_comment = c;}
+    void setComment(QString c) {_comment = c;}
     std::vector<AtomEntry*>& atomsList() {return _molecule;}
     int numAtoms() const {return _molecule.size();}
 
 private:
     std::vector<AtomEntry*> _molecule;
-	QString _comment;
+    QString _comment;
 };
 
 #endif /*MOLECULE_H_*/

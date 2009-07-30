@@ -2,13 +2,13 @@
 
 void MainWindow::createToolbars()
 {
-	// The "File" menus
+    // The "File" menus
     fileToolBar = addToolBar(tr("File"));
     fileToolBar->addAction(openAction);
     fileToolBar->addAction(saveAction);
     fileToolBar->addAction(saveAsAction);
     
-	// The "Edit" menus
+    // The "Edit" menus
     editToolBar = addToolBar(tr("Edit"));
     editToolBar->addAction(undoAction);
     editToolBar->addAction(redoAction);
@@ -17,7 +17,7 @@ void MainWindow::createToolbars()
     mouseModeToolBar = addToolBar(tr("Mouse Mode"));
     mouseModeButtonGroup = new QButtonGroup;
     connect(mouseModeButtonGroup, SIGNAL(buttonClicked(int)),
-                 this, SLOT(mouseModeButtonGroupClicked(int)));
+            this, SLOT(mouseModeButtonGroupClicked(int)));
     
     QToolButton *selectButton = new QToolButton;
     selectButton->setToolTip(tr("Select / Move"));
@@ -82,7 +82,7 @@ void MainWindow::createToolbars()
     connect(underlineTextButton, SIGNAL(clicked(bool)), this, SLOT(setTextBoxFonts()));
     // Font
     textFontCombo = new QFontComboBox();
-//    textFontCombo->setFontFilters(QFontComboBox::MonospacedFonts);
+    //    textFontCombo->setFontFilters(QFontComboBox::MonospacedFonts);
     textFontCombo->setCurrentFont(QFont(DEFAULT_LABEL_FONT));
     textFontCombo->setEditText(tr("Select Labels"));
     textFontCombo->setToolTip(tr("The font for the selected atoms"));
@@ -96,7 +96,7 @@ void MainWindow::createToolbars()
     textFontSizeCombo->setEditable(true);
     textFontSizeCombo->setToolTip(tr("The font size for the selected text"));
     for (int i = 4; i < 20; ++i){
-      textFontSizeCombo->addItem(QString().setNum(i));
+        textFontSizeCombo->addItem(QString().setNum(i));
     }
     textFontSizeCombo->setEditText(tr(""));
     editSelectedTextToolBar->addWidget(textFontSizeCombo);

@@ -48,8 +48,8 @@ private slots:
     void saveAs();
     void changeZoom(int);
     void setAddArrowMode();
-	void aboutCheMVP();
-	void showPreferences();
+    void aboutCheMVP();
+    void showPreferences();
 
 private:
     void focusOutEvent(QFocusEvent *event);
@@ -69,7 +69,7 @@ private:
     QWidget *createAtomsWidget();
     QWidget *createAnnotationWidget();
     QWidget *createAnimationWidget();
-	QToolButton *makeAtomButton(const char *);
+    QToolButton *makeAtomButton(const char *);
     QSlider *createSlider(int max);
     QCheckBox *useFoggingBox;
 
@@ -111,15 +111,15 @@ private:
     QAction *selectAllAction;
     QAction *undoAction;
     QAction *redoAction;
-	QAction *aboutAction;  
-	QAction *showPreferencesAction;
+    QAction *aboutAction;
+    QAction *showPreferencesAction;
 
     QPushButton *toggleBondLabelsButton;
     QPushButton *toggleBondDashingButton;
     QPushButton *toggleAngleLabelsButton;
     QPushButton *toggleAtomNumberSubscriptsButton;
     QPushButton *backgroundColorButton;
-	QPushButton *atomColorButton;
+    QPushButton *atomColorButton;
 
     QToolButton *boldTextButton;
     QToolButton *italicTextButton;

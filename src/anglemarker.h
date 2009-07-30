@@ -12,8 +12,8 @@
 class AngleMarker : public QGraphicsPathItem
 {
 public:
-	enum { Type = UserType + ANGLEMARKERTYPE};
-	int type() const {return Type;}
+    enum { Type = UserType + ANGLEMARKERTYPE};
+    int type() const {return Type;}
 
     AngleMarker(DrawingInfo *drawingInfo, QGraphicsItem *parent = 0);
     
@@ -23,9 +23,9 @@ public:
     void setHover(bool t_f) {hoverOver = t_f;}
 
 protected:
-	void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     DrawingInfo *drawingInfo;
     AngleMarker *otherMarker;
     qreal penWidth;

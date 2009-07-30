@@ -16,15 +16,15 @@ class Atom : public QGraphicsEllipseItem
 public:
     enum {Type = UserType + ATOMTYPE};
     enum FontSizeStyle {SmallLabel, LargeLabel};
-	
+
     static QMap<QString, QVariant> labelToVdwRadius;
     static QMap<QString, QVariant> labelToMass;
     static QMap<QString, QVariant> labelToColor;
-	
+
     static void fillLabelToVdwRadiusMap();
     static void fillLabelToMassMap();
     static void fillLabelToColorMap();
-	
+
     Atom(QString element, DrawingInfo *info, QGraphicsItem *parent = 0);
 
     QRectF boundingRect() const;
@@ -43,8 +43,8 @@ public:
     double effectiveRadius() const {return myEffectiveRadius;}
     QString symbol() const {return mySymbol;}
     QString label() {return (myLabel +
-							(myLabelSubscript.size() ? "_" + myLabelSubscript : "") +
-							(myLabelSuperscript.size() ? "^" + myLabelSuperscript : ""));}
+                             (myLabelSubscript.size() ? "_" + myLabelSubscript : "") +
+                             (myLabelSuperscript.size() ? "^" + myLabelSuperscript : ""));}
     void computeRadius();
     void setLabelSubscript(const QString &string) {myLabelSubscript = string;}
     void setLabelSuperscript(const QString &string) {myLabelSuperscript = string;}
@@ -57,13 +57,13 @@ public:
     void setLabel(const QString &text);
     void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptsHoverEvents(arg);}
     void setDrawingStyle(DrawingInfo::DrawingStyle style);
-	void setColor(QColor color) {fill_color = color;}
+    void setColor(QColor color) {fill_color = color;}
     void setFontSizeStyle(FontSizeStyle style);
     void setID(int val) {myID = val;}
-//  void processProjectFile(QSettings &settings, bool saveFile);
-	
-	static double bondLength(Atom*, Atom*);
-	
+    //  void processProjectFile(QSettings &settings, bool saveFile);
+
+    static double bondLength(Atom*, Atom*);
+
 protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);

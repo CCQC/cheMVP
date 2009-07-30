@@ -15,11 +15,11 @@
 class Angle : public QGraphicsPathItem
 {
 public:
-	enum {Type = UserType + ANGLETYPE};
-	int type() const {return Type;}
+    enum {Type = UserType + ANGLETYPE};
+    int type() const {return Type;}
 
     Angle(Atom *startAtom, Atom *centerAtom, Atom *endAtom, DrawingInfo *drawingInfo,
-    	  QGraphicsItem *parent = 0);
+          QGraphicsItem *parent = 0);
     ~Angle();
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = 0);
@@ -33,9 +33,9 @@ public:
     AngleMarker *marker2() {return myMarker2;}
 
 protected:
-	void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     Atom* myStartAtom;
     Atom* myCenterAtom;
     Atom* myEndAtom;

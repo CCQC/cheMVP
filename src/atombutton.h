@@ -11,17 +11,17 @@
 
 class AtomButton : public QToolButton
 {
-	Q_OBJECT
-	
+    Q_OBJECT
+
 public:
-	AtomButton(const char* label);
+    AtomButton(const char* label);
 
 public slots:
-	void setAtomDefaultColor();
-	
+    void setAtomDefaultColor();
+
 protected:
-	void refreshColor();
-	QString _label;
+    void refreshColor();
+    QString _label;
 };
 
 #endif /* ATOMBUTTON_H */
