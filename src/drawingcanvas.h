@@ -125,7 +125,7 @@ private:
     QList<Angle*> anglesList;
     QList<Arrow*> arrowsList;
     QList<Label*> textLabelsList;
-    QList<int> persistantBonds;
+    QMap<int, QPair<int, int> > persistantBonds;
 };
 
 #endif

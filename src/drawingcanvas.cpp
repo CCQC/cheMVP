@@ -86,16 +86,24 @@ void DrawingCanvas::clearAll()
 void DrawingCanvas::storeLabeledBonds()
 {
     for(int i = 0; i < bondsList.size(); i++){
-        if(bondsList[i]->label() != 0){
-            persistantBonds.push_back(i);
+        Bond* b = bondsList[i];
+        if(b->hasLabel()){
+            int x = b->label()->scenePos().x()+b->label()->dX();
+            int y = b->label()->scenePos().y()+b->label()->dY();
+            QPair<int,int> pair(x,y);
+            persistantBonds.insert(i, pair);
         }
     }
 }
 
 void DrawingCanvas::restoreLabeledBonds()
 {
-    foreach(int i, persistantBonds){
-        addBondLabel(i);
+    foreach(int i, persistantBonds.keys()){
+        bondsList[i]->toggleLabel();
+        addItem(bondsList[i]->label());
+        bondsList[i]->label()->setDX(persistantBonds.value(i).first);
+        bondsList[i]->label()->setDY(persistantBonds.value(i).second);
+        bondsList[i]->update();
     }
     persistantBonds.clear();
 }
