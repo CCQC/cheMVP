@@ -14,8 +14,6 @@
 
 #define TINY 0.00001
 
-#define CHEMVP_VERSION "0.1.1"
-
 #define EXTRA_DRAWING_SPACE 0.2
 
 #define DEFAULT_LABEL_FONT "Helvetica"
@@ -52,6 +50,8 @@
 #define ANGLE_MARKER_OFFSET 0.4
 
 #define COMPANY_NAME "Center for Computational Chemistry @ UGA"
+#define PROGRAM_NAME "cheMVP"
+#define CHEMVP_VERSION "0.2"
 
 #define ITEM_IS_LABEL item->type() == Label::AngleLabelType || item->type() == Label::BondLabelType || item->type() == Label::TextLabelType
 

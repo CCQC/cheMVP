@@ -16,12 +16,12 @@ class AtomButton : public QToolButton
 
 public:
     AtomButton(DrawingCanvas* d, const char* label);
-
+    void refreshColor();
+    
 public slots:
     void setAtomColor();
 
 protected:
-    void refreshColor();
     DrawingCanvas* _canvas;
     QString _label;
 };

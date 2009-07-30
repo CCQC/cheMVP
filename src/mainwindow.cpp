@@ -26,7 +26,7 @@ MainWindow::MainWindow(FileParser *parser_in):
     Atom::fillLabelToVdwRadiusMap();
     Atom::fillLabelToMassMap();
 
-    QSettings colorSettings("Andy", "cheMVP");
+    QSettings colorSettings(COMPANY_NAME, PROGRAM_NAME);
     QVariant v = colorSettings.value("Default Atom Colors", NULL);
     if(v == NULL)
         Atom::fillLabelToColorMap();

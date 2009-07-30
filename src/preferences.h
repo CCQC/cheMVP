@@ -12,9 +12,10 @@
 #include <QDialog>
 #include <QList>
 
-#include "atombutton.h"
 #include "drawingInfo.h"
 #include "drawingcanvas.h"
+#include "defines.h"
+#include "atombutton.h"
 
 class Preferences : public QDialog
 {
@@ -35,6 +36,7 @@ protected:
     DrawingCanvas* _canvas;
 
     QWidget* _periodicTable;
+    QList<QToolButton*> _atomButtons;
 
     QListWidget* _listWidget;
     QStackedLayout* _stackedLayout;

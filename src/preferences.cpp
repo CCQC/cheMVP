@@ -62,13 +62,14 @@ void Preferences::revert()
 void Preferences::restoreDefaults()
 {
     if(_listWidget->currentRow() == 0){
-        // Take temp Map out if 'Restore to Defualts" autmoatically writes settings.
-        QMap<QString,QVariant> temp;
-        temp = Atom::labelToColor;
         Atom::fillLabelToColorMap();
         _colorChanges = Atom::labelToColor;
-        Atom::labelToColor = temp;
-        _canvas->updateAtomColors(_colorChanges);        
+        _canvas->updateAtomColors(_colorChanges);  
+        savePreferences();
+        foreach(QToolButton* b, _atomButtons){
+            AtomButton* a = dynamic_cast<AtomButton*>(b);
+            a->refreshColor();
+        }
     }
 }
 
@@ -78,13 +79,15 @@ void Preferences::savePreferences()
     foreach(Atom * a, _canvas->getAtoms()) {
         a->setDrawingStyle(DrawingInfo::DrawingStyle(_drawingStyle));
     }
-    QSettings settings("Andy", "cheMVP");
+    QSettings settings(COMPANY_NAME, PROGRAM_NAME);
     settings.setValue("Default Atom Colors", Atom::labelToColor);
 }
 
 QToolButton *Preferences::makeAtomButton(const char *label)
 {	
-    return new AtomButton(_canvas, label);
+    AtomButton* a = new AtomButton(_canvas, label);
+    _atomButtons.push_back(a);
+    return a;
 }
 
 QWidget *Preferences::createPeriodicTable()
