@@ -1,6 +1,10 @@
 #ifndef DEFINES_H_
 #define DEFINES_H_
 
+#define COMPANY_NAME "Center for Computational Chemistry @ UGA"
+#define PROGRAM_NAME "cheMVP"
+#define CHEMVP_VERSION "0.2"
+
 //These are the types used in the enums to distinguish drawing types
 #define ATOMTYPE  1
 #define BONDTYPE  2
@@ -48,10 +52,6 @@
 #define PI 3.14159265
 
 #define ANGLE_MARKER_OFFSET 0.4
-
-#define COMPANY_NAME "Center for Computational Chemistry @ UGA"
-#define PROGRAM_NAME "cheMVP"
-#define CHEMVP_VERSION "0.2"
 
 #define ITEM_IS_LABEL item->type() == Label::AngleLabelType || item->type() == Label::BondLabelType || item->type() == Label::TextLabelType
 
