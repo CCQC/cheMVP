@@ -4,8 +4,8 @@
 #include <QGraphicsItem>
 #include <QString>
 #include <QtGui>
+#include <QMap>
 
-#include <map>
 #include <iostream>
 #include "error.h"
 #include "defines.h"
@@ -16,6 +16,15 @@ class Atom : public QGraphicsEllipseItem
 public:
     enum {Type = UserType + ATOMTYPE};
     enum FontSizeStyle {SmallLabel, LargeLabel};
+	
+    static QMap<QString, QVariant> labelToVdwRadius;
+    static QMap<QString, QVariant> labelToMass;
+    static QMap<QString, QVariant> labelToColor;
+	
+    static void fillLabelToVdwRadiusMap();
+    static void fillLabelToMassMap();
+    static void fillLabelToColorMap();
+	
     Atom(QString element, DrawingInfo *info, QGraphicsItem *parent = 0);
 
     QRectF boundingRect() const;
@@ -56,13 +65,6 @@ public:
 	static double bondLength(Atom*, Atom*);
 	
 protected:
-    static std::map<QString, double> labelToVdwRadius;
-    static std::map<QString, double> labelToMass;
-    static std::map<QString, QColor> labelToColor;
-    static void fillLabelToVdwRadiusMap();
-    static void fillLabelToMassMap();
-    static void fillLabelToColorMap();
-
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 

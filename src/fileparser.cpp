@@ -4,14 +4,23 @@ using namespace std;
 
 FileParser::FileParser(QString instring):
 	myUnits(Angstrom),
-	myFileName(instring),
 	currentGeometry(0)
 {
+	if(instring != 0){	
+		QDir* dir = new QDir(instring);
+		myFileName = dir->absolutePath();
+	}
 }
 
 FileParser::~FileParser()
 {
 	
+}
+
+void FileParser::setFileName(const QString name)
+{
+	QDir* dir = new QDir(name);
+	myFileName = dir->absolutePath();
 }
 
 void FileParser::determineFileType()

@@ -122,7 +122,6 @@ void MainWindow::openFile()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath());
     parser->setFileName(fileName);
-    std::cout << "X" << fileName.toStdString() << "X" << std::endl;
     loadFile();
 }
 

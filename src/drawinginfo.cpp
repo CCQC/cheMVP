@@ -32,7 +32,8 @@ DrawingInfo::DrawingInfo():
     _labelColor(Qt::black),
     _atomLabelFont(DEFAULT_ATOM_LABEL_FONT),
     _atomLineColor(Qt::black),
-    _atomTextColor(Qt::black)
+    _atomTextColor(Qt::black),
+	style(Gradient)
 {
 	
 }

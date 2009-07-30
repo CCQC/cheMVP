@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QRegExp>
+#include <QDir>
 
 #include <ios>
 #include <limits>
@@ -32,11 +33,9 @@ public:
 
 	int numMolecules() {return myMoleculeList.size();}
     int current() const { return currentGeometry; }
-    void setCurrent(int curr) {currentGeometry = curr;}
-	void setFileName(const QString name) {myFileName = name;}
-	
+    void setCurrent(int curr) {currentGeometry = curr;}	
 	const QString& fileName() {return myFileName;}
-
+	void setFileName(const QString name);
 	void readFile();
 	
 protected:

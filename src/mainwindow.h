@@ -17,6 +17,7 @@
 #include "drawinginfo.h"
 #include "fileparser.h"
 #include "undo_delete.h"
+#include "preferences.h"
 
 class MainWindow : public QMainWindow
 {
@@ -39,7 +40,6 @@ private slots:
     void changeAtomSize();
     void changeBondSize();
     void setTextBoxFonts();
-//  void periodicTableButtonGroupClicked(QAbstractButton *button);
     void deleteItem();
     void mouseModeButtonGroupClicked(int);
     void rotateFromInitialCoordinates();
@@ -49,6 +49,7 @@ private slots:
     void changeZoom(int);
     void setAddArrowMode();
 	void aboutCheMVP();
+	void showPreferences();
 
 private:
     void focusOutEvent(QFocusEvent *event);
@@ -68,14 +69,10 @@ private:
     QWidget *createAtomsWidget();
     QWidget *createAnnotationWidget();
     QWidget *createAnimationWidget();
+	QToolButton *makeAtomButton(const char *);
     QSlider *createSlider(int max);
-    
     QCheckBox *useFoggingBox;
-    // Not needed. -Jet
-    // QWidget *appearanceWidget;
-    // QWidget *bondsAndAnglesWidget;
-    // QWidget *atomsWidget;
-    // QWidget *annotationWidget;
+
     QWidget *animationWidget;
 
     QButtonGroup *mouseModeButtonGroup;
@@ -114,7 +111,8 @@ private:
     QAction *selectAllAction;
     QAction *undoAction;
     QAction *redoAction;
-	QAction *aboutAction;    
+	QAction *aboutAction;  
+	QAction *showPreferencesAction;
 
     QPushButton *toggleBondLabelsButton;
     QPushButton *toggleBondDashingButton;

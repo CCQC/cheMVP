@@ -52,9 +52,9 @@ public:
     void drawBackground(QPainter *painter, const QRectF &rect);
     const QCursor& rotateCursor() {return myRotateCursor;}
     void processProjectFile(QSettings &settings, bool saveFile);
-    QList<Bond*> getBonds() {return bondsList;}
-    void addBondLabel(int i);
-
+	QList<Bond*> getBonds() {return bondsList;}
+	QList<Atom*> getAtoms() {return atomsList;}
+	void addBondLabel(int i);
 public slots:
     void refresh();
     void unselectAll();

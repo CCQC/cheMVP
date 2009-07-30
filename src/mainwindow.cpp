@@ -22,7 +22,17 @@ MainWindow::MainWindow(FileParser *parser_in):
     createToolBox();
     createMenus();
     createToolbars();
+	
+	Atom::fillLabelToVdwRadiusMap();
+	Atom::fillLabelToMassMap();
 
+	QSettings colorSettings("Andy", "cheMVP");
+	QVariant v = colorSettings.value("Default Atom Colors", NULL);
+	if(v == NULL)
+		Atom::fillLabelToColorMap();
+	else
+		Atom::labelToColor = v.toMap();
+	
     QHBoxLayout *layout = new QHBoxLayout;
     view = new DrawingDisplay(canvas, drawingInfo);
     view->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
