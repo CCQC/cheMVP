@@ -99,6 +99,8 @@ QWidget *MainWindow::createAppearanceWidget()
     zoomSpinBox->setSuffix("%");
     zoomSpinBox->setAccelerated(true);
     zoomSpinBox->setValue(100);
+    zoomSpinBox->setMinimum(1);
+    zoomSpinBox->setMaximum(200);
     connect(zoomSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
     zoomLayout->addWidget(zoomTitle, 0, 0);
     zoomLayout->addWidget(zoomSpinBox, 0, 1);

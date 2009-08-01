@@ -6,7 +6,6 @@ QMap<QString, QVariant> Atom::labelToColor;
 
 Atom::Atom(QString element, DrawingInfo *i, QGraphicsItem *parent)
         :QGraphicsEllipseItem(parent),
-        //myDrawingStyle(Gradient),
         myFontSizeStyle(SmallLabel),
         myX(0.0),
         myY(0.0),

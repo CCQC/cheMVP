@@ -1,8 +1,8 @@
 #include "preferences.h"
 
-Preferences::Preferences(QList<Atom*> a, int s)
+Preferences::Preferences(DrawingCanvas* d, int s)
 {
-    _atomsList = a;
+    _canvas = d;
     _drawingStyle = s;
     _colorChanges = Atom::labelToColor;
 
@@ -14,17 +14,23 @@ Preferences::Preferences(QList<Atom*> a, int s)
 
     _applyButton = new QPushButton(tr("Apply"));
     _closeButton = new QPushButton(tr("Close"));
+    _revertButton = new QPushButton(tr("Restore to Defaults"));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout;
+    buttonsLayout->addWidget(_revertButton);
     buttonsLayout->addStretch(1);
     buttonsLayout->addWidget(_applyButton);
     buttonsLayout->addWidget(_closeButton);
 
+    connect(_revertButton, SIGNAL(pressed()),
+            this, SLOT(restoreDefaults()));
     connect(_closeButton, SIGNAL(pressed()),
             this, SLOT(close()));
+    connect(_closeButton, SIGNAL(pressed()),
+            this, SLOT(revert()));
     connect(_applyButton, SIGNAL(pressed()),
-            this, SLOT(applyPreferences()));
-
+            this, SLOT(savePreferences()));
+    
     _stackedLayout = new QStackedLayout();
     _stackedLayout->addWidget(_periodicTable);
 
@@ -45,19 +51,43 @@ Preferences::Preferences(QList<Atom*> a, int s)
     setWindowTitle(tr("Preferences"));
 }
 
-void Preferences::applyPreferences()
+void Preferences::revert()
+{
+    if(_listWidget->currentRow() == 0){
+        _colorChanges = Atom::labelToColor;
+        _canvas->updateAtomColors(_colorChanges);    
+    }
+}
+
+void Preferences::restoreDefaults()
+{
+    if(_listWidget->currentRow() == 0){
+        Atom::fillLabelToColorMap();
+        _colorChanges = Atom::labelToColor;
+        _canvas->updateAtomColors(_colorChanges);  
+        savePreferences();
+        foreach(QToolButton* b, _atomButtons){
+            AtomButton* a = dynamic_cast<AtomButton*>(b);
+            a->refreshColor();
+        }
+    }
+}
+
+void Preferences::savePreferences()
 {
     Atom::labelToColor = _colorChanges;
-    foreach(Atom * a, _atomsList) {
+    foreach(Atom * a, _canvas->getAtoms()) {
         a->setDrawingStyle(DrawingInfo::DrawingStyle(_drawingStyle));
     }
-    QSettings settings("Andy", "cheMVP");
+    QSettings settings(COMPANY_NAME, PROGRAM_NAME);
     settings.setValue("Default Atom Colors", Atom::labelToColor);
 }
 
 QToolButton *Preferences::makeAtomButton(const char *label)
 {	
-    return new AtomButton(label);
+    AtomButton* a = new AtomButton(_canvas, label);
+    _atomButtons.push_back(a);
+    return a;
 }
 
 QWidget *Preferences::createPeriodicTable()

@@ -82,7 +82,7 @@ public:
 
     QColor getAtomTextColor() {return _atomTextColor;}
     QColor getAtomLineColor() {return _atomLineColor;}
-    QFont getAtomLabelFont() {return _atomLabelFont;}
+    QFont& getAtomLabelFont() {return _atomLabelFont;}
 
 public slots:
     void setFoggingScale(int v) {_foggingScale = v;}

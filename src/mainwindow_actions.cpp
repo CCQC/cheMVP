@@ -88,7 +88,19 @@ void MainWindow::deleteItem()
 {
     if (canvas->selectedItems().isEmpty())
         return;
-
+    
+    // Hide bond labels when they're deleted. - HPS
+    // Prevents bond deletion from being undoable,
+    // but fixes geometry time step from reinstating deleted bond
+    foreach(QGraphicsItem* i, canvas->selectedItems()){
+        if(i->type() == Label::BondLabelType){
+            foreach(Bond* b, canvas->getBonds()){
+                if(b->label() == i)
+                    b->toggleLabel();
+            }
+        }
+    }
+    
     QUndoCommand *removeItemCommand = new RemoveItemCommand(canvas);
     undoStack->push(removeItemCommand);
 }
@@ -102,6 +114,6 @@ void MainWindow::aboutCheMVP()
 
 void MainWindow::showPreferences()
 {
-    Preferences* prefs = new Preferences(canvas->getAtoms(), drawingInfo->getDrawingStyle());
+    Preferences* prefs = new Preferences(canvas, drawingInfo->getDrawingStyle());
     prefs->exec();
 }

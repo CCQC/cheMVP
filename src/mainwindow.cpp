@@ -26,7 +26,7 @@ MainWindow::MainWindow(FileParser *parser_in):
     Atom::fillLabelToVdwRadiusMap();
     Atom::fillLabelToMassMap();
 
-    QSettings colorSettings("Andy", "cheMVP");
+    QSettings colorSettings(COMPANY_NAME, PROGRAM_NAME);
     QVariant v = colorSettings.value("Default Atom Colors", NULL);
     if(v == NULL)
         Atom::fillLabelToColorMap();
@@ -193,8 +193,10 @@ void MainWindow::setGeometryStep(int geom)
 {
     assert(geom >= 0 && geom < parser->numMolecules());
     parser->setCurrent(geom);
+    canvas->storeLabeledBonds();
     canvas->clearAll();
     canvas->loadFromParser();
+    canvas->restoreLabeledBonds();
     setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
 }
 

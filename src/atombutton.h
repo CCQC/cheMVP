@@ -7,6 +7,7 @@
 #include <QColor>
 
 #include "atom.h"
+#include "drawingcanvas.h"
 #include "preferences.h"
 
 class AtomButton : public QToolButton
@@ -14,13 +15,14 @@ class AtomButton : public QToolButton
     Q_OBJECT
 
 public:
-    AtomButton(const char* label);
-
+    AtomButton(DrawingCanvas* d, const char* label);
+    void refreshColor();
+    
 public slots:
-    void setAtomDefaultColor();
+    void setAtomColor();
 
 protected:
-    void refreshColor();
+    DrawingCanvas* _canvas;
     QString _label;
 };
 
