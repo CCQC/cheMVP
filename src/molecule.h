@@ -15,8 +15,8 @@ struct AtomEntry
 class Molecule
 {
 public:
-    Molecule();
-    ~Molecule();
+    Molecule() {};
+    ~Molecule() {};
 
     void addAtom(AtomEntry *atom) {_molecule.push_back(atom);}
     void setComment(QString c) {_comment = c;}

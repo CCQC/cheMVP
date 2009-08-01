@@ -23,6 +23,7 @@ QWidget *MainWindow::createAppearanceWidget()
 
     QGroupBox *foggingGroupBox = new QGroupBox(tr("Fogging"));
     useFoggingBox                    = new QCheckBox(tr("Use fogging"));
+    useFoggingBox->setToolTip(tr("Add a fog effect to more distant atoms to emphasize those in the foreground"));
     foggingScaleBox                  = new QSpinBox();
     foggingScaleBox->setSuffix("%");
     QLabel *foggingLabel             = new QLabel(tr("Opacity:"));

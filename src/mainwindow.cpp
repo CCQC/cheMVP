@@ -67,7 +67,6 @@ MainWindow::MainWindow(FileParser *parser_in):
 
 void MainWindow::focusOutEvent(QFocusEvent *event)
 {
-    std::cout<<"Main window focus out"<<std::endl;
     if(event->reason() != Qt::TabFocusReason){
         QMainWindow::focusOutEvent(event);
     }else{

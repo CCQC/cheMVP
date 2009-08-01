@@ -20,7 +20,6 @@ void DrawingDisplay::resizeEvent(QResizeEvent *event)
 
 void DrawingDisplay::focusOutEvent(QFocusEvent *event)
 {
-    std::cout<<"Drawing display focus out"<<std::endl;
     if(event->reason() != Qt::TabFocusReason){
         QGraphicsView::focusOutEvent(event);
     }else{

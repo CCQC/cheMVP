@@ -46,7 +46,6 @@ DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_
 
 void DrawingCanvas::focusOutEvent(QFocusEvent *event)
 {
-    std::cout<<"Drawing canvas focus out"<<std::endl;
     if(event->reason() != Qt::TabFocusReason){
         QGraphicsScene::focusOutEvent(event);
     }else{

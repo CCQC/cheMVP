@@ -44,7 +44,6 @@ void Label::keyPressEvent(QKeyEvent *event)
 
 void Label::focusOutEvent(QFocusEvent *event)
 {
-    std::cout<<"Label focus out"<<std::endl;
     if(event->reason()==Qt::TabFocusReason) {
         QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
         QGraphicsTextItem::keyPressEvent(newEvent);
