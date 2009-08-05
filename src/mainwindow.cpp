@@ -27,21 +27,21 @@ MainWindow::MainWindow(FileParser *parser_in):
     Atom::fillLabelToMassMap();
 
     QSettings colorSettings(COMPANY_NAME, PROGRAM_NAME);
-    QVariant v = colorSettings.value("Default Atom Colors", NULL);
-    if(v == NULL)
+    QMap<QString, QVariant> colorMap = colorSettings.value("Default Atom Colors").toMap();
+    if(colorMap.isEmpty())
         Atom::fillLabelToColorMap();
     else
-        Atom::labelToColor = v.toMap();
+        Atom::labelToColor = colorMap;
 
     QHBoxLayout *layout = new QHBoxLayout;
     view = new DrawingDisplay(canvas, drawingInfo);
     view->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    view->setGeometry(0, 0, DEFAULT_SCENE_SIZE_X, DEFAULT_SCENE_SIZE_Y);
+    view->setGeometry(0, 0, static_cast<int>(DEFAULT_SCENE_SIZE_X), static_cast<int>(DEFAULT_SCENE_SIZE_Y));
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); 
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
-    toolBox->setGeometry(0, 0, DEFAULT_TOOLBOX_WIDTH, DEFAULT_SCENE_SIZE_Y);
+    toolBox->setGeometry(0, 0, static_cast<int>(DEFAULT_TOOLBOX_WIDTH), static_cast<int>(DEFAULT_SCENE_SIZE_Y));
     toolBox->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
     drawingInfo->setHeight(view->sceneRect().height());
@@ -202,9 +202,9 @@ void MainWindow::setGeometryStep(int geom)
 
 void MainWindow::rotateFromInitialCoordinates()
 {
-    drawingInfo->setXRot(xRotationBox->text().toDouble());
-    drawingInfo->setYRot(yRotationBox->text().toDouble());
-    drawingInfo->setZRot(zRotationBox->text().toDouble());
+    drawingInfo->setXRot(xRotationBox->text().toInt());
+    drawingInfo->setYRot(yRotationBox->text().toInt());
+    drawingInfo->setZRot(zRotationBox->text().toInt());
     canvas->rotateFromInitialCoordinates();
 }
 

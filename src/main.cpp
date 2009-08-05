@@ -36,7 +36,10 @@ int main(int argv, char *args[])
     splash.startTimer(3500); // ~5 sec
     MainWindow mainWindow(parser);
     //Set the icon in the bar at the top of the window
+    //but not on X11 - it seems to be having problems
+#ifndef Q_WS_X11
     app.setWindowIcon(QIcon("../images/icon.png"));
+#endif
     mainWindow.setWindowIconText("cheMVP");
 
     mainWindow.setGeometry(30, 50, 1200, 700);
@@ -47,5 +50,6 @@ int main(int argv, char *args[])
         mainWindow.setCurrentSaveFile(args[2]);
         mainWindow.saveAndExit();
     }
+
     return app.exec();
 }

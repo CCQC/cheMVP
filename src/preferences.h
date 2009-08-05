@@ -12,7 +12,7 @@
 #include <QDialog>
 #include <QList>
 
-#include "drawingInfo.h"
+#include "drawinginfo.h"
 #include "drawingcanvas.h"
 #include "defines.h"
 #include "atombutton.h"
