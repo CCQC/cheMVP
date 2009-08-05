@@ -28,14 +28,14 @@ void MainWindow::createToolbars()
     mouseModeToolBar->addWidget(selectButton);
 
     QToolButton *rotateButton = new QToolButton;
-    rotateButton->setToolTip(tr("Rotate Molecule"));
+    rotateButton->setToolTip(tr("Rotate Molecule\nClick and drag to rotate about x and y\nHold shift, click and drag to rotate about z"));
     rotateButton->setIcon(QIcon(":/images/rotate.png"));
     rotateButton->setCheckable(true);
     mouseModeButtonGroup->addButton(rotateButton,int(DrawingCanvas::Rotate));
     mouseModeToolBar->addWidget(rotateButton);
 
     QToolButton *addBondButton = new QToolButton;
-    addBondButton->setToolTip(tr("Add Bond"));
+    addBondButton->setToolTip(tr("Add Bond\nClick an atom, (keep the button held down) and release on another atom to form a new bond"));
     addBondButton->setCheckable(true);
     addBondButton->setIcon(QIcon(":/images/addbond.png"));
     mouseModeButtonGroup->addButton(addBondButton, int(DrawingCanvas::AddBond));

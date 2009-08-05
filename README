@@ -26,7 +26,9 @@ release.
 
 INPUT FORMATS
 =============
-Currently, xyz files are supported.  These take the form
+Many input formats are supported and are automatically detected.  The only
+restriction is for xyz files, which currently need to have the extension .xyz
+and take the following format:
 
 NumberOfAtoms  [bohr or au]
 Comment Line
@@ -35,12 +37,26 @@ Atom2Symbol Atom2XCoordinate Atom2YCoordinate Atom2ZCoordinate
 Atom3Symbol Atom3XCoordinate Atom3YCoordinate Atom3ZCoordinate
 etc..
 
-the optional argument after the number of atoms is only necessary if the units
-are atomic units.  Eventually the code will parse all output files.  Soon it will
-be able to load from its own project files (.cvp).  MAB-ACESII (now called
-Cfour) produces a JMOL.plot file, which is readable by cheMVP.
+Note that multiple xyz sets can be present in a single xyz file.  In terms of
+chemistry packages, the following outputs can be read, and there are no
+restrictions on the filenames used:- the optional argument after the number of
+atoms is only necessary if the units are atomic units.
 
-Molpro, GAMESS, NWChem, ORCA, PSI3, and Q-Chem 3.1 optimization outputs and File11 files can all be read by cheMVP.
+ o Molpro (geometry optimization) 
+ o GAMESS (geometry optimization)
+ o NWChem (geometry optimization)
+ o ORCA (single point/geometry optimization)
+ o PSI3 (geometry optimization)
+ o Q-Chem 3.1 
+ o File11 from PSI
+ o ACESII/Cfour
+
+a save/load project format for cheMVP is in development; stay tuned, folks.  Be
+careful if you've done a funky many-jobs-in-one-input type calculation and
+check that the correct geometries were parsed.  Sometimes it's tricky to
+distinguish the steps of a finite difference computation from steps of an
+optimization. 
+
 
 
 COMPILING

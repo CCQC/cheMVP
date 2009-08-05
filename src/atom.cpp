@@ -236,12 +236,12 @@ void Atom::paint(QPainter *painter,
     // Draw a semi-transparent white circle for fogging
     if(_info->getUseFogging()){
         double dZ = _info->maxZ() - _info->minZ();
-        double thisZ = myZ - _info->minZ();
-        double opacity = (dZ > TINY ? 10.0*(100.0-_info->getFoggingScale())*(thisZ/dZ) : 0.0);
+        double thisZ = fabs(myZ - _info->maxZ());
+        double opacity = (dZ > TINY ? 2.56*(_info->getFoggingScale())*(thisZ/dZ) : 0.0);
         opacity = (opacity < 0 ? 0 : opacity);
         opacity = (opacity > 255 ? 255 : opacity);
         painter->setPen(Qt::transparent);
-        painter->setBrush(QColor(255,255,255,255-opacity));
+        painter->setBrush(QColor(255,255,255,opacity));
         painter->drawEllipse(fillRect);
     }
 }

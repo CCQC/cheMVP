@@ -146,11 +146,11 @@ void Bond::paint(QPainter *painter,
     // Draw a semi-transparent white line for fogging
     if(_info->getUseFogging()){
         double dZ = _info->maxBondZ() - _info->minBondZ();
-        double thisZ = computeMidZ() - _info->minBondZ();
-        double opacity = (dZ > TINY ? 20.0*(100.0-_info->getFoggingScale())*(thisZ/dZ) : 0.0);
+        double thisZ = fabs(computeMidZ() - _info->maxBondZ());
+        double opacity = (dZ > TINY ? 2.56*(_info->getFoggingScale())*(thisZ/dZ) : 0.0);
         opacity = (opacity < 0 ? 0 : opacity);
         opacity = (opacity > 255 ? 255 : opacity);
-        _info->getBondPen().setColor(QColor(255,255,255,255-opacity));
+        _info->getBondPen().setColor(QColor(255,255,255,opacity));
         painter->setPen(_info->getBondPen());
         painter->drawLine(line());
     }
