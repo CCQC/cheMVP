@@ -387,7 +387,7 @@ void DrawingCanvas::determineRotationAngles() // HPS
 //	}
 	
 //	DGESVD(&jobu, &jobvt, &m, &n, a[0], &lda, s, u[0], &ldu, vt[0], &ldvt, work, &lwork, &info);
-	DGESVD(&jobu, &jobvt, &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, work, &lwork, &info);
+	//DGESVD(&jobu, &jobvt, &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, work, &lwork, &info);
 	
 //	printf("\n");
 //	for(int r = 0; r < m; r++)
