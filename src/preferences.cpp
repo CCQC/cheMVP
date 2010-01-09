@@ -31,17 +31,17 @@ Preferences::Preferences(DrawingCanvas* d, int s)
     connect(_applyButton, SIGNAL(pressed()),
             this, SLOT(savePreferences()));
     
-    _stackedLayout = new QStackedLayout();
-    _stackedLayout->addWidget(_periodicTable);
+    _stackedWidget = new QStackedWidget();
+    _stackedWidget->addWidget(_periodicTable);
 
     connect(_listWidget, SIGNAL(currentRowChanged(int)),
-            _stackedLayout, SLOT(setCurrentIndex(int)));
+            _stackedWidget, SLOT(setCurrentIndex(int)));
 
     _listWidget->setCurrentRow(0);
 
     QHBoxLayout *horizontalLayout = new QHBoxLayout();
     horizontalLayout->addWidget(_listWidget);
-    horizontalLayout->addLayout(_stackedLayout);
+    horizontalLayout->addWidget(_stackedWidget);
 
     QVBoxLayout *periodicTablePageLayout = new QVBoxLayout;
     periodicTablePageLayout->addLayout(horizontalLayout);

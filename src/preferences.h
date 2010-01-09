@@ -12,7 +12,7 @@
 #include <QDialog>
 #include <QList>
 
-#include "drawinginfo.h"
+#include "drawingInfo.h"
 #include "drawingcanvas.h"
 #include "defines.h"
 #include "atombutton.h"
@@ -39,7 +39,7 @@ protected:
     QList<QToolButton*> _atomButtons;
 
     QListWidget* _listWidget;
-    QStackedLayout* _stackedLayout;
+    QStackedWidget* _stackedWidget;
     QPushButton* _applyButton;
     QPushButton* _closeButton;
     QPushButton* _revertButton;

@@ -128,8 +128,10 @@ MainWindow::FileType MainWindow::determineFileType(const QString &fileName)
 void MainWindow::openFile()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath());
-    parser->setFileName(fileName);
-    loadFile();
+    if(fileName != 0) {
+	parser->setFileName(fileName);
+    	loadFile();
+    }
 }
 
 void MainWindow::loadFile()

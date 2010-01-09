@@ -34,9 +34,12 @@ AtomButton::AtomButton(DrawingCanvas* d, const char* label)
 void AtomButton::setAtomColor()
 {
     QColor color = QColorDialog::getColor();
-    Preferences::_colorChanges[_label] = color;
-    _canvas->updateAtomColors(Preferences::_colorChanges);
-    refreshColor();
+    if(color.isValid())
+    {
+        Preferences::_colorChanges[_label] = color;
+        _canvas->updateAtomColors(Preferences::_colorChanges);
+        refreshColor();
+    }
 }
 
 void AtomButton::refreshColor()
