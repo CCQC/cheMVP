@@ -41,6 +41,7 @@ int main(int argv, char *args[])
     app.setWindowIcon(QIcon("../images/icon.png"));
 #endif
     mainWindow.setWindowIconText("cheMVP");
+	mainWindow.setWindowTitle("cheMVP");
 
     mainWindow.setGeometry(30, 50, 1200, 700);
     mainWindow.raise();
