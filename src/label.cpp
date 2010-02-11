@@ -49,6 +49,8 @@ void Label::focusOutEvent(QFocusEvent *event)
         QGraphicsTextItem::keyPressEvent(newEvent);
         event->accept();
     } else {
+		if(QGraphicsTextItem::toPlainText().length() == 0)
+			std::cout << "No Text" << std::endl;
         QGraphicsTextItem::focusOutEvent(event);
     }
 }
