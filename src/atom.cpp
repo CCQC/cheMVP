@@ -1,4 +1,5 @@
 #include "atom.h"
+#include <math.h>
 
 QMap<QString, QVariant> Atom::labelToVdwRadius;
 QMap<QString, QVariant> Atom::labelToMass;

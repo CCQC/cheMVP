@@ -95,7 +95,7 @@ signals:
 private:
     double bondLength(Atom* atom1, Atom* atom2);
     bool isBonded(Atom* atom1, Atom* atom2);
-    void svdcmp(double **a, int m, int m, double w[], double **v);
+    void svdcmp(double **a, int m, int n, double w[], double **v);
     double pythag(double a, double b);
     QList<Angle*>::iterator angleExists(Atom* atom1, Atom* atom2, Atom* atom3);
 
