@@ -67,9 +67,6 @@ public:
     void setBondColor(QColor v) {_bondColor = v;}
     QColor getBondColor() {return _bondColor;}
 
-    void setBondPen(QPen v) {_bondPen = v;}
-    QPen& getBondPen() {return _bondPen;}
-
     void setBondPrecision(int v) {_bondPrecision = v;}
     int getBondPrecision(){return _bondPrecision;}
 
@@ -129,7 +126,6 @@ private:
     int _anglePrecision;
 
     QColor _bondColor;
-    QPen _bondPen;
     int _bondPrecision;
 
     QColor _labelColor;

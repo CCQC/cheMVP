@@ -55,7 +55,8 @@ void FileParser::determineFileType()
                 fileType = MOLPRO;
                 break;
             }
-            else if (tempString.contains("aces2", Qt::CaseInsensitive)) {
+            else if (tempString.contains("aces2", Qt::CaseInsensitive) ||
+                     tempString.contains("cfour", Qt::CaseInsensitive)) {
                 fileType = ACES2;
                 break;
             }

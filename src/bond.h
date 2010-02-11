@@ -36,6 +36,7 @@ public:
     double thickness() const {return myThickness;}
     void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptsHoverEvents(arg);}
     bool hasLabel() {return (myLabel != 0);}
+    bool isDashed() const {return dashedLine;}
 
 protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -51,6 +52,7 @@ protected:
     bool hoverOver;
     bool dashedLine;
     Label *myLabel;
+    QPen myPen;
 
     double computeLength() {return Atom::bondLength(myStartAtom, myEndAtom);}
 };

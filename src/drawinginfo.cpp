@@ -27,7 +27,6 @@ DrawingInfo::DrawingInfo():
         _anglePen(Qt::black),
         _anglePrecision(DEFAULT_ANGLE_LABEL_PRECISION),
         _bondColor(Qt::black),
-        _bondPen(Qt::black),
         _bondPrecision(DEFAULT_BOND_LABEL_PRECISION),
         _labelColor(Qt::black),
         _atomLabelFont(DEFAULT_ATOM_LABEL_FONT),

@@ -923,9 +923,7 @@ void DrawingCanvas::toggleBondDashing()
     foreach(bond, bondsList)
     {
         if(bond->isSelected()){
-            if(bond->label()==0){
-                bond->toggleDashing();
-            }
+            bond->toggleDashing();
         }
     }
     refresh();

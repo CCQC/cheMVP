@@ -120,7 +120,7 @@ void Atom::paint(QPainter *painter,
     // If the item is selected, use a lighter color for the filling
     QPen linestyle;
     // If we're hovering over the item, use thicker lines
-    linestyle.setWidthF((hoverOver ? _info->scaleFactor()*0.03 : _info->scaleFactor()*0.01));
+    linestyle.setWidthF((hoverOver ? _info->scaleFactor()*0.04 : _info->scaleFactor()*0.01));
     linestyle.setColor(Qt::black);
     painter->setPen(linestyle);
     // The outline of the atom is a little bit too diffuse, here's another more diffuse circle
