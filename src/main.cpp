@@ -15,6 +15,10 @@ int main(int argv, char *args[])
     Q_INIT_RESOURCE(chemvp);
 
     QApplication app(argv, args);
+	//Set the icon in the bar at the top of the window but not on X11 - it seems to be having problems
+#ifndef Q_WS_X11
+    app.setWindowIcon(QIcon("../images/icon.png"));
+#endif
 
     //Check for, and load an xyz file if requested
     QString cmd_line_arg;
@@ -29,22 +33,22 @@ int main(int argv, char *args[])
         }
     }
 
-    //Use the file name (if any) to create a new parser object
-    FileParser *parser = new FileParser(cmd_line_arg);
     QPixmap pixmap("../images/splash.png");
     SplashScreen splash(pixmap);
     splash.startTimer(3500); // ~5 sec
+	
+    //Use the file name (if any) to create a new parser object
+    FileParser *parser = new FileParser(cmd_line_arg);
     MainWindow mainWindow(parser);
-    //Set the icon in the bar at the top of the window
-    //but not on X11 - it seems to be having problems
-#ifndef Q_WS_X11
-    app.setWindowIcon(QIcon("../images/icon.png"));
-#endif
-    mainWindow.setWindowIconText("cheMVP");
+	mainWindow.setWindowIconText("cheMVP");
 	mainWindow.setWindowTitle("cheMVP");
 
-    mainWindow.setGeometry(30, 50, 1200, 700);
-    mainWindow.raise();
+	QDesktopWidget qdw;
+	int screenCenterX = qdw.width() / 2;
+	int screenCenterY = qdw.height() / 2;
+	mainWindow.setGeometry(screenCenterX - 600, screenCenterY - 350, 1200, 700);
+	
+	mainWindow.raise();
     mainWindow.showNormal();
 
     if(argv == 3){
