@@ -79,7 +79,7 @@ void Preferences::savePreferences()
     foreach(Atom * a, _canvas->getAtoms()) {
         a->setDrawingStyle(DrawingInfo::DrawingStyle(_drawingStyle));
     }
-    QSettings settings(COMPANY_NAME, PROGRAM_NAME);
+    QSettings settings;
     settings.setValue("Default Atom Colors", Atom::labelToColor);
 }
 

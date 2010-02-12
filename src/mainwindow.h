@@ -25,6 +25,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(FileParser *parser);
+	~MainWindow();
     enum FileType {TIFF, PNG, PDF, PostScript, SVG, CVP, Unknown};
 
 public slots:
@@ -50,6 +51,7 @@ private slots:
     void setAddArrowMode();
     void aboutCheMVP();
     void showPreferences();
+	void openRecentFile();
 
 private:
     void focusOutEvent(QFocusEvent *event);
@@ -57,6 +59,7 @@ private:
     void createActions();
     void createMenus();
     void createToolbars();
+	void updateRecentFiles();
     void processProjectFile(const QString &fileName, bool saveFile);
     FileType determineFileType(const QString &fileName);
     void saveImage(const QString &fileName);
@@ -160,6 +163,10 @@ private:
     QToolBox *toolBox;
     
     QUndoStack *undoStack;
+	
+	QList<QString> recentlyOpenedFiles;
+	QList<QAction*> recentFileActions;
+	QAction* separatorAction;
 };
 
 #endif

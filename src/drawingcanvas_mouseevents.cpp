@@ -1,5 +1,6 @@
 #include "drawingcanvas.h"
 
+// TODO add double click events to make text selection easier
 void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     if(items().size() == 0){
@@ -165,6 +166,10 @@ void DrawingCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void DrawingCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
+	if(items().size() == 0){
+        unselectAll();
+        return;
+    }
     switch (myMode) {
                 case AddBond:
         if (bondline != 0 && myMode == AddBond) {
@@ -244,6 +249,7 @@ void DrawingCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
         label->setPos(mouseEvent->scenePos());
         label->setTextInteractionFlags(Qt::TextEditorInteraction);
         label->setFocus();
+        emit mouseModeChanged(int(Select));
         break;
                 case AddArrow:
         myArrow = 0;
@@ -252,15 +258,4 @@ void DrawingCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
                 default:
         ;
     }
-}
-
-void DrawingCanvas::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
-{
-	QGraphicsItem *item = itemAt(mouseEvent->scenePos());
-	if(item != NULL && item->type() == Label::TextLabelType)
-	{
-		Label* label = dynamic_cast<Label*>(item);
-		label->setTextInteractionFlags(Qt::TextEditorInteraction);
-        label->setFocus();
-	}
 }

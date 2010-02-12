@@ -15,6 +15,10 @@ int main(int argv, char *args[])
     Q_INIT_RESOURCE(chemvp);
 
     QApplication app(argv, args);
+	QCoreApplication::setOrganizationName(COMPANY_NAME);
+	QCoreApplication::setOrganizationDomain(COMPANY_DOMAIN);
+	QCoreApplication::setApplicationName(PROGRAM_NAME);
+	
 	//Set the icon in the bar at the top of the window but not on X11 - it seems to be having problems
 #ifndef Q_WS_X11
     app.setWindowIcon(QIcon("../images/icon.png"));

@@ -6,6 +6,23 @@ void MainWindow::createMenus()
     fileMenu->addAction(openAction);
     fileMenu->addAction(saveAction);
     fileMenu->addAction(saveAsAction);
+	
+	separatorAction = new QAction("Separator", NULL);
+	separatorAction->setSeparator(true);
+	fileMenu->addAction(separatorAction);
+	for(int i = 0; i < MAX_RECENT_FILES; i++)
+	{	
+		recentFileActions.append(new QAction("Empty", NULL));
+		QObject::connect(recentFileActions[i], SIGNAL(triggered()), this, SLOT(openRecentFile()));
+		fileMenu->addAction(recentFileActions[i]);
+	}
+
+	QSettings settings;
+	QList<QVariant> list = settings.value("Recently Opened Files", QVariant(QList<QString>())).toList();
+	for(int i = 0; i < list.size(); i++)
+		recentlyOpenedFiles.append(list[i].toString());
+	updateRecentFiles();
+	
 #ifndef Q_WS_MAC
     fileMenu->addSeparator(); // Unused separator on Macs - HPS
 #endif

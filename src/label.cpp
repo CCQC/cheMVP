@@ -49,9 +49,9 @@ void Label::focusOutEvent(QFocusEvent *event)
         QGraphicsTextItem::keyPressEvent(newEvent);
         event->accept();
     } else {
-		if(QGraphicsTextItem::toPlainText().length() == 0)
-			std::cout << "No Text" << std::endl;
-        QGraphicsTextItem::focusOutEvent(event);
+		QGraphicsTextItem::focusOutEvent(event);
+		if(this->toPlainText().length() == 0)
+			this->scene()->removeItem(this);
     }
 }
 

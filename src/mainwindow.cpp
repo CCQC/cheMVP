@@ -1,4 +1,5 @@
 #include <QtGui>
+
 #include <iostream>
 #include <iomanip>
 #include <assert.h>
@@ -24,12 +25,12 @@ MainWindow::MainWindow(FileParser *parser_in):
 
     Atom::fillLabelToVdwRadiusMap();
     Atom::fillLabelToMassMap();
-
-    QSettings colorSettings(COMPANY_NAME, PROGRAM_NAME);
-    QMap<QString, QVariant> colorMap = colorSettings.value("Default Atom Colors").toMap();
+	
+    QSettings colorSettings;
+    QMap<QString, QVariant> colorMap = colorSettings.value("Default Atom Colors", QVariant(QMap<QString, QVariant>())).toMap();
     if(colorMap.isEmpty())
         Atom::fillLabelToColorMap();
-    else
+	else
         Atom::labelToColor = colorMap;
 
     QHBoxLayout *layout = new QHBoxLayout;
@@ -61,7 +62,13 @@ MainWindow::MainWindow(FileParser *parser_in):
 
     // The undo/redo framework needs to update the buttons appropriately
     connect(undoStack, SIGNAL(canRedoChanged(bool)), redoAction, SLOT(setEnabled(bool)));
-    connect(undoStack, SIGNAL(canUndoChanged(bool)), undoAction, SLOT(setEnabled(bool)));    
+    connect(undoStack, SIGNAL(canUndoChanged(bool)), undoAction, SLOT(setEnabled(bool)));
+}
+
+MainWindow::~MainWindow()
+{
+	QSettings settings;
+	settings.setValue("Recently Opened Files", QVariant(recentlyOpenedFiles));
 }
 
 void MainWindow::focusOutEvent(QFocusEvent *event)

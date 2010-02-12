@@ -129,11 +129,56 @@ void MainWindow::openFile()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath());
     if(fileName != 0) {
-	parser->setFileName(fileName);
+		parser->setFileName(fileName);
     	loadFile();
+		recentlyOpenedFiles.removeAll(fileName);
+		recentlyOpenedFiles.prepend(fileName);
+		updateRecentFiles();
     }
 }
 
+void MainWindow::updateRecentFiles()
+{
+    QMutableStringListIterator i(recentlyOpenedFiles);
+    while (i.hasNext()) {
+        if (!QFile::exists(i.next()))
+            i.remove();
+    }	
+    for (int j = 0; j < MAX_RECENT_FILES; j++) {
+        if (j < recentlyOpenedFiles.size()) {
+#ifndef Q_WS_MAC
+            QString text = tr("&%1 %2").arg(j + 1)
+			.arg(recentlyOpenedFiles[j].right(recentlyOpenedFiles[j].length()
+												 -recentlyOpenedFiles[j].lastIndexOf("\\")-1));
+#endif
+#ifdef Q_WS_MAC
+			QString text = tr("&%1 %2").arg(j + 1)
+			.arg(recentlyOpenedFiles[j].right(recentlyOpenedFiles[j].length()
+											  -recentlyOpenedFiles[j].lastIndexOf("/")-1));
+#endif
+            recentFileActions[j]->setText(text);
+            recentFileActions[j]->setData(recentlyOpenedFiles.at(j));
+            recentFileActions[j]->setVisible(true);
+        } else {
+            recentFileActions[j]->setVisible(false);
+        }
+    }
+    separatorAction->setVisible(!recentlyOpenedFiles.isEmpty());
+}
+
+void MainWindow::openRecentFile()
+{
+    QAction* action = qobject_cast<QAction*>(sender());
+	if(action) {
+		QString fileName = action->data().toString();
+		parser->setFileName(fileName);
+    	loadFile();
+		recentlyOpenedFiles.removeAll(fileName);
+		recentlyOpenedFiles.prepend(fileName);
+		updateRecentFiles();		
+	}
+}
+							
 void MainWindow::loadFile()
 {
     if (!parser->fileName().isEmpty()) {

@@ -1,7 +1,8 @@
 #ifndef DEFINES_H_
 #define DEFINES_H_
 
-#define COMPANY_NAME "Center for Computational Chemistry @ UGA"
+#define COMPANY_NAME "CCQC"
+#define COMPANY_DOMAIN "ccqc.uga.edu"
 #define PROGRAM_NAME "cheMVP"
 #define CHEMVP_VERSION "0.2"
 
@@ -54,5 +55,7 @@
 #define ANGLE_MARKER_OFFSET 0.4
 
 #define ITEM_IS_LABEL item->type() == Label::AngleLabelType || item->type() == Label::BondLabelType || item->type() == Label::TextLabelType
+
+#define MAX_RECENT_FILES 5
 
 #endif /*DEFINES_H_*/
