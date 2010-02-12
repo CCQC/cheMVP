@@ -1,5 +1,4 @@
 #include <QtGui>
-
 #include <iostream>
 #include <iomanip>
 #include <assert.h>
