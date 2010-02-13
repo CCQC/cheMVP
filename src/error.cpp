@@ -7,12 +7,12 @@ void error(QString message)
     msgBox.exec();
 }
 
-void error(QString message, char* filename, int line)
+void error(QString message, const char* filename, int line)
 {
     message += "\n\nThe error occured in ";
     message += filename;
     message += ", line ";
-    message += QString::number(line);
+    message += QString::number(line) + ".";
 	error(message);
 }
 
