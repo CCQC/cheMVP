@@ -8,8 +8,8 @@ Bond::Bond(Atom *atom1, Atom *atom2, DrawingInfo *info, QGraphicsItem *parent)
         myThickness(DEFAULT_BOND_THICKNESS),
         hoverOver(false),
         dashedLine(false),
-        myPen(Qt::black),
-        myLabel(0)
+        myLabel(0),
+        myPen(Qt::black)
 {
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setAcceptsHoverEvents(true);

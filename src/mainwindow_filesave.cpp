@@ -146,15 +146,19 @@ void MainWindow::updateRecentFiles()
     }	
     for (int j = 0; j < MAX_RECENT_FILES; j++) {
         if (j < recentlyOpenedFiles.size()) {
-#ifndef Q_WS_MAC
-            QString text = tr("&%1 %2").arg(j + 1)
-			.arg(recentlyOpenedFiles[j].right(recentlyOpenedFiles[j].length()
-												 -recentlyOpenedFiles[j].lastIndexOf("\\")-1));
+#ifdef Q_WS_WIN			
+			QString front = recentlyOpenedFiles[j].left(recentlyOpenedFiles[j].lastIndexOf("\\"));
+			QString folder = front.right(front.length() - front.lastIndexOf("\\")-1);
+			QString file = recentlyOpenedFiles[j].right(recentlyOpenedFiles[j].length()
+														-recentlyOpenedFiles[j].lastIndexOf("\\")-1);
+			QString text = tr("&%1 %2").arg(j + 1).arg(file + " - " + folder);
 #endif
-#ifdef Q_WS_MAC
-			QString text = tr("&%1 %2").arg(j + 1)
-			.arg(recentlyOpenedFiles[j].right(recentlyOpenedFiles[j].length()
-											  -recentlyOpenedFiles[j].lastIndexOf("/")-1));
+#ifndef Q_WS_WIN
+			QString front = recentlyOpenedFiles[j].left(recentlyOpenedFiles[j].lastIndexOf("/"));
+			QString folder = front.right(front.length() - front.lastIndexOf("/")-1);
+			QString file = recentlyOpenedFiles[j].right(recentlyOpenedFiles[j].length()
+														-recentlyOpenedFiles[j].lastIndexOf("/")-1);
+			QString text = tr("&%1 %2").arg(j + 1).arg(file + " - " + folder);
 #endif
             recentFileActions[j]->setText(text);
             recentFileActions[j]->setData(recentlyOpenedFiles.at(j));
@@ -171,11 +175,16 @@ void MainWindow::openRecentFile()
     QAction* action = qobject_cast<QAction*>(sender());
 	if(action) {
 		QString fileName = action->data().toString();
-		parser->setFileName(fileName);
-    	loadFile();
-		recentlyOpenedFiles.removeAll(fileName);
-		recentlyOpenedFiles.prepend(fileName);
-		updateRecentFiles();		
+		if(QFile::exists(fileName)) {	
+			parser->setFileName(fileName);
+			loadFile();
+			recentlyOpenedFiles.removeAll(fileName);
+			recentlyOpenedFiles.prepend(fileName);
+			updateRecentFiles();		
+		} else {
+			error("Unable to open " + fileName + ". The file has been moved.");
+			updateRecentFiles();
+		}
 	}
 }
 							

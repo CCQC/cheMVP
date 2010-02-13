@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QDialog>
 
-void error(QString message, char * file, int line);
+void error(QString message);
+void error(QString message, char * filename, int line);
 
 #endif /*ERROR_H_*/

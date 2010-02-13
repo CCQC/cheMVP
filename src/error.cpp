@@ -1,13 +1,20 @@
 #include "error.h"
 
-void error(QString message, char * file, int line)
+void error(QString message)
 {
-    message += "\n\nThe error occured in ";
-    message += file;
-    message += ", line ";
-    message += QString::number(line);
-
-    QMessageBox msgBox(QMessageBox::Warning, QDialog::tr("QMessageBox::warning()"),
+	QMessageBox msgBox(QMessageBox::Warning, QDialog::tr("QMessageBox::warning()"),
                        QDialog::tr(message.toLatin1()), 0, 0);
     msgBox.exec();
 }
+
+void error(QString message, char* filename, int line)
+{
+    message += "\n\nThe error occured in ";
+    message += filename;
+    message += ", line ";
+    message += QString::number(line);
+	error(message);
+}
+
+
+
