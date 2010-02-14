@@ -12,6 +12,8 @@
 #include <QUndoCommand>
 #include <QDebug>
 #include <QSettings>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
 #include "splashscreen.h"
 #include "drawingcanvas.h"
 #include "drawinginfo.h"
@@ -26,7 +28,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(FileParser *parser);
 	~MainWindow();
-    enum FileType {TIFF, PNG, PDF, PostScript, SVG, CVP, Unknown};
+    enum FileType {TIFF, PNG, PDF, PostScript, SVG, CHMVP, Unknown};
 
 public slots:
     void setGeometryStep(int);
@@ -47,6 +49,8 @@ private slots:
     void openFile();
     void save();
     void saveAs();
+	void saveProject();
+	void openProject();
     void changeZoom(int);
     void setAddArrowMode();
     void aboutCheMVP();
@@ -60,7 +64,6 @@ private:
     void createMenus();
     void createToolbars();
 	void updateRecentFiles();
-    void processProjectFile(const QString &fileName, bool saveFile);
     FileType determineFileType(const QString &fileName);
     void saveImage(const QString &fileName);
     void foggingToggled(int useFogging);
@@ -106,6 +109,8 @@ private:
     QAction *exitAction;
     QAction *saveAction;
     QAction *saveAsAction;
+	QAction *saveProjectAction;
+	QAction *openProjectAction;
     QAction *insertAngstromAction;
     QAction *insertDegreeAction;
     QAction *insertPlusMinusAction;

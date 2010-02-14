@@ -14,8 +14,8 @@ MainWindow::MainWindow(FileParser *parser_in):
     undoStack = new QUndoStack();
     drawingInfo = new DrawingInfo();
     canvas = new DrawingCanvas(itemMenu, drawingInfo, parser);
-    // Selecting items causes an update of the menus to reflect the current
-    // selected items' settings
+	
+    // Selecting items causes an update of the menus to reflect the current selected items' settings
     connect(canvas, SIGNAL(selectionChanged()), this, SLOT(updateMenus()));
 
     createActions();

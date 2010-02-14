@@ -48,39 +48,44 @@ void DrawingInfo::determineScaleFactor()
     emit scaleFactorChanged();
 }
 
-void DrawingInfo::processProjectFile(QSettings &settings, bool saveFile)
+void DrawingInfo::serialize(QXmlStreamWriter* writer)
 {
-    if(saveFile){
-        settings.setValue("XRot", myXRot);
-        settings.setValue("YRot", myYRot);
-        settings.setValue("ZRot", myZRot);
-        settings.setValue("Zoom", myUserScaleFactor);
-        settings.setValue("sceneWidth", myWidth);
-        settings.setValue("sceneHeight", myHeight);
-        settings.setValue("MidX", myMidX);
-        settings.setValue("MidY", myMidY);
-        settings.setValue("TotalDX", myDX);
-        settings.setValue("TotalDY", myDY);
-        settings.setValue("UserDX", myUserDX);
-        settings.setValue("UserDY", myUserDY);
-        settings.setValue("Perspective", myPerspectiveScale);
-        settings.setValue("MaxDimension", myMoleculeMaxDimension);
-        settings.setValue("SceneScale", myAngToSceneScale);
-    }else{
-        myXRot = settings.value("XRot", 0).toInt();
-        myYRot = settings.value("YRot", 0).toInt();
-        myZRot = settings.value("ZRot", 0).toInt();
-        myUserScaleFactor = settings.value("Zoom", 100.0).toDouble();
-        myWidth = settings.value("sceneWidth", DEFAULT_SCENE_SIZE_X).toDouble();
-        myHeight = settings.value("sceneHeight", DEFAULT_SCENE_SIZE_Y).toDouble();
-        myMidX = (int)settings.value("MidX", DEFAULT_SCENE_SIZE_X/2.0).toDouble();
-        myMidY = (int)settings.value("MidY", DEFAULT_SCENE_SIZE_Y/2.0).toDouble();
-        myDX = (int)settings.value("TotalDX", DEFAULT_SCENE_SIZE_X/2.0).toDouble();
-        myDY = (int)settings.value("TotalDY", DEFAULT_SCENE_SIZE_Y/2.0).toDouble();
-        myDX = (int)settings.value("UserDX", 0.0).toDouble();
-        myDY = (int)settings.value("UserDY", 0.0).toDouble();
-        myPerspectiveScale = settings.value("Perspective", DEFAULT_PERSPECTIVE_SCALE).toDouble();
-        myMoleculeMaxDimension = settings.value("MaxDimension", 0.0).toDouble();
-        myAngToSceneScale = settings.value("SceneScale", 0.0).toDouble();
-    }
+   // if(saveFile){
+//        settings.setValue("XRot", myXRot);
+//        settings.setValue("YRot", myYRot);
+//        settings.setValue("ZRot", myZRot);
+//        settings.setValue("Zoom", myUserScaleFactor);
+//        settings.setValue("sceneWidth", myWidth);
+//        settings.setValue("sceneHeight", myHeight);
+//        settings.setValue("MidX", myMidX);
+//        settings.setValue("MidY", myMidY);
+//        settings.setValue("TotalDX", myDX);
+//        settings.setValue("TotalDY", myDY);
+//        settings.setValue("UserDX", myUserDX);
+//        settings.setValue("UserDY", myUserDY);
+//        settings.setValue("Perspective", myPerspectiveScale);
+//        settings.setValue("MaxDimension", myMoleculeMaxDimension);
+//        settings.setValue("SceneScale", myAngToSceneScale);
+//    }else{
+//        myXRot = settings.value("XRot", 0).toInt();
+//        myYRot = settings.value("YRot", 0).toInt();
+//        myZRot = settings.value("ZRot", 0).toInt();
+//        myUserScaleFactor = settings.value("Zoom", 100.0).toDouble();
+//        myWidth = settings.value("sceneWidth", DEFAULT_SCENE_SIZE_X).toDouble();
+//        myHeight = settings.value("sceneHeight", DEFAULT_SCENE_SIZE_Y).toDouble();
+//        myMidX = (int)settings.value("MidX", DEFAULT_SCENE_SIZE_X/2.0).toDouble();
+//        myMidY = (int)settings.value("MidY", DEFAULT_SCENE_SIZE_Y/2.0).toDouble();
+//        myDX = (int)settings.value("TotalDX", DEFAULT_SCENE_SIZE_X/2.0).toDouble();
+//        myDY = (int)settings.value("TotalDY", DEFAULT_SCENE_SIZE_Y/2.0).toDouble();
+//        myDX = (int)settings.value("UserDX", 0.0).toDouble();
+//        myDY = (int)settings.value("UserDY", 0.0).toDouble();
+//        myPerspectiveScale = settings.value("Perspective", DEFAULT_PERSPECTIVE_SCALE).toDouble();
+//        myMoleculeMaxDimension = settings.value("MaxDimension", 0.0).toDouble();
+//        myAngToSceneScale = settings.value("SceneScale", 0.0).toDouble();
+//    }
+}
+
+DrawingInfo* DrawingInfo::deserialize(QXmlStreamReader* reader)
+{
+	
 }

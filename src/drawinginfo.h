@@ -7,6 +7,8 @@
 #include <QColor>
 #include <QPen>
 #include <QFont>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
 
 #include "defines.h"
 
@@ -46,7 +48,8 @@ public:
     double perspective() const {return myPerspectiveScale/10000.0;}
     void determineScaleFactor();
     void setZoom(int val) { myUserScaleFactor = (double)val; emit scaleFactorChanged();}
-    void processProjectFile(QSettings &settings, bool saveFile);
+    void serialize(QXmlStreamWriter* writer);
+	static DrawingInfo* deserialize(QXmlStreamReader* reader);
 
     int getFoggingScale() {return _foggingScale;}
 

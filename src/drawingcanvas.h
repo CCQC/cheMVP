@@ -6,6 +6,8 @@
 #include <QtGui>
 #include <QMenu>
 #include <QList>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
 
 #include <math.h>
 #include "atom.h"
@@ -53,7 +55,8 @@ public:
     void rotateFromInitialCoordinates();
     void drawBackground(QPainter *painter, const QRectF &rect);
     const QCursor& rotateCursor() {return myRotateCursor;}
-    void processProjectFile(QSettings &settings, bool saveFile);
+    void serialize(QXmlStreamWriter* writer);
+	static DrawingCanvas* deserialize(QXmlStreamReader* reader);
     QList<Bond*> getBonds() {return bondsList;}
     QList<Atom*> getAtoms() {return atomsList;}
     void addBondLabel(int i);

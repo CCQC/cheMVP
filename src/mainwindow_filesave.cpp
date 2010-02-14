@@ -91,8 +91,8 @@ void MainWindow::saveImage(const QString &fileName)
         painter->end();
         delete painter;
         delete printer;
-    }else if(fileType == CVP){
-        processProjectFile(fileName, true);
+    }else if(fileType == CHMVP){
+        //processProjectFile(fileName, true); // HPS
     }else{
         QString message("Unsupported file type:\n\n");
         message += fileName;
@@ -120,7 +120,7 @@ MainWindow::FileType MainWindow::determineFileType(const QString &fileName)
     re.setPattern(".*\\.png");
     if(re.exactMatch(fileName)) return PNG;
     re.setPattern(".*\\.cvp");
-    if(re.exactMatch(fileName)) return CVP;
+    if(re.exactMatch(fileName)) return CHMVP;
 
     return Unknown;
 }
@@ -212,19 +212,83 @@ void MainWindow::loadFile()
     }
 }
 
-void MainWindow::processProjectFile(const QString &fileName, bool saveFile)
+//void MainWindow::processProjectFile(const QString &fileName, bool saveFile)
+//{
+//    // This function will call all of the objects in turn to get/put settings
+//    // The read and write functions are written together for convenience
+//
+//    QSettings settings(fileName, QSettings::IniFormat);
+//    // DrawingInfo
+//    settings.beginGroup("drawingInfo");
+//    drawingInfo->processProjectFile(settings, saveFile);
+//    settings.endGroup();
+//
+//    // The drawing canvas settings
+//    settings.beginGroup("canvas");
+//    canvas->processProjectFile(settings, saveFile);
+//    settings.endGroup();
+//}
+
+void MainWindow::saveProject()
 {
-    // This function will call all of the objects in turn to get/put settings
-    // The read and write functions are written together for convenience
+	QString filename = QFileDialog::getSaveFileName(this);
+    if(filename.isEmpty())
+        return;
+	if(!filename.endsWith(".chmvp"))
+		filename += ".chmvp";
+	
+	QFile file(filename);
+	if(file.exists())
+    {
+	    // Some prompt for overwrite?
+		return;
+    }
+	if(!file.open(QIODevice::WriteOnly))
+	{
+		// error
+	    return;
+	}
 
-    QSettings settings(fileName, QSettings::IniFormat);
-    // DrawingInfo
-    settings.beginGroup("drawingInfo");
-    drawingInfo->processProjectFile(settings, saveFile);
-    settings.endGroup();
+	QXmlStreamWriter writer(&file);
+	writer.setAutoFormatting(true);
+	writer.writeStartDocument();
+	writer.writeStartElement("cheMVP");
+	writer.writeAttribute("version", CHEMVP_VERSION);
+	canvas->serialize(&writer);
+	drawingInfo->serialize(&writer);
+	writer.writeEndDocument();
 
-    // The drawing canvas settings
-    settings.beginGroup("canvas");
-    canvas->processProjectFile(settings, saveFile);
-    settings.endGroup();
+	file.close();
+}
+
+void MainWindow::openProject()
+{
+	QString filename = QFileDialog::getOpenFileName(this, tr("Open cheMVP Project File"), QDir::homePath(), "*.chmvp");
+	if(filename.isEmpty())
+        return;
+	if(!filename.endsWith(".chmvp"))
+		return;
+
+	QFile file(filename);
+	if(!file.exists())
+    {
+	    // error
+		return;
+    }
+	if(!file.open(QIODevice::ReadOnly))
+	{
+		// error
+	    return;
+	}
+	
+	QXmlStreamReader reader(&file);
+	reader.readNextStartElement();
+	if(reader.attributes().value("version").toString() != CHEMVP_VERSION)
+		error("Invalid Version Number!");
+	
+	canvas = DrawingCanvas::deserialize(&reader);
+	drawingInfo = DrawingInfo::deserialize(&reader);
+	
+	if(reader.hasError())
+		error("Reader error");
 }

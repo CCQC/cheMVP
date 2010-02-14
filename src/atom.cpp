@@ -554,11 +554,45 @@ void Atom::fillLabelToColorMap()
     labelToColor.insert(QString("Rg"), QColor(183, 189, 199));
 }
 
-//void Atom::processProjectFile(QSettings &settings, bool saveFile)
-//{
-//	if(saveFile){
-//		project.setValue("element",mySymbol);
-//	}else{
-//
-//	}
-//}
+void Atom::serialize(QXmlStreamWriter* writer)
+{
+	writer->writeStartElement("Atom");
+	writer->writeAttribute("id", QString("%1").arg(myID));	
+	writer->writeAttribute("symbol", mySymbol);
+	writer->writeAttribute("x", QString("%1").arg(myX));
+	writer->writeAttribute("y", QString("%1").arg(myY));
+	writer->writeAttribute("z", QString("%1").arg(myZ));
+	writer->writeAttribute("label", myLabel);	
+	writer->writeAttribute("labelSub", myLabelSubscript);
+	writer->writeAttribute("labelSup", myLabelSuperscript);
+	writer->writeAttribute("effRadius", QString("%1").arg(myEffectiveRadius));
+	writer->writeAttribute("fontSize", QString("%1").arg(myFontSize));
+	writer->writeAttribute("fontSizeStyle", QString("%1").arg(myFontSizeStyle));
+	writer->writeAttribute("scale", QString("%1").arg(myScaleFactor));
+	writer->writeAttribute("color", QString("%1 %2 %3 %4").arg(fill_color.red()).arg(fill_color.green()).arg(fill_color.blue()).arg(fill_color.alpha()));	
+	writer->writeEndElement();
+}
+
+Atom* Atom::deserialize(QXmlStreamReader* reader)
+{
+	reader->readNextStartElement();
+	if(reader->name() != "Atom")
+		return NULL;
+	
+	return new Atom("A", NULL, NULL);
+	
+	//writer->writeAttribute("id", QString("%1").arg(myID));	
+//	writer->writeAttribute("symbol", mySymbol);
+//	writer->writeAttribute("x", QString("%1").arg(myX));
+//	writer->writeAttribute("y", QString("%1").arg(myY));
+//	writer->writeAttribute("z", QString("%1").arg(myZ));
+//	writer->writeAttribute("label", myLabel);	
+//	writer->writeAttribute("labelSub", myLabelSubscript);
+//	writer->writeAttribute("labelSup", myLabelSuperscript);
+//	writer->writeAttribute("effRadius", QString("%1").arg(myEffectiveRadius));
+//	writer->writeAttribute("fontSize", QString("%1").arg(myFontSize));
+//	writer->writeAttribute("fontSizeStyle", QString("%1").arg(myFontSizeStyle));
+//	writer->writeAttribute("scale", QString("%1").arg(myScaleFactor));
+//	writer->writeAttribute("color", QString("%1 %2 %3 %4").arg(fill_color.red()).arg(fill_color.green()).arg(fill_color.blue()).arg(fill_color.alpha()));	
+//	writer->writeEndElement();
+}
