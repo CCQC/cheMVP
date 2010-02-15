@@ -12,11 +12,25 @@ void MainWindow::save()
 
 void MainWindow::saveAs()
 {
-    currentSaveFile = QFileDialog::getSaveFileName(this);
-    if (currentSaveFile.isEmpty())
-        return;
+	QFileDialog saveAs(this, "Save the current image", QDir::homePath(), "Portable Document Format (*.pdf);;Simple Vector Graphic (*.svg);;Postscript (*.ps);;TIFF(*.tiff);;EPS (*.eps);;PNG (*.png)");
+	saveAs.setAcceptMode(QFileDialog::AcceptSave);
+	saveAs.setFileMode(QFileDialog::AnyFile);
+	if(saveAs.exec())
+	{		
+		currentSaveFile = saveAs.selectedFiles().at(0);
+		if(currentSaveFile.isEmpty())
+			return;
+				
+		QString extension = saveAs.selectedNameFilter();
+		extension = extension.left(extension.length() - 1);
+		extension = extension.right(extension.length() - extension.indexOf("*.") - 1);
+		if(!(currentSaveFile.endsWith(".pdf") || currentSaveFile.endsWith(".svg") || currentSaveFile.endsWith(".ps")
+			 || currentSaveFile.endsWith(".tif") || currentSaveFile.endsWith(".tiff") || currentSaveFile.endsWith(".eps")
+			 || currentSaveFile.endsWith(".png")))
+			currentSaveFile += extension;
 
-    saveImage(currentSaveFile);
+		saveImage(currentSaveFile);
+	}
 }
 
 void MainWindow::saveAndExit()
@@ -119,8 +133,6 @@ MainWindow::FileType MainWindow::determineFileType(const QString &fileName)
     if(re.exactMatch(fileName)) return TIFF;
     re.setPattern(".*\\.png");
     if(re.exactMatch(fileName)) return PNG;
-    re.setPattern(".*\\.cvp");
-    if(re.exactMatch(fileName)) return CVP;
 
     return Unknown;
 }
