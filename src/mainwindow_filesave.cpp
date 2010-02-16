@@ -48,78 +48,69 @@ void MainWindow::saveImage(const QString &fileName)
     
     FileType fileType = determineFileType(fileName);
     QSize imageDimension(canvas->sceneRect().width(), canvas->sceneRect().height());
+	
+	QPainter *painter = new QPainter();
+	
+	QPrinter *printer = new QPrinter();
+	printer->setPaperSize(5.0*imageDimension, QPrinter::Point);
+	printer->setFullPage(true);
+	printer->setOutputFileName(fileName);
+	
     // The vector graphics formats still seem to rasterize radial gradients, so I
     // use antialiasing to keep them looking pretty
     if(fileType == SVG){
-        QPainter *painter = new QPainter();
         QSvgGenerator *svgGen = new QSvgGenerator();
         svgGen->setSize(5.0*imageDimension);
         svgGen->setFileName(fileName);
         painter->begin(svgGen);
-        painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
-        painter->setRenderHint(QPainter::Antialiasing, true);
-        painter->setRenderHint(QPainter::HighQualityAntialiasing, true);
+		painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
+		painter->setRenderHint(QPainter::Antialiasing, true);
+		painter->setRenderHint(QPainter::HighQualityAntialiasing, true);
         canvas->render(painter);
         painter->end();
-        delete painter;
         delete svgGen;
     }else if(fileType == PNG || fileType == TIFF){
-        QPainter *painter = new QPainter();
         QImage *image = new QImage(5.0*imageDimension, QImage::Format_ARGB32);
         painter->begin(image);
-        painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
-        painter->setRenderHint(QPainter::Antialiasing, true);
-        painter->setRenderHint(QPainter::HighQualityAntialiasing, true);
+		painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
+		painter->setRenderHint(QPainter::Antialiasing, true);
+		painter->setRenderHint(QPainter::HighQualityAntialiasing, true);
         canvas->render(painter);
         painter->end();
         image->save(fileName);
-        delete painter;
         delete image;
     }else if(fileType == PDF){
-        QPrinter *printer = new QPrinter;
-        QPainter *painter = new QPainter;
         printer->setOutputFormat(QPrinter::PdfFormat);
-        printer->setPaperSize(5.0*imageDimension, QPrinter::Point);
-        printer->setFullPage(true);
-        printer->setOutputFileName(fileName);
         painter->begin(printer);
-        painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
-        painter->setRenderHint(QPainter::Antialiasing, true);
-        painter->setRenderHint(QPainter::HighQualityAntialiasing, true);
+		painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
+		painter->setRenderHint(QPainter::Antialiasing, true);
+		painter->setRenderHint(QPainter::HighQualityAntialiasing, true);
         canvas->render(painter);
         painter->end();
-        delete painter;
-        delete printer;
     }else if(fileType == PostScript){
-        QPrinter *printer = new QPrinter;
-        QPainter *painter = new QPainter;
         printer->setOutputFormat(QPrinter::PostScriptFormat);
-        printer->setPaperSize(5.0*imageDimension, QPrinter::Point);
-        printer->setFullPage(true);
-        printer->setOutputFileName(fileName);
         painter->begin(printer);
-        painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
-        painter->setRenderHint(QPainter::Antialiasing, true);
-        painter->setRenderHint(QPainter::HighQualityAntialiasing, true);
+		painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
+		painter->setRenderHint(QPainter::Antialiasing, true);
+		painter->setRenderHint(QPainter::HighQualityAntialiasing, true);
         canvas->render(painter);
         painter->end();
-        delete painter;
-        delete printer;
     }else if(fileType == CVP){
         processProjectFile(fileName, true);
     }else{
         QString message("Unsupported file type:\n\n");
         message += fileName;
-        message += "\n\nSupported extensions are\n.pdf, .svg, .ps, .eps, .png, .tiff, .tif";
+        message += "\n\nSupported extensions are\n.pdf, .svg, .ps, .eps, .png, .tiff";
         error(message, __FILE__, __LINE__);
     }
+	
+	delete painter;
+	delete printer;
 }
 
 MainWindow::FileType MainWindow::determineFileType(const QString &fileName)
 {
-    QRegExp re(".*\\.png", Qt::CaseInsensitive, QRegExp::RegExp2);
-    //	if(re.exactMatch(fileName)) return PNG;
-    re.setPattern(".*\\.pdf");
+    QRegExp re(".*\\.pdf", Qt::CaseInsensitive, QRegExp::RegExp2);
     if(re.exactMatch(fileName)) return PDF;
     re.setPattern(".*\\.svg");
     if(re.exactMatch(fileName)) return SVG;
