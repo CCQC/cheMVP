@@ -163,3 +163,30 @@ void FileParser::readFile()
     }
     infile.close();
 }
+
+void FileParser::serialize(QXmlStreamWriter* writer)
+{
+	writer->writeStartElement("FileParser");
+	writer->writeAttribute("units", QString("%1").arg(myUnits));
+	writer->writeAttribute("step", QString("%1").arg(currentGeometry));
+	writer->writeAttribute("items", QString("%1").arg(myMoleculeList.size()));
+	foreach(Molecule* m, myMoleculeList)
+		m->serialize(writer);
+	writer->writeEndElement();	
+}
+
+FileParser* FileParser::deserialize(QXmlStreamReader* reader)
+{
+	reader->readNextStartElement();
+	if(reader->name() != "FileParser")
+		return NULL;
+	
+	FileParser* parser = new FileParser(NULL);
+	parser->myUnits = (reader->attributes().value("units").toString().toInt() == 0) ? Angstrom : Bohr;
+	parser->currentGeometry = reader->attributes().value("step").toString().toInt();
+	int size = reader->attributes().value("items").toString().toInt();
+	for(int i = 0; i < size; i++)
+		parser->myMoleculeList.append(Molecule::deserialize(reader));
+	
+	return parser;
+}

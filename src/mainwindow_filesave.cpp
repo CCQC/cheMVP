@@ -254,8 +254,9 @@ void MainWindow::saveProject()
 	writer.writeStartDocument();
 	writer.writeStartElement("cheMVP");
 	writer.writeAttribute("version", CHEMVP_VERSION);
-	canvas->serialize(&writer);
+	parser->serialize(&writer);
 	drawingInfo->serialize(&writer);
+	canvas->serialize(&writer);
 	writer.writeEndDocument();
 
 	file.close();
@@ -286,8 +287,9 @@ void MainWindow::openProject()
 	if(reader.attributes().value("version").toString() != CHEMVP_VERSION)
 		error("Invalid Version Number!");
 	
-	canvas = DrawingCanvas::deserialize(&reader);
+	parser = FileParser::deserialize(&reader);
 	drawingInfo = DrawingInfo::deserialize(&reader);
+	canvas = DrawingCanvas::deserialize(&reader, itemMenu, drawingInfo, parser);
 	
 	if(reader.hasError())
 		error("Reader error");

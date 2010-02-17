@@ -56,7 +56,7 @@ public:
     void drawBackground(QPainter *painter, const QRectF &rect);
     const QCursor& rotateCursor() {return myRotateCursor;}
     void serialize(QXmlStreamWriter* writer);
-	static DrawingCanvas* deserialize(QXmlStreamReader* reader);
+	static DrawingCanvas* deserialize(QXmlStreamReader* reader, QMenu *itemMenu, DrawingInfo *drawingInfo, FileParser *parser);
     QList<Bond*> getBonds() {return bondsList;}
     QList<Atom*> getAtoms() {return atomsList;}
     void addBondLabel(int i);

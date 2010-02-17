@@ -63,7 +63,7 @@ public:
     void setFontSizeStyle(FontSizeStyle style);
     void setID(int val) {myID = val;}
 	void serialize(QXmlStreamWriter* writer);
-	static Atom* deserialize(QXmlStreamReader* reader);
+	static Atom* deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo);
 
     static double bondLength(Atom*, Atom*);
 

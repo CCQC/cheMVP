@@ -4,6 +4,8 @@
 #include <QString>
 #include <QRegExp>
 #include <QDir>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
 
 #include <ios>
 #include <limits>
@@ -37,6 +39,8 @@ public:
     const QString& fileName() {return myFileName;}
     void setFileName(const QString name);
     void readFile();
+	void serialize(QXmlStreamWriter* writer);
+	static FileParser* deserialize(QXmlStreamReader* reader);
 
 protected:
     void determineFileType();

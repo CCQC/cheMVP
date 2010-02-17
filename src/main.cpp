@@ -11,7 +11,6 @@
 
 int main(int argv, char *args[])
 {
-
     Q_INIT_RESOURCE(chemvp);
 
     QApplication app(argv, args);

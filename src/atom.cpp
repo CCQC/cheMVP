@@ -573,7 +573,7 @@ void Atom::serialize(QXmlStreamWriter* writer)
 	writer->writeEndElement();
 }
 
-Atom* Atom::deserialize(QXmlStreamReader* reader)
+Atom* Atom::deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo)
 {
 	reader->readNextStartElement();
 	if(reader->name() != "Atom")

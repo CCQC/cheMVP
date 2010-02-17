@@ -1143,7 +1143,7 @@ void DrawingCanvas::setAtomColors()
 
 void DrawingCanvas::serialize(QXmlStreamWriter* writer)
 {
-	writer->writeStartElement("canvas");
+	writer->writeStartElement("Canvas");
 	writer->writeAttribute("items", QString("%1").arg(items().size()));
 	foreach(QGraphicsItem* item, items())
 	{
@@ -1178,20 +1178,19 @@ void DrawingCanvas::serialize(QXmlStreamWriter* writer)
 //    }
 }
 
-DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader)
+DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemMenu, DrawingInfo *drawingInfo, FileParser *parser)
 {
 	reader->readNextStartElement();
-	if(reader->name() != "canvas")
+	if(reader->name() != "Canvas")
 		return NULL;
 	
-	//DrawingCanvas* canvas = new DrawingCanvas();
+	DrawingCanvas* canvas = new DrawingCanvas(itemMenu, drawingInfo, parser);
 	int items = reader->attributes().value("items").toString().toInt();
 	for(int i = 0; i < items; i++)
 	{
 		reader->readNextStartElement();
 		if(reader->name() == "Atom") {
-			
+			canvas->addItem(Atom::deserialize(reader, drawingInfo));
 		}
-		//	canvas->addItem(Atom::deserialize(reader));
 	}
 }
