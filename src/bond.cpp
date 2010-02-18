@@ -156,3 +156,42 @@ void Bond::paint(QPainter *painter,
         painter->drawLine(line());
     }
 }
+
+void Bond::serialize(QXmlStreamWriter* writer)
+{
+	writer->writeStartElement("Bond");
+	writer->writeAttribute("startAtomID", QString("%1").arg(myStartAtom->ID()));
+	writer->writeAttribute("endAtomID", QString("%1").arg(myEndAtom->ID()));
+	writer->writeAttribute("thickness", QString("%1").arg(myThickness));
+	writer->writeAttribute("width", QString("%1").arg(effectiveWidth));
+	writer->writeAttribute("length", QString("%1").arg(myLength));
+	writer->writeAttribute("dashed", QString("%1").arg(dashedLine));
+
+	//Label *myLabel;
+//    QPen myPen;
+//	
+	writer->writeEndElement();
+}
+
+Bond* Bond::deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QList<Atom*> atoms)
+{
+	Q_ASSERT(reader->name() == "Bond");
+	QXmlStreamAttributes attr = reader->attributes();
+	Atom* start;
+	Atom* end;
+	int s = attr.value("startAtomID").toString().toInt();
+	int e = attr.value("endAtomID").toString().toInt();
+	foreach(Atom* a, atoms)
+	{
+		if(a->ID() == s)
+			start = a;
+		if(a->ID() == e)
+			end = a;
+	}
+	Bond* b = new Bond(start, end, drawingInfo, NULL);
+	b->myThickness = attr.value("thickness").toString().toDouble();
+	b->effectiveWidth = attr.value("width").toString().toDouble();
+	b->myLength = attr.value("length").toString().toDouble();
+	b->dashedLine = (attr.value("dashed").toString().toInt() == 1);
+	return b;
+}

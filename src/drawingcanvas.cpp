@@ -1145,37 +1145,11 @@ void DrawingCanvas::serialize(QXmlStreamWriter* writer)
 {
 	writer->writeStartElement("Canvas");
 	writer->writeAttribute("items", QString("%1").arg(items().size()));
-	foreach(QGraphicsItem* item, items())
-	{
-		if(item->type() == Atom::Type)
-			dynamic_cast<Atom*>(item)->serialize(writer);
-	}
+	foreach(Atom* a, atomsList)
+		a->serialize(writer);
+	foreach(Bond* b, bondsList)
+		b->serialize(writer);
 	writer->writeEndElement();
-	
-    // The atomsList
-//    if(saveFile){
-//        settings.setValue("NumAtoms", atomsList.size());
-//        for(int i = 0; i < atomsList.size(); ++i){
-//            settings.beginGroup(QString("atom%1").arg(i));
-//            Atom *atom = atomsList[i];
-//            settings.setValue("Symbol",atom->symbol());
-//            settings.setValue("Label",atom->label());
-//            settings.setValue("x",atom->x());
-//            settings.setValue("y",atom->y());
-//            settings.setValue("z",atom->z());
-//            settings.endGroup();
-//        }
-//    }else{
-//        for(int i = 0; i < settings.value("NumAtoms",0).toInt(); ++i){
-//            //			settings.beginGroup(QString("atom%1").arg(i));
-//            //			settings.setValue("Symbol",atom->symbol();)
-//            //			settings.setValue("x",atom->x());
-//            //			settings.setValue("y",atom->y());
-//            //			settings.setValue("z",atom->z());
-//            ////			atom *Atom = new Atom()
-//            //			settings.endGroup();
-//        }
-//    }
 }
 
 DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemMenu, DrawingInfo *drawingInfo, FileParser *parser)
@@ -1191,7 +1165,11 @@ DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemM
 		if(reader->name() == "Atom") {
 			canvas->addItem(Atom::deserialize(reader, drawingInfo));
 		}
+		else if(reader->name() == "Bond") {
+			canvas->addItem(Bond::deserialize(reader, drawingInfo, canvas->atomsList));
+		}
 		reader->skipCurrentElement();
 	}
 	reader->skipCurrentElement();
+	return canvas;
 }

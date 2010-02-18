@@ -37,6 +37,9 @@ public:
     void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptsHoverEvents(arg);}
     bool hasLabel() {return (myLabel != 0);}
     bool isDashed() const {return dashedLine;}
+	
+	void serialize(QXmlStreamWriter* writer);
+	static Bond* deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QList<Atom*> atoms);
 
 protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
