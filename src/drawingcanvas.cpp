@@ -1181,8 +1181,7 @@ void DrawingCanvas::serialize(QXmlStreamWriter* writer)
 DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemMenu, DrawingInfo *drawingInfo, FileParser *parser)
 {
 	reader->readNextStartElement();
-	if(reader->name() != "Canvas")
-		return NULL;
+	Q_ASSERT(reader->name() == "Canvas");
 	
 	DrawingCanvas* canvas = new DrawingCanvas(itemMenu, drawingInfo, parser);
 	int items = reader->attributes().value("items").toString().toInt();
@@ -1193,4 +1192,5 @@ DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemM
 			canvas->addItem(Atom::deserialize(reader, drawingInfo));
 		}
 	}
+	reader->skipCurrentElement();
 }

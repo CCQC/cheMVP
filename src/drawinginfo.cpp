@@ -89,8 +89,7 @@ void DrawingInfo::serialize(QXmlStreamWriter* writer)
 DrawingInfo* DrawingInfo::deserialize(QXmlStreamReader* reader)
 {
 	reader->readNextStartElement();
-	if(reader->name() != "DrawingInfo")
-		return NULL;
+	Q_ASSERT(reader->name() == "DrawingInfo");
 	
 	// TODO - Initialize pens, fonts, colors
 	DrawingInfo* d = new DrawingInfo();
@@ -132,5 +131,6 @@ DrawingInfo* DrawingInfo::deserialize(QXmlStreamReader* reader)
 		case 3:  d->style = HoukMol; break;			
 	}
 	QString atomFont = attr.value("atomFont").toString();
+	reader->skipCurrentElement();
 	return d;
 }

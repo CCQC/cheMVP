@@ -290,6 +290,7 @@ void MainWindow::openProject()
 	parser = FileParser::deserialize(&reader);
 	drawingInfo = DrawingInfo::deserialize(&reader);
 	canvas = DrawingCanvas::deserialize(&reader, itemMenu, drawingInfo, parser);
+	//canvas->refresh();
 	
 	if(reader.hasError())
 		error("Reader error");

@@ -178,8 +178,7 @@ void FileParser::serialize(QXmlStreamWriter* writer)
 FileParser* FileParser::deserialize(QXmlStreamReader* reader)
 {
 	reader->readNextStartElement();
-	if(reader->name() != "FileParser")
-		return NULL;
+	Q_ASSERT(reader->isStartElement() && reader->name() == "FileParser");
 	
 	FileParser* parser = new FileParser(NULL);
 	parser->myUnits = (reader->attributes().value("units").toString().toInt() == 0) ? Angstrom : Bohr;
@@ -187,6 +186,6 @@ FileParser* FileParser::deserialize(QXmlStreamReader* reader)
 	int size = reader->attributes().value("items").toString().toInt();
 	for(int i = 0; i < size; i++)
 		parser->myMoleculeList.append(Molecule::deserialize(reader));
-	
+	reader->skipCurrentElement();
 	return parser;
 }

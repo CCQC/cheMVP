@@ -5,6 +5,7 @@
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
 #include <vector>
+#include <iostream>
 
 struct AtomEntry
 {
@@ -32,7 +33,7 @@ public:
 		writer->writeAttribute("comment", _comment);
 		foreach(AtomEntry* a, _molecule)
 		{
-			writer->writeStartElement("Atom");
+			writer->writeStartElement("AtomEntry");
 			writer->writeAttribute("label", a->Label);
 			writer->writeAttribute("x", QString("%1").arg(a->x));
 			writer->writeAttribute("y", QString("%1").arg(a->y));
@@ -45,24 +46,24 @@ public:
 	static Molecule* deserialize(QXmlStreamReader* reader)
 	{
 		reader->readNextStartElement();
-		if(reader->name() != "Molecule")
-			return NULL;
+		Q_ASSERT(reader->isStartElement() && reader->name() == "Molecule");
 		
 		Molecule* m = new Molecule();
 		int size = reader->attributes().value("items").toString().toInt();
 		for(int i = 0; i < size; i++)
 		{
-			reader->readNextStartElement();
-			if(reader->name() != "Atom")
-				return NULL;
+			reader->readNextStartElement();	
+			Q_ASSERT(reader->isStartElement() && reader->name().toString() == "AtomEntry");
 			
 			AtomEntry* a = new AtomEntry();
 			a->Label = reader->attributes().value("label").toString();
-			a->x = reader->attributes().value("x").toString().toInt();
-			a->y = reader->attributes().value("y").toString().toInt();
-			a->z = reader->attributes().value("z").toString().toInt();
+			a->x = reader->attributes().value("x").toString().toDouble();
+			a->y = reader->attributes().value("y").toString().toDouble();
+			a->z = reader->attributes().value("z").toString().toDouble();
 			m->addAtom(a);
-		}
+			reader->skipCurrentElement();
+		}	
+		reader->skipCurrentElement();
 		return m;		
 	};
 
