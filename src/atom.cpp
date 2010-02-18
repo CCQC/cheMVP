@@ -1,5 +1,4 @@
 #include "atom.h"
-#include <math.h>
 
 QMap<QString, QVariant> Atom::labelToVdwRadius;
 QMap<QString, QVariant> Atom::labelToMass;
@@ -29,7 +28,7 @@ Atom::Atom(QString element, DrawingInfo *i, QGraphicsItem *parent)
         myRadius = labelToVdwRadius.value(mySymbol).toDouble();
     }
     myMass = labelToMass.value(mySymbol).toDouble();
-    if(myMass == 0.0 && mySymbol != "X"){
+	 if(myMass == 0.0 && mySymbol != "X"){
         QString errorMessage = "I don't know the mass of the atom " + mySymbol;
         error(errorMessage,__FILE__,__LINE__);
         return;
@@ -575,24 +574,21 @@ void Atom::serialize(QXmlStreamWriter* writer)
 
 Atom* Atom::deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo)
 {
-	reader->readNextStartElement();
-	if(reader->name() != "Atom")
-		return NULL;
-	
-	return new Atom("A", NULL, NULL);
-	
-	//writer->writeAttribute("id", QString("%1").arg(myID));	
-//	writer->writeAttribute("symbol", mySymbol);
-//	writer->writeAttribute("x", QString("%1").arg(myX));
-//	writer->writeAttribute("y", QString("%1").arg(myY));
-//	writer->writeAttribute("z", QString("%1").arg(myZ));
-//	writer->writeAttribute("label", myLabel);	
-//	writer->writeAttribute("labelSub", myLabelSubscript);
-//	writer->writeAttribute("labelSup", myLabelSuperscript);
-//	writer->writeAttribute("effRadius", QString("%1").arg(myEffectiveRadius));
-//	writer->writeAttribute("fontSize", QString("%1").arg(myFontSize));
-//	writer->writeAttribute("fontSizeStyle", QString("%1").arg(myFontSizeStyle));
-//	writer->writeAttribute("scale", QString("%1").arg(myScaleFactor));
-//	writer->writeAttribute("color", QString("%1 %2 %3 %4").arg(fill_color.red()).arg(fill_color.green()).arg(fill_color.blue()).arg(fill_color.alpha()));	
-//	writer->writeEndElement();
+	Q_ASSERT(reader->name() == "Atom");
+	QXmlStreamAttributes attr = reader->attributes();
+	Atom* a = new Atom(attr.value("symbol").toString(), drawingInfo, NULL);
+	a->setID(attr.value("id").toString().toInt());
+	a->setX(attr.value("x").toString().toDouble());
+	a->setY(attr.value("y").toString().toDouble());
+	a->setZ(attr.value("z").toString().toDouble());
+	a->setLabel(attr.value("label").toString());
+	a->setLabelSubscript(attr.value("labelSub").toString());
+	a->setLabelSuperscript(attr.value("labelSup").toString());
+	a->myEffectiveRadius = attr.value("effRadius").toString().toDouble();
+	a->setLabelFontSize(attr.value("fontSize").toString().toInt());
+	a->setFontSizeStyle(attr.value("fontSizeStyle").toString().toInt() == 0 ? SmallLabel : LargeLabel);
+	a->setScaleFactor(attr.value("scale").toString().toDouble());
+	QStringList color = attr.value("color").toString().split(" ");
+	a->setColor(QColor(color[0].toInt(), color[1].toInt(), color[2].toInt()));
+	return a;
 }

@@ -7,8 +7,8 @@
 #include <QMap>
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
+#include <math.h>
 
-#include <iostream>
 #include "error.h"
 #include "defines.h"
 #include "drawinginfo.h"

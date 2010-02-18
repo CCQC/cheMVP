@@ -1,5 +1,4 @@
 #include "drawinginfo.h"
-#include <iostream>
 
 DrawingInfo::DrawingInfo():
         _useFogging(false),
@@ -74,13 +73,13 @@ void DrawingInfo::serialize(QXmlStreamWriter* writer)
 	writer->writeAttribute("fogging", QString("%1").arg(_useFogging));
 	writer->writeAttribute("fogScale", QString("%1").arg(_foggingScale));
 	writer->writeAttribute("angleWidth", QString("%1").arg(_anglePenWidth));
-	writer->writeAttribute("angleColor", QString("%1 %2 %3").arg(_angleColor.red()).arg(_angleColor.green()).arg(_angleColor.blue()));
+	writer->writeAttribute("angleColor", QString("%1 %2 %3 %4").arg(_angleColor.red()).arg(_angleColor.green()).arg(_angleColor.blue()).arg(_angleColor.alpha()));
 	writer->writeAttribute("anglePrecision", QString("%1").arg(_anglePrecision));
-	writer->writeAttribute("bondColor", QString("%1 %2 %3").arg(_bondColor.red()).arg(_bondColor.green()).arg(_bondColor.blue()));
+	writer->writeAttribute("bondColor", QString("%1 %2 %3 %4").arg(_bondColor.red()).arg(_bondColor.green()).arg(_bondColor.blue()).arg(_bondColor.alpha()));
 	writer->writeAttribute("bondPrecision", QString("%1").arg(_bondPrecision));
-	writer->writeAttribute("labelColor", QString("%1 %2 %3").arg(_labelColor.red()).arg(_labelColor.green()).arg(_labelColor.blue()));
-	writer->writeAttribute("atomLColor", QString("%1 %2 %3").arg(_atomLineColor.red()).arg(_atomLineColor.green()).arg(_atomLineColor.blue()));
-	writer->writeAttribute("atomTColor", QString("%1 %2 %3").arg(_atomTextColor.red()).arg(_atomTextColor.green()).arg(_atomTextColor.blue()));
+						   writer->writeAttribute("labelColor", QString("%1 %2 %3 %4").arg(_labelColor.red()).arg(_labelColor.green()).arg(_labelColor.blue()).arg(_labelColor.alpha()));
+	writer->writeAttribute("atomLColor", QString("%1 %2 %3 %4").arg(_atomLineColor.red()).arg(_atomLineColor.green()).arg(_atomLineColor.blue()).arg(_atomLineColor.alpha()));
+	writer->writeAttribute("atomTColor", QString("%1 %2 %3 %4").arg(_atomTextColor.red()).arg(_atomTextColor.green()).arg(_atomTextColor.blue()).arg(_atomTextColor.alpha()));
 	writer->writeAttribute("style", QString("%1").arg(style));
 	writer->writeAttribute("atomFont", QString("%1 %2").arg(_atomLabelFont.family()).arg(_atomLabelFont.pointSize()));
 	writer->writeEndElement();
@@ -91,11 +90,11 @@ DrawingInfo* DrawingInfo::deserialize(QXmlStreamReader* reader)
 	reader->readNextStartElement();
 	Q_ASSERT(reader->name() == "DrawingInfo");
 	
-	// TODO - Initialize pens, fonts, colors
+	// TODO - Initialize pens
 	DrawingInfo* d = new DrawingInfo();
 	QXmlStreamAttributes attr = reader->attributes();
-	d->myWidth = attr.value("width").toString().toInt();
-	d->myHeight = attr.value("height").toString().toInt();
+	d->myWidth = attr.value("width").toString().toDouble();
+	d->myHeight = attr.value("height").toString().toDouble();
 	d->myXRot = attr.value("xRot").toString().toInt();
 	d->myYRot = attr.value("yRot").toString().toInt();	
 	d->myZRot = attr.value("zRot").toString().toInt();
@@ -105,32 +104,41 @@ DrawingInfo* DrawingInfo::deserialize(QXmlStreamReader* reader)
 	d->myDY = attr.value("dY").toString().toInt();
 	d->myUserDX = attr.value("userdX").toString().toInt();
 	d->myUserDY = attr.value("userdY").toString().toInt();
-	d->myUserScaleFactor = attr.value("scale").toString().toInt();
-	d->myPerspectiveScale = attr.value("perspective").toString().toInt();
-	d->myMoleculeMaxDimension = attr.value("maxDim").toString().toInt();
-	d->myAngToSceneScale = attr.value("ang").toString().toInt();
-	d->_maxZ = attr.value("maxZ").toString().toInt();
-	d->_minZ = attr.value("minZ").toString().toInt();
-	d->_maxBondZ = attr.value("maxBondZ").toString().toInt();
-	d->_minBondZ = attr.value("minBondZ").toString().toInt();
+	d->myUserScaleFactor = attr.value("scale").toString().toDouble();
+	d->myPerspectiveScale = attr.value("perspective").toString().toDouble();
+	d->myMoleculeMaxDimension = attr.value("maxDim").toString().toDouble();
+	d->myAngToSceneScale = attr.value("ang").toString().toDouble();
+	d->_maxZ = attr.value("maxZ").toString().toDouble();
+	d->_minZ = attr.value("minZ").toString().toDouble();
+	d->_maxBondZ = attr.value("maxBondZ").toString().toDouble();
+	d->_minBondZ = attr.value("minBondZ").toString().toDouble();
 	d->_useFogging = (attr.value("fogging").toString().toInt() == 1);
 	d->_foggingScale = attr.value("fogScale").toString().toInt();
 	d->_anglePenWidth = attr.value("anglePenWidth").toString().toInt();
 	QString angleColor = attr.value("angleColor").toString();
 	d->_anglePrecision = attr.value("anglePrecision").toString().toInt();
-	QString bondColor = attr.value("bondColor").toString();
+	QStringList bondColor = attr.value("bondColor").toString().split(" ");
+	d->_bondColor = QColor(bondColor[0].toInt(), bondColor[1].toInt(), bondColor[2].toInt(), bondColor[3].toInt());
 	d->_bondPrecision = attr.value("bondPrecision").toString().toInt();
-	QString labelColor = attr.value("labelColor").toString();
-	QString atomLColor = attr.value("atomLColor").toString();
-	QString atomTColor = attr.value("atomTColor").toString();
+	QStringList labelColor = attr.value("labelColor").toString().split(" ");
+	d->_labelColor = QColor(labelColor[0].toInt(), labelColor[1].toInt(), labelColor[2].toInt(), labelColor[3].toInt());
+	QStringList atomLColor = attr.value("atomLColor").toString().split(" ");
+	d->_atomLineColor = QColor(atomLColor[0].toInt(), atomLColor[1].toInt(), atomLColor[2].toInt(), atomLColor[3].toInt());
+	QStringList atomTColor = attr.value("atomTColor").toString().split(" ");
+	d->_atomTextColor = QColor(atomTColor[0].toInt(), atomTColor[1].toInt(), atomTColor[2].toInt(), atomTColor[3].toInt());
 	switch(attr.value("style").toString().toInt())
 	{
 		case 0:  d->style = Gradient; break;
 		case 1:  d->style = Simple; break;
 		case 2:  d->style = SimpleColored; break;
-		case 3:  d->style = HoukMol; break;			
+		case 3:  d->style = HoukMol; break;	
+		default: d->style = Gradient;
 	}
-	QString atomFont = attr.value("atomFont").toString();
+	QStringList atomFont = attr.value("atomFont").toString().split(" ");
+	d->_atomLabelFont.setFamily(atomFont.at(0));
+	d->_atomLabelFont.setPointSize(atomFont.at(1).toInt());
+	d->_anglePen = QPen(d->_angleColor, d->_anglePenWidth);
+	
 	reader->skipCurrentElement();
 	return d;
 }

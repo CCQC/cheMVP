@@ -1191,6 +1191,7 @@ DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemM
 		if(reader->name() == "Atom") {
 			canvas->addItem(Atom::deserialize(reader, drawingInfo));
 		}
+		reader->skipCurrentElement();
 	}
 	reader->skipCurrentElement();
 }

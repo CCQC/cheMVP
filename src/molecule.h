@@ -5,7 +5,6 @@
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
 #include <vector>
-#include <iostream>
 
 struct AtomEntry
 {
