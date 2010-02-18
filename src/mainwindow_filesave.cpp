@@ -287,11 +287,12 @@ void MainWindow::openProject()
 	if(reader.attributes().value("version").toString() != CHEMVP_VERSION)
 		error("Invalid Version Number!");
 	
+	canvas->clearAll();
+	
 	parser = FileParser::deserialize(&reader);
 	drawingInfo = DrawingInfo::deserialize(&reader);
 	canvas = DrawingCanvas::deserialize(&reader, itemMenu, drawingInfo, parser);
-	canvas->refresh();
-	
+    
 	//if(reader.hasError())
-//		error("Reader error");
+	//		error("Reader error");
 }

@@ -1149,6 +1149,8 @@ void DrawingCanvas::serialize(QXmlStreamWriter* writer)
 		a->serialize(writer);
 	foreach(Bond* b, bondsList)
 		b->serialize(writer);
+	foreach(Label* l, textLabelsList)
+		l->serialize(writer);
 	writer->writeEndElement();
 }
 
@@ -1163,10 +1165,14 @@ DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemM
 	{
 		reader->readNextStartElement();
 		if(reader->name() == "Atom") {
-			canvas->addItem(Atom::deserialize(reader, drawingInfo));
+			Atom* a = Atom::deserialize(reader, drawingInfo);
+			canvas->addItem(a);
+			canvas->atomsList.push_back(a);
 		}
 		else if(reader->name() == "Bond") {
-			canvas->addItem(Bond::deserialize(reader, drawingInfo, canvas->atomsList));
+			Bond* b = Bond::deserialize(reader, drawingInfo, canvas->atomsList);
+			canvas->addItem(b);
+			canvas->bondsList.push_back(b);
 		}
 		reader->skipCurrentElement();
 	}

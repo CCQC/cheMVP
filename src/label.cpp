@@ -93,3 +93,13 @@ void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
     // A null event to prevent unwanted deselection
     Q_UNUSED(event);
 }
+
+void Label::serialize(QXmlStreamWriter* writer)
+{
+	
+}
+
+Label* Label::deserialize(QXmlStreamReader* reader)
+{
+	
+}

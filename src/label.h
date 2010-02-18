@@ -32,6 +32,9 @@ public:
     int fontSize() const {return myFontSize;}
     void updateLabel();
 
+	void serialize(QXmlStreamWriter* writer);
+	static Label* deserialize(QXmlStreamReader* reader);
+	
 signals:
     void selectedChange(QGraphicsItem *item);
 

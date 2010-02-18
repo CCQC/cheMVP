@@ -16,6 +16,7 @@
 #include <QXmlStreamReader>
 #include "splashscreen.h"
 #include "drawingcanvas.h"
+#include "drawingdisplay.h"
 #include "drawinginfo.h"
 #include "fileparser.h"
 #include "undo_delete.h"
