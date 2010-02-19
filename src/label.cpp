@@ -96,10 +96,33 @@ void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void Label::serialize(QXmlStreamWriter* writer)
 {
-	
+	writer->writeStartElement("Label");
+	writer->writeAttribute("type", QString("%1").arg(myType));
+	writer->writeAttribute("string", myString);
+	writer->writeAttribute("fontSize", QString("%1").arg(myFontSize));
+	writer->writeAttribute("dx", QString("%1").arg(myDX));
+	writer->writeAttribute("dy", QString("%1").arg(myDY));
+	writer->writeAttribute("value", QString("%1").arg(myValue));
+	writer->writeEndElement();
 }
 
-Label* Label::deserialize(QXmlStreamReader* reader)
+Label* Label::deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QGraphicsScene* scene)
 {
-	
+	Q_ASSERT(reader->name() == "Label");
+	QXmlStreamAttributes attr = reader->attributes();
+	LabelType type;
+	switch(attr.value("type").toString().toInt())
+	{
+		case (UserType + BONDLABELTYPE) : type = BondLabelType; break;
+		case (UserType + ANGLELABELTYPE) : type = AngleLabelType; break;
+		case (UserType + TEXTLABELTYPE) : type = TextLabelType; break;
+			
+	}
+	Label* l = new Label(type, attr.value("value").toString().toDouble(), drawingInfo, NULL, scene);
+	l->myString = attr.value("string").toString();
+	l->myFontSize = attr.value("fontSize").toString().toInt();
+	l->myDX = attr.value("dx").toString().toInt();
+	l->myDY = attr.value("dy").toString().toInt();
+	l->myValue = attr.value("value").toString().toDouble();
+	return l;
 }

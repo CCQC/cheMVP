@@ -33,7 +33,7 @@ public:
     void updateLabel();
 
 	void serialize(QXmlStreamWriter* writer);
-	static Label* deserialize(QXmlStreamReader* reader);
+	static Label* deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QGraphicsScene* scene);
 	
 signals:
     void selectedChange(QGraphicsItem *item);

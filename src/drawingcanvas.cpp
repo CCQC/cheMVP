@@ -1174,6 +1174,11 @@ DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemM
 			canvas->addItem(b);
 			canvas->bondsList.push_back(b);
 		}
+		else if(reader->name() == "Label") {
+			Label* l = Label::deserialize(reader, drawingInfo, canvas);
+			canvas->addItem(l);
+			canvas->textLabelsList.push_back(l);
+		}
 		reader->skipCurrentElement();
 	}
 	reader->skipCurrentElement();
