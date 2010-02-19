@@ -1,13 +1,12 @@
 #include "angle.h"
 
-Angle::Angle(Atom *atom1, Atom * atom2, Atom *atom3, DrawingInfo *info, 
-             QGraphicsItem *parent)
-:QGraphicsPathItem(parent),
-myStartAtom(atom1),
-myCenterAtom(atom2),
-myEndAtom(atom3),
-_info(info),
-hoverOver(false)
+Angle::Angle(Atom *atom1, Atom * atom2, Atom *atom3, DrawingInfo *info, QGraphicsItem *parent)
+	:QGraphicsPathItem(parent),
+	myStartAtom(atom1),
+	myCenterAtom(atom2),
+	myEndAtom(atom3),
+	_info(info),
+	hoverOver(false)
 {
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setAcceptsHoverEvents(true);

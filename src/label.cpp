@@ -99,6 +99,7 @@ void Label::serialize(QXmlStreamWriter* writer)
 	writer->writeStartElement("Label");
 	writer->writeAttribute("type", QString("%1").arg(myType));
 	writer->writeAttribute("string", myString);
+	writer->writeAttribute("text", toPlainText());
 	writer->writeAttribute("fontSize", QString("%1").arg(myFontSize));
 	writer->writeAttribute("dx", QString("%1").arg(myDX));
 	writer->writeAttribute("dy", QString("%1").arg(myDY));
@@ -119,6 +120,7 @@ Label* Label::deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QG
 			
 	}
 	Label* l = new Label(type, attr.value("value").toString().toDouble(), drawingInfo, NULL, scene);
+	l->setPlainText(attr.value("text").toString());
 	l->myString = attr.value("string").toString();
 	l->myFontSize = attr.value("fontSize").toString().toInt();
 	l->myDX = attr.value("dx").toString().toInt();

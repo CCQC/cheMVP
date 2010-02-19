@@ -166,10 +166,9 @@ void Bond::serialize(QXmlStreamWriter* writer)
 	writer->writeAttribute("width", QString("%1").arg(effectiveWidth));
 	writer->writeAttribute("length", QString("%1").arg(myLength));
 	writer->writeAttribute("dashed", QString("%1").arg(dashedLine));
-
-	//Label *myLabel;
-//    QPen myPen;
-//	
+	writer->writeAttribute("label", QString("%1").arg(hasLabel()));
+	if(hasLabel())
+		myLabel->serialize(writer);
 	writer->writeEndElement();
 }
 
@@ -193,5 +192,11 @@ Bond* Bond::deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QLis
 	b->effectiveWidth = attr.value("width").toString().toDouble();
 	b->myLength = attr.value("length").toString().toDouble();
 	b->dashedLine = (attr.value("dashed").toString().toInt() == 1);
+	if(attr.value("label").toString().toInt() == 1)
+	{	
+		reader->readNextStartElement();
+		b->myLabel = Label::deserialize(reader, drawingInfo, NULL);
+		reader->skipCurrentElement();
+	}
 	return b;
 }
