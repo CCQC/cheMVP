@@ -164,3 +164,21 @@ double Angle::computeValue()
                       / (Atom::bondLength(myCenterAtom, myStartAtom) * Atom::bondLength(myCenterAtom, myEndAtom));
     return acos(cosTheta)*RAD_TO_DEG;
 }
+
+void Angle::serialize(QXmlStreamWriter* writer)
+{
+	writer->writeStartElement("Angle");
+	writer->writeAttribute("startAtomID", QString("%1").arg(myStartAtom->ID()));
+	writer->writeAttribute("centerAtomID", QString("%1").arg(myCenterAtom->ID()));
+	writer->writeAttribute("endAtomID", QString("%1").arg(myEndAtom->ID()));
+	myMarker1->serialize(writer);
+	myMarker2->serialize(writer);
+	myLabel->serialize(writer);
+	writer->writeAttribute("value", QString("%1").arg(myValue));
+	writer->writeEndElement();
+}
+
+Angle* Angle::deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QList<Atom*> atoms)
+{
+	
+}

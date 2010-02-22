@@ -21,6 +21,9 @@ public:
                QWidget *widget = 0);
     void setOtherMarker(AngleMarker *marker) {otherMarker = marker;}
     void setHover(bool t_f) {hoverOver = t_f;}
+	
+	void serialize(QXmlStreamWriter* writer);
+	static AngleMarker* deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo);
 
 protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -28,7 +31,6 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     DrawingInfo *drawingInfo;
     AngleMarker *otherMarker;
-    qreal penWidth;
     double effectiveWidth;
     QColor myColor;
     bool hoverOver;

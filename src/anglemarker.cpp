@@ -3,7 +3,6 @@
 AngleMarker::AngleMarker(DrawingInfo *info, QGraphicsItem *parent)
         :QGraphicsPathItem(parent),
         drawingInfo(info),
-        penWidth(0.2),
         myColor(Qt::black),
         hoverOver(false),
         myPen(Qt::black)
@@ -50,4 +49,22 @@ void AngleMarker::paint(QPainter *painter,
         painter->setPen(myPen);
         painter->drawPath(path());        	
     }
+}
+
+void AngleMarker::serialize(QXmlStreamWriter* writer)
+{
+	writer->writeStartElement("AngleMarker");
+	writer->writeAttribute("effWidth", QString("%1").arg(effectiveWidth));
+	writer->writeAttribute("color", QString("%1 %2 %3 %4").arg(myColor.red()).arg(myColor.green()).arg(myColor.blue()).arg(myColor.alpha()));
+	writer->writeEndElement();
+}
+
+AngleMarker* AngleMarker::deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo)
+{
+	Q_ASSERT(reader->name() == "AngleMarker");
+	AngleMarker* m = new AngleMarker(drawingInfo, NULL);
+	m->effectiveWidth = reader->attributes().value("effWidth").toString().toDouble();
+	QStringList color = reader->attributes().value("color").toString().split(" ");
+	m->myColor = QColor(color[0].toInt(), color[1].toInt(), color[2].toInt(), color[3].toInt());
+	return m;
 }

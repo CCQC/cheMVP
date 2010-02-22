@@ -3,6 +3,8 @@
 
 #include <QtGui>
 #include <QGraphicsItem>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
 #include <cmath>
 #include <iostream>
 
@@ -31,6 +33,9 @@ public:
     Atom *endAtom() const { return myEndAtom; }
     AngleMarker *marker1() {return myMarker1;}
     AngleMarker *marker2() {return myMarker2;}
+	
+	void serialize(QXmlStreamWriter* writer);
+	static Angle* deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QList<Atom*> atoms);
 
 protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
