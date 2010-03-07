@@ -171,14 +171,43 @@ void Angle::serialize(QXmlStreamWriter* writer)
 	writer->writeAttribute("startAtomID", QString("%1").arg(myStartAtom->ID()));
 	writer->writeAttribute("centerAtomID", QString("%1").arg(myCenterAtom->ID()));
 	writer->writeAttribute("endAtomID", QString("%1").arg(myEndAtom->ID()));
+	writer->writeAttribute("value", QString("%1").arg(myValue));
 	myMarker1->serialize(writer);
 	myMarker2->serialize(writer);
 	myLabel->serialize(writer);
-	writer->writeAttribute("value", QString("%1").arg(myValue));
 	writer->writeEndElement();
 }
 
-Angle* Angle::deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QList<Atom*> atoms)
+Angle* Angle::deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QList<Atom*> atoms, QGraphicsScene* scene)
 {
+	Q_ASSERT(reader->name() == "Angle");
+	QXmlStreamAttributes attr = reader->attributes();
+	Atom* start;
+	Atom* center;
+	Atom* end;
 	
+	int s = attr.value("startAtomID").toString().toInt();
+	int c = attr.value("centerAtomID").toString().toInt();
+	int e = attr.value("endAtomID").toString().toInt();
+	foreach(Atom* a, atoms)
+	{
+		if(a->ID() == s)
+			start = a;
+		if(a->ID() == e)
+			end = a;
+		if(a->ID() == c)
+			center = a;
+	}
+	Angle* a = new Angle(start, center, end, drawingInfo, NULL);
+	a->myValue = attr.value("value").toString().toDouble();
+	reader->readNextStartElement();
+	a->myMarker1 = AngleMarker::deserialize(reader, drawingInfo);
+	reader->skipCurrentElement();
+	reader->readNextStartElement();
+	a->myMarker2 = AngleMarker::deserialize(reader, drawingInfo);
+	reader->skipCurrentElement();
+	reader->readNextStartElement();
+	a->myLabel = Label::deserialize(reader, drawingInfo, scene);
+	reader->skipCurrentElement();
+	return a;
 }

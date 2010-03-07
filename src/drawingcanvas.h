@@ -19,6 +19,8 @@
 #include "drawinginfo.h"
 #include "fileparser.h"
 
+class Angle;
+
 class DrawingCanvas : public QGraphicsScene
 {
     Q_OBJECT

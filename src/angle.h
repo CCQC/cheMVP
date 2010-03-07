@@ -35,7 +35,7 @@ public:
     AngleMarker *marker2() {return myMarker2;}
 	
 	void serialize(QXmlStreamWriter* writer);
-	static Angle* deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QList<Atom*> atoms);
+	static Angle* deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QList<Atom*> atoms, QGraphicsScene* scene);
 
 protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);

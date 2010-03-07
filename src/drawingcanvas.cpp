@@ -1151,6 +1151,8 @@ void DrawingCanvas::serialize(QXmlStreamWriter* writer)
 		b->serialize(writer);
 	foreach(Label* l, textLabelsList)
 		l->serialize(writer);
+	foreach(Angle* a, anglesList)
+		a->serialize(writer);
 	writer->writeEndElement();
 }
 
@@ -1178,6 +1180,11 @@ DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemM
 			Label* l = Label::deserialize(reader, drawingInfo, canvas);
 			canvas->addItem(l);
 			canvas->textLabelsList.push_back(l);
+		}
+		else if(reader->name() == "Angle") {
+			Angle* a = Angle::deserialize(reader, drawingInfo, canvas->atomsList, canvas);
+			canvas->addItem(a);
+			canvas->anglesList.push_back(a);
 		}
 		reader->skipCurrentElement();
 	}
