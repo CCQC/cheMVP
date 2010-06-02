@@ -206,10 +206,6 @@ void MainWindow::loadFile()
         animationSlider->setRange(0, parser->numMolecules() - 1);
         animationSlider->setValue(parser->current());
     }
-    else
-    {
-        std::cout << "FAILURE IN FILENAME" << std::endl;
-    }
 }
 
 //void MainWindow::processProjectFile(const QString &fileName, bool saveFile)
@@ -289,11 +285,22 @@ void MainWindow::openProject()
 	
 	this->canvas->clearAll();
 	
+	// Deserialize
 	this->parser = FileParser::deserialize(&reader);
 	this->drawingInfo = DrawingInfo::deserialize(&reader);
 	this->canvas = DrawingCanvas::deserialize(&reader, itemMenu, drawingInfo, parser);
 	this->view = new DrawingDisplay(canvas, drawingInfo);
+
 	
+	// Update toolbox widgets
+	if (parser->numMolecules() <= 1)
+		animationWidget->setEnabled(false);
+	else
+		animationWidget->setEnabled(true);
+	animationSlider->setRange(0, parser->numMolecules() - 1);
+	animationSlider->setValue(parser->current());
+	
+	// Refresh layout
 	QHBoxLayout* layout = new QHBoxLayout();
 	QSplitter *splitter = new QSplitter(Qt::Horizontal);
     splitter->addWidget(view);
@@ -304,6 +311,8 @@ void MainWindow::openProject()
     widget->setLayout(layout);
 	this->setCentralWidget(widget);
 	
-	//if(reader.hasError())
-	//		error("Reader error");
+	setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
+	
+	if(reader.hasError())
+		error("Reader error");
 }
