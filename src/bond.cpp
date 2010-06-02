@@ -117,7 +117,7 @@ void Bond::toggleDashing()
         myThickness = DEFAULT_BOND_THICKNESS;
         myPen.setStyle(Qt::SolidLine);
         dashedLine = false;
-    }else{
+    } else {
         myThickness = DEFAULT_DASHED_BOND_THICKNESS;
         myPen.setStyle(Qt::CustomDashLine);
         QVector<qreal> dashes;
@@ -198,5 +198,6 @@ Bond* Bond::deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QLis
 		b->myLabel = Label::deserialize(reader, drawingInfo, NULL);
 		reader->skipCurrentElement();
 	}
+	b->update();
 	return b;
 }

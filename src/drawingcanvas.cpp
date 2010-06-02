@@ -1190,6 +1190,6 @@ DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemM
 		reader->skipCurrentElement();
 	}
 	reader->skipCurrentElement();
-	canvas->refresh();
+	canvas->update();
 	return canvas;
 }

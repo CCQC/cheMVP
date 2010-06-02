@@ -37,12 +37,8 @@ QWidget *MainWindow::createAppearanceWidget()
     foggingScaleBox->setMaximum(100);
     foggingScaleBox->setAccelerated(true);
     foggingScaleBox->setVisible(false);
-    connect(useFoggingBox,SIGNAL(toggled(bool)),drawingInfo,SLOT(setUseFogging(bool)));
-    connect(useFoggingBox,SIGNAL(toggled(bool)),foggingScaleBox,SLOT(setVisible(bool)));
-    connect(useFoggingBox,SIGNAL(toggled(bool)),foggingLabel,SLOT(setVisible(bool)));
-    connect(useFoggingBox,SIGNAL(toggled(bool)),canvas,SLOT(refresh()));
-    connect(foggingScaleBox,SIGNAL(valueChanged(int)),drawingInfo,SLOT(setFoggingScale(int)));
-    connect(foggingScaleBox,SIGNAL(valueChanged(int)),canvas,SLOT(refresh()));
+    connect(useFoggingBox, SIGNAL(toggled(bool)), foggingScaleBox, SLOT(setVisible(bool)));
+    connect(useFoggingBox, SIGNAL(toggled(bool)), foggingLabel, SLOT(setVisible(bool)));
     foggingGroupBox->setLayout(foggingBoxLayout);
     layout->addWidget(foggingGroupBox);
 
@@ -79,14 +75,12 @@ QWidget *MainWindow::createAppearanceWidget()
     backgroundColorButton = new QPushButton(tr("Background Color"));
     backgroundColorButton->setToolTip(tr("Change the background color"));
     backgroundColorLayout->addWidget(backgroundColorButton, 0, 0, 1, 2);
-    connect(backgroundColorButton, SIGNAL(clicked()), canvas, SLOT(setBackgroundColor()));
     backgroundColorLayout->addWidget(new QLabel(tr("Background Opacity")), 1, 0);
     backgroundOpacitySpinBox = new QSpinBox;
     backgroundOpacitySpinBox->setToolTip(tr("Changes how opaque the background is"));
     backgroundOpacitySpinBox->setSuffix("%");
     backgroundOpacitySpinBox->setValue(0);
     backgroundOpacitySpinBox->setRange(0,100);
-    connect(backgroundOpacitySpinBox, SIGNAL(valueChanged(int)), canvas, SLOT(setBackgroundOpacity(int)));
     backgroundColorLayout->addWidget(backgroundOpacitySpinBox, 1, 1);
     backgroundColorGroupBox->setLayout(backgroundColorLayout);
     layout->addWidget(backgroundColorGroupBox);
@@ -138,26 +132,22 @@ QWidget *MainWindow::createBondsAndAnglesWidget()
     // The bond labels    
     toggleBondLabelsButton = new QPushButton(tr("Toggle Bond Labels"));
     toggleBondLabelsButton->setToolTip(tr("Toggle the bond length labels of the selected bonds"));
-    connect(toggleBondLabelsButton, SIGNAL(pressed()), canvas, SLOT(toggleBondLabels()));
     labelsLayout->addWidget(toggleBondLabelsButton, 0, 0, 1, 2);
     bondLabelsPrecisionBox = new QSpinBox(); 
     bondLabelsPrecisionBox->setToolTip(tr("Set the precision of the bond length labels"));
     bondLabelsPrecisionBox->setValue(DEFAULT_BOND_LABEL_PRECISION);
     bondLabelsPrecisionBox->setFocusPolicy(Qt::NoFocus);
-    connect(bondLabelsPrecisionBox, SIGNAL(valueChanged(int)), canvas, SLOT(setBondLabelPrecision(int)));
     QLabel *bondLabelsPrecisionLabel = new QLabel(tr("Bond label precision:"));
     labelsLayout->addWidget(bondLabelsPrecisionLabel, 1, 0);
     labelsLayout->addWidget(bondLabelsPrecisionBox, 1, 1);
     // The angle labels
     toggleAngleLabelsButton = new QPushButton(tr("Toggle Angle Labels"));
     toggleAngleLabelsButton->setToolTip(tr("Select three or more atoms to toggle the angle markers and labels.  Only angles between bonds will be drawn"));
-    connect(toggleAngleLabelsButton, SIGNAL(pressed()), canvas, SLOT(toggleAngleLabels()));
     labelsLayout->addWidget(toggleAngleLabelsButton, 2, 0, 1, 2);
     angleLabelsPrecisionBox = new QSpinBox(); 
     angleLabelsPrecisionBox->setToolTip(tr("Set the precision of the angle labels"));
     angleLabelsPrecisionBox->setValue(DEFAULT_ANGLE_LABEL_PRECISION);
     angleLabelsPrecisionBox->setFocusPolicy(Qt::NoFocus);
-    connect(angleLabelsPrecisionBox, SIGNAL(valueChanged(int)), canvas, SLOT(setAngleLabelPrecision(int)));
     QLabel *angleLabelsPrecisionLabel = new QLabel(tr("Angle label precision:"));
     labelsLayout->addWidget(angleLabelsPrecisionLabel, 3, 0);
     labelsLayout->addWidget(angleLabelsPrecisionBox, 3, 1);
@@ -173,8 +163,6 @@ QWidget *MainWindow::createBondsAndAnglesWidget()
     toggleBondDashingButton = new QPushButton(tr("Toggle Bond Dashing"));
     toggleBondDashingButton->setToolTip(tr("Toggle dashed / solid bonds for the selected bonds"));
     bondSizeLayout->addWidget(toggleBondDashingButton, 0, 0, 1, 2);
-    connect(toggleBondDashingButton, SIGNAL(pressed()),
-            canvas, SLOT(toggleBondDashing()));
     // The bond thickness
     QLabel *bondSizeLabel       = new QLabel("Bond thickness = ");
     bondSizeSpinBox             = new QDoubleSpinBox();
@@ -242,7 +230,6 @@ QWidget *MainWindow::createAtomsWidget()
     atomColorButton = new QPushButton(tr("Color Selected Atoms"));
     atomColorButton->setToolTip(tr("Change the selected atom color"));
     atomColorLayout->addWidget(atomColorButton, 0, 0, 1, 2);
-    connect(atomColorButton, SIGNAL(clicked()), canvas, SLOT(setAtomColors()));
     atomColorGroupBox->setLayout(atomColorLayout);
     layout->addWidget(atomColorGroupBox);
 
@@ -262,7 +249,6 @@ QWidget *MainWindow::createAtomsWidget()
     drawingStyleLayout->addWidget(simpleColoredAtomDrawingButton, 0, 1);
     drawingStyleLayout->addWidget(houkMolAtomDrawingButton, 1, 0);
     drawingStyleLayout->addWidget(gradientColoredAtomDrawingButton, 1, 1);
-    connect(atomDrawingStyleButtonGroup, SIGNAL(buttonClicked(int)), canvas, SLOT(setAtomDrawingStyle(int)));
     gradientColoredAtomDrawingButton->setChecked(true);
     drawingStyleBox->setLayout(drawingStyleLayout);
     layout->addWidget(drawingStyleBox);
@@ -275,8 +261,6 @@ QWidget *MainWindow::createAtomsWidget()
     toggleAtomNumberSubscriptsButton = new QPushButton(tr("Toggle Atom Number Subscripts"));
     toggleAtomNumberSubscriptsButton->setToolTip(tr("Add/remove atom numbers as a subscript to the selected atoms"));
     labelStyleLayout->addWidget(toggleAtomNumberSubscriptsButton, 0, 0, 1, 2);
-    connect(toggleAtomNumberSubscriptsButton, SIGNAL(pressed()),
-            canvas, SLOT(toggleAtomNumberSubscripts()));
     // The label text
     atomLabelInput = new QLineEdit;
     atomLabelInput->setText(tr("Select Atoms"));
@@ -290,8 +274,6 @@ QWidget *MainWindow::createAtomsWidget()
     atomLabelFontCombo->setToolTip(tr("The font for the selected atoms"));
     atomLabelFontCombo->setFocusPolicy(Qt::NoFocus);
     labelStyleLayout->addWidget(atomLabelFontCombo, 2, 0, 1, 2);
-    connect(atomLabelFontCombo, SIGNAL(currentFontChanged(const QFont &)),
-            canvas, SLOT(atomLabelFontChanged(const QFont &)));
     // The label font size
     atomLabelFontSizeCombo = new QComboBox;
     atomLabelFontSizeCombo->setEditable(true);
@@ -302,9 +284,7 @@ QWidget *MainWindow::createAtomsWidget()
     atomLabelFontSizeCombo->setEditText(tr("Select Atoms"));
     atomLabelFontSizeCombo->setFocusPolicy(Qt::NoFocus);
     labelStyleLayout->addWidget(atomLabelFontSizeCombo, 3, 0, 1, 2);
-    connect(atomLabelFontSizeCombo, SIGNAL(currentIndexChanged(const QString &)),
-            canvas, SLOT(atomLabelFontSizeChanged(const QString &)));
-
+  
     atomFontSizeButtonGroup      	 = new QButtonGroup;
     smallLabelAtomDrawingButton 	 = new QRadioButton(tr("Small Label"));
     largeLabelAtomDrawingButton 	 = new QRadioButton(tr("Large Label"));
@@ -313,9 +293,6 @@ QWidget *MainWindow::createAtomsWidget()
     atomFontSizeButtonGroup->addButton(largeLabelAtomDrawingButton, int(Atom::LargeLabel));
     labelStyleLayout->addWidget(smallLabelAtomDrawingButton, 4, 0);
     labelStyleLayout->addWidget(largeLabelAtomDrawingButton, 4, 1);
-    connect(atomFontSizeButtonGroup, SIGNAL(buttonClicked(int)),
-            canvas, SLOT(setAtomFontSizeStyle(int)));
-
     
     labelStyleBox->setLayout(labelStyleLayout);
     layout->addWidget(labelStyleBox);    

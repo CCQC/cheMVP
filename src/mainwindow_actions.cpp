@@ -59,13 +59,11 @@ void MainWindow::createActions()
     selectAllAction->setShortcut(tr("Ctrl+A"));
     selectAllAction->setStatusTip(tr("Select All"));
     selectAllAction->setText(tr("Select All"));
-    connect(selectAllAction, SIGNAL(triggered()), canvas, SLOT(selectAll()));
 
     unselectAllAction = new QAction(this);
     unselectAllAction->setShortcut(tr("Ctrl+Shift+A"));
     unselectAllAction->setStatusTip(tr("Unselect All"));
     unselectAllAction->setText(tr("Unselect All"));
-    connect(unselectAllAction, SIGNAL(triggered()), canvas, SLOT(unselectAll()));
 
     addArrowAction = new QAction(QIcon(":/images/addarrow.png"), tr("Add Arrow"), this);
     addArrowAction->setStatusTip(tr("Add Arrow"));
@@ -89,7 +87,6 @@ void MainWindow::createActions()
     insertPlusMinusAction->setToolTip(tr("Insert ")+QChar((ushort)0x00B1)+tr(" at current cursor position"));
     
     connect(insertTextActionGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertTextAtCursor(QAction *)));
-
 }
 
 void MainWindow::deleteItem()

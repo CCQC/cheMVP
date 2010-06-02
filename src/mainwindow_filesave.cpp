@@ -208,23 +208,6 @@ void MainWindow::loadFile()
     }
 }
 
-//void MainWindow::processProjectFile(const QString &fileName, bool saveFile)
-//{
-//    // This function will call all of the objects in turn to get/put settings
-//    // The read and write functions are written together for convenience
-//
-//    QSettings settings(fileName, QSettings::IniFormat);
-//    // DrawingInfo
-//    settings.beginGroup("drawingInfo");
-//    drawingInfo->processProjectFile(settings, saveFile);
-//    settings.endGroup();
-//
-//    // The drawing canvas settings
-//    settings.beginGroup("canvas");
-//    canvas->processProjectFile(settings, saveFile);
-//    settings.endGroup();
-//}
-
 void MainWindow::saveProject()
 {
 	QString filename = QFileDialog::getSaveFileName(this);
@@ -291,7 +274,6 @@ void MainWindow::openProject()
 	this->canvas = DrawingCanvas::deserialize(&reader, itemMenu, drawingInfo, parser);
 	this->view = new DrawingDisplay(canvas, drawingInfo);
 
-	
 	// Update toolbox widgets
 	if (parser->numMolecules() <= 1)
 		animationWidget->setEnabled(false);
@@ -312,6 +294,8 @@ void MainWindow::openProject()
 	this->setCentralWidget(widget);
 	
 	setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
+	
+	reconnectSignals();
 	
 	if(reader.hasError())
 		error("Reader error");

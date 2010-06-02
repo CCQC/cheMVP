@@ -15,9 +15,6 @@ MainWindow::MainWindow(FileParser *parser_in):
     drawingInfo = new DrawingInfo();
     canvas = new DrawingCanvas(itemMenu, drawingInfo, parser);
 	
-    // Selecting items causes an update of the menus to reflect the current selected items' settings
-    connect(canvas, SIGNAL(selectionChanged()), this, SLOT(updateMenus()));
-
     createActions();
     createToolBox();
     createMenus();
@@ -63,6 +60,8 @@ MainWindow::MainWindow(FileParser *parser_in):
     // The undo/redo framework needs to update the buttons appropriately
     connect(undoStack, SIGNAL(canRedoChanged(bool)), redoAction, SLOT(setEnabled(bool)));
     connect(undoStack, SIGNAL(canUndoChanged(bool)), undoAction, SLOT(setEnabled(bool)));
+	
+	reconnectSignals();
 }
 
 MainWindow::~MainWindow()
@@ -276,4 +275,31 @@ void MainWindow::changeZoom(int val)
 {
     drawingInfo->setZoom(val);
     canvas->refresh();
+}
+
+void MainWindow::reconnectSignals()
+{
+	// Selecting items causes an update of the menus to reflect the current selected items' settings
+    connect(canvas, SIGNAL(selectionChanged()), this, SLOT(updateMenus()));
+
+	connect(selectAllAction, SIGNAL(triggered()), canvas, SLOT(selectAll()));
+    connect(unselectAllAction, SIGNAL(triggered()), canvas, SLOT(unselectAll()));
+    connect(canvas, SIGNAL(mouseModeChanged(int)), this, SLOT(mouseModeButtonGroupClicked(int)));
+    connect(useFoggingBox, SIGNAL(toggled(bool)), drawingInfo, SLOT(setUseFogging(bool)));
+    connect(useFoggingBox, SIGNAL(toggled(bool)), canvas, SLOT(refresh()));
+    connect(foggingScaleBox, SIGNAL(valueChanged(int)), drawingInfo, SLOT(setFoggingScale(int)));
+    connect(foggingScaleBox, SIGNAL(valueChanged(int)), canvas, SLOT(refresh()));
+    connect(backgroundColorButton, SIGNAL(clicked()), canvas, SLOT(setBackgroundColor()));
+    connect(backgroundOpacitySpinBox, SIGNAL(valueChanged(int)), canvas, SLOT(setBackgroundOpacity(int)));
+    connect(toggleBondLabelsButton, SIGNAL(pressed()), canvas, SLOT(toggleBondLabels()));
+    connect(bondLabelsPrecisionBox, SIGNAL(valueChanged(int)), canvas, SLOT(setBondLabelPrecision(int)));
+    connect(toggleAngleLabelsButton, SIGNAL(pressed()), canvas, SLOT(toggleAngleLabels()));
+    connect(angleLabelsPrecisionBox, SIGNAL(valueChanged(int)), canvas, SLOT(setAngleLabelPrecision(int)));	
+    connect(toggleBondDashingButton, SIGNAL(pressed()), canvas, SLOT(toggleBondDashing()));
+    connect(atomColorButton, SIGNAL(clicked()), canvas, SLOT(setAtomColors()));
+    connect(atomDrawingStyleButtonGroup, SIGNAL(buttonClicked(int)), canvas, SLOT(setAtomDrawingStyle(int)));	
+    connect(toggleAtomNumberSubscriptsButton, SIGNAL(pressed()), canvas, SLOT(toggleAtomNumberSubscripts()));
+	connect(atomLabelFontCombo, SIGNAL(currentFontChanged(const QFont &)), canvas, SLOT(atomLabelFontChanged(const QFont &)));
+	connect(atomLabelFontSizeCombo, SIGNAL(currentIndexChanged(const QString &)), canvas, SLOT(atomLabelFontSizeChanged(const QString &)));
+    connect(atomFontSizeButtonGroup, SIGNAL(buttonClicked(int)), canvas, SLOT(setAtomFontSizeStyle(int)));
 }
