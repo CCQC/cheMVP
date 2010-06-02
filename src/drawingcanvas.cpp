@@ -200,7 +200,7 @@ void DrawingCanvas::loadFromParser()
         return;
     }
 
-    Molecule *molecule = parser->molecule();
+    Molecule* molecule = parser->molecule();
     std::vector<AtomEntry*> atoms = molecule->atomsList();
     int nAtoms = atoms.size();
     // First add the Atoms

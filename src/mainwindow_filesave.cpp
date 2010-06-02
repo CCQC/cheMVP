@@ -287,12 +287,23 @@ void MainWindow::openProject()
 	if(reader.attributes().value("version").toString() != CHEMVP_VERSION)
 		error("Invalid Version Number!");
 	
-	canvas->clearAll();
+	this->canvas->clearAll();
 	
-	parser = FileParser::deserialize(&reader);
-	drawingInfo = DrawingInfo::deserialize(&reader);
-	canvas = DrawingCanvas::deserialize(&reader, itemMenu, drawingInfo, parser);
-    
+	this->parser = FileParser::deserialize(&reader);
+	this->drawingInfo = DrawingInfo::deserialize(&reader);
+	this->canvas = DrawingCanvas::deserialize(&reader, itemMenu, drawingInfo, parser);
+	this->view = new DrawingDisplay(canvas, drawingInfo);
+	
+	QHBoxLayout* layout = new QHBoxLayout();
+	QSplitter *splitter = new QSplitter(Qt::Horizontal);
+    splitter->addWidget(view);
+    splitter->addWidget(toolBox);
+    layout->addWidget(splitter);
+
+    QWidget *widget = new QWidget;
+    widget->setLayout(layout);
+	this->setCentralWidget(widget);
+	
 	//if(reader.hasError())
 	//		error("Reader error");
 }

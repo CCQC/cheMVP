@@ -167,6 +167,8 @@ void FileParser::readFile()
 void FileParser::serialize(QXmlStreamWriter* writer)
 {
 	writer->writeStartElement("FileParser");
+	writer->writeAttribute("name", QString("%1").arg(myFileName));
+	writer->writeAttribute("type", QString("%1").arg(fileType));
 	writer->writeAttribute("units", QString("%1").arg(myUnits));
 	writer->writeAttribute("step", QString("%1").arg(currentGeometry));
 	writer->writeAttribute("items", QString("%1").arg(myMoleculeList.size()));
@@ -180,7 +182,10 @@ FileParser* FileParser::deserialize(QXmlStreamReader* reader)
 	reader->readNextStartElement();
 	Q_ASSERT(reader->isStartElement() && reader->name() == "FileParser");
 	
-	FileParser* parser = new FileParser(NULL);
+	QString fileName = reader->attributes().value("name").toString();
+	FileParser* parser = new FileParser(fileName);
+	// cast works, but might causes compile errors on other systems
+	parser->fileType = (FileType)reader->attributes().value("type").toString().toInt(); 
 	parser->myUnits = (reader->attributes().value("units").toString().toInt() == 0) ? Angstrom : Bohr;
 	parser->currentGeometry = reader->attributes().value("step").toString().toInt();
 	int size = reader->attributes().value("items").toString().toInt();
