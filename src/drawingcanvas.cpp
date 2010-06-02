@@ -27,8 +27,9 @@ DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_
     setBackgroundBrush(QBrush(myBackgroundColor));
     setSceneRect(QRectF(0, 0, DEFAULT_SCENE_SIZE_X,  DEFAULT_SCENE_SIZE_Y));
 
-    //If the user provided a filename from the command line, there's a molecule in the parser
-    if(parser->numMolecules()){
+    // If the user provided a filename from the command line, there's a molecule in the parser.
+	// The filename is empty, however if that molecule came from a project.
+    if(parser->numMolecules() && !in_parser->fileName().isEmpty()){
         loadFromParser();
     }
 
@@ -1189,5 +1190,6 @@ DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemM
 		reader->skipCurrentElement();
 	}
 	reader->skipCurrentElement();
+	canvas->refresh();
 	return canvas;
 }
