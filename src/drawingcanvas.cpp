@@ -1146,7 +1146,7 @@ void DrawingCanvas::serialize(QXmlStreamWriter* writer)
 {
 	writer->writeStartElement("Canvas");
 	writer->writeAttribute("background", QString("%1 %2 %3 %4").arg(myBackgroundColor.red()).arg(myBackgroundColor.green()).arg(myBackgroundColor.blue()).arg(myBackgroundAlpha));
-	writer->writeAttribute("items", QString("%1").arg(items().size()));
+	writer->writeAttribute("items", QString("%1").arg(items().size() - 2*arrowsList.size()));
 	foreach(Atom* a, atomsList)
 		a->serialize(writer);
 	foreach(Bond* b, bondsList)
@@ -1154,6 +1154,8 @@ void DrawingCanvas::serialize(QXmlStreamWriter* writer)
 	foreach(Label* l, textLabelsList)
 		l->serialize(writer);
 	foreach(Angle* a, anglesList)
+		a->serialize(writer);
+	foreach(Arrow* a, arrowsList)
 		a->serialize(writer);
 	writer->writeEndElement();
 }
@@ -1190,6 +1192,13 @@ DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemM
 			Angle* a = Angle::deserialize(reader, drawingInfo, canvas->atomsList, canvas);
 			canvas->addItem(a);
 			canvas->anglesList.push_back(a);
+		}
+		else if(reader->name() == "Arrow") {
+			Arrow* a = Arrow::deserialize(reader, drawingInfo);
+			canvas->addItem(a);
+			canvas->addItem(a->startBox());
+			canvas->addItem(a->endBox());
+			canvas->arrowsList.push_back(a);
 		}
 		reader->skipCurrentElement();
 	}

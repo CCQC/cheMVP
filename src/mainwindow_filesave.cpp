@@ -97,13 +97,12 @@ void MainWindow::saveImage(const QString &fileName)
 		painter->end();
 		delete painter;
 		delete printer;
-	}else if(fileType == CHMVP){
-		//processProjectFile(fileName, true); // HPS
 	}else{
 		QString message("Unsupported file type:\n\n");
 		message += fileName;
-		message += "\n\nSupported extensions are\n.pdf, .svg, .ps, .eps, .png, .tiff, .tif";
+		message += "\n\nSupported extensions are\n.pdf, .svg, .ps, .eps, .png, .tiff, .tif, .chmvp";
 		error(message, __FILE__, __LINE__);
+		return;
 	}
 }
 
@@ -159,19 +158,16 @@ void MainWindow::updateRecentFiles()
 	for (int j = 0; j < MAX_RECENT_FILES; j++) {
 		if (j < recentlyOpenedFiles.size()) {
 #ifdef Q_WS_WIN
-			QString front = recentlyOpenedFiles[j].left(recentlyOpenedFiles[j].lastIndexOf("\\"));
-			QString folder = front.right(front.length() - front.lastIndexOf("\\")-1);
-			QString file = recentlyOpenedFiles[j].right(recentlyOpenedFiles[j].length()
-														-recentlyOpenedFiles[j].lastIndexOf("\\")-1);
-			QString text = tr("&%1 %2").arg(j + 1).arg(file + " - " + folder);
+			QString s = "\\";
 #endif
 #ifndef Q_WS_WIN
-			QString front = recentlyOpenedFiles[j].left(recentlyOpenedFiles[j].lastIndexOf("/"));
-			QString folder = front.right(front.length() - front.lastIndexOf("/")-1);
-			QString file = recentlyOpenedFiles[j].right(recentlyOpenedFiles[j].length()
-														-recentlyOpenedFiles[j].lastIndexOf("/")-1);
-			QString text = tr("&%1 %2").arg(j + 1).arg(file + " - " + folder);
+			QString s = "/";
 #endif
+			QString front = recentlyOpenedFiles[j].left(recentlyOpenedFiles[j].lastIndexOf(s));
+			QString folder = front.right(front.length() - front.lastIndexOf(s)-1);
+			QString file = recentlyOpenedFiles[j].right(recentlyOpenedFiles[j].length()
+														-recentlyOpenedFiles[j].lastIndexOf(s)-1);
+			QString text = tr("&%1 %2").arg(j + 1).arg(file + " - " + folder);
 			recentFileActions[j]->setText(text);
 			recentFileActions[j]->setData(recentlyOpenedFiles.at(j));
 			recentFileActions[j]->setVisible(true);
@@ -258,8 +254,14 @@ void MainWindow::saveProject(QString filename)
 	drawingInfo->serialize(&writer);
 	canvas->serialize(&writer);
 	writer.writeEndDocument();
-
 	file.close();
+
+	if(file.exists())
+	{
+		recentlyOpenedFiles.removeAll(filename);
+		recentlyOpenedFiles.prepend(filename);
+		updateRecentFiles();
+	}
 }
 
 void MainWindow::openProject(QString filename)
@@ -320,5 +322,5 @@ void MainWindow::openProject(QString filename)
 	resetOnFileLoad();
 
 	if(reader.hasError())
-		error("Reader error");
+		error("Reader: " + reader.errorString());
 }
