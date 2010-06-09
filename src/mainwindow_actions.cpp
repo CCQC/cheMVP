@@ -47,15 +47,7 @@ void MainWindow::createActions()
     saveAsAction->setStatusTip(tr("Save under a new name"));
     connect(saveAsAction, SIGNAL(triggered()), this, SLOT(saveAs()));
 	
-	saveProjectAction = new QAction(QIcon(":/images/saveas.png"), tr("&Save Project"), this);
-    saveProjectAction->setStatusTip(tr("Save the CheMVP project"));
-	connect(saveProjectAction, SIGNAL(triggered()), this, SLOT(saveProject()));
-		
-	openProjectAction = new QAction(QIcon(":/images/open.png"), tr("&Open Project"), this);
-    openProjectAction->setStatusTip(tr("Open a cheMVP project file"));
-    connect(openProjectAction, SIGNAL(triggered()), this, SLOT(openProject()));
-	
-    selectAllAction = new QAction(this);
+	selectAllAction = new QAction(this);
     selectAllAction->setShortcut(tr("Ctrl+A"));
     selectAllAction->setStatusTip(tr("Select All"));
     selectAllAction->setText(tr("Select All"));

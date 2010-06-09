@@ -50,8 +50,8 @@ private slots:
     void openFile();
     void save();
     void saveAs();
-	void saveProject();
-	void openProject();
+	void saveProject(QString filename);
+	void openProject(QString filename);
     void changeZoom(int);
     void setAddArrowMode();
     void aboutCheMVP();
@@ -111,8 +111,6 @@ private:
     QAction *exitAction;
     QAction *saveAction;
     QAction *saveAsAction;
-	QAction *saveProjectAction;
-	QAction *openProjectAction;
     QAction *insertAngstromAction;
     QAction *insertDegreeAction;
     QAction *insertPlusMinusAction;

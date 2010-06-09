@@ -6,8 +6,6 @@ void MainWindow::createMenus()
     fileMenu->addAction(openAction);
     fileMenu->addAction(saveAction);
     fileMenu->addAction(saveAsAction);
-	fileMenu->addAction(saveProjectAction);
-	fileMenu->addAction(openProjectAction);
 	
 	separatorAction = new QAction("Separator", NULL);
 	separatorAction->setSeparator(true);

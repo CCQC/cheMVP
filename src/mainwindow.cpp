@@ -30,7 +30,7 @@ MainWindow::MainWindow(FileParser *parser_in):
 	else
         Atom::labelToColor = colorMap;
 
-    QHBoxLayout *layout = new QHBoxLayout;
+	QHBoxLayout* layout = new QHBoxLayout;
     view = new DrawingDisplay(canvas, drawingInfo);
     view->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     view->setGeometry(0, 0, static_cast<int>(DEFAULT_SCENE_SIZE_X), static_cast<int>(DEFAULT_SCENE_SIZE_Y));
@@ -47,7 +47,7 @@ MainWindow::MainWindow(FileParser *parser_in):
     canvas->setSceneRect(view->sceneRect());
     canvas->refresh();
 
-    QSplitter *splitter = new QSplitter(Qt::Horizontal);
+    QSplitter* splitter = new QSplitter(Qt::Horizontal);
     splitter->addWidget(view);
     splitter->addWidget(toolBox);
     layout->addWidget(splitter);
