@@ -69,7 +69,7 @@ private:
     void saveImage(const QString &fileName);
     void foggingToggled(int useFogging);
     void loadFile();
-	void reconnectSignals();
+	void resetOnFileLoad();
     QIcon textToIcon(const QString &string);
 
     QWidget *createAppearanceWidget();

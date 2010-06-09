@@ -194,7 +194,6 @@ void DrawingCanvas::setAcceptsHovers(bool arg)
 
 void DrawingCanvas::loadFromParser()
 {
-	std::cout << "DrawingCanvas::loadFromParser" << std::endl;
 	// Do nothing if there are no molecules to display.
 	if (parser->numMolecules() == 0) {
 		// Tell the user about it.
@@ -1146,6 +1145,7 @@ void DrawingCanvas::setAtomColors()
 void DrawingCanvas::serialize(QXmlStreamWriter* writer)
 {
 	writer->writeStartElement("Canvas");
+	writer->writeAttribute("background", QString("%1 %2 %3 %4").arg(myBackgroundColor.red()).arg(myBackgroundColor.green()).arg(myBackgroundColor.blue()).arg(myBackgroundAlpha));
 	writer->writeAttribute("items", QString("%1").arg(items().size()));
 	foreach(Atom* a, atomsList)
 		a->serialize(writer);
@@ -1161,9 +1161,12 @@ void DrawingCanvas::serialize(QXmlStreamWriter* writer)
 DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemMenu, DrawingInfo *drawingInfo, FileParser *parser)
 {
 	reader->readNextStartElement();
-	Q_ASSERT(reader->name() == "Canvas");
+	Q_ASSERT(reader->isStartElement() && reader->name() == "Canvas");
 
 	DrawingCanvas* canvas = new DrawingCanvas(itemMenu, drawingInfo, parser);
+	QStringList color = reader->attributes().value("background").toString().split(" ");
+	canvas->myBackgroundColor = QColor(color[0].toInt(), color[1].toInt(), color[2].toInt());
+	canvas->myBackgroundAlpha = color[3].toInt();
 	int items = reader->attributes().value("items").toString().toInt();
 	for(int i = 0; i < items; i++)
 	{

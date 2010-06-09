@@ -25,8 +25,6 @@ void FileParser::setFileName(const QString name)
 
 void FileParser::determineFileType()
 {
-	std::cout << "FileParser::determineFileType" << std::endl;
-
 	if(myFileName.endsWith(".chmvp")) return;
 
 	fileType = UNKNOWN;
@@ -85,7 +83,6 @@ void FileParser::determineFileType()
 
 void FileParser::readFile()
 {
-	std::cout << "FileParser::readFile" << std::endl;
 	if(myFileName.isEmpty() || myFileName.endsWith(".chmvp")) return;
 
 	infile.open(myFileName.toLatin1());
@@ -182,7 +179,6 @@ void FileParser::serialize(QXmlStreamWriter* writer)
 
 FileParser* FileParser::deserialize(QXmlStreamReader* reader)
 {
-	std::cout << "FileParser::deserialize" << std::endl;
 	reader->readNextStartElement();
 	Q_ASSERT(reader->isStartElement() && reader->name() == "FileParser");
 

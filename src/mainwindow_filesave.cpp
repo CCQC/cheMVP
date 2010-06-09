@@ -136,12 +136,13 @@ void MainWindow::openFile()
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath());
 	if(fileName != 0) {
 		if(fileName.endsWith(".chmvp"))
-		   openProject(fileName);
+			openProject(fileName);
 		else
 		{
 		   parser->setFileName(fileName);
 		   loadFile();
 		}
+		currentSaveFile = fileName;
 		recentlyOpenedFiles.removeAll(fileName);
 		recentlyOpenedFiles.prepend(fileName);
 		updateRecentFiles();
@@ -206,7 +207,6 @@ void MainWindow::openRecentFile()
 
 void MainWindow::loadFile()
 {
-	std::cout << "MainWindow::loadFile" << std::endl;
 	if (!parser->fileName().isEmpty()) {
 		if(parser->fileName().endsWith(".chmvp"))
 		{
@@ -238,11 +238,11 @@ void MainWindow::saveProject(QString filename)
 		filename += ".chmvp";
 
 	QFile file(filename);
-	if(file.exists())
-	{
-		// Some prompt for overwrite?
-		return;
-	}
+//	if(file.exists())
+//	{
+//		// Some prompt for overwrite?
+//		return;
+//	}
 	if(!file.open(QIODevice::WriteOnly))
 	{
 		// error
@@ -264,7 +264,6 @@ void MainWindow::saveProject(QString filename)
 
 void MainWindow::openProject(QString filename)
 {
-	std::cout << "MainWindow::openProject" << std::endl;
 	if(filename.isEmpty())
 		return;
 	QFile file(filename);
@@ -309,9 +308,16 @@ void MainWindow::openProject(QString filename)
 	widget->setLayout(layout);
 	this->setCentralWidget(widget);
 
-	setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
+	DrawingInfo::DrawingStyle style = this->drawingInfo->getDrawingStyle();
+	simpleAtomDrawingButton->setChecked(style == DrawingInfo::Simple);
+	houkMolAtomDrawingButton->setChecked(style == DrawingInfo::HoukMol);
+	simpleColoredAtomDrawingButton->setChecked(style == DrawingInfo::SimpleColored);
+	gradientColoredAtomDrawingButton->setChecked(style == DrawingInfo::Gradient);
+//	smallLabelAtomDrawingButton->setChecked(this->canvas->getAtoms().first()->fontSize() == Atom::SmallLabel); // Doesn't work
 
-	reconnectSignals();
+	setWindowTitle(tr("%1 - cheMVP").arg(filename));
+
+	resetOnFileLoad();
 
 	if(reader.hasError())
 		error("Reader error");
