@@ -1188,7 +1188,7 @@ DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemM
 
 	DrawingCanvas* canvas = new DrawingCanvas(itemMenu, drawingInfo, parser);
 	QStringList color = reader->attributes().value("background").toString().split(" ");
-	canvas->myBackgroundColor = QColor(color[0].toInt(), color[1].toInt(), color[2].toInt());
+	canvas->myBackgroundColor = QColor(color[0].toInt(), color[1].toInt(), color[2].toInt(), color[3].toInt());
 	canvas->myBackgroundAlpha = color[3].toInt();
 	int items = reader->attributes().value("items").toString().toInt();
 	for(int i = 0; i < items; i++)
