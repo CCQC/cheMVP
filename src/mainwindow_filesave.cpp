@@ -291,7 +291,14 @@ void MainWindow::openProject(QString filename)
 	this->parser = FileParser::deserialize(&reader);
 	this->drawingInfo = DrawingInfo::deserialize(&reader);
 	this->canvas = DrawingCanvas::deserialize(&reader, itemMenu, drawingInfo, parser);
+
 	this->view = new DrawingDisplay(canvas, drawingInfo);
+	view->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+	view->setGeometry(0, 0, static_cast<int>(DEFAULT_SCENE_SIZE_X), static_cast<int>(DEFAULT_SCENE_SIZE_Y));
+	view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+
 /*
 	// Update toolbox widgets
 	if (parser->numMolecules() <= 1)
@@ -304,9 +311,11 @@ void MainWindow::openProject(QString filename)
 
 	// Refresh layout
 	QHBoxLayout* layout = new QHBoxLayout;
-	QSplitter* splitter = new QSplitter(Qt::Horizontal);
+	QByteArray state = splitter->saveState();
+	splitter = new QSplitter(Qt::Horizontal);
 	splitter->addWidget(view);
 	splitter->addWidget(toolBox);
+	splitter->restoreState(state);
 	layout->addWidget(splitter);
 
 	QWidget *widget = new QWidget;

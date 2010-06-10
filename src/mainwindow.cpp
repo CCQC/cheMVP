@@ -38,16 +38,13 @@ MainWindow::MainWindow(FileParser *parser_in):
 	view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
-	toolBox->setGeometry(0, 0, static_cast<int>(DEFAULT_TOOLBOX_WIDTH), static_cast<int>(DEFAULT_SCENE_SIZE_Y));
-	toolBox->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-
 	drawingInfo->setHeight(view->sceneRect().height());
 	drawingInfo->setWidth(view->sceneRect().width());
 	drawingInfo->determineScaleFactor();
 	canvas->setSceneRect(view->sceneRect());
 	canvas->refresh();
 
-	QSplitter* splitter = new QSplitter(Qt::Horizontal);
+	splitter = new QSplitter(Qt::Horizontal);
 	splitter->addWidget(view);
 	splitter->addWidget(toolBox);
 	layout->addWidget(splitter);

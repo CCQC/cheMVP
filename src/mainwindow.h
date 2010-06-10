@@ -60,7 +60,7 @@ private slots:
 
 private:
 	void focusOutEvent(QFocusEvent *event);
-	void createToolBox();
+	void createToolBox(int width = DEFAULT_TOOLBOX_WIDTH, int height = DEFAULT_SCENE_SIZE_Y);
 	void createActions();
 	void createMenus();
 	void createToolbars();
@@ -173,6 +173,8 @@ private:
 	QList<QString> recentlyOpenedFiles;
 	QList<QAction*> recentFileActions;
 	QAction* separatorAction;
+
+	QSplitter* splitter;
 };
 
 #endif

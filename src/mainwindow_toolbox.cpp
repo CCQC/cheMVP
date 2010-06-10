@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 
-void MainWindow::createToolBox()
+void MainWindow::createToolBox(int width, int height)
 {
 	QWidget *appearanceWidget 	   = createAppearanceWidget();
 	QWidget *bondsAndAnglesWidget  = createBondsAndAnglesWidget();
@@ -14,6 +14,9 @@ void MainWindow::createToolBox()
 	toolBox->addItem(bondsAndAnglesWidget, tr("Angles and Bonds"));
 	toolBox->addItem(animationWidget, tr("Animation"));
 	toolBox->setCurrentWidget(atomsWidget);
+
+	toolBox->setGeometry(0, 0, width, height);
+	toolBox->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
 
 QWidget *MainWindow::createAppearanceWidget()
