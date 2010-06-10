@@ -24,151 +24,152 @@
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    MainWindow(FileParser *parser);
+	MainWindow(FileParser *parser);
 	~MainWindow();
-    enum FileType {TIFF, PNG, PDF, PostScript, SVG, CHMVP, Unknown};
+	enum FileType {TIFF, PNG, PDF, PostScript, SVG, CHMVP, Unknown};
 
 public slots:
-    void setGeometryStep(int);
-    void setCurrentSaveFile(QString file) {currentSaveFile = file;}
-    void saveAndExit();
+	void setGeometryStep(int);
+	void setCurrentSaveFile(QString file) {currentSaveFile = file;}
+	void saveAndExit();
 
 private slots:
-    void insertTextAtCursor(QAction *action);
-    void updateTextLabelMenus();
-    void updateMenus();
-    void setAtomLabels();
-    void changeAtomSize();
-    void changeBondSize();
-    void setTextBoxFonts();
-    void deleteItem();
-    void mouseModeButtonGroupClicked(int);
-    void rotateFromInitialCoordinates();
-    void openFile();
-    void save();
-    void saveAs();
+	void insertTextAtCursor(QAction *action);
+	void updateTextLabelMenus();
+	void updateMenus();
+	void setAtomLabels();
+	void changeAtomSize();
+	void changeBondSize();
+	void setTextBoxFonts();
+	void deleteItem();
+	void mouseModeButtonGroupClicked(int);
+	void rotateFromInitialCoordinates();
+	void openFile();
+	void save();
+	void saveAs();
 	void saveProject(QString filename);
 	void openProject(QString filename);
-    void changeZoom(int);
-    void setAddArrowMode();
-    void aboutCheMVP();
-    void showPreferences();
+	void changeZoom(int);
+	void setAddArrowMode();
+	void aboutCheMVP();
+	void showPreferences();
 	void openRecentFile();
 
 private:
-    void focusOutEvent(QFocusEvent *event);
-    void createToolBox();
-    void createActions();
-    void createMenus();
-    void createToolbars();
+	void focusOutEvent(QFocusEvent *event);
+	void createToolBox();
+	void createActions();
+	void createMenus();
+	void createToolbars();
 	void updateRecentFiles();
-    FileType determineFileType(const QString &fileName);
-    void saveImage(const QString &fileName);
-    void foggingToggled(int useFogging);
-    void loadFile();
-	void resetOnFileLoad();
-    QIcon textToIcon(const QString &string);
+	FileType determineFileType(const QString &fileName);
+	void saveImage(const QString &fileName);
+	void foggingToggled(int useFogging);
+	void loadFile();
+	void resetSignalsOnFileLoad();
+	void resetButtonsOnFileLoad(bool project);
+	QIcon textToIcon(const QString &string);
 
-    QWidget *createAppearanceWidget();
-    QWidget *createBondsAndAnglesWidget();
-    QWidget *createAtomsWidget();
-    QWidget *createAnnotationWidget();
-    QWidget *createAnimationWidget();
-    QToolButton *makeAtomButton(const char *);
-    QSlider *createSlider(int max);
-    QCheckBox *useFoggingBox;
+	QWidget *createAppearanceWidget();
+	QWidget *createBondsAndAnglesWidget();
+	QWidget *createAtomsWidget();
+	QWidget *createAnnotationWidget();
+	QWidget *createAnimationWidget();
+	QToolButton *makeAtomButton(const char *);
+	QSlider *createSlider(int max);
+	QCheckBox *useFoggingBox;
 
-    QWidget *animationWidget;
+	QWidget *animationWidget;
 
-    QButtonGroup *mouseModeButtonGroup;
-    QButtonGroup *atomDrawingStyleButtonGroup;
-    QButtonGroup *atomFontSizeButtonGroup;
+	QButtonGroup *mouseModeButtonGroup;
+	QButtonGroup *atomDrawingStyleButtonGroup;
+	QButtonGroup *atomFontSizeButtonGroup;
 
-    QLineEdit *atomLabelInput;
-    
-    QToolBar *mouseModeToolBar;
-    QToolBar *fileToolBar;
-    QToolBar *editToolBar;
-    QToolBar *editSelectedTextToolBar;
+	QLineEdit *atomLabelInput;
 
-    DrawingCanvas *canvas;
-    QGraphicsView *view;
-    DrawingInfo *drawingInfo;
-    FileParser *parser;
+	QToolBar *mouseModeToolBar;
+	QToolBar *fileToolBar;
+	QToolBar *editToolBar;
+	QToolBar *editSelectedTextToolBar;
 
-    QComboBox *atomLabelFontSizeCombo;
-    QComboBox *textFontSizeCombo;
-    
-    QFontComboBox *atomLabelFontCombo;
-    QFontComboBox *textFontCombo;
-    
-    QActionGroup *insertTextActionGroup;
-    QAction *deleteAction;
-    QAction *openAction;
-    QAction *exitAction;
-    QAction *saveAction;
-    QAction *saveAsAction;
-    QAction *insertAngstromAction;
-    QAction *insertDegreeAction;
-    QAction *insertPlusMinusAction;
-    QAction *addArrowAction;
-    QAction *unselectAllAction;
-    QAction *selectAllAction;
-    QAction *undoAction;
-    QAction *redoAction;
-    QAction *aboutAction;
-    QAction *showPreferencesAction;
+	DrawingCanvas *canvas;
+	QGraphicsView *view;
+	DrawingInfo *drawingInfo;
+	FileParser *parser;
 
-    QPushButton *toggleBondLabelsButton;
-    QPushButton *toggleBondDashingButton;
-    QPushButton *toggleAngleLabelsButton;
-    QPushButton *toggleAtomNumberSubscriptsButton;
-    QPushButton *backgroundColorButton;
-    QPushButton *atomColorButton;
+	QComboBox *atomLabelFontSizeCombo;
+	QComboBox *textFontSizeCombo;
 
-    QToolButton *boldTextButton;
-    QToolButton *italicTextButton;
-    QToolButton *underlineTextButton;
+	QFontComboBox *atomLabelFontCombo;
+	QFontComboBox *textFontCombo;
 
-    QRadioButton *simpleAtomDrawingButton;
-    QRadioButton *houkMolAtomDrawingButton;
-    QRadioButton *simpleColoredAtomDrawingButton;
-    QRadioButton *gradientColoredAtomDrawingButton;
-    QRadioButton *largeLabelAtomDrawingButton;
-    QRadioButton *smallLabelAtomDrawingButton;
-    
-    QSpinBox	   *backgroundOpacitySpinBox;
-    QSpinBox       *zoomSpinBox;
-    QSpinBox       *bondLabelsPrecisionBox;
-    QSpinBox       *angleLabelsPrecisionBox;
-    QSpinBox       *foggingScaleBox;
-    QDoubleSpinBox *atomSizeSpinBox;
-    QDoubleSpinBox *bondSizeSpinBox;
-    
-    QLineEdit *xRotationBox;
-    QLineEdit *yRotationBox;
-    QLineEdit *zRotationBox;
-    
-    QLabel *xLabel;
-    QLabel *yLabel;
-    QLabel *zLabel;
+	QActionGroup *insertTextActionGroup;
+	QAction *deleteAction;
+	QAction *openAction;
+	QAction *exitAction;
+	QAction *saveAction;
+	QAction *saveAsAction;
+	QAction *insertAngstromAction;
+	QAction *insertDegreeAction;
+	QAction *insertPlusMinusAction;
+	QAction *addArrowAction;
+	QAction *unselectAllAction;
+	QAction *selectAllAction;
+	QAction *undoAction;
+	QAction *redoAction;
+	QAction *aboutAction;
+	QAction *showPreferencesAction;
 
-    QSlider *animationSlider;
-    
-    QString currentSaveFile;
-    QMenu *fileMenu;
-    QMenu *itemMenu;
-    QMenu *editMenu;
-    QMenu *insertMenu;
-    QMenu *insertSymbolMenu;
+	QPushButton *toggleBondLabelsButton;
+	QPushButton *toggleBondDashingButton;
+	QPushButton *toggleAngleLabelsButton;
+	QPushButton *toggleAtomNumberSubscriptsButton;
+	QPushButton *backgroundColorButton;
+	QPushButton *atomColorButton;
 
-    QToolBox *toolBox;
-    
-    QUndoStack *undoStack;
-	
+	QToolButton *boldTextButton;
+	QToolButton *italicTextButton;
+	QToolButton *underlineTextButton;
+
+	QRadioButton *simpleAtomDrawingButton;
+	QRadioButton *houkMolAtomDrawingButton;
+	QRadioButton *simpleColoredAtomDrawingButton;
+	QRadioButton *gradientColoredAtomDrawingButton;
+	QRadioButton *largeLabelAtomDrawingButton;
+	QRadioButton *smallLabelAtomDrawingButton;
+
+	QSpinBox	   *backgroundOpacitySpinBox;
+	QSpinBox       *zoomSpinBox;
+	QSpinBox       *bondLabelsPrecisionBox;
+	QSpinBox       *angleLabelsPrecisionBox;
+	QSpinBox       *foggingScaleBox;
+	QDoubleSpinBox *atomSizeSpinBox;
+	QDoubleSpinBox *bondSizeSpinBox;
+
+	QLineEdit *xRotationBox;
+	QLineEdit *yRotationBox;
+	QLineEdit *zRotationBox;
+
+	QLabel *xLabel;
+	QLabel *yLabel;
+	QLabel *zLabel;
+
+	QSlider *animationSlider;
+
+	QString currentSaveFile;
+	QMenu *fileMenu;
+	QMenu *itemMenu;
+	QMenu *editMenu;
+	QMenu *insertMenu;
+	QMenu *insertSymbolMenu;
+
+	QToolBox *toolBox;
+
+	QUndoStack *undoStack;
+
 	QList<QString> recentlyOpenedFiles;
 	QList<QAction*> recentFileActions;
 	QAction* separatorAction;

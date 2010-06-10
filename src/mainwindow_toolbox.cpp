@@ -77,7 +77,7 @@ QWidget *MainWindow::createAppearanceWidget()
 	backgroundColorLayout->addWidget(backgroundColorButton, 0, 0, 1, 2);
 	backgroundColorLayout->addWidget(new QLabel(tr("Background Opacity")), 1, 0);
 	backgroundOpacitySpinBox = new QSpinBox;
-	backgroundOpacitySpinBox->setToolTip(tr("Changes how opaque the background is"));
+	backgroundOpacitySpinBox->setToolTip(tr("Change the opacity of the background"));
 	backgroundOpacitySpinBox->setSuffix("%");
 	backgroundOpacitySpinBox->setValue(0);
 	backgroundOpacitySpinBox->setRange(0,100);
@@ -300,11 +300,17 @@ QWidget *MainWindow::createAtomsWidget()
 	return widget;
 }
 
-QSlider *MainWindow::createSlider(int max)
+QSlider* MainWindow::createSlider(int max)
 {
 	QSlider *slider = new QSlider(Qt::Horizontal);
 	slider->setRange(0, max);
 	slider->setSingleStep(1);
 	slider->setPageStep(15);
 	return slider;
+}
+
+void MainWindow::resetButtonsOnFileLoad(bool project)
+{
+
+
 }

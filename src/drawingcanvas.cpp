@@ -1202,7 +1202,8 @@ DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemM
 		else if(reader->name() == "Bond") {
 			Bond* b = Bond::deserialize(reader, drawingInfo, canvas->atomsList);
 			canvas->addItem(b);
-			canvas->addItem(b->label());
+			if(b->hasLabel())
+				canvas->addItem(b->label());
 			canvas->bondsList.push_back(b);
 		}
 		else if(reader->name() == "Label") {
@@ -1227,6 +1228,6 @@ DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemM
 		reader->skipCurrentElement();
 	}
 	reader->skipCurrentElement();
-	canvas->refresh();
+//	canvas->refresh();
 	return canvas;
 }

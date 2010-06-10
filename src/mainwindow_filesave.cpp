@@ -285,6 +285,8 @@ void MainWindow::openProject(QString filename)
 	if(reader.attributes().value("version").toString() != CHEMVP_VERSION)
 		error("Invalid Version Number!");
 
+	disconnect(backgroundColorButton, SIGNAL(clicked()), canvas, SLOT(setBackgroundColor()));
+
 	// Deserialize
 	this->parser = FileParser::deserialize(&reader);
 	this->drawingInfo = DrawingInfo::deserialize(&reader);
@@ -299,6 +301,7 @@ void MainWindow::openProject(QString filename)
 	animationSlider->setRange(0, parser->numMolecules() - 1);
 	animationSlider->setValue(parser->current());
 */
+
 	// Refresh layout
 	QHBoxLayout* layout = new QHBoxLayout;
 	QSplitter* splitter = new QSplitter(Qt::Horizontal);
@@ -319,7 +322,7 @@ void MainWindow::openProject(QString filename)
 
 	setWindowTitle(tr("%1 - cheMVP").arg(filename));
 
-	resetOnFileLoad();
+	resetSignalsOnFileLoad();
 
 	reader.readNextStartElement();
 	if(reader.hasError())

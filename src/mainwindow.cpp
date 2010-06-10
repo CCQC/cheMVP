@@ -61,7 +61,7 @@ MainWindow::MainWindow(FileParser *parser_in):
 	connect(undoStack, SIGNAL(canRedoChanged(bool)), redoAction, SLOT(setEnabled(bool)));
 	connect(undoStack, SIGNAL(canUndoChanged(bool)), undoAction, SLOT(setEnabled(bool)));
 
-	resetOnFileLoad();
+	resetSignalsOnFileLoad();
 }
 
 MainWindow::~MainWindow()
@@ -277,7 +277,7 @@ void MainWindow::changeZoom(int val)
 	canvas->refresh();
 }
 
-void MainWindow::resetOnFileLoad()
+void MainWindow::resetSignalsOnFileLoad()
 {
 	// Selecting items causes an update of the menus to reflect the current selected items' settings
 	connect(canvas, SIGNAL(selectionChanged()), this, SLOT(updateMenus()));
