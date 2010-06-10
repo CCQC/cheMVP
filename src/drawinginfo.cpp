@@ -1,38 +1,38 @@
 #include "drawinginfo.h"
 
 DrawingInfo::DrawingInfo():
-        _useFogging(false),
-        myXRot(0),
-        myYRot(0),
-        myZRot(0),
-        _foggingScale(DEFAULT_FOGGING_SCALE),
-        myDX((int)(DEFAULT_SCENE_SIZE_X/2.0)),
-        myDY((int)(DEFAULT_SCENE_SIZE_Y/2.0)),
-        myUserDX(0),
-        myUserDY(0),
-        myMidX((int)(DEFAULT_SCENE_SIZE_X/2.0)),
-        myMidY((int)(DEFAULT_SCENE_SIZE_Y/2.0)),
-        myWidth((int)(DEFAULT_SCENE_SIZE_X)),
-        myHeight((int)(DEFAULT_SCENE_SIZE_Y)),
-        myUserScaleFactor(100.0),
-        myPerspectiveScale(DEFAULT_PERSPECTIVE_SCALE),
-        myMoleculeMaxDimension(1.0),
-        myAngToSceneScale(1),
-        _maxZ(0.0),
-        _minZ(0.0),
-        _maxBondZ(0.0),
-        _minBondZ(0.0),
-        _anglePenWidth(0.2),
-        _angleColor(Qt::black),
-        _anglePen(Qt::black),
-        _anglePrecision(DEFAULT_ANGLE_LABEL_PRECISION),
-        _bondColor(Qt::black),
-        _bondPrecision(DEFAULT_BOND_LABEL_PRECISION),
-        _labelColor(Qt::black),
-        _atomLabelFont(DEFAULT_ATOM_LABEL_FONT),
-        _atomLineColor(Qt::black),
-        _atomTextColor(Qt::black),
-        style(Gradient)
+		_useFogging(false),
+		myXRot(0),
+		myYRot(0),
+		myZRot(0),
+		_foggingScale(DEFAULT_FOGGING_SCALE),
+		myDX((int)(DEFAULT_SCENE_SIZE_X/2.0)),
+		myDY((int)(DEFAULT_SCENE_SIZE_Y/2.0)),
+		myUserDX(0),
+		myUserDY(0),
+		myMidX((int)(DEFAULT_SCENE_SIZE_X/2.0)),
+		myMidY((int)(DEFAULT_SCENE_SIZE_Y/2.0)),
+		myWidth((int)(DEFAULT_SCENE_SIZE_X)),
+		myHeight((int)(DEFAULT_SCENE_SIZE_Y)),
+		myUserScaleFactor(100.0),
+		myPerspectiveScale(DEFAULT_PERSPECTIVE_SCALE),
+		myMoleculeMaxDimension(1.0),
+		myAngToSceneScale(1),
+		_maxZ(0.0),
+		_minZ(0.0),
+		_maxBondZ(0.0),
+		_minBondZ(0.0),
+		_anglePenWidth(0.2),
+		_angleColor(Qt::black),
+		_anglePen(Qt::black),
+		_anglePrecision(DEFAULT_ANGLE_LABEL_PRECISION),
+		_bondColor(Qt::black),
+		_bondPrecision(DEFAULT_BOND_LABEL_PRECISION),
+		_labelColor(Qt::black),
+		_atomLabelFont(DEFAULT_ATOM_LABEL_FONT),
+		_atomLineColor(Qt::black),
+		_atomTextColor(Qt::black),
+		style(Gradient)
 {
 }
 
@@ -42,15 +42,15 @@ DrawingInfo::~DrawingInfo()
 
 void DrawingInfo::determineScaleFactor()
 {
-    // To make the the user scale factor run from 0 to 100%, divide by 100, and we need to double the radius
-    // of the molecule to find the circumference - the 200 is not a random number!
-    myAngToSceneScale = (myWidth>myHeight ? myHeight : myWidth) / (200.0 * myMoleculeMaxDimension);
-    emit scaleFactorChanged();
+	// To make the the user scale factor run from 0 to 100%, divide by 100, and we need to double the radius
+	// of the molecule to find the circumference - the 200 is not a random number!
+	myAngToSceneScale = (myWidth>myHeight ? myHeight : myWidth) / (200.0 * myMoleculeMaxDimension);
+	emit scaleFactorChanged();
 }
 
 void DrawingInfo::serialize(QXmlStreamWriter* writer)
 {
-	writer->writeStartElement("DrawingInfo");	
+	writer->writeStartElement("DrawingInfo");
 	writer->writeAttribute("width", QString("%1").arg(myWidth));
 	writer->writeAttribute("height", QString("%1").arg(myHeight));
 	writer->writeAttribute("xRot", QString("%1").arg(myXRot));
@@ -88,15 +88,15 @@ void DrawingInfo::serialize(QXmlStreamWriter* writer)
 DrawingInfo* DrawingInfo::deserialize(QXmlStreamReader* reader)
 {
 	reader->readNextStartElement();
-	Q_ASSERT(reader->name() == "DrawingInfo");
-	
+	Q_ASSERT(reader->isStartElement() && reader->name() == "DrawingInfo");
+
 	// TODO - Initialize pens
 	DrawingInfo* d = new DrawingInfo();
 	QXmlStreamAttributes attr = reader->attributes();
 	d->myWidth = attr.value("width").toString().toDouble();
 	d->myHeight = attr.value("height").toString().toDouble();
 	d->myXRot = attr.value("xRot").toString().toInt();
-	d->myYRot = attr.value("yRot").toString().toInt();	
+	d->myYRot = attr.value("yRot").toString().toInt();
 	d->myZRot = attr.value("zRot").toString().toInt();
 	d->myMidX = attr.value("midX").toString().toInt();
 	d->myMidY = attr.value("midY").toString().toInt();
@@ -126,19 +126,12 @@ DrawingInfo* DrawingInfo::deserialize(QXmlStreamReader* reader)
 	d->_atomLineColor = QColor(atomLColor[0].toInt(), atomLColor[1].toInt(), atomLColor[2].toInt(), atomLColor[3].toInt());
 	QStringList atomTColor = attr.value("atomTColor").toString().split(" ");
 	d->_atomTextColor = QColor(atomTColor[0].toInt(), atomTColor[1].toInt(), atomTColor[2].toInt(), atomTColor[3].toInt());
-	switch(attr.value("style").toString().toInt())
-	{
-		case 0:  d->style = Gradient; break;
-		case 1:  d->style = Simple; break;
-		case 2:  d->style = SimpleColored; break;
-		case 3:  d->style = HoukMol; break;	
-		default: d->style = Gradient;
-	}
+	d->style = DrawingInfo::DrawingStyle(attr.value("style").toString().toInt());
 	QStringList atomFont = attr.value("atomFont").toString().split(" ");
 	d->_atomLabelFont.setFamily(atomFont.at(0));
 	d->_atomLabelFont.setPointSize(atomFont.at(1).toInt());
 	d->_anglePen = QPen(d->_angleColor, d->_anglePenWidth);
-	
+
 	reader->skipCurrentElement();
 	return d;
 }

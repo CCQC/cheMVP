@@ -1146,7 +1146,28 @@ void DrawingCanvas::serialize(QXmlStreamWriter* writer)
 {
 	writer->writeStartElement("Canvas");
 	writer->writeAttribute("background", QString("%1 %2 %3 %4").arg(myBackgroundColor.red()).arg(myBackgroundColor.green()).arg(myBackgroundColor.blue()).arg(myBackgroundAlpha));
-	writer->writeAttribute("items", QString("%1").arg(items().size() - 2*arrowsList.size()));
+
+	// Undo/Redo doesn't delete the items from the lists, so those size() can't be used to generate count
+	// This should be updated and fixed before release for efficiency.
+	int visibleItems = 0;
+	QList<QGraphicsItem *> itemsList = items();
+	foreach(Atom* a, atomsList)
+		if(itemsList.contains(a))
+			visibleItems++;
+	foreach(Bond* b, bondsList)
+		if(itemsList.contains(b))
+			visibleItems++;
+	foreach(Label* l, textLabelsList)
+		if(itemsList.contains(l))
+			visibleItems++;
+	foreach(Angle* a, anglesList)
+		if(itemsList.contains(a))
+			visibleItems++;
+	foreach(Arrow* a, arrowsList)
+		if(itemsList.contains(a))
+			visibleItems++;
+	writer->writeAttribute("items", QString("%1").arg(visibleItems));
+
 	foreach(Atom* a, atomsList)
 		a->serialize(writer);
 	foreach(Bond* b, bondsList)
@@ -1181,6 +1202,7 @@ DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemM
 		else if(reader->name() == "Bond") {
 			Bond* b = Bond::deserialize(reader, drawingInfo, canvas->atomsList);
 			canvas->addItem(b);
+			canvas->addItem(b->label());
 			canvas->bondsList.push_back(b);
 		}
 		else if(reader->name() == "Label") {
@@ -1191,6 +1213,8 @@ DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemM
 		else if(reader->name() == "Angle") {
 			Angle* a = Angle::deserialize(reader, drawingInfo, canvas->atomsList, canvas);
 			canvas->addItem(a);
+			canvas->addItem(a->marker1());
+			canvas->addItem(a->marker2());
 			canvas->anglesList.push_back(a);
 		}
 		else if(reader->name() == "Arrow") {

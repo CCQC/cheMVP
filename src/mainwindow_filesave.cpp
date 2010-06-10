@@ -321,6 +321,9 @@ void MainWindow::openProject(QString filename)
 
 	resetOnFileLoad();
 
+	reader.readNextStartElement();
 	if(reader.hasError())
 		error("Reader: " + reader.errorString());
+	else if(reader.name() != "cheMVP")
+		error("Full document not parsed!");
 }

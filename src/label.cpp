@@ -111,14 +111,7 @@ Label* Label::deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QG
 {
 	Q_ASSERT(reader->isStartElement() && reader->name() == "Label");
 	QXmlStreamAttributes attr = reader->attributes();
-	LabelType type;
-	switch(attr.value("type").toString().toInt())
-	{
-		case (UserType + BONDLABELTYPE) : type = BondLabelType; break;
-		case (UserType + ANGLELABELTYPE) : type = AngleLabelType; break;
-		case (UserType + TEXTLABELTYPE) : type = TextLabelType; break;
-
-	}
+	LabelType type = Label::LabelType(attr.value("type").toString().toInt());
 	Label* l = new Label(type, attr.value("value").toString().toDouble(), drawingInfo, NULL, scene);
 	l->setPlainText(attr.value("text").toString());
 	l->myString = attr.value("string").toString();
