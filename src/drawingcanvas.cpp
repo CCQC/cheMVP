@@ -72,7 +72,7 @@ void DrawingCanvas::drawBackground(QPainter *painter, const QRectF &)
 
 void DrawingCanvas::clearAll()
 {
-	foreach(QGraphicsItem *item, items()){
+	foreach(QGraphicsItem* item, items()) {
 		removeItem(item);
 		delete item;
 	}
@@ -1161,7 +1161,7 @@ void DrawingCanvas::serialize(QXmlStreamWriter* writer)
 		if(itemsList.contains(l))
 			visibleItems++;
 	foreach(Angle* a, anglesList)
-		if(itemsList.contains(a))
+		if(itemsList.contains(a->label())) // Angle itself is never added, only its components
 			visibleItems++;
 	foreach(Arrow* a, arrowsList)
 		if(itemsList.contains(a))
@@ -1208,12 +1208,10 @@ DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemM
 		}
 		else if(reader->name() == "Label") {
 			Label* l = Label::deserialize(reader, drawingInfo, canvas);
-			canvas->addItem(l);
 			canvas->textLabelsList.push_back(l);
 		}
 		else if(reader->name() == "Angle") {
 			Angle* a = Angle::deserialize(reader, drawingInfo, canvas->atomsList, canvas);
-			canvas->addItem(a);
 			canvas->addItem(a->marker1());
 			canvas->addItem(a->marker2());
 			canvas->anglesList.push_back(a);
