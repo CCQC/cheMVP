@@ -328,10 +328,11 @@ void MainWindow::openProject(QString filename)
 	QMap<QString, QString>* options = new QMap<QString, QString>();
 
 	// Appearance
+	options->insert("FOGGING_ON", QString("%1").arg(drawingInfo->getUseFogging()));
 	options->insert("FOGGING_SCALE", QString("%1").arg(drawingInfo->getFoggingScale()));
 	options->insert("X_ROTATION", "0"); // Where are these stored?
-	options->insert("Y_ROTATION", "0");
-	options->insert("Z_ROTATION", "0");
+	options->insert("Y_ROTATION", "0"); // They aren't.
+	options->insert("Z_ROTATION", "0"); // Why not? // No idea.
 	options->insert("BACKGROUND_OPACITY", QString("%1").arg(canvas->getBackgroundOpacity()));
 	options->insert("ZOOM", QString("%1").arg(drawingInfo->getZoom()));
 

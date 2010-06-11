@@ -27,22 +27,25 @@ QWidget *MainWindow::createAppearanceWidget(QMap<QString, QString>* options)
 	QWidget *widget = new QWidget;
 	QGridLayout *layout = new QGridLayout;
 
+	bool useFogging = options->value("FOGGING_ON").toInt();
+
 	QGroupBox *foggingGroupBox = new QGroupBox(tr("Fogging"));
 	useFoggingBox = new QCheckBox(tr("Use fogging"));
 	useFoggingBox->setToolTip(tr("Add a fog effect to more distant atoms to emphasize those in the foreground\n0%: no fogging applied\n100%: most distant atoms completely invisible"));
+	useFoggingBox->setChecked(useFogging);
 	foggingScaleBox = new QSpinBox();
 	foggingScaleBox->setSuffix("%");
 	QLabel *foggingLabel = new QLabel(tr("Opacity:"));
-	foggingLabel->setVisible(false);
+	foggingLabel->setVisible(useFogging);
 	QHBoxLayout *foggingBoxLayout = new QHBoxLayout();
 	foggingBoxLayout->addWidget(useFoggingBox);
 	foggingBoxLayout->addStretch(20);
 	foggingBoxLayout->addWidget(foggingLabel);
 	foggingBoxLayout->addWidget(foggingScaleBox);
-	foggingScaleBox->setValue(options->value("FOGGING_SCALE").toInt());
 	foggingScaleBox->setMaximum(100);
+	foggingScaleBox->setValue(options->value("FOGGING_SCALE").toInt());
 	foggingScaleBox->setAccelerated(true);
-	foggingScaleBox->setVisible(false);
+	foggingScaleBox->setVisible(useFogging);
 	connect(useFoggingBox, SIGNAL(toggled(bool)), foggingScaleBox, SLOT(setVisible(bool)));
 	connect(useFoggingBox, SIGNAL(toggled(bool)), foggingLabel, SLOT(setVisible(bool)));
 	foggingGroupBox->setLayout(foggingBoxLayout);
@@ -325,11 +328,13 @@ QSlider* MainWindow::createSlider(int max)
 	return slider;
 }
 
+// Changes should also be reflected in mainwindow_filesave::openProject()
 QMap<QString, QString>* MainWindow::defaultToolBoxOptions()
 {
 	QMap<QString, QString>* options = new QMap<QString, QString>();
 
 	// Appearance
+	options->insert("FOGGING_ON", QString("%1").arg(false));
 	options->insert("FOGGING_SCALE", QString("%1").arg(DEFAULT_FOGGING_SCALE));
 	options->insert("X_ROTATION", "0");
 	options->insert("Y_ROTATION", "0");

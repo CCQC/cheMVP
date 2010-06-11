@@ -53,9 +53,6 @@ void DrawingInfo::serialize(QXmlStreamWriter* writer)
 	writer->writeStartElement("DrawingInfo");
 	writer->writeAttribute("width", QString("%1").arg(myWidth));
 	writer->writeAttribute("height", QString("%1").arg(myHeight));
-	writer->writeAttribute("xRot", QString("%1").arg(myXRot));
-	writer->writeAttribute("yRot", QString("%1").arg(myYRot));
-	writer->writeAttribute("zRot", QString("%1").arg(myZRot));
 	writer->writeAttribute("midX", QString("%1").arg(myMidX));
 	writer->writeAttribute("midY", QString("%1").arg(myMidY));
 	writer->writeAttribute("dX", QString("%1").arg(myDX));
@@ -95,9 +92,6 @@ DrawingInfo* DrawingInfo::deserialize(QXmlStreamReader* reader)
 	QXmlStreamAttributes attr = reader->attributes();
 	d->myWidth = attr.value("width").toString().toDouble();
 	d->myHeight = attr.value("height").toString().toDouble();
-	d->myXRot = attr.value("xRot").toString().toInt();
-	d->myYRot = attr.value("yRot").toString().toInt();
-	d->myZRot = attr.value("zRot").toString().toInt();
 	d->myMidX = attr.value("midX").toString().toInt();
 	d->myMidY = attr.value("midY").toString().toInt();
 	d->myDX = attr.value("dX").toString().toInt();
