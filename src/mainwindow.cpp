@@ -299,4 +299,7 @@ void MainWindow::resetSignalsOnFileLoad()
 	connect(atomLabelFontCombo, SIGNAL(currentFontChanged(const QFont &)), canvas, SLOT(atomLabelFontChanged(const QFont &)));
 	connect(atomLabelFontSizeCombo, SIGNAL(currentIndexChanged(const QString &)), canvas, SLOT(atomLabelFontSizeChanged(const QString &)));
 	connect(atomFontSizeButtonGroup, SIGNAL(buttonClicked(int)), canvas, SLOT(setAtomFontSizeStyle(int)));
+
+	// Re-sync toolbar to (possibly) new canvas
+	mouseModeButtonGroupClicked(mouseModeButtonGroup->checkedId());
 }
