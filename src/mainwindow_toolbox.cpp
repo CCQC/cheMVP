@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 
-void MainWindow::createToolBox(int width, int height, QMap<QString, QString>* options)
+void MainWindow::createToolBox(QMap<QString, QString>* options, int width, int height)
 {
 	if(options == NULL)
 		options = defaultToolBoxOptions();
@@ -113,6 +113,8 @@ QWidget *MainWindow::createAppearanceWidget(QMap<QString, QString>* options)
 
 QWidget *MainWindow::createAnnotationWidget(QMap<QString, QString>* options)
 {
+	Q_UNUSED(options);
+
 	QWidget *widget = new QWidget;
 	QGridLayout *layout = new QGridLayout;
 
@@ -194,6 +196,8 @@ QWidget *MainWindow::createBondsAndAnglesWidget(QMap<QString, QString>* options)
 
 QWidget *MainWindow::createAnimationWidget(QMap<QString, QString>* options)
 {
+	Q_UNUSED(options);
+
 	QWidget *widget = new QWidget;
 	QGridLayout *layout = new QGridLayout;
 

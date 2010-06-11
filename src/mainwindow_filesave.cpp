@@ -206,11 +206,37 @@ void MainWindow::loadFile()
 	if (!parser->fileName().isEmpty()) {
 		if(parser->fileName().endsWith(".chmvp"))
 		{
-			error("Project loading in MainWindo::loadFile()");
+			error("Project loading in MainWindow::loadFile()");
 			return;
 		}
 		parser->readFile();
 		canvas->clearAll();
+
+		// Refresh layout
+		// Also needs to reset drawingInfo
+		drawingInfo = new DrawingInfo();
+		canvas = new DrawingCanvas(this->itemMenu, this->drawingInfo, this->parser);
+		this->view = new DrawingDisplay(canvas, drawingInfo);
+		view->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+		view->setGeometry(0, 0, static_cast<int>(DEFAULT_SCENE_SIZE_X), static_cast<int>(DEFAULT_SCENE_SIZE_Y));
+		view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+		view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+		view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+		createToolBox();
+		resetSignalsOnFileLoad();
+
+		QHBoxLayout* layout = new QHBoxLayout;
+		QByteArray state = splitter->saveState();
+		splitter = new QSplitter(Qt::Horizontal);
+		splitter->addWidget(view);
+		splitter->addWidget(toolBox);
+		splitter->restoreState(state);
+		layout->addWidget(splitter);
+
+		QWidget *widget = new QWidget;
+		widget->setLayout(layout);
+		this->setCentralWidget(widget);
+
 		canvas->loadFromParser();
 		setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
 
@@ -298,6 +324,26 @@ void MainWindow::openProject(QString filename)
 	view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+
+	QMap<QString, QString>* options = new QMap<QString, QString>();
+
+	// Appearance
+	options->insert("FOGGING_SCALE", QString("%1").arg(drawingInfo->getFoggingScale()));
+	options->insert("X_ROTATION", "0"); // Where are these stored?
+	options->insert("Y_ROTATION", "0");
+	options->insert("Z_ROTATION", "0");
+	options->insert("BACKGROUND_OPACITY", QString("%1").arg(canvas->getBackgroundOpacity()));
+	options->insert("ZOOM", QString("%1").arg(drawingInfo->getZoom()));
+
+	// Bonds and Angles
+	options->insert("BOND_LABEL_PRECISION", QString("%1").arg(drawingInfo->getBondPrecision()));
+	options->insert("ANGLE_LABEL_PRECISION", QString("%1").arg(drawingInfo->getAnglePrecision()));
+
+	// Atoms
+	options->insert("ATOM_DRAWING_STYLE", QString("%1").arg(drawingInfo->getDrawingStyle()));
+	options->insert("ATOM_LABEL_SIZE", QString("%1").arg(Atom::SmallLabel));
+
+	createToolBox(options);
 
 /*
 	// Update toolbox widgets

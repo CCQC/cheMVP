@@ -61,7 +61,7 @@ private slots:
 
 private:
 	void focusOutEvent(QFocusEvent *event);
-	void createToolBox(int width = DEFAULT_TOOLBOX_WIDTH, int height = DEFAULT_SCENE_SIZE_Y, QMap<QString, QString>* options = NULL);
+	void createToolBox(QMap<QString, QString>* options = NULL, int width = DEFAULT_TOOLBOX_WIDTH, int height = DEFAULT_SCENE_SIZE_Y);
 	QMap<QString, QString>* defaultToolBoxOptions();
 	void createActions();
 	void createMenus();
