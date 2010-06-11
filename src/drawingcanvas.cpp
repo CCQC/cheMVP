@@ -15,7 +15,7 @@ DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_
 		myBackgroundColor(Qt::white),
 		myMoveCursor(QPixmap(":/images/cursor_move.png")),
 		myRotateCursor(QPixmap(":/images/cursor_rotate.png")),
-		myBackgroundAlpha(0)
+		myBackgroundAlpha(DEFAULT_BACKGROUND_OPACITY/100.0*255)
 {
 	myItemMenu 			= itemMenu;
 	myMode 				= Select;

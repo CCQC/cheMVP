@@ -12,6 +12,7 @@
 #include <QUndoCommand>
 #include <QDebug>
 #include <QSettings>
+#include <QMap>
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
 #include "splashscreen.h"
@@ -60,7 +61,8 @@ private slots:
 
 private:
 	void focusOutEvent(QFocusEvent *event);
-	void createToolBox(int width = DEFAULT_TOOLBOX_WIDTH, int height = DEFAULT_SCENE_SIZE_Y);
+	void createToolBox(int width = DEFAULT_TOOLBOX_WIDTH, int height = DEFAULT_SCENE_SIZE_Y, QMap<QString, QString>* options = NULL);
+	QMap<QString, QString>* defaultToolBoxOptions();
 	void createActions();
 	void createMenus();
 	void createToolbars();
@@ -73,11 +75,11 @@ private:
 	void resetButtonsOnFileLoad(bool project);
 	QIcon textToIcon(const QString &string);
 
-	QWidget *createAppearanceWidget();
-	QWidget *createBondsAndAnglesWidget();
-	QWidget *createAtomsWidget();
-	QWidget *createAnnotationWidget();
-	QWidget *createAnimationWidget();
+	QWidget *createAppearanceWidget(QMap<QString, QString>* options);
+	QWidget *createBondsAndAnglesWidget(QMap<QString, QString>* options);
+	QWidget *createAtomsWidget(QMap<QString, QString>* options);
+	QWidget *createAnnotationWidget(QMap<QString, QString>* options);
+	QWidget *createAnimationWidget(QMap<QString, QString>* options);
 	QToolButton *makeAtomButton(const char *);
 	QSlider *createSlider(int max);
 	QCheckBox *useFoggingBox;
@@ -97,6 +99,7 @@ private:
 
 	DrawingCanvas *canvas;
 	QGraphicsView *view;
+	QSplitter* splitter;
 	DrawingInfo *drawingInfo;
 	FileParser *parser;
 
@@ -173,8 +176,6 @@ private:
 	QList<QString> recentlyOpenedFiles;
 	QList<QAction*> recentFileActions;
 	QAction* separatorAction;
-
-	QSplitter* splitter;
 };
 
 #endif

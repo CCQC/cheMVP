@@ -1,11 +1,14 @@
 #include "mainwindow.h"
 
-void MainWindow::createToolBox(int width, int height)
+void MainWindow::createToolBox(int width, int height, QMap<QString, QString>* options)
 {
-	QWidget *appearanceWidget 	   = createAppearanceWidget();
-	QWidget *bondsAndAnglesWidget  = createBondsAndAnglesWidget();
-	QWidget *atomsWidget           = createAtomsWidget();
-	animationWidget                = createAnimationWidget();
+	if(options == NULL)
+		options = defaultToolBoxOptions();
+
+	QWidget *appearanceWidget 	   = createAppearanceWidget(options);
+	QWidget *bondsAndAnglesWidget  = createBondsAndAnglesWidget(options);
+	QWidget *atomsWidget           = createAtomsWidget(options);
+	animationWidget                = createAnimationWidget(options);
 
 	toolBox = new QToolBox;
 	//  toolBox->addItem(annotationWidget, tr("Annotation"));
@@ -19,24 +22,24 @@ void MainWindow::createToolBox(int width, int height)
 	toolBox->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
 
-QWidget *MainWindow::createAppearanceWidget()
+QWidget *MainWindow::createAppearanceWidget(QMap<QString, QString>* options)
 {
 	QWidget *widget = new QWidget;
 	QGridLayout *layout = new QGridLayout;
 
 	QGroupBox *foggingGroupBox = new QGroupBox(tr("Fogging"));
-	useFoggingBox                    = new QCheckBox(tr("Use fogging"));
+	useFoggingBox = new QCheckBox(tr("Use fogging"));
 	useFoggingBox->setToolTip(tr("Add a fog effect to more distant atoms to emphasize those in the foreground\n0%: no fogging applied\n100%: most distant atoms completely invisible"));
-	foggingScaleBox                  = new QSpinBox();
+	foggingScaleBox = new QSpinBox();
 	foggingScaleBox->setSuffix("%");
-	QLabel *foggingLabel             = new QLabel(tr("Opacity:"));
+	QLabel *foggingLabel = new QLabel(tr("Opacity:"));
 	foggingLabel->setVisible(false);
-	QHBoxLayout *foggingBoxLayout    = new QHBoxLayout();
+	QHBoxLayout *foggingBoxLayout = new QHBoxLayout();
 	foggingBoxLayout->addWidget(useFoggingBox);
 	foggingBoxLayout->addStretch(20);
 	foggingBoxLayout->addWidget(foggingLabel);
 	foggingBoxLayout->addWidget(foggingScaleBox);
-	foggingScaleBox->setValue(DEFAULT_FOGGING_SCALE);
+	foggingScaleBox->setValue(options->value("FOGGING_SCALE").toInt());
 	foggingScaleBox->setMaximum(100);
 	foggingScaleBox->setAccelerated(true);
 	foggingScaleBox->setVisible(false);
@@ -49,9 +52,9 @@ QWidget *MainWindow::createAppearanceWidget()
 	QGroupBox *rotationGroupBox = new QGroupBox(tr("Rotation"));
 	QGridLayout *rotationLayout = new QGridLayout;
 	QValidator *intValidator = new QIntValidator(0, 360, this);
-	xRotationBox = new QLineEdit("0");
-	yRotationBox = new QLineEdit("0");
-	zRotationBox = new QLineEdit("0");
+	xRotationBox = new QLineEdit(options->value("X_ROTATION"));
+	yRotationBox = new QLineEdit(options->value("Y_ROTATION"));
+	zRotationBox = new QLineEdit(options->value("Z_ROTATION"));
 	xRotationBox->setValidator(intValidator);
 	yRotationBox->setValidator(intValidator);
 	zRotationBox->setValidator(intValidator);
@@ -82,8 +85,8 @@ QWidget *MainWindow::createAppearanceWidget()
 	backgroundOpacitySpinBox = new QSpinBox;
 	backgroundOpacitySpinBox->setToolTip(tr("Change the opacity of the background"));
 	backgroundOpacitySpinBox->setSuffix("%");
-	backgroundOpacitySpinBox->setValue(0);
-	backgroundOpacitySpinBox->setRange(0,100);
+	backgroundOpacitySpinBox->setRange(0, 100);
+	backgroundOpacitySpinBox->setValue(options->value("BACKGROUND_OPACITY").toInt());
 	backgroundColorLayout->addWidget(backgroundOpacitySpinBox, 1, 1);
 	backgroundColorGroupBox->setLayout(backgroundColorLayout);
 	layout->addWidget(backgroundColorGroupBox);
@@ -92,12 +95,12 @@ QWidget *MainWindow::createAppearanceWidget()
 	QGridLayout *zoomLayout = new QGridLayout;
 	QLabel *zoomTitle = new QLabel(tr("Zoom:"));
 	zoomSpinBox = new QSpinBox();
-	zoomSpinBox->setRange(0, 50000);
-	zoomSpinBox->setSuffix("%");
-	zoomSpinBox->setAccelerated(true);
-	zoomSpinBox->setValue(100);
 	zoomSpinBox->setMinimum(1);
 	zoomSpinBox->setMaximum(200);
+	zoomSpinBox->setSuffix("%");
+	zoomSpinBox->setAccelerated(true);
+	zoomSpinBox->setValue(options->value("ZOOM").toInt());
+
 	connect(zoomSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
 	zoomLayout->addWidget(zoomTitle, 0, 0);
 	zoomLayout->addWidget(zoomSpinBox, 0, 1);
@@ -108,7 +111,7 @@ QWidget *MainWindow::createAppearanceWidget()
 	return widget;
 }
 
-QWidget *MainWindow::createAnnotationWidget()
+QWidget *MainWindow::createAnnotationWidget(QMap<QString, QString>* options)
 {
 	QWidget *widget = new QWidget;
 	QGridLayout *layout = new QGridLayout;
@@ -124,7 +127,7 @@ QWidget *MainWindow::createAnnotationWidget()
 	return widget;
 }
 
-QWidget *MainWindow::createBondsAndAnglesWidget()
+QWidget *MainWindow::createBondsAndAnglesWidget(QMap<QString, QString>* options)
 {
 	QWidget *widget = new QWidget;
 	QGridLayout *layout = new QGridLayout;
@@ -132,24 +135,26 @@ QWidget *MainWindow::createBondsAndAnglesWidget()
 	// The label buttons
 	QGroupBox *labelsGroupBox = new QGroupBox(tr("Labels"));
 	QGridLayout *labelsLayout = new QGridLayout;
+
 	// The bond labels
 	toggleBondLabelsButton = new QPushButton(tr("Toggle Bond Labels"));
 	toggleBondLabelsButton->setToolTip(tr("Toggle the bond length labels of the selected bonds"));
 	labelsLayout->addWidget(toggleBondLabelsButton, 0, 0, 1, 2);
 	bondLabelsPrecisionBox = new QSpinBox();
 	bondLabelsPrecisionBox->setToolTip(tr("Set the precision of the bond length labels"));
-	bondLabelsPrecisionBox->setValue(DEFAULT_BOND_LABEL_PRECISION);
+	bondLabelsPrecisionBox->setValue(options->value("BOND_LABEL_PRECISION").toInt());
 	bondLabelsPrecisionBox->setFocusPolicy(Qt::NoFocus);
 	QLabel *bondLabelsPrecisionLabel = new QLabel(tr("Bond label precision:"));
 	labelsLayout->addWidget(bondLabelsPrecisionLabel, 1, 0);
 	labelsLayout->addWidget(bondLabelsPrecisionBox, 1, 1);
+
 	// The angle labels
 	toggleAngleLabelsButton = new QPushButton(tr("Toggle Angle Labels"));
 	toggleAngleLabelsButton->setToolTip(tr("Select three or more atoms to toggle the angle markers and labels.  Only angles between bonds will be drawn"));
 	labelsLayout->addWidget(toggleAngleLabelsButton, 2, 0, 1, 2);
 	angleLabelsPrecisionBox = new QSpinBox();
 	angleLabelsPrecisionBox->setToolTip(tr("Set the precision of the angle labels"));
-	angleLabelsPrecisionBox->setValue(DEFAULT_ANGLE_LABEL_PRECISION);
+	angleLabelsPrecisionBox->setValue(options->value("ANGLE_LABEL_PRECISION").toInt());
 	angleLabelsPrecisionBox->setFocusPolicy(Qt::NoFocus);
 	QLabel *angleLabelsPrecisionLabel = new QLabel(tr("Angle label precision:"));
 	labelsLayout->addWidget(angleLabelsPrecisionLabel, 3, 0);
@@ -166,6 +171,7 @@ QWidget *MainWindow::createBondsAndAnglesWidget()
 	toggleBondDashingButton = new QPushButton(tr("Toggle Bond Dashing"));
 	toggleBondDashingButton->setToolTip(tr("Toggle dashed / solid bonds for the selected bonds"));
 	bondSizeLayout->addWidget(toggleBondDashingButton, 0, 0, 1, 2);
+
 	// The bond thickness
 	QLabel *bondSizeLabel       = new QLabel("Bond thickness = ");
 	bondSizeSpinBox             = new QDoubleSpinBox();
@@ -186,7 +192,7 @@ QWidget *MainWindow::createBondsAndAnglesWidget()
 	return widget;
 }
 
-QWidget *MainWindow::createAnimationWidget()
+QWidget *MainWindow::createAnimationWidget(QMap<QString, QString>* options)
 {
 	QWidget *widget = new QWidget;
 	QGridLayout *layout = new QGridLayout;
@@ -206,7 +212,7 @@ QWidget *MainWindow::createAnimationWidget()
 	return widget;
 }
 
-QWidget *MainWindow::createAtomsWidget()
+QWidget *MainWindow::createAtomsWidget(QMap<QString, QString>* options)
 {
 	QWidget *widget = new QWidget;
 	QGridLayout *layout = new QGridLayout;
@@ -252,7 +258,7 @@ QWidget *MainWindow::createAtomsWidget()
 	drawingStyleLayout->addWidget(simpleColoredAtomDrawingButton, 0, 1);
 	drawingStyleLayout->addWidget(houkMolAtomDrawingButton, 1, 0);
 	drawingStyleLayout->addWidget(gradientColoredAtomDrawingButton, 1, 1);
-	gradientColoredAtomDrawingButton->setChecked(true);
+	atomDrawingStyleButtonGroup->button(options->value("ATOM_DRAWING_STYLE").toInt())->setChecked(true);
 	drawingStyleBox->setLayout(drawingStyleLayout);
 	layout->addWidget(drawingStyleBox);
 
@@ -264,6 +270,7 @@ QWidget *MainWindow::createAtomsWidget()
 	toggleAtomNumberSubscriptsButton = new QPushButton(tr("Toggle Atom Number Subscripts"));
 	toggleAtomNumberSubscriptsButton->setToolTip(tr("Add/remove atom numbers as a subscript to the selected atoms"));
 	labelStyleLayout->addWidget(toggleAtomNumberSubscriptsButton, 0, 0, 1, 2);
+
 	// The label text
 	atomLabelInput = new QLineEdit;
 	atomLabelInput->setText(tr("Select Atoms"));
@@ -271,19 +278,20 @@ QWidget *MainWindow::createAtomsWidget()
 	//    atomLabelInput->setFocusPolicy(Qt::NoFocus);
 	labelStyleLayout->addWidget(atomLabelInput, 1, 0, 1, 2);
 	connect(atomLabelInput, SIGNAL(returnPressed()), this, SLOT(setAtomLabels()));
+
 	// The label font
 	atomLabelFontCombo = new QFontComboBox();
 	atomLabelFontCombo->setEditText(tr("Select Atoms"));
 	atomLabelFontCombo->setToolTip(tr("The font for the selected atoms"));
 	atomLabelFontCombo->setFocusPolicy(Qt::NoFocus);
 	labelStyleLayout->addWidget(atomLabelFontCombo, 2, 0, 1, 2);
+
 	// The label font size
 	atomLabelFontSizeCombo = new QComboBox;
 	atomLabelFontSizeCombo->setEditable(true);
 	atomLabelFontSizeCombo->setToolTip(tr("The font size for the selected atoms"));
-	for (int i = 4; i < 35; ++i){
+	for(int i = 4; i < 35; ++i)
 		atomLabelFontSizeCombo->addItem(QString().setNum(i));
-	}
 	atomLabelFontSizeCombo->setEditText(tr("Select Atoms"));
 	atomLabelFontSizeCombo->setFocusPolicy(Qt::NoFocus);
 	labelStyleLayout->addWidget(atomLabelFontSizeCombo, 3, 0, 1, 2);
@@ -293,6 +301,7 @@ QWidget *MainWindow::createAtomsWidget()
 	largeLabelAtomDrawingButton 	 = new QRadioButton(tr("Large Label"));
 	atomFontSizeButtonGroup->addButton(smallLabelAtomDrawingButton, int(Atom::SmallLabel));
 	atomFontSizeButtonGroup->addButton(largeLabelAtomDrawingButton, int(Atom::LargeLabel));
+	atomFontSizeButtonGroup->button(options->value("ATOM_LABEL_SIZE").toInt())->setChecked(true);
 	labelStyleLayout->addWidget(smallLabelAtomDrawingButton, 4, 0);
 	labelStyleLayout->addWidget(largeLabelAtomDrawingButton, 4, 1);
 
@@ -312,8 +321,25 @@ QSlider* MainWindow::createSlider(int max)
 	return slider;
 }
 
-void MainWindow::resetButtonsOnFileLoad(bool project)
+QMap<QString, QString>* MainWindow::defaultToolBoxOptions()
 {
+	QMap<QString, QString>* options = new QMap<QString, QString>();
 
+	// Appearance
+	options->insert("FOGGING_SCALE", QString("%1").arg(DEFAULT_FOGGING_SCALE));
+	options->insert("X_ROTATION", "0");
+	options->insert("Y_ROTATION", "0");
+	options->insert("Z_ROTATION", "0");
+	options->insert("BACKGROUND_OPACITY", QString("%1").arg(DEFAULT_BACKGROUND_OPACITY));
+	options->insert("ZOOM", "100");
 
+	// Bonds and Angles
+	options->insert("BOND_LABEL_PRECISION", QString("%1").arg(DEFAULT_BOND_LABEL_PRECISION));
+	options->insert("ANGLE_LABEL_PRECISION", QString("%1").arg(DEFAULT_ANGLE_LABEL_PRECISION));
+
+	// Atoms
+	options->insert("ATOM_DRAWING_STYLE", QString("%1").arg(DrawingInfo::Gradient));
+	options->insert("ATOM_LABEL_SIZE", QString("%1").arg(Atom::SmallLabel));
+
+	return options;
 }
