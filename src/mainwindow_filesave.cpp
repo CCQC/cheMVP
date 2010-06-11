@@ -212,10 +212,22 @@ void MainWindow::loadFile()
 		parser->readFile();
 		canvas->clearAll();
 
-		// Refresh layout
-		// Also needs to reset drawingInfo
 		drawingInfo = new DrawingInfo();
+		// Includes loading canvas from parser
 		canvas = new DrawingCanvas(this->itemMenu, this->drawingInfo, this->parser);
+
+		setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
+
+		// Enable the widgets in the animation tab if there are multiple geometries
+		if (parser->numMolecules() <= 1)
+			animationWidget->setEnabled(false);
+		else
+			animationWidget->setEnabled(true);
+
+		// Set the sliders range and current value.
+		animationSlider->setRange(0, parser->numMolecules() - 1);
+		animationSlider->setValue(parser->current());
+
 		this->view = new DrawingDisplay(canvas, drawingInfo);
 		view->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 		view->setGeometry(0, 0, static_cast<int>(DEFAULT_SCENE_SIZE_X), static_cast<int>(DEFAULT_SCENE_SIZE_Y));
@@ -237,19 +249,6 @@ void MainWindow::loadFile()
 		QWidget *widget = new QWidget;
 		widget->setLayout(layout);
 		this->setCentralWidget(widget);
-
-		canvas->loadFromParser();
-		setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
-
-		// Enable the widgets in the animation tab if there are multiple geometries
-		if (parser->numMolecules() <= 1)
-			animationWidget->setEnabled(false);
-		else
-			animationWidget->setEnabled(true);
-
-		// Set the sliders range and current value.
-		animationSlider->setRange(0, parser->numMolecules() - 1);
-		animationSlider->setValue(parser->current());
 	}
 }
 
@@ -322,7 +321,7 @@ void MainWindow::openProject(QString filename)
 	this->view = new DrawingDisplay(canvas, drawingInfo);
 	view->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	view->setGeometry(0, 0, static_cast<int>(DEFAULT_SCENE_SIZE_X), static_cast<int>(DEFAULT_SCENE_SIZE_Y));
-//	view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
