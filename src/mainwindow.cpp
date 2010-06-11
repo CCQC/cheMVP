@@ -23,8 +23,8 @@ MainWindow::MainWindow(FileParser *parser_in):
 	Atom::fillLabelToVdwRadiusMap();
 	Atom::fillLabelToMassMap();
 
-	QSettings colorSettings;
-	QMap<QString, QVariant> colorMap = colorSettings.value("Default Atom Colors", QVariant(QMap<QString, QVariant>())).toMap();
+	QSettings settings;
+	QMap<QString, QVariant> colorMap = settings.value("Default Atom Colors", QVariant(QMap<QString, QVariant>())).toMap();
 	if(colorMap.isEmpty())
 		Atom::fillLabelToColorMap();
 	else

@@ -219,9 +219,10 @@ void MainWindow::loadFile()
 		this->view = new DrawingDisplay(canvas, drawingInfo);
 		view->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 		view->setGeometry(0, 0, static_cast<int>(DEFAULT_SCENE_SIZE_X), static_cast<int>(DEFAULT_SCENE_SIZE_Y));
-		view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//		view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Causes display issues on load
 		view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+
 		createToolBox();
 		resetSignalsOnFileLoad();
 
@@ -321,7 +322,7 @@ void MainWindow::openProject(QString filename)
 	this->view = new DrawingDisplay(canvas, drawingInfo);
 	view->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	view->setGeometry(0, 0, static_cast<int>(DEFAULT_SCENE_SIZE_X), static_cast<int>(DEFAULT_SCENE_SIZE_Y));
-	view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//	view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
