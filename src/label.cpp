@@ -171,6 +171,7 @@ Label* Label::deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QG
 	Label* l = new Label(type, attr.value("value").toString().toDouble(), drawingInfo, NULL, scene);
 	QString text = attr.value("text").toString();
 	l->myString = attr.value("string").toString();
+	l->setPlainText("");
 	l->myFontSize = attr.value("fontSize").toString().toInt();
 	l->myDX = attr.value("dx").toString().toInt();
 	l->myDY = attr.value("dy").toString().toInt();
