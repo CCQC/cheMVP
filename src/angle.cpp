@@ -209,5 +209,7 @@ Angle* Angle::deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QL
 	reader->readNextStartElement();
 	a->myLabel = Label::deserialize(reader, drawingInfo, scene);
 	reader->skipCurrentElement();
+	a->myMarker1->setOtherMarker(a->myMarker2);
+	a->myMarker2->setOtherMarker(a->myMarker1);
 	return a;
 }
