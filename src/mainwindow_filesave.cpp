@@ -228,8 +228,6 @@ void MainWindow::loadFile()
 		createToolBox();
 		resetSignalsOnFileLoad();
 
-		disconnect(animationSlider, SIGNAL(valueChanged(int)), this, SLOT(setGeometryStep(int)));
-
 		// Enable the widgets in the animation tab if there are multiple geometries
 		if (parser->numMolecules() <= 1)
 			animationWidget->setEnabled(false);
