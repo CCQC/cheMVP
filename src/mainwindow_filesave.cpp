@@ -109,7 +109,7 @@ void MainWindow::saveImage(const QString &fileName)
 MainWindow::FileType MainWindow::determineFileType(const QString &fileName)
 {
 	QRegExp re(".*\\.png", Qt::CaseInsensitive, QRegExp::RegExp2);
-	//	if(re.exactMatch(fileName)) return PNG;
+	if(re.exactMatch(fileName)) return PNG;
 	re.setPattern(".*\\.pdf");
 	if(re.exactMatch(fileName)) return PDF;
 	re.setPattern(".*\\.svg");
@@ -122,10 +122,6 @@ MainWindow::FileType MainWindow::determineFileType(const QString &fileName)
 	if(re.exactMatch(fileName)) return TIFF;
 	re.setPattern(".*\\.tiff");
 	if(re.exactMatch(fileName)) return TIFF;
-	re.setPattern(".*\\.png");
-	if(re.exactMatch(fileName)) return PNG;
-	re.setPattern(".*\\.cvp");
-	if(re.exactMatch(fileName)) return CHMVP;
 
 	return Unknown;
 }
@@ -135,13 +131,16 @@ void MainWindow::openFile()
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath());
 	if(fileName != 0) {
 		if(fileName.endsWith(".chmvp"))
+		{
 			openProject(fileName);
+			currentSaveFile = fileName;
+		}
 		else
 		{
 		   parser->setFileName(fileName);
 		   loadFile();
+		   currentSaveFile = "";
 		}
-		currentSaveFile = fileName;
 		recentlyOpenedFiles.removeAll(fileName);
 		recentlyOpenedFiles.prepend(fileName);
 		updateRecentFiles();
@@ -185,11 +184,15 @@ void MainWindow::openRecentFile()
 		QString fileName = action->data().toString();
 		if(QFile::exists(fileName)) {
 			if(fileName.endsWith(".chmvp"))
+			{
 				openProject(fileName);
+				currentSaveFile = fileName;
+			}
 			else
 			{
 				parser->setFileName(fileName);
 				loadFile();
+				currentSaveFile = "";
 			}
 			recentlyOpenedFiles.removeAll(fileName);
 			recentlyOpenedFiles.prepend(fileName);
@@ -309,7 +312,10 @@ void MainWindow::openProject(QString filename)
 	QXmlStreamReader reader(&file);
 	reader.readNextStartElement();
 	if(reader.attributes().value("version").toString() != CHEMVP_VERSION)
+	{
 		error("Invalid Version Number!");
+		return;
+	}
 
 	disconnect(backgroundColorButton, SIGNAL(clicked()), canvas, SLOT(setBackgroundColor()));
 
