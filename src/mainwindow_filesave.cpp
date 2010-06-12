@@ -218,16 +218,6 @@ void MainWindow::loadFile()
 
 		setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
 
-		// Enable the widgets in the animation tab if there are multiple geometries
-		if (parser->numMolecules() <= 1)
-			animationWidget->setEnabled(false);
-		else
-			animationWidget->setEnabled(true);
-
-		// Set the sliders range and current value.
-		animationSlider->setRange(0, parser->numMolecules() - 1);
-		animationSlider->setValue(parser->current());
-
 		this->view = new DrawingDisplay(canvas, drawingInfo);
 		view->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 		view->setGeometry(0, 0, static_cast<int>(DEFAULT_SCENE_SIZE_X), static_cast<int>(DEFAULT_SCENE_SIZE_Y));
@@ -237,6 +227,18 @@ void MainWindow::loadFile()
 
 		createToolBox();
 		resetSignalsOnFileLoad();
+
+		disconnect(animationSlider, SIGNAL(valueChanged(int)), this, SLOT(setGeometryStep(int)));
+
+		// Enable the widgets in the animation tab if there are multiple geometries
+		if (parser->numMolecules() <= 1)
+			animationWidget->setEnabled(false);
+		else
+			animationWidget->setEnabled(true);
+
+		// Set the sliders range and current value.
+		animationSlider->setRange(0, parser->numMolecules() - 1);
+		animationSlider->setValue(parser->current());
 
 		QHBoxLayout* layout = new QHBoxLayout;
 		QByteArray state = splitter->saveState();
@@ -346,7 +348,8 @@ void MainWindow::openProject(QString filename)
 
 	createToolBox(options);
 
-/*
+	disconnect(animationSlider, SIGNAL(valueChanged(int)), this, SLOT(setGeometryStep(int)));
+
 	// Update toolbox widgets
 	if (parser->numMolecules() <= 1)
 		animationWidget->setEnabled(false);
@@ -354,7 +357,8 @@ void MainWindow::openProject(QString filename)
 		animationWidget->setEnabled(true);
 	animationSlider->setRange(0, parser->numMolecules() - 1);
 	animationSlider->setValue(parser->current());
-*/
+
+	connect(animationSlider, SIGNAL(valueChanged(int)), this, SLOT(setGeometryStep(int)));
 
 	// Refresh layout
 	QHBoxLayout* layout = new QHBoxLayout;
