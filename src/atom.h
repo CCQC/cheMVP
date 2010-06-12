@@ -5,8 +5,10 @@
 #include <QString>
 #include <QtGui>
 #include <QMap>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
+#include <math.h>
 
-#include <iostream>
 #include "error.h"
 #include "defines.h"
 #include "drawinginfo.h"
@@ -60,7 +62,8 @@ public:
     void setColor(QColor color) {fill_color = color;}
     void setFontSizeStyle(FontSizeStyle style);
     void setID(int val) {myID = val;}
-    //  void processProjectFile(QSettings &settings, bool saveFile);
+	void serialize(QXmlStreamWriter* writer);
+	static Atom* deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo);
 
     static double bondLength(Atom*, Atom*);
 

@@ -2,7 +2,7 @@ ABOUT
 =====
 cheMVP is free, open-source software designed to make clean, simple molecule
 drawings suitable for publications and presentations.  The program is written
-in C++, using the QT library and some icons from the SVG icons project.
+in C++, using the Qt library and some icons from the SVG icons project.
 
 OUTPUT FORMATS
 ==============
@@ -64,7 +64,7 @@ COMPILING
 If you can't find a pre-compiled binary for your OS, then to compile from
 source is pretty simple.
 
-1) Download and install QT from http://trolltech.com/downloads/opensource/appdev
+1) Download and install Qt from http://qt.nokia.com/downloads
 2) Head into the compilation directory in the chemvp source folder
 3) Type 'qmake'
 4) Type 'make'
@@ -92,17 +92,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Please contact me with any updates/modifications you have made, so that I can
 incorporate them into the code.
 
-
-LINKS
-=====
-A number of valuable open-source programs have been used to create this code,
-they are:- 
-Qt (GUI library)  - http://trolltech.com
-SVG Icons (the icons)  - http://svgicons.sourceforge.net
-GIT (code synchronization) - http://git.or.cz
-
 AUTHORS
 =======
 Andy Simmonett andysim@ccc.uga.edu
 Justin M. Turney jturney@ccc.uga.edu
 H. Parker Shelton
+
+LINKS
+=====
+A number of valuable open-source programs have been used to create this code.
+They are:
+Qt (GUI library)  - http://qt.nokia.com
+SVG Icons (the icons)  - http://svgicons.sourceforge.net
+GIT (code synchronization) - http://git-scm.com/
+
+OTHER CONTRIBUTORS
+==================
+Jesse Yates - FontFormatTuple for Label serialization

@@ -54,9 +54,7 @@ void MainWindow::createToolbars()
     addTextButton->setCheckable(true);
     mouseModeButtonGroup->addButton(addTextButton, int(DrawingCanvas::AddText));
     mouseModeToolBar->addWidget(addTextButton);
-    
-    connect(canvas, SIGNAL(mouseModeChanged(int)), this, SLOT(mouseModeButtonGroupClicked(int)));
-    
+        
     // The text settings
     editSelectedTextToolBar = addToolBar("Edit Selected Text");
     // Bold
