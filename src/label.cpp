@@ -106,6 +106,7 @@ void Label::serialize(QXmlStreamWriter* writer)
 	writer->writeAttribute("value", QString("%1").arg(myValue));
 
 	// Determine and write all the font formats used throughout the label
+	// Credit: Jesse Yates
 	QTextCursor* cursor = new QTextCursor(this->document());
 	QMap<QString, QList<FontFormatTuple*>* > fontMap;
 	int start = cursor->position();

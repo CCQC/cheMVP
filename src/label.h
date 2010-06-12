@@ -56,7 +56,7 @@ private:
 	double myValue;
 	DrawingInfo* _info;
 
-	class FontFormatTuple { // Holds the character range for a specific font
+	class FontFormatTuple { // Holds the character range for a specific font. Credit: Jesse Yates
 	public:
 		int start, end;
 		QString format;

@@ -92,6 +92,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Please contact me with any updates/modifications you have made, so that I can
 incorporate them into the code.
 
+AUTHORS
+=======
+Andy Simmonett andysim@ccc.uga.edu
+Justin M. Turney jturney@ccc.uga.edu
+H. Parker Shelton
 
 LINKS
 =====
@@ -101,8 +106,6 @@ Qt (GUI library)  - http://qt.nokia.com
 SVG Icons (the icons)  - http://svgicons.sourceforge.net
 GIT (code synchronization) - http://git-scm.com/
 
-AUTHORS
-=======
-Andy Simmonett andysim@ccc.uga.edu
-Justin M. Turney jturney@ccc.uga.edu
-H. Parker Shelton
+OTHER CONTRIBUTORS
+==================
+Jesse Yates - FontFormatTuple for Label serialization
