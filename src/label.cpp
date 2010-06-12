@@ -104,7 +104,62 @@ void Label::serialize(QXmlStreamWriter* writer)
 	writer->writeAttribute("dx", QString("%1").arg(myDX));
 	writer->writeAttribute("dy", QString("%1").arg(myDY));
 	writer->writeAttribute("value", QString("%1").arg(myValue));
+
+	// Determine and write all the font formats used throughout the label
+	QTextCursor* cursor = new QTextCursor(this->document());
+	QMap<QString, QList<FontFormatTuple*>* > fontMap;
+	int start = cursor->position();
+	QString prev = "";
+	QString format = "";
+	QList<FontFormatTuple*>* values;
+	int i = 0;
+	for(i = start; !cursor->atEnd(); i++)
+	{
+		cursor->setPosition(cursor->position()+1);
+		format = cursor->charFormat().font().toString();
+		if(fontMap.contains(format))
+		{
+			values = fontMap[format];
+			if(format == prev)
+				((*values)[values->size() - 1])->end = i;
+			else
+			{
+				FontFormatTuple* temp = new FontFormatTuple(format, i, i);
+				values->append(temp);
+			}
+		}
+		else
+		{
+			values = new QList<FontFormatTuple*>();
+			FontFormatTuple* temp = new FontFormatTuple(format, i, i);
+			values->append(temp);
+		}
+		fontMap.insert(format, values);
+		prev = format;
+	}
+
+	if(fontMap.contains(format))
+	{
+		values = fontMap[format];
+		((*values)[values->size() - 1])->end = i-1;
+	}
+
+	std::vector<FontFormatTuple*> list;
+	foreach(QList<FontFormatTuple*>* ql, fontMap.values())
+	{
+		foreach(FontFormatTuple* v, *ql)
+			list.push_back(v);
+	}
+	sort(list.begin(), list.end(), FontFormatTuple::compareTo);
+
+	writer->writeAttribute("formats", QString("%1").arg(list.size()));
+	foreach(FontFormatTuple* t, list)
+		t->serialize(writer);
+
 	writer->writeEndElement();
+
+	delete cursor;
+	// Delete lots of other stuff here, too
 }
 
 Label* Label::deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QGraphicsScene* scene)
@@ -113,11 +168,23 @@ Label* Label::deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QG
 	QXmlStreamAttributes attr = reader->attributes();
 	LabelType type = Label::LabelType(attr.value("type").toString().toInt());
 	Label* l = new Label(type, attr.value("value").toString().toDouble(), drawingInfo, NULL, scene);
-	l->setPlainText(attr.value("text").toString());
+	QString text = attr.value("text").toString();
 	l->myString = attr.value("string").toString();
 	l->myFontSize = attr.value("fontSize").toString().toInt();
 	l->myDX = attr.value("dx").toString().toInt();
 	l->myDY = attr.value("dy").toString().toInt();
 	l->myValue = attr.value("value").toString().toDouble();
+
+	int formats = attr.value("formats").toString().toInt();
+	QTextCursor cursor(l->document());
+	QTextCharFormat textFormat;
+	QFont textFont;
+	for(int i = 0; i < formats; i++) {
+		FontFormatTuple* s = FontFormatTuple::deserialize(reader);
+		QString t = text.left(s->end+1).right(s->end - s->start + 1);
+		textFont.fromString(s->format);
+		textFormat.setFont(textFont);
+		cursor.insertText(t, textFormat);
+	}
 	return l;
 }
