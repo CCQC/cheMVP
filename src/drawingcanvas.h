@@ -83,7 +83,8 @@ public slots:
 	void setAtomFontSizeStyle(int style);
 	void setBondLabelPrecision(int val);
 	void setAngleLabelPrecision(int val);
-	void labelCharacterEntered();
+	void labelCharacterEntered() { emit updateTextToolbars(); };
+
 
 protected:
 	void determineRotationAngles(); //HPS

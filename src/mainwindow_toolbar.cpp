@@ -168,21 +168,15 @@ void MainWindow::updateTextLabelToolbar()
 			if(ITEM_IS_LABEL)
 			{
 				Label* label = dynamic_cast<Label*>(item);
-				if(label->isSelected())
+				if(label->isSelected() || (label->textInteractionFlags() & Qt::TextEditorInteraction))
 				{
 					found = true;
-					if(label->textInteractionFlags() & Qt::TextEditorInteraction)
-						enableLabelSignals();
-
 					QFont currentFont = label->getCurrentFont();
 					textFontCombo->setCurrentFont(currentFont.family());
 					textFontSizeCombo->setCurrentIndex(textFontSizeCombo->findText(QString().setNum(currentFont.pointSize())));
 					boldTextButton->setChecked(currentFont.bold());
 					italicTextButton->setChecked(currentFont.italic());
 					underlineTextButton->setChecked(currentFont.underline());
-
-					if(label->textInteractionFlags() & Qt::TextEditorInteraction)
-						disableLabelSignals();
 				}
 			}
 			if(found)

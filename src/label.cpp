@@ -22,24 +22,23 @@ Label::Label(LabelType type, double value, DrawingInfo *info, QGraphicsItem *par
 
 void Label::keyPressEvent(QKeyEvent *event)
 {
+	QTextCursor cursor = textCursor();
 	if(event->key() == Qt::Key_Tab)
 	{
-		QTextCursor t = textCursor();
-		t.insertText("\t", *(this->currentFormat));
-		setTextCursor(t);
+		cursor.insertText("\t", *(this->currentFormat));
+		setTextCursor(cursor);
 		setTextInteractionFlags(Qt::TextEditorInteraction);
 	}
 	else if(event->key() == Qt::Key_Up)
 	{
-		QTextCursor t = this->textCursor();
-		t.movePosition(QTextCursor::Start, (event->modifiers() & Qt::ShiftModifier) ? QTextCursor::KeepAnchor : QTextCursor::MoveAnchor, 1);
-		this->setTextCursor(t);
+		cursor.movePosition(QTextCursor::Start, (event->modifiers() & Qt::ShiftModifier) ? QTextCursor::KeepAnchor : QTextCursor::MoveAnchor, 1);
+		this->setTextCursor(cursor);
+
 	}
 	else if(event->key() == Qt::Key_Down)
 	{
-		QTextCursor t = this->textCursor();
-		t.movePosition(QTextCursor::End, (event->modifiers() & Qt::ShiftModifier) ? QTextCursor::KeepAnchor : QTextCursor::MoveAnchor, 1);
-		this->setTextCursor(t);
+		cursor.movePosition(QTextCursor::End, (event->modifiers() & Qt::ShiftModifier) ? QTextCursor::KeepAnchor : QTextCursor::MoveAnchor, 1);
+		this->setTextCursor(cursor);
 	}
 	else
 	{
@@ -47,11 +46,12 @@ void Label::keyPressEvent(QKeyEvent *event)
 		QGraphicsTextItem::keyPressEvent(event);
 		if(length < toPlainText().length())
 		{
-			QString c = toPlainText().left(textCursor().position()).right(1);
-			textCursor().deletePreviousChar();
-			textCursor().insertText(c, *(this->currentFormat));
+			QString c = toPlainText().left(cursor.position()).right(1);
+			cursor.deletePreviousChar();
+			cursor.insertText(c, *(this->currentFormat));
 		}
 	}
+	this->currentFormat = new QTextCharFormat(cursor.charFormat());
 	emit characterEntered();
 }
 
@@ -230,7 +230,24 @@ QFont Label::getCurrentFont()
 {
 	if(textInteractionFlags() & Qt::TextEditorInteraction)
 	{
-		return this->textCursor().charFormat().font();
+		QTextCursor cursor = this->textCursor();
+		if(cursor.hasSelection())
+		{
+			QTextCursor tempCursor(cursor);
+			int start = cursor.selectionStart();
+			int end = cursor.selectionEnd();
+			bool swapped = false;
+			if(start > end)
+			{
+				int temp = start;
+				start = end;
+				end = temp;
+				swapped = true;
+			}
+			tempCursor.setPosition((swapped) ? cursor.position()-1 : cursor.position()+1);
+			return tempCursor.charFormat().font();
+		}
+		return cursor.charFormat().font();
 	}
 	else
 		return currentFormat->font();
