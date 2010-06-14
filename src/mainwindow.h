@@ -39,12 +39,16 @@ public slots:
 
 private slots:
 	void insertTextAtCursor(QAction *action);
-	void updateTextLabelMenus();
+	void updateTextLabelToolbar();
 	void updateMenus();
 	void setAtomLabels();
 	void changeAtomSize();
 	void changeBondSize();
-	void setTextBoxFonts();
+	void setLabelBoldness(bool b);
+	void setLabelItalics(bool b);
+	void setLabelUnderline(bool b);
+	void setLabelFont(QFont f);
+	void setLabelFontSize(QString s);
 	void deleteItem();
 	void mouseModeButtonGroupClicked(int);
 	void rotateFromInitialCoordinates();
@@ -74,6 +78,9 @@ private:
 	void resetSignalsOnFileLoad();
 	void resetButtonsOnFileLoad(bool project);
 	QIcon textToIcon(const QString &string);
+	void mouseReleaseEvent(QMouseEvent *);
+	void disableLabelSignals();
+	void enableLabelSignals();
 
 	QWidget *createAppearanceWidget(QMap<QString, QString>* options);
 	QWidget *createBondsAndAnglesWidget(QMap<QString, QString>* options);

@@ -2,11 +2,14 @@
 #define LABEL_H_
 
 #include <QGraphicsTextItem>
+#include <QTextCharFormat>
+#include <QTextCursor>
 #include <QPen>
 #include <QFont>
 #include <iostream>
 #include "defines.h"
 #include "drawinginfo.h"
+
 class QFocusEvent;
 class QGraphicsItem;
 class QGraphicsScene;
@@ -28,8 +31,13 @@ public:
 	double dY() {return myDY;}
 	void setDX(double val) {myDX = val;}
 	void setDY(double val) {myDY = val;}
-	void setFontSize(int val) {myFontSize = val; updateFontSize();}
-	int fontSize() const {return myFontSize;}
+	void setBold(bool bold);
+	void setItalic(bool bold);
+	void setUnderline(bool bold);
+	void setCurrentFont(QFont f);
+	void setCurrentFontSize(int size);
+	void setCurrentFont(QTextCharFormat* f);
+	QFont getCurrentFont();
 	void updateLabel();
 
 	void serialize(QXmlStreamWriter* writer);
@@ -37,9 +45,6 @@ public:
 
 signals:
 	void selectedChange(QGraphicsItem *item);
-
-public slots:
-	void updateFontSize();
 
 protected:
 	void keyPressEvent(QKeyEvent *event);
@@ -50,6 +55,7 @@ protected:
 private:
 	LabelType myType;
 	QString myString;
+	QTextCharFormat* currentFormat;
 	int    myFontSize;
 	double myDX;
 	double myDY;

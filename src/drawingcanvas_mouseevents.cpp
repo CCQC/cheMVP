@@ -48,6 +48,7 @@ void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 			selectionRectangle->setPen(QPen(Qt::black, 1,Qt::DashLine));
 			addItem(selectionRectangle);
 		}
+		emit updateTextToolbars();
 		break;
 	default:
 		;
@@ -249,6 +250,7 @@ void DrawingCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		label->setPos(mouseEvent->scenePos());
 		label->setTextInteractionFlags(Qt::TextEditorInteraction);
 		label->setFocus();
+		emit updateTextToolbars();
 		emit mouseModeChanged(int(Select));
 		break;
 	case AddArrow:

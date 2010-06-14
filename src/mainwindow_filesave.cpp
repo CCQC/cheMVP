@@ -29,7 +29,7 @@ void MainWindow::saveAs()
 		extension = extension.right(extension.length() - extension.indexOf("*.") - 1);
 		if(!(currentSaveFile.endsWith(".pdf") || currentSaveFile.endsWith(".svg") || currentSaveFile.endsWith(".ps")
 			 || currentSaveFile.endsWith(".tif") || currentSaveFile.endsWith(".tiff") || currentSaveFile.endsWith(".eps")
-			 || currentSaveFile.endsWith(".png")))
+			 || currentSaveFile.endsWith(".png") || currentSaveFile.endsWith(".chmvp")))
 			currentSaveFile += extension;
 
 		if(currentSaveFile.endsWith(".chmvp"))
@@ -223,7 +223,7 @@ void MainWindow::loadFile()
 
 		drawingInfo = new DrawingInfo();
 		// Includes loading canvas from parser
-		canvas = new DrawingCanvas(this->itemMenu, this->drawingInfo, this->parser);
+		canvas = new DrawingCanvas(this->drawingInfo, this->parser);
 
 		setWindowTitle(tr("%1 - cheMVP").arg(parser->fileName()));
 
@@ -328,7 +328,7 @@ void MainWindow::openProject(QString filename)
 	// Deserialize
 	this->parser = FileParser::deserialize(&reader);
 	this->drawingInfo = DrawingInfo::deserialize(&reader);
-	this->canvas = DrawingCanvas::deserialize(&reader, itemMenu, drawingInfo, parser);
+	this->canvas = DrawingCanvas::deserialize(&reader, drawingInfo, parser);
 
 	this->view = new DrawingDisplay(canvas, drawingInfo);
 	view->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);

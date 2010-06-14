@@ -41,7 +41,7 @@ public:
 	 * TempMoveAll - If the object clicked was an atom, everything moves
 	 */
 
-	DrawingCanvas(QMenu *itemMenu, DrawingInfo *drawingInfo, FileParser *parser, QObject *parent = 0);
+	DrawingCanvas(DrawingInfo *drawingInfo, FileParser *parser, QObject *parent = 0);
 
 	void clearAll();
 	void storeLabeledBonds();
@@ -58,7 +58,7 @@ public:
 	void drawBackground(QPainter *painter, const QRectF &rect);
 	const QCursor& rotateCursor() {return myRotateCursor;}
 	void serialize(QXmlStreamWriter* writer);
-	static DrawingCanvas* deserialize(QXmlStreamReader* reader, QMenu *itemMenu, DrawingInfo *drawingInfo, FileParser *parser);
+	static DrawingCanvas* deserialize(QXmlStreamReader* reader, DrawingInfo *drawingInfo, FileParser *parser);
 	QList<Bond*> getBonds() {return bondsList;}
 	QList<Atom*> getAtoms() {return atomsList;}
 	void addBondLabel(int i);
@@ -91,12 +91,14 @@ protected:
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
 	void translateToCenterOfMass();
 	void focusOutEvent (QFocusEvent *event);
+//	void keyPressEvent(QKeyEvent *event);
 
 signals:
 	void xRotChanged(int phi);
 	void yRotChanged(int phi);
 	void zRotChanged(int phi);
 	void mouseModeChanged(int mode);
+	void updateTextToolbars();
 
 private:
 	double bondLength(Atom* atom1, Atom* atom2);
@@ -110,7 +112,6 @@ private:
 	double yRot;
 	double zRot;
 	bool leftButtonDown;
-	QMenu *myItemMenu;
 	FileParser *parser;
 	DrawingInfo *drawingInfo;
 	QGraphicsItem *myTempMoveItem;

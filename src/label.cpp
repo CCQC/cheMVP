@@ -1,13 +1,9 @@
-#include <QtGui>
-#include <QtDebug>
-
 #include "label.h"
 #include "drawingcanvas.h"
 
 Label::Label(LabelType type, double value, DrawingInfo *info, QGraphicsItem *parent, QGraphicsScene *scene)
 		:QGraphicsTextItem(parent, scene),
 		myType(type),
-		myFontSize(DEFAULT_LABEL_FONT_SIZE),
 		myDX(0.0),
 		myDY(0.0),
 		myValue(value),
@@ -17,51 +13,46 @@ Label::Label(LabelType type, double value, DrawingInfo *info, QGraphicsItem *par
 	setFlag(QGraphicsItem::ItemIsSelectable);
 	setTextInteractionFlags(Qt::NoTextInteraction);
 	setZValue(1000.0);
-	if(myType != TextLabelType){
+	if(myType != TextLabelType)
 		updateLabel();
-	}
-	setFont(QFont(DEFAULT_LABEL_FONT));
-	updateFontSize();
-	// If the zoom factor changes or the window size changes, we need to adjust
-	// the size of the font for the labels accordingly
-	connect(_info, SIGNAL(scaleFactorChanged()), this, SLOT(updateFontSize()));
+	this->currentFormat = new QTextCharFormat();
+	this->currentFormat->setFont(QFont(DEFAULT_LABEL_FONT));
 	setToolTip(tr("Double click to edit"));
 }
 
 void Label::keyPressEvent(QKeyEvent *event)
 {
-	std::cout<<"key press event "<<event->key()<<"  "<<Qt::Key_Tab<<std::endl;
 	if(event->key()==Qt::Key_Tab){
 		QTextCursor t = textCursor();
-		t.insertText("\t");
+		t.insertText("\t", *(this->currentFormat));
 		setTextCursor(t);
-		std::cout<<"inserting tab"<<std::endl;
 		setTextInteractionFlags(Qt::TextEditorInteraction);
 	} else {
+		int length = toPlainText().length();
 		QGraphicsTextItem::keyPressEvent(event);
+		if(length < toPlainText().length())
+		{
+			QString c = toPlainText().left(textCursor().position()).right(1);
+			textCursor().deletePreviousChar();
+			textCursor().insertText(c, *(this->currentFormat));
+		}
 	}
 }
 
 void Label::focusOutEvent(QFocusEvent *event)
 {
-	if(event->reason()==Qt::TabFocusReason) {
+	if(event->reason() == Qt::TabFocusReason)
+	{
 		QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
 		QGraphicsTextItem::keyPressEvent(newEvent);
 		event->accept();
-	} else {
+	}
+	else
+	{
 		QGraphicsTextItem::focusOutEvent(event);
 		if(this->toPlainText().length() == 0)
 			this->scene()->removeItem(this);
 	}
-}
-
-void Label::updateFontSize()
-{
-	QFont myFont(font());
-	// The denominator is completely arbitrary and is chosen to make the font size
-	// appear on a reasonable scale
-	myFont.setPointSizeF(double(myFontSize) * _info->scaleFactor() / 80.0);
-	setFont(myFont);
 }
 
 void Label::updateLabel()
@@ -94,13 +85,145 @@ void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	Q_UNUSED(event);
 }
 
+void Label::setBold(bool bold)
+{
+	this->currentFormat->setFontWeight(bold ? QFont::Bold : QFont::Normal);
+	QTextCursor cursor = this->textCursor();
+	if(textInteractionFlags() & Qt::TextEditorInteraction)
+		cursor.setCharFormat(*currentFormat);
+	else
+	{
+		int length = toPlainText().length();
+		cursor.setPosition(0);
+		while(cursor.position() < length)
+		{
+			cursor.setPosition(cursor.position() + 1);
+			QTextCharFormat format = cursor.charFormat();
+			if(format.font().bold() != bold)
+			{
+				QString c = toPlainText().left(cursor.position()).right(1);
+				cursor.deletePreviousChar();
+				format.setFontWeight(bold ? QFont::Bold : QFont::Normal);
+				cursor.insertText(c, format);
+			}
+		}
+	}
+}
+
+void Label::setItalic(bool italic)
+{
+	this->currentFormat->setFontItalic(italic);
+	QTextCursor cursor = this->textCursor();
+	if(textInteractionFlags() & Qt::TextEditorInteraction)
+		cursor.setCharFormat(*currentFormat);
+	else
+	{
+		int length = toPlainText().length();
+		cursor.setPosition(0);
+		while(cursor.position() < length)
+		{
+			cursor.setPosition(cursor.position() + 1);
+			QTextCharFormat format = cursor.charFormat();
+			if(format.font().italic() != italic)
+			{
+				QString c = toPlainText().left(cursor.position()).right(1);
+				cursor.deletePreviousChar();
+				format.setFontItalic(italic);
+				cursor.insertText(c, format);
+			}
+		}
+	}
+}
+
+void Label::setUnderline(bool underline)
+{
+	this->currentFormat->setFontUnderline(underline ? QTextCharFormat::SingleUnderline : QTextCharFormat::NoUnderline);
+	QTextCursor cursor = this->textCursor();
+	if(textInteractionFlags() & Qt::TextEditorInteraction)
+		cursor.setCharFormat(*currentFormat);
+	else
+	{
+		int length = toPlainText().length();
+		cursor.setPosition(0);
+		while(cursor.position() < length)
+		{
+			cursor.setPosition(cursor.position() + 1);
+			QTextCharFormat format = cursor.charFormat();
+			if(format.font().underline() != underline)
+			{
+				QString c = toPlainText().left(cursor.position()).right(1);
+				cursor.deletePreviousChar();
+				format.setFontUnderline(underline ? QTextCharFormat::SingleUnderline : QTextCharFormat::NoUnderline);
+				cursor.insertText(c, format);
+			}
+		}
+	}
+}
+
+void Label::setCurrentFont(QFont font)
+{
+	this->currentFormat->setFontFamily(font.family());
+	QTextCursor cursor = this->textCursor();
+	if(textInteractionFlags() & Qt::TextEditorInteraction)
+		cursor.setCharFormat(*currentFormat);
+	else
+	{
+		int length = toPlainText().length();
+		cursor.setPosition(0);
+		while(cursor.position() < length)
+		{
+			cursor.setPosition(cursor.position() + 1);
+			QTextCharFormat format = cursor.charFormat();
+			if(format.font().family() != font.family())
+			{
+				QString c = toPlainText().left(cursor.position()).right(1);
+				cursor.deletePreviousChar();
+				format.setFontFamily(font.family());
+				cursor.insertText(c, format);
+			}
+		}
+	}
+}
+
+void Label::setCurrentFontSize(int size)
+{
+	this->currentFormat->setFontPointSize(size);
+	QTextCursor cursor = this->textCursor();
+	if(textInteractionFlags() & Qt::TextEditorInteraction)
+		cursor.setCharFormat(*currentFormat);
+	else
+	{
+		int length = toPlainText().length();
+		cursor.setPosition(0);
+		while(cursor.position() < length)
+		{
+			cursor.setPosition(cursor.position() + 1);
+			QTextCharFormat format = cursor.charFormat();
+			if(format.font().pointSize() != size)
+			{
+				QString c = toPlainText().left(cursor.position()).right(1);
+				cursor.deletePreviousChar();
+				format.setFontPointSize(size);
+				cursor.insertText(c, format);
+			}
+		}
+	}
+}
+
+QFont Label::getCurrentFont()
+{
+	if(textInteractionFlags() & Qt::TextEditorInteraction)
+		return textCursor().charFormat().font();
+	else
+		return currentFormat->font();
+}
+
 void Label::serialize(QXmlStreamWriter* writer)
 {
 	writer->writeStartElement("Label");
 	writer->writeAttribute("type", QString("%1").arg(myType));
 	writer->writeAttribute("string", myString);
 	writer->writeAttribute("text", toPlainText());
-	writer->writeAttribute("fontSize", QString("%1").arg(myFontSize));
 	writer->writeAttribute("dx", QString("%1").arg(myDX));
 	writer->writeAttribute("dy", QString("%1").arg(myDY));
 	writer->writeAttribute("value", QString("%1").arg(myValue));
@@ -172,7 +295,6 @@ Label* Label::deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo, QG
 	QString text = attr.value("text").toString();
 	l->myString = attr.value("string").toString();
 	l->setPlainText("");
-	l->myFontSize = attr.value("fontSize").toString().toInt();
 	l->myDX = attr.value("dx").toString().toInt();
 	l->myDY = attr.value("dy").toString().toInt();
 	l->myValue = attr.value("value").toString().toDouble();

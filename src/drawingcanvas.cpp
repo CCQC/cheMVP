@@ -8,7 +8,7 @@ extern "C" {
 	extern void DGESVD(char*, char*, int*, int*, double*, int*, double*, double*, int*, double*, int*, double*, int*, int*);
 };
 
-DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_parser, QObject *parent)
+DrawingCanvas::DrawingCanvas(DrawingInfo *info, FileParser *in_parser, QObject *parent)
 		: QGraphicsScene(parent),
 		parser(in_parser),
 		drawingInfo(info),
@@ -17,7 +17,6 @@ DrawingCanvas::DrawingCanvas(QMenu *itemMenu, DrawingInfo *info, FileParser *in_
 		myRotateCursor(QPixmap(":/images/cursor_rotate.png")),
 		myBackgroundAlpha(DEFAULT_BACKGROUND_OPACITY/100.0*255)
 {
-	myItemMenu 			= itemMenu;
 	myMode 				= Select;
 	bondline 			= 0;
 	selectionRectangle 	= 0;
@@ -1181,12 +1180,12 @@ void DrawingCanvas::serialize(QXmlStreamWriter* writer)
 	writer->writeEndElement();
 }
 
-DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, QMenu *itemMenu, DrawingInfo *drawingInfo, FileParser *parser)
+DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, DrawingInfo *drawingInfo, FileParser *parser)
 {
 	reader->readNextStartElement();
 	Q_ASSERT(reader->isStartElement() && reader->name() == "Canvas");
 
-	DrawingCanvas* canvas = new DrawingCanvas(itemMenu, drawingInfo, parser);
+	DrawingCanvas* canvas = new DrawingCanvas(drawingInfo, parser);
 	QStringList color = reader->attributes().value("background").toString().split(" ");
 	canvas->myBackgroundColor = QColor(color[0].toInt(), color[1].toInt(), color[2].toInt(), color[3].toInt());
 	canvas->myBackgroundAlpha = color[3].toInt();

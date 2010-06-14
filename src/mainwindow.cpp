@@ -13,7 +13,7 @@ MainWindow::MainWindow(FileParser *parser_in):
 {
 	undoStack = new QUndoStack();
 	drawingInfo = new DrawingInfo();
-	canvas = new DrawingCanvas(itemMenu, drawingInfo, parser);
+	canvas = new DrawingCanvas(drawingInfo, parser);
 
 	createActions();
 	createToolBox();
@@ -69,9 +69,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::focusOutEvent(QFocusEvent *event)
 {
-	if(event->reason() != Qt::TabFocusReason){
+	if(event->reason() != Qt::TabFocusReason)
 		QMainWindow::focusOutEvent(event);
-	}else{
+	else
+	{
 		QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
 		QMainWindow::keyPressEvent(newEvent);
 	}
@@ -105,62 +106,80 @@ QIcon MainWindow::textToIcon(const QString &string)
 	return QIcon(pixmap);
 }
 
-void MainWindow::setTextBoxFonts()
+void MainWindow::setLabelBoldness(bool bold)
 {
-	// Start by looking to see if one of the labels is being edited
-	bool hasLabel = false;
-	Label *labelBeingEdited = 0;
-	foreach(QGraphicsItem* item, canvas->items()){
-		if(ITEM_IS_LABEL){
-			hasLabel = true;
-			Label *label = dynamic_cast<Label*>(item);
-			if(label->textInteractionFlags() & Qt::TextEditorInteraction){
-				labelBeingEdited = label;
-				break;
-			}
-		}
-	}
-
-	// Nothing to edit - bail now
-	if(!hasLabel) return;
-
-	if(labelBeingEdited!=0){
-		// One of the labels is being edited - operate only on this selection
-		QTextCursor cursor = labelBeingEdited->textCursor();
-		QTextCharFormat format(cursor.blockCharFormat());
-		format.setFontWeight((boldTextButton->isChecked() ? QFont::Bold : QFont::Normal));
-		format.setFontItalic(italicTextButton->isChecked());
-		format.setFontUnderline((underlineTextButton->isChecked() ?
-								 QTextCharFormat::SingleUnderline : QTextCharFormat::NoUnderline));
-		format.setFontFamily(textFontCombo->currentFont().family());
-		cursor.mergeCharFormat(format);
-		// TODO This will change the entire label's size.  Think about allowing different sizes within labels.
-		if(textFontSizeCombo->currentText().size()){
-			labelBeingEdited->setFontSize(textFontSizeCombo->currentText().toInt());
-		}
-	}else{
-		// No editor - operate on selected text boxes
-		foreach(QGraphicsItem* item,canvas->items()){
-			if(ITEM_IS_LABEL){
-				Label *label = dynamic_cast<Label*>(item);
-				if(label->isSelected()){
-					QFont myFont(label->font());
-					myFont.setUnderline(underlineTextButton->isChecked());
-					myFont.setItalic(italicTextButton->isChecked());
-					myFont.setWeight((boldTextButton->isChecked() ? QFont::Bold : QFont::Normal));
-					myFont.setFamily(textFontCombo->currentFont().family());
-					if(textFontSizeCombo->currentText().size()){
-						label->setFontSize(textFontSizeCombo->currentText().toInt());
-					}
-					label->setFont(myFont);
-				}
-			}
+	foreach(QGraphicsItem* item, canvas->items())
+	{
+		if(ITEM_IS_LABEL)
+		{
+			Label* label = dynamic_cast<Label*>(item);
+			if(label->isSelected() || (label->textInteractionFlags() & Qt::TextEditorInteraction))
+				label->setBold(bold);
 		}
 	}
 	drawingInfo->determineScaleFactor();
 	canvas->refresh();
 }
 
+void MainWindow::setLabelItalics(bool italic)
+{
+	foreach(QGraphicsItem* item, canvas->items())
+	{
+		if(ITEM_IS_LABEL)
+		{
+			Label* label = dynamic_cast<Label*>(item);
+			if(label->isSelected() || (label->textInteractionFlags() & Qt::TextEditorInteraction))
+				label->setItalic(italic);
+		}
+	}
+	drawingInfo->determineScaleFactor();
+	canvas->refresh();
+}
+
+void MainWindow::setLabelUnderline(bool underline)
+{
+	foreach(QGraphicsItem* item, canvas->items())
+	{
+		if(ITEM_IS_LABEL)
+		{
+			Label* label = dynamic_cast<Label*>(item);
+			if(label->isSelected() || (label->textInteractionFlags() & Qt::TextEditorInteraction))
+				label->setUnderline(underline);
+		}
+	}
+	drawingInfo->determineScaleFactor();
+	canvas->refresh();
+}
+
+void MainWindow::setLabelFont(QFont font)
+{
+	foreach(QGraphicsItem* item, canvas->items())
+	{
+		if(ITEM_IS_LABEL)
+		{
+			Label* label = dynamic_cast<Label*>(item);
+			if(label->isSelected() || (label->textInteractionFlags() & Qt::TextEditorInteraction))
+				label->setCurrentFont(font);
+		}
+	}
+	drawingInfo->determineScaleFactor();
+	canvas->refresh();
+}
+
+void MainWindow::setLabelFontSize(QString size)
+{
+	foreach(QGraphicsItem* item, canvas->items())
+	{
+		if(ITEM_IS_LABEL)
+		{
+			Label* label = dynamic_cast<Label*>(item);
+			if(label->isSelected() || (label->textInteractionFlags() & Qt::TextEditorInteraction))
+				label->setCurrentFontSize(size.toInt());
+		}
+	}
+	drawingInfo->determineScaleFactor();
+	canvas->refresh();
+}
 
 void MainWindow::mouseModeButtonGroupClicked(int buttonID)
 {
@@ -282,6 +301,7 @@ void MainWindow::resetSignalsOnFileLoad()
 	connect(selectAllAction, SIGNAL(triggered()), canvas, SLOT(selectAll()));
 	connect(unselectAllAction, SIGNAL(triggered()), canvas, SLOT(unselectAll()));
 	connect(canvas, SIGNAL(mouseModeChanged(int)), this, SLOT(mouseModeButtonGroupClicked(int)));
+	connect(canvas, SIGNAL(updateTextToolbars()), this, SLOT(updateTextLabelToolbar()));
 	connect(useFoggingBox, SIGNAL(toggled(bool)), drawingInfo, SLOT(setUseFogging(bool)));
 	connect(useFoggingBox, SIGNAL(toggled(bool)), canvas, SLOT(refresh()));
 	connect(foggingScaleBox, SIGNAL(valueChanged(int)), drawingInfo, SLOT(setFoggingScale(int)));
@@ -302,4 +322,10 @@ void MainWindow::resetSignalsOnFileLoad()
 
 	// Re-sync toolbar to (possibly) new canvas
 	mouseModeButtonGroupClicked(mouseModeButtonGroup->checkedId());
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent* e)
+{
+	Q_UNUSED(e);
+	updateTextLabelToolbar();
 }
