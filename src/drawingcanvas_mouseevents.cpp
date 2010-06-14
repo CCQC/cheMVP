@@ -250,6 +250,7 @@ void DrawingCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		label->setPos(mouseEvent->scenePos());
 		label->setTextInteractionFlags(Qt::TextEditorInteraction);
 		label->setFocus();
+		connect(label, SIGNAL(characterEntered()), this, SLOT(labelCharacterEntered()));
 		emit updateTextToolbars();
 		emit mouseModeChanged(int(Select));
 		break;

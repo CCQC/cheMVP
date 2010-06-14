@@ -22,12 +22,27 @@ Label::Label(LabelType type, double value, DrawingInfo *info, QGraphicsItem *par
 
 void Label::keyPressEvent(QKeyEvent *event)
 {
-	if(event->key()==Qt::Key_Tab){
+	if(event->key() == Qt::Key_Tab)
+	{
 		QTextCursor t = textCursor();
 		t.insertText("\t", *(this->currentFormat));
 		setTextCursor(t);
 		setTextInteractionFlags(Qt::TextEditorInteraction);
-	} else {
+	}
+	else if(event->key() == Qt::Key_Up)
+	{
+		QTextCursor t = this->textCursor();
+		t.movePosition(QTextCursor::Start, (event->modifiers() & Qt::ShiftModifier) ? QTextCursor::KeepAnchor : QTextCursor::MoveAnchor, 1);
+		this->setTextCursor(t);
+	}
+	else if(event->key() == Qt::Key_Down)
+	{
+		QTextCursor t = this->textCursor();
+		t.movePosition(QTextCursor::End, (event->modifiers() & Qt::ShiftModifier) ? QTextCursor::KeepAnchor : QTextCursor::MoveAnchor, 1);
+		this->setTextCursor(t);
+	}
+	else
+	{
 		int length = toPlainText().length();
 		QGraphicsTextItem::keyPressEvent(event);
 		if(length < toPlainText().length())
@@ -37,6 +52,7 @@ void Label::keyPressEvent(QKeyEvent *event)
 			textCursor().insertText(c, *(this->currentFormat));
 		}
 	}
+	emit characterEntered();
 }
 
 void Label::focusOutEvent(QFocusEvent *event)
@@ -213,7 +229,9 @@ void Label::setCurrentFontSize(int size)
 QFont Label::getCurrentFont()
 {
 	if(textInteractionFlags() & Qt::TextEditorInteraction)
-		return textCursor().charFormat().font();
+	{
+		return this->textCursor().charFormat().font();
+	}
 	else
 		return currentFormat->font();
 }

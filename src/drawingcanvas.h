@@ -83,6 +83,7 @@ public slots:
 	void setAtomFontSizeStyle(int style);
 	void setBondLabelPrecision(int val);
 	void setAngleLabelPrecision(int val);
+	void labelCharacterEntered();
 
 protected:
 	void determineRotationAngles(); //HPS
@@ -91,7 +92,6 @@ protected:
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
 	void translateToCenterOfMass();
 	void focusOutEvent (QFocusEvent *event);
-//	void keyPressEvent(QKeyEvent *event);
 
 signals:
 	void xRotChanged(int phi);

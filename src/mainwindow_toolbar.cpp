@@ -102,18 +102,18 @@ void MainWindow::createToolbars()
 
 void MainWindow::disableLabelSignals()
 {
-	disconnect(boldTextButton, SIGNAL(clicked(bool)), this, SLOT(setLabelBoldness(bool)));
-	disconnect(italicTextButton, SIGNAL(clicked(bool)), this, SLOT(setLabelItalics(bool)));
-	disconnect(underlineTextButton, SIGNAL(clicked(bool)), this, SLOT(setLabelUnderline(bool)));
+	disconnect(boldTextButton, SIGNAL(toggled(bool)), this, SLOT(setLabelBoldness(bool)));
+	disconnect(italicTextButton, SIGNAL(toggled(bool)), this, SLOT(setLabelItalics(bool)));
+	disconnect(underlineTextButton, SIGNAL(toggled(bool)), this, SLOT(setLabelUnderline(bool)));
 	disconnect(textFontCombo, SIGNAL(currentFontChanged(const QFont &)), this, SLOT(setLabelFont(QFont)));
 	disconnect(textFontSizeCombo, SIGNAL(currentIndexChanged(const QString &)),this, SLOT(setLabelFontSize(QString)));
 }
 
 void MainWindow::enableLabelSignals()
 {
-	connect(boldTextButton, SIGNAL(clicked(bool)), this, SLOT(setLabelBoldness(bool)));
-	connect(italicTextButton, SIGNAL(clicked(bool)), this, SLOT(setLabelItalics(bool)));
-	connect(underlineTextButton, SIGNAL(clicked(bool)), this, SLOT(setLabelUnderline(bool)));
+	connect(boldTextButton, SIGNAL(toggled(bool)), this, SLOT(setLabelBoldness(bool)));
+	connect(italicTextButton, SIGNAL(toggled(bool)), this, SLOT(setLabelItalics(bool)));
+	connect(underlineTextButton, SIGNAL(toggled(bool)), this, SLOT(setLabelUnderline(bool)));
 	connect(textFontCombo, SIGNAL(currentFontChanged(const QFont &)), this, SLOT(setLabelFont(QFont)));
 	connect(textFontSizeCombo, SIGNAL(currentIndexChanged(const QString &)),this, SLOT(setLabelFontSize(QString)));
 }
@@ -171,15 +171,18 @@ void MainWindow::updateTextLabelToolbar()
 				if(label->isSelected())
 				{
 					found = true;
-//					if(label->textInteractionFlags() & Qt::TextEditorInteraction)
-//					{
-						QFont currentFont = label->getCurrentFont();
-						textFontCombo->setCurrentFont(currentFont.family());
-						textFontSizeCombo->setCurrentIndex(textFontSizeCombo->findText(QString().setNum(currentFont.pointSize())));
-						boldTextButton->setChecked(currentFont.bold());
-						italicTextButton->setChecked(currentFont.italic());
-						underlineTextButton->setChecked(currentFont.underline());
-//					}
+					if(label->textInteractionFlags() & Qt::TextEditorInteraction)
+						enableLabelSignals();
+
+					QFont currentFont = label->getCurrentFont();
+					textFontCombo->setCurrentFont(currentFont.family());
+					textFontSizeCombo->setCurrentIndex(textFontSizeCombo->findText(QString().setNum(currentFont.pointSize())));
+					boldTextButton->setChecked(currentFont.bold());
+					italicTextButton->setChecked(currentFont.italic());
+					underlineTextButton->setChecked(currentFont.underline());
+
+					if(label->textInteractionFlags() & Qt::TextEditorInteraction)
+						disableLabelSignals();
 				}
 			}
 			if(found)

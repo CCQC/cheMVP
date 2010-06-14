@@ -1225,6 +1225,10 @@ DrawingCanvas* DrawingCanvas::deserialize(QXmlStreamReader* reader, DrawingInfo 
 		reader->skipCurrentElement();
 	}
 	reader->skipCurrentElement();
-//	canvas->refresh();
 	return canvas;
+}
+
+void DrawingCanvas::labelCharacterEntered()
+{
+	emit updateTextToolbars();
 }

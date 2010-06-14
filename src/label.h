@@ -45,6 +45,7 @@ public:
 
 signals:
 	void selectedChange(QGraphicsItem *item);
+	void characterEntered();
 
 protected:
 	void keyPressEvent(QKeyEvent *event);
