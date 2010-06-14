@@ -13,6 +13,7 @@ Label::Label(LabelType type, double value, DrawingInfo *info, QGraphicsItem *par
 	setFlag(QGraphicsItem::ItemIsSelectable);
 	setTextInteractionFlags(Qt::NoTextInteraction);
 	setZValue(1000.0);
+	setFont(QFont(DEFAULT_LABEL_FONT, DEFAULT_LABEL_FONT_SIZE));
 	if(myType != TextLabelType)
 		updateLabel();
 	this->currentFormat = new QTextCharFormat();
@@ -43,12 +44,19 @@ void Label::keyPressEvent(QKeyEvent *event)
 	else
 	{
 		int length = toPlainText().length();
-		QGraphicsTextItem::keyPressEvent(event);
-		if(length < toPlainText().length())
+		if(event->key() == Qt::Key_Right && cursor.position() == length)
+			return;
+		else if(event->key() == Qt::Key_Left && cursor.position() == 0)
+			return;
+		else
 		{
-			QString c = toPlainText().left(cursor.position()).right(1);
-			cursor.deletePreviousChar();
-			cursor.insertText(c, *(this->currentFormat));
+			QGraphicsTextItem::keyPressEvent(event);
+			if(length < toPlainText().length())
+			{
+				QString c = toPlainText().left(cursor.position()).right(1);
+				cursor.deletePreviousChar();
+				cursor.insertText(c, *(this->currentFormat));
+			}
 		}
 	}
 	this->currentFormat = new QTextCharFormat(cursor.charFormat());
