@@ -221,6 +221,10 @@ void MainWindow::loadFile()
 		parser->readFile();
 		canvas->clearAll();
 
+		DrawingCanvas* old_canvas = canvas;
+		DrawingInfo* old_info = drawingInfo;
+		QGraphicsView* old_view = view;
+
 		drawingInfo = new DrawingInfo();
 		// Includes loading canvas from parser
 		canvas = new DrawingCanvas(this->drawingInfo, this->parser);
@@ -234,7 +238,7 @@ void MainWindow::loadFile()
 		view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
-		createToolBox();
+		resetToolBox(NULL);
 		resetSignalsOnFileLoad();
 
 		// Enable the widgets in the animation tab if there are multiple geometries
@@ -249,6 +253,7 @@ void MainWindow::loadFile()
 
 		QHBoxLayout* layout = new QHBoxLayout;
 		QByteArray state = splitter->saveState();
+		QSplitter* old_splitter = splitter;
 		splitter = new QSplitter(Qt::Horizontal);
 		splitter->addWidget(view);
 		splitter->addWidget(toolBox);
@@ -258,6 +263,11 @@ void MainWindow::loadFile()
 		QWidget *widget = new QWidget;
 		widget->setLayout(layout);
 		this->setCentralWidget(widget);
+
+		delete old_info;
+		delete old_view;
+		delete old_splitter;
+		delete old_canvas;
 	}
 }
 
@@ -269,11 +279,6 @@ void MainWindow::saveProject(QString filename)
 		filename += ".chmvp";
 
 	QFile file(filename);
-//	if(file.exists())
-//	{
-//		// Some prompt for overwrite?
-//		return;
-//	}
 	if(!file.open(QIODevice::WriteOnly))
 	{
 		// error
@@ -323,12 +328,17 @@ void MainWindow::openProject(QString filename)
 		return;
 	}
 
-	disconnect(backgroundColorButton, SIGNAL(clicked()), canvas, SLOT(setBackgroundColor()));
+	DrawingCanvas* old_canvas = canvas;
+	DrawingInfo* old_info = drawingInfo;
+	QGraphicsView* old_view = view;
+	FileParser* old_parser = parser;
 
 	// Deserialize
 	this->parser = FileParser::deserialize(&reader);
 	this->drawingInfo = DrawingInfo::deserialize(&reader);
 	this->canvas = DrawingCanvas::deserialize(&reader, drawingInfo, parser);
+
+	setWindowTitle(tr("%1 - cheMVP").arg(filename));
 
 	this->view = new DrawingDisplay(canvas, drawingInfo);
 	view->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -356,9 +366,9 @@ void MainWindow::openProject(QString filename)
 	options->insert("ATOM_DRAWING_STYLE", QString("%1").arg(drawingInfo->getDrawingStyle()));
 	options->insert("ATOM_LABEL_SIZE", QString("%1").arg(Atom::SmallLabel));
 
-	createToolBox(options);
+	resetToolBox(options);
 
-	disconnect(animationSlider, SIGNAL(valueChanged(int)), this, SLOT(setGeometryStep(int)));
+	animationSlider->blockSignals(true);
 
 	// Update toolbox widgets
 	if (parser->numMolecules() <= 1)
@@ -368,11 +378,12 @@ void MainWindow::openProject(QString filename)
 	animationSlider->setRange(0, parser->numMolecules() - 1);
 	animationSlider->setValue(parser->current());
 
-	connect(animationSlider, SIGNAL(valueChanged(int)), this, SLOT(setGeometryStep(int)));
+	animationSlider->blockSignals(false);
 
 	// Refresh layout
 	QHBoxLayout* layout = new QHBoxLayout;
 	QByteArray state = splitter->saveState();
+	QSplitter* old_splitter = splitter;
 	splitter = new QSplitter(Qt::Horizontal);
 	splitter->addWidget(view);
 	splitter->addWidget(toolBox);
@@ -383,15 +394,6 @@ void MainWindow::openProject(QString filename)
 	widget->setLayout(layout);
 	this->setCentralWidget(widget);
 
-	DrawingInfo::DrawingStyle style = this->drawingInfo->getDrawingStyle();
-	simpleAtomDrawingButton->setChecked(style == DrawingInfo::Simple);
-	houkMolAtomDrawingButton->setChecked(style == DrawingInfo::HoukMol);
-	simpleColoredAtomDrawingButton->setChecked(style == DrawingInfo::SimpleColored);
-	gradientColoredAtomDrawingButton->setChecked(style == DrawingInfo::Gradient);
-//	smallLabelAtomDrawingButton->setChecked(this->canvas->getAtoms().first()->fontSize() == Atom::SmallLabel); // Doesn't work
-
-	setWindowTitle(tr("%1 - cheMVP").arg(filename));
-
 	resetSignalsOnFileLoad();
 
 	reader.readNextStartElement();
@@ -399,4 +401,10 @@ void MainWindow::openProject(QString filename)
 		error("Reader: " + reader.errorString());
 	else if(reader.name() != "cheMVP")
 		error("Full document not parsed!");
+
+	delete old_parser;
+	delete old_info;
+	delete old_view;
+	delete old_splitter;
+	delete old_canvas;
 }

@@ -295,9 +295,7 @@ void MainWindow::changeZoom(int val)
 
 void MainWindow::resetSignalsOnFileLoad()
 {
-	// Selecting items causes an update of the menus to reflect the current selected items' settings
 	connect(canvas, SIGNAL(selectionChanged()), this, SLOT(updateMenus()));
-
 	connect(selectAllAction, SIGNAL(triggered()), canvas, SLOT(selectAll()));
 	connect(unselectAllAction, SIGNAL(triggered()), canvas, SLOT(unselectAll()));
 	connect(canvas, SIGNAL(mouseModeChanged(int)), this, SLOT(mouseModeButtonGroupClicked(int)));

@@ -1,10 +1,8 @@
 #include "mainwindow.h"
 
-void MainWindow::createToolBox(QMap<QString, QString>* options, int width, int height)
+void MainWindow::createToolBox(int width, int height)
 {
-	if(options == NULL)
-		options = defaultToolBoxOptions();
-
+	QMap<QString, QString>* options = defaultToolBoxOptions();
 	QWidget *appearanceWidget 	   = createAppearanceWidget(options);
 	QWidget *bondsAndAnglesWidget  = createBondsAndAnglesWidget(options);
 	QWidget *atomsWidget           = createAtomsWidget(options);
@@ -35,7 +33,7 @@ QWidget *MainWindow::createAppearanceWidget(QMap<QString, QString>* options)
 	useFoggingBox->setChecked(useFogging);
 	foggingScaleBox = new QSpinBox();
 	foggingScaleBox->setSuffix("%");
-	QLabel *foggingLabel = new QLabel(tr("Opacity:"));
+	foggingLabel = new QLabel(tr("Opacity:"));
 	foggingLabel->setVisible(useFogging);
 	QHBoxLayout *foggingBoxLayout = new QHBoxLayout();
 	foggingBoxLayout->addWidget(useFoggingBox);
@@ -249,7 +247,6 @@ QWidget *MainWindow::createAtomsWidget(QMap<QString, QString>* options)
 	atomColorGroupBox->setLayout(atomColorLayout);
 	layout->addWidget(atomColorGroupBox);
 
-
 	QGroupBox *drawingStyleBox 	     = new QGroupBox(tr("Drawing Style"));
 	atomDrawingStyleButtonGroup      = new QButtonGroup;
 	QGridLayout *drawingStyleLayout  = new QGridLayout;
@@ -351,4 +348,31 @@ QMap<QString, QString>* MainWindow::defaultToolBoxOptions()
 	options->insert("ATOM_LABEL_SIZE", QString("%1").arg(Atom::SmallLabel));
 
 	return options;
+}
+
+void MainWindow::resetToolBox(QMap<QString, QString>* options)
+{
+	bool wasNull = false;
+	if(options == NULL)
+	{
+		options = defaultToolBoxOptions();
+		wasNull = true;
+	}
+
+	bool useFogging = options->value("FOGGING_ON").toInt();
+	useFoggingBox->setChecked(useFogging);
+	foggingLabel->setVisible(useFogging);
+	foggingScaleBox->setValue(options->value("FOGGING_SCALE").toInt());
+	xRotationBox->setText(options->value("X_ROTATION"));
+	yRotationBox->setText(options->value("Y_ROTATION"));
+	zRotationBox->setText(options->value("Z_ROTATION"));
+	backgroundOpacitySpinBox->setValue(options->value("BACKGROUND_OPACITY").toInt());
+	zoomSpinBox->setValue(options->value("ZOOM").toInt());
+	bondLabelsPrecisionBox->setValue(options->value("BOND_LABEL_PRECISION").toInt());
+	angleLabelsPrecisionBox->setValue(options->value("ANGLE_LABEL_PRECISION").toInt());
+	atomDrawingStyleButtonGroup->button(options->value("ATOM_DRAWING_STYLE").toInt())->setChecked(true);
+	atomFontSizeButtonGroup->button(options->value("ATOM_LABEL_SIZE").toInt())->setChecked(true);
+
+	if(wasNull)
+		delete options;
 }

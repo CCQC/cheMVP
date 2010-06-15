@@ -108,6 +108,7 @@ void Bond::updatePosition()
 		labelPos.setX(myLabel->dX() + x1 + rMidPoint*sinTheta*sinPhi);
 		labelPos.setY(myLabel->dY() + y1 + rMidPoint*sinTheta*cosPhi);
 		myLabel->setPos(labelPos);
+		myLabel->update();
 	}
 }
 

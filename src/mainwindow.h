@@ -65,7 +65,7 @@ private slots:
 
 private:
 	void focusOutEvent(QFocusEvent *event);
-	void createToolBox(QMap<QString, QString>* options = NULL, int width = DEFAULT_TOOLBOX_WIDTH, int height = DEFAULT_SCENE_SIZE_Y);
+	void createToolBox(int width = DEFAULT_TOOLBOX_WIDTH, int height = DEFAULT_SCENE_SIZE_Y);
 	QMap<QString, QString>* defaultToolBoxOptions();
 	void createActions();
 	void createMenus();
@@ -81,6 +81,7 @@ private:
 	void mouseReleaseEvent(QMouseEvent *);
 	void disableLabelSignals();
 	void enableLabelSignals();
+	void resetToolBox(QMap<QString, QString>* options);
 
 	QWidget *createAppearanceWidget(QMap<QString, QString>* options);
 	QWidget *createBondsAndAnglesWidget(QMap<QString, QString>* options);
@@ -90,6 +91,7 @@ private:
 	QToolButton *makeAtomButton(const char *);
 	QSlider *createSlider(int max);
 	QCheckBox *useFoggingBox;
+	QLabel* foggingLabel;
 
 	QWidget *animationWidget;
 
