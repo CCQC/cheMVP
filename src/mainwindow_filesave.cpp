@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 
-// TODO Add a warning if the current step is not the final one.
 void MainWindow::save()
 {
 	if (currentSaveFile.isEmpty()) {
@@ -15,28 +14,73 @@ void MainWindow::save()
 
 void MainWindow::saveAs()
 {
-	QFileDialog saveAs(this, "Save File As", QDir::homePath(), "CheMVP Project File (*.chmvp);;Encapsulated PostScript (*.eps);;Portable Document Format (*.pdf);;Portable Network Graphic (*.png);;PostScript (*.ps);;Scalable Vector Graphic (*.svg);;Tagged Image File Format (*.tiff)");
-	saveAs.setAcceptMode(QFileDialog::AcceptSave);
-	saveAs.setFileMode(QFileDialog::AnyFile);
-	if(saveAs.exec())
+	QFileDialog* saveAsDialog = new QFileDialog(this, "Save File As", QDir::homePath(), "CheMVP Project File (*.chmvp);;Encapsulated PostScript (*.eps);;Portable Document Format (*.pdf);;Portable Network Graphic (*.png);;PostScript (*.ps);;Scalable Vector Graphic (*.svg);;Tagged Image File Format (*.tiff)");
+	saveAsDialog->setAcceptMode(QFileDialog::AcceptSave);
+	saveAsDialog->setFileMode(QFileDialog::AnyFile);
+	if(saveAsDialog->exec())
 	{
-		currentSaveFile = saveAs.selectedFiles().at(0);
+		currentSaveFile = saveAsDialog->selectedFiles().at(0);
 		if(currentSaveFile.isEmpty())
 			return;
 
-		QString extension = saveAs.selectedNameFilter();
-		extension = extension.left(extension.length() - 1);
-		extension = extension.right(extension.length() - extension.indexOf("*.") - 1);
-		if(!(currentSaveFile.endsWith(".pdf") || currentSaveFile.endsWith(".svg") || currentSaveFile.endsWith(".ps")
-			 || currentSaveFile.endsWith(".tif") || currentSaveFile.endsWith(".tiff") || currentSaveFile.endsWith(".eps")
-			 || currentSaveFile.endsWith(".png") || currentSaveFile.endsWith(".chmvp")))
-			currentSaveFile += extension;
+		QString selectedExtension = saveAsDialog->selectedNameFilter();
+		selectedExtension = selectedExtension.left(selectedExtension.length() - 1);
+		selectedExtension = selectedExtension.right(selectedExtension.length() - selectedExtension.lastIndexOf(".") - 1);
+
+		if(currentSaveFile.indexOf(".") == -1)
+		{
+			currentSaveFile += selectedExtension;
+		}
+		else
+		{
+			QString extension = currentSaveFile.right(currentSaveFile.length() - currentSaveFile.lastIndexOf(".") - 1);
+
+			if(extension != QString("pdf") && extension != QString("svg") && extension != QString("ps")
+				 && extension != QString("tif") && extension != QString("tiff") && extension != QString("eps")
+				 && extension != QString("png") && extension != QString("chmvp"))
+			{
+				QMessageBox* error = new QMessageBox(this);
+				error->setText("The specified file type is invalid!");
+				error->setIcon(QMessageBox::Critical);
+				error->setInformativeText("Please choose a valid file type.");
+				error->setStandardButtons(QMessageBox::Ok);
+				error->exec();
+				delete error;
+				MainWindow::saveAs();
+				delete saveAsDialog;
+				return;
+			}
+			else if(extension != selectedExtension)
+			{
+				QMessageBox* error = new QMessageBox(this);
+				error->setText(QString("You cannot save this document with extension \".%1\" at the end of the name. The required extension is \".%2\".")
+							   .arg(extension).arg(selectedExtension));
+				error->setIcon(QMessageBox::Critical);
+				error->setInformativeText(QString("You can choose to use both, so that your file name ends in \".%1.%2.\"")
+										  .arg(extension).arg(selectedExtension));
+				error->setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+				error->setButtonText(QMessageBox::Save, "Use both");
+				error->setButtonText(QMessageBox::Discard, QString("Use .%1").arg(selectedExtension));
+				int answer = error->exec();
+				delete error;
+				if(answer == QMessageBox::Save)
+					currentSaveFile += "." + selectedExtension;
+				else if(answer == QMessageBox::Discard)
+				{
+					currentSaveFile = currentSaveFile.left(currentSaveFile.lastIndexOf("."));
+					currentSaveFile += "."+selectedExtension;
+				}
+				else
+					return;
+			}
+		}
 
 		if(currentSaveFile.endsWith(".chmvp"))
 			saveProject(currentSaveFile);
 		else
 			saveImage(currentSaveFile);
 	}
+	delete saveAsDialog;
 }
 
 void MainWindow::saveAndExit()
