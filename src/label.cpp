@@ -79,6 +79,12 @@ void Label::focusOutEvent(QFocusEvent *event)
 	}
 }
 
+void Label::focusInEvent(QFocusEvent* event)
+{
+	Q_UNUSED(event);
+	emit characterEntered();
+}
+
 void Label::updateLabel()
 {
 	if(myType == BondLabelType) {

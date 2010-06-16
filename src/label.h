@@ -26,6 +26,7 @@ public:
 
 	Label(LabelType type, double value, DrawingInfo *info, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
 	void focusOutEvent (QFocusEvent *event);
+	void focusInEvent(QFocusEvent* event);
 	int type() const { return myType; }
 	double dX() {return myDX;}
 	double dY() {return myDY;}
