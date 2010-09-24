@@ -312,6 +312,8 @@ void MainWindow::loadFile()
 		delete old_view;
 		delete old_splitter;
 		delete old_canvas;
+
+		activateToolBar();
 	}
 }
 
@@ -451,4 +453,6 @@ void MainWindow::openProject(QString filename)
 	delete old_view;
 	delete old_splitter;
 	delete old_canvas;
+
+	activateToolBar();
 }

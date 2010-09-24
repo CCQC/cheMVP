@@ -49,6 +49,10 @@ void MainWindow::createMenus()
 	insertSymbolMenu->addAction(insertAngstromAction);
 	insertSymbolMenu->addAction(insertDegreeAction);
 	insertSymbolMenu->addAction(insertPlusMinusAction);
+
+	editMenu->setEnabled(false);
+	itemMenu->setEnabled(false);
+	insertMenu->setEnabled(false);
 }
 
 void MainWindow::updateMenus()

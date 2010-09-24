@@ -82,6 +82,7 @@ private:
 	void disableLabelSignals();
 	void enableLabelSignals();
 	void resetToolBox(QMap<QString, QString>* options);
+	void activateToolBar();
 
 	QWidget *createAppearanceWidget(QMap<QString, QString>* options);
 	QWidget *createBondsAndAnglesWidget(QMap<QString, QString>* options);

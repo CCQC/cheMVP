@@ -97,6 +97,7 @@ void MainWindow::createToolbars()
 	boldTextButton->setEnabled(false);
 	italicTextButton->setEnabled(false);
 	underlineTextButton->setEnabled(false);
+	mouseModeToolBar->setEnabled(false);
 	enableLabelSignals();
 }
 
@@ -284,4 +285,23 @@ void MainWindow::updateTextLabelToolbar()
 	}
 
 	enableLabelSignals();
+}
+
+void MainWindow::activateToolBar()
+{
+	editMenu->setEnabled(true);
+	itemMenu->setEnabled(true);
+	insertMenu->setEnabled(true);
+	mouseModeToolBar->setEnabled(true);
+
+	deleteAction->setEnabled(true);
+	saveAction->setEnabled(true);
+	saveAsAction->setEnabled(true);
+	selectAllAction->setEnabled(true);
+	unselectAllAction->setEnabled(true);
+	addArrowAction->setEnabled(true);
+	insertTextActionGroup->setEnabled(true);
+
+	if(undoStack->count() > 0)
+		undoStack->clear();
 }

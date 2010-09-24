@@ -17,6 +17,7 @@ void MainWindow::createActions()
 	deleteAction = new QAction(QIcon(":/images/delete.png"),
 							   tr("&Delete"), this);
 	deleteAction->setShortcut(tr("Delete"));
+	deleteAction->setEnabled(false);
 	deleteAction->setStatusTip(tr("Delete selected item(s) from drawing"));
 	connect(deleteAction, SIGNAL(triggered()), this, SLOT(deleteItem()));
 
@@ -40,28 +41,34 @@ void MainWindow::createActions()
 	saveAction = new QAction(QIcon(":/images/save.png"), tr("&Save"), this);
 	saveAction->setShortcut(tr("Ctrl+S"));
 	saveAction->setStatusTip(tr("Save"));
+	saveAction->setEnabled(false);
 	connect(saveAction, SIGNAL(triggered()), this, SLOT(save()));
 
 	saveAsAction = new QAction(QIcon(":/images/saveas.png"), tr("&Save As"), this);
 	saveAsAction->setShortcut(tr("Ctrl+Shift+S"));
+	saveAsAction->setEnabled(false);
 	saveAsAction->setStatusTip(tr("Save under a new name"));
 	connect(saveAsAction, SIGNAL(triggered()), this, SLOT(saveAs()));
 
 	selectAllAction = new QAction(this);
 	selectAllAction->setShortcut(tr("Ctrl+A"));
+	selectAllAction->setEnabled(false);
 	selectAllAction->setStatusTip(tr("Select All"));
 	selectAllAction->setText(tr("Select All"));
 
 	unselectAllAction = new QAction(this);
 	unselectAllAction->setShortcut(tr("Ctrl+Shift+A"));
+	unselectAllAction->setEnabled(false);
 	unselectAllAction->setStatusTip(tr("Unselect All"));
 	unselectAllAction->setText(tr("Unselect All"));
 
 	addArrowAction = new QAction(QIcon(":/images/addarrow.png"), tr("Add Arrow"), this);
 	addArrowAction->setStatusTip(tr("Add Arrow"));
+	addArrowAction->setEnabled(false);
 	connect(addArrowAction, SIGNAL(triggered(bool)), this, SLOT(setAddArrowMode()));
 
 	insertTextActionGroup = new QActionGroup(this);
+	insertTextActionGroup->setEnabled(false);
 
 	insertAngstromAction = new QAction(insertTextActionGroup);
 	insertAngstromAction->setIconText(QChar((ushort)0x00C5));
