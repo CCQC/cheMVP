@@ -350,7 +350,7 @@ void MainWindow::saveProject(QString filename)
 	}
 }
 
-void MainWindow::openProject(QString filename)
+void MainWindow::openProject(QString filename, bool onNewMainWindow)
 {
 	if(filename.isEmpty())
 		return;
@@ -433,7 +433,8 @@ void MainWindow::openProject(QString filename)
 	splitter = new QSplitter(Qt::Horizontal);
 	splitter->addWidget(view);
 	splitter->addWidget(toolBox);
-	splitter->restoreState(state);
+	if(!onNewMainWindow)
+		splitter->restoreState(state);
 	layout->addWidget(splitter);
 
 	QWidget *widget = new QWidget;

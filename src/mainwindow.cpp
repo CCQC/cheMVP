@@ -44,6 +44,11 @@ MainWindow::MainWindow(FileParser *parser_in):
 	canvas->setSceneRect(view->sceneRect());
 	canvas->refresh();
 
+	QDesktopWidget qdw;
+	int screenCenterX = qdw.width() / 2;
+	int screenCenterY = qdw.height() / 2;
+	this->setGeometry(screenCenterX - 600, screenCenterY - 350, 1200, 700);
+
 	splitter = new QSplitter(Qt::Horizontal);
 	splitter->addWidget(view);
 	splitter->addWidget(toolBox);
@@ -59,6 +64,9 @@ MainWindow::MainWindow(FileParser *parser_in):
 	connect(undoStack, SIGNAL(canUndoChanged(bool)), undoAction, SLOT(setEnabled(bool)));
 
 	resetSignalsOnFileLoad();
+
+	this->setWindowIconText("cheMVP");
+	this->setWindowTitle("cheMVP");
 }
 
 MainWindow::~MainWindow()

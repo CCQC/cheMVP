@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "mainwindow.h"
+#include "application.h"
 #include "splashscreen.h"
 #include "fileparser.h"
 #include "defines.h"
@@ -12,7 +13,7 @@ int main(int argv, char *args[])
 {
 	Q_INIT_RESOURCE(chemvp);
 
-	QApplication app(argv, args);
+	Application app(argv, args);
 	QCoreApplication::setOrganizationName(COMPANY_NAME);
 	QCoreApplication::setOrganizationDomain(COMPANY_DOMAIN);
 	QCoreApplication::setApplicationName(PROGRAM_NAME);
@@ -39,23 +40,19 @@ int main(int argv, char *args[])
 	SplashScreen splash(pixmap);
 	splash.startTimer(3500); // ~5 sec
 
-	// Use the file name (if any) to create a new parser object
-	FileParser *parser = new FileParser(cmd_line_arg);
-	MainWindow mainWindow(parser);
-	mainWindow.setWindowIconText("cheMVP");
-	mainWindow.setWindowTitle("cheMVP");
+	if(app.mainWindow == NULL)
+	{
+		// Use the file name (if any) to create a new parser object
+		FileParser *parser = new FileParser(cmd_line_arg);
+		app.mainWindow = new MainWindow(parser);
 
-	QDesktopWidget qdw;
-	int screenCenterX = qdw.width() / 2;
-	int screenCenterY = qdw.height() / 2;
-	mainWindow.setGeometry(screenCenterX - 600, screenCenterY - 350, 1200, 700);
+		app.mainWindow->raise();
+		app.mainWindow->showNormal();
 
-	mainWindow.raise();
-	mainWindow.showNormal();
-
-	if(argv == 3){
-		mainWindow.setCurrentSaveFile(args[2]);
-		mainWindow.saveAndExit();
+		if(argv == 3){
+			app.mainWindow->setCurrentSaveFile(args[2]);
+			app.mainWindow->saveAndExit();
+		}
 	}
 
 	return app.exec();

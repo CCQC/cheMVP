@@ -35,6 +35,7 @@ public:
 public slots:
 	void setGeometryStep(int);
 	void setCurrentSaveFile(QString file) {currentSaveFile = file;}
+	void openProject(QString filename, bool onNewMainWindow = false);
 	void saveAndExit();
 
 private slots:
@@ -56,7 +57,6 @@ private slots:
 	void save();
 	void saveAs();
 	void saveProject(QString filename);
-	void openProject(QString filename);
 	void changeZoom(int);
 	void setAddArrowMode();
 	void aboutCheMVP();
