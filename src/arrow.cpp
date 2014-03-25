@@ -10,7 +10,7 @@ DragBox::DragBox(double x, double y, DrawingInfo *info, QGraphicsItem *parent)
 {
 	setFlag(QGraphicsItem::ItemIsSelectable, false);
 	setFlag(QGraphicsItem::ItemIsMovable, true);
-	setAcceptsHoverEvents(true);
+	setAcceptHoverEvents(true);
 	setZValue(1001.0);
 	double dimension = 0.1 * drawingInfo->scaleFactor();
 	setRect(-dimension/2.0, -dimension/2.0, dimension, dimension);
@@ -62,7 +62,7 @@ Arrow::Arrow(double x, double y, DrawingInfo *info, QGraphicsItem *parent)
 		hoverOver(false)
 {
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
-	setAcceptsHoverEvents(true);
+	setAcceptHoverEvents(true);
 	setZValue(1000.0);
 	myStartBox = new DragBox(x, y, drawingInfo);
 	myEndBox   = new DragBox(x, y, drawingInfo);

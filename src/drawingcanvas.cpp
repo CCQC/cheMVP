@@ -1,4 +1,5 @@
 #include "drawingcanvas.h"
+#include <QColorDialog>
 
 #define SIGN(a, b) (b >= 0 ? (a >= 0 ? a : -a) : (a >= 0 ? -a : a))
 #define MAX(a, b) (a > b ? a : b)

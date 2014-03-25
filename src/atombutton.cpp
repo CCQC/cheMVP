@@ -1,4 +1,5 @@
 #include "atombutton.h"
+#include <QColorDialog>
 
 QMap<QString, QVariant> Preferences::_colorChanges;
 

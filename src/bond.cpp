@@ -12,7 +12,7 @@ Bond::Bond(Atom *atom1, Atom *atom2, DrawingInfo *info, QGraphicsItem *parent)
 		myPen(Qt::black)
 {
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
-	setAcceptsHoverEvents(true);
+	setAcceptHoverEvents(true);
 	updatePosition();
 	// So that the width of the line is correct when determining the shape
 	myPen.setWidth(effectiveWidth);

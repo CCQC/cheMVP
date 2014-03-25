@@ -27,3 +27,6 @@ win32
 
 chemvp0.2.tgz
 TODO.txt
+
+# compilation directory
+objdir

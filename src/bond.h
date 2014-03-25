@@ -45,7 +45,7 @@ public:
 	double length() const {return myLength; }
 	double computeMidZ() {return myStartAtom->z() + myEndAtom->z()/2.0;}
 	double thickness() const {return myThickness;}
-	void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptsHoverEvents(arg);}
+	void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptHoverEvents(arg);}
 	bool hasLabel() {return (myLabel != 0);}
 	bool isDashed() const {return dashedLine;}
 

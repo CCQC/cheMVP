@@ -9,7 +9,7 @@ Angle::Angle(Atom *atom1, Atom * atom2, Atom *atom3, DrawingInfo *info, QGraphic
 	hoverOver(false)
 {
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
-	setAcceptsHoverEvents(true);
+	setAcceptHoverEvents(true);
 	_info->setAnglePenWidth(0.05 * _info->scaleFactor());
 	_info->getAnglePen().setWidthF(hoverOver ? 1.5*_info->getAnglePenWidth() : _info->getAnglePenWidth());
 	myValue = computeValue();

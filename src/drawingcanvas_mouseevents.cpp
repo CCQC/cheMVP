@@ -1,4 +1,7 @@
 #include "drawingcanvas.h"
+#include <QGraphicsSceneMouseEvent>
+#include <QApplication>
+
 
 // TODO add double click events to make text selection easier
 void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)

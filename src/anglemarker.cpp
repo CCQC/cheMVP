@@ -8,7 +8,7 @@ AngleMarker::AngleMarker(DrawingInfo *info, QGraphicsItem *parent)
 		myPen(Qt::black)
 {
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
-	setAcceptsHoverEvents(true);
+	setAcceptHoverEvents(true);
 	effectiveWidth = 0.025 * drawingInfo->scaleFactor();
 	myPen.setWidthF(hoverOver ? 1.5*effectiveWidth : effectiveWidth);
 }

@@ -57,7 +57,7 @@ public:
     void setY(double val) {myY = val;}
     void setZ(double val) {myZ = val;}
     void setLabel(const QString &text);
-    void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptsHoverEvents(arg);}
+    void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptHoverEvents(arg);}
     void setDrawingStyle(DrawingInfo::DrawingStyle style);
     void setColor(QColor color) {fill_color = color;}
     void setFontSizeStyle(FontSizeStyle style);

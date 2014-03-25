@@ -31,4 +31,5 @@ QMakeFile.puts "  QMAKE_LFLAGS_RELEASE -= -mthreads"
 QMakeFile.puts "}"
 QMakeFile.close
 
-`qmake -spec macx-g++ #{FileName}`
+#`qmake -spec macx-g++ #{FileName}`
+`qmake #{FileName}`

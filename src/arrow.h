@@ -20,7 +20,7 @@ public:
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 			   QWidget *widget = 0);
 
-	void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptsHoverEvents(arg);}
+	void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptHoverEvents(arg);}
 	double dX() {return myDX;}
 	double dY() {return myDY;}
 	void setDX(double val) {myDX = val;}
@@ -56,7 +56,7 @@ public:
 	void updatePosition();
 	DragBox* startBox() const { return myStartBox; }
 	DragBox* endBox() const { return myEndBox; }
-	void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptsHoverEvents(arg);}
+	void setAcceptsHovers(bool arg) {if(!arg) hoverOver = false; setAcceptHoverEvents(arg);}
 
 	void serialize(QXmlStreamWriter* writer);
 	static Arrow* deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo);

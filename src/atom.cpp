@@ -35,7 +35,7 @@ Atom::Atom(QString element, DrawingInfo *i, QGraphicsItem *parent)
 	}
 	setFlag(QGraphicsItem::ItemIsMovable, true);
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
-	setAcceptsHoverEvents(true);
+	setAcceptHoverEvents(true);
 	setAcceptDrops(true);
 	myEffectiveRadius = _info->scaleFactor() * (1.0 + zValue() * _info->perspective())
 						* myRadius * myScaleFactor;

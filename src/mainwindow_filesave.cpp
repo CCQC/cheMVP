@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include <QPrinter>
 
 void MainWindow::save()
 {
@@ -137,7 +138,8 @@ void MainWindow::saveImage(const QString &fileName)
 		canvas->render(painter);
 		painter->end();
 	}else if(fileType == PostScript){
-		printer->setOutputFormat(QPrinter::PostScriptFormat);
+		//printer->setOutputFormat(QPrinter::PostScriptFormat);
+		printer->setOutputFormat(QPrinter::PdfFormat);
 		painter->begin(printer);
 		painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
 		painter->setRenderHint(QPainter::Antialiasing, true);
