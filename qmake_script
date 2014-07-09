@@ -15,7 +15,7 @@ if(ResourceArray.size)
     QMakeFile.puts "RESOURCES = " + ResourceArray.join("  \\ \n")
 end
 QMakeFile.puts "\nCONFIG += debug_and_release static"
-QMakeFile.puts "QT += svg"
+QMakeFile.puts "QT += svg printsupport"
 QMakeFile.puts "QMAKE_CXXFLAGS_DEBUG = \" -O0 -g\""
 QMakeFile.puts "\nmacx{"
 QMakeFile.puts "  ICON = ../images/icon.icns\n"
