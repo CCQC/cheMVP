@@ -23,7 +23,10 @@ DrawingCanvas::DrawingCanvas(DrawingInfo *info, FileParser *in_parser, QObject *
 	selectionRectangle 	= 0;
 	myArrow             = 0;
 	myTempMoveItem      = 0;
-	myBackgroundColor.setAlpha(myBackgroundAlpha);
+    // Hack to make the background border disappear (unless background color is changed)
+	//myBackgroundColor.setAlpha(myBackgroundAlpha);
+	myBackgroundColor.setAlpha(0);
+
 	setBackgroundBrush(QBrush(myBackgroundColor));
 	setSceneRect(QRectF(0, 0, DEFAULT_SCENE_SIZE_X,  DEFAULT_SCENE_SIZE_Y));
 
