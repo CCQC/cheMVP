@@ -100,8 +100,8 @@ incorporate them into the code.
 
 AUTHORS
 =======
-Andy Simmonett andysim@ccc.uga.edu
-Justin M. Turney jturney@ccc.uga.edu
+Andy Simmonett
+Justin M. Turney jturney@ccqc.uga.edu
 H. Parker Shelton
 
 
@@ -118,3 +118,4 @@ They are:
 OTHER CONTRIBUTORS
 ==================
 Jesse Yates - FontFormatTuple for Label serialization
+Jonathon Vandezande - QT5 and current package maintainer
