@@ -33,14 +33,15 @@ Many input formats are supported and are automatically detected.  The only
 restriction is for xyz files, which currently need to have the extension .xyz
 and take the following format:
 
-```
-NumberOfAtoms  [bohr or au]
-Comment Line
-Atom1Symbol Atom1XCoordinate Atom1YCoordinate Atom1ZCoordinate
-Atom2Symbol Atom2XCoordinate Atom2YCoordinate Atom2ZCoordinate
-Atom3Symbol Atom3XCoordinate Atom3YCoordinate Atom3ZCoordinate
-etc..
-```
+::
+
+  NumberOfAtoms
+  Comment Line
+  Atom1Symbol Atom1XCoordinate Atom1YCoordinate Atom1ZCoordinate
+  Atom2Symbol Atom2XCoordinate Atom2YCoordinate Atom2ZCoordinate
+  Atom3Symbol Atom3XCoordinate Atom3YCoordinate Atom3ZCoordinate
+  etc..
+
 
 Note that multiple xyz sets can be present in a single xyz file.  In terms of
 chemistry packages, the following outputs can be read, and there are no
