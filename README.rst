@@ -1,35 +1,35 @@
 ABOUT
 =====
 cheMVP is free, open-source software designed to make clean, simple molecule
-drawings suitable for publications and presentations.  The program is written
+drawings suitable for publications and presentations. The program is written
 in C++, using the Qt library and some icons from the SVG icons project.
 
 
 OUTPUT FORMATS
 ==============
-cheMVP can generate PDF, SVG, EPS, PS, PNG and Tiff images.  The PDF, SVG and
+cheMVP can generate PDF, SVG, EPS, PS, PNG and Tiff images. The PDF, SVG and
 PostScript formats are recommended, as they are vector formats, which means
 that they are scalable and can be manipulated with software such as InkScape
-(free) or Adobe Illustrator (not free, but very powerful).  PNG files seem to
-be smaller than Tiffs, so they are probably a bit better.  The file type is
-determined by the extension used in the filename.  An experimental CVP format
+(free) or Adobe Illustrator (not free, but very powerful). PNG files seem to
+be smaller than Tiffs, so they are probably a bit better. The file type is
+determined by the extension used in the filename. An experimental CVP format
 is being developed to save the project, allowing the user to save the project's
 state and load it again.
 
 
 BASIC USAGE
 ===========
-Most buttons and settings apply only to the selected items.  In select mode,
+Most buttons and settings apply only to the selected items. In select mode,
 clicking outside of the molecule and dragging a rectangle over molecule
 components will select them, or clicking individual components will
-select/deselect them.  To add a bond, click the "add bond" mode button, click
+select/deselect them. To add a bond, click the "add bond" mode button, click
 the first atom and drag the mouse over the second atom to be bonded and
 release.
 
 
 INPUT FORMATS
 =============
-Many input formats are supported and are automatically detected.  The only
+Many input formats are supported and are automatically detected. The only
 restriction is for xyz files, which currently need to have the extension .xyz
 and take the following format:
 
@@ -37,15 +37,15 @@ and take the following format:
 
   NumberOfAtoms
   Comment Line
-  Atom1Symbol Atom1XCoordinate Atom1YCoordinate Atom1ZCoordinate
-  Atom2Symbol Atom2XCoordinate Atom2YCoordinate Atom2ZCoordinate
-  Atom3Symbol Atom3XCoordinate Atom3YCoordinate Atom3ZCoordinate
+  Atom1 X1 Y1 Z1
+  Atom2 X2 Y2 Z2
+  Atom3 X3 Y3 Z3
   etc..
 
 
-Note that multiple xyz sets can be present in a single xyz file.  In terms of
+Note that multiple xyz sets can be present in a single xyz file. In terms of
 chemistry packages, the following outputs can be read, and there are no
-restrictions on the filenames used:- the optional argument after the number of
+restrictions on the filenames used: the optional argument after the number of
 atoms is only necessary if the units are atomic units.
 
 - Molpro (geometry optimization) 
@@ -57,7 +57,7 @@ atoms is only necessary if the units are atomic units.
 - File11 from PSI
 - ACESII/Cfour
 
-a save/load project format for cheMVP is in development; stay tuned, folks.  Be
+A save/load project format for cheMVP is in development; stay tuned, folks.  Be
 careful if you've done a funky many-jobs-in-one-input type calculation and
 check that the correct geometries were parsed.  Sometimes it's tricky to
 distinguish the steps of a finite difference computation from steps of an
@@ -69,9 +69,10 @@ COMPILING
 If you can't find a pre-compiled binary for your OS, then to compile from
 source is pretty simple.
 
-1. Download and install Qt from http://qt.nokia.com/downloads
-2. Head into the compilation directory in the chemvp source folder
-3. Type 'qmake'
+1. Download and install Qt5 and necessary libraries
+  - On Ubuntu,: `aptitude install qt5-default libjepg-dev libpng-dev libqt5svg5-dev libtiff-dev`
+2. Head into the compilation directory in the cheMVP source folder (e.g. `mkdir build; cd build`)
+3. Type '../qmake_script'
 4. Type 'make'
 
 
@@ -100,9 +101,10 @@ incorporate them into the code.
 
 AUTHORS
 =======
-Andy Simmonett
-Justin M. Turney jturney@ccqc.uga.edu
-H. Parker Shelton
+
+- Andy Simmonett
+- Justin M. Turney jturney@ccqc.uga.edu
+- Parker Shelton
 
 
 LINKS
@@ -110,6 +112,7 @@ LINKS
 A number of valuable open-source programs have been used to create this code.
 
 They are:
+
 - Qt (GUI library)  - http://qt.nokia.com
 - SVG Icons (the icons)  - http://svgicons.sourceforge.net
 - GIT (code synchronization) - http://git-scm.com/
@@ -117,5 +120,6 @@ They are:
 
 OTHER CONTRIBUTORS
 ==================
-Jesse Yates - FontFormatTuple for Label serialization
-Jonathon Vandezande - QT5 and current package maintainer
+
+- Jesse Yates - FontFormatTuple for Label serialization
+- Jonathon Vandezande - QT5 and current package maintainer
