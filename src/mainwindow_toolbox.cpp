@@ -344,7 +344,7 @@ QMap<QString, QString>* MainWindow::defaultToolBoxOptions()
 	options->insert("ANGLE_LABEL_PRECISION", QString("%1").arg(DEFAULT_ANGLE_LABEL_PRECISION));
 
 	// Atoms
-	options->insert("ATOM_DRAWING_STYLE", QString("%1").arg(DrawingInfo::Gradient));
+	options->insert("ATOM_DRAWING_STYLE", QString("%1").arg(DrawingInfo::SimpleColored));
 	options->insert("ATOM_LABEL_SIZE", QString("%1").arg(Atom::SmallLabel));
 
 	return options;
