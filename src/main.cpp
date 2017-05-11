@@ -36,10 +36,6 @@ int main(int argv, char *args[])
 		}
 	}
 
-	QPixmap pixmap("../images/splash.png");
-	SplashScreen splash(pixmap);
-	splash.startTimer(3500); // ~5 sec
-
 	if(app.mainWindow == NULL)
 	{
 		// Use the file name (if any) to create a new parser object
