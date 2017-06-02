@@ -17,7 +17,6 @@
         <file>../images/save.png</file>
         <file>../images/saveas.png</file>
         <file>../images/select.png</file>
-        <file>../images/splash.png</file>
         <file>../images/underlinetext.png</file>
         <file>../images/undo.png</file>
     </qresource>
