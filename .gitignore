@@ -29,4 +29,5 @@ chemvp0.2.tgz
 TODO.txt
 
 # compilation directory
-objdir
+objdir/
+obj/
