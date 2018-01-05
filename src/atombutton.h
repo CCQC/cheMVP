@@ -17,7 +17,7 @@ class AtomButton : public QToolButton
 public:
     AtomButton(DrawingCanvas* d, const char* label);
     void refreshColor();
-    
+
 public slots:
     void setAtomColor();
 

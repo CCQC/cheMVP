@@ -30,7 +30,7 @@ Preferences::Preferences(DrawingCanvas* d, int s)
             this, SLOT(revert()));
     connect(_applyButton, SIGNAL(pressed()),
             this, SLOT(savePreferences()));
-    
+
     _stackedWidget = new QStackedWidget();
     _stackedWidget->addWidget(_periodicTable);
 
@@ -55,7 +55,7 @@ void Preferences::revert()
 {
     if(_listWidget->currentRow() == 0){
         _colorChanges = Atom::labelToColor;
-        _canvas->updateAtomColors(_colorChanges);    
+        _canvas->updateAtomColors(_colorChanges);
     }
 }
 
@@ -64,7 +64,7 @@ void Preferences::restoreDefaults()
     if(_listWidget->currentRow() == 0){
         Atom::fillLabelToColorMap();
         _colorChanges = Atom::labelToColor;
-        _canvas->updateAtomColors(_colorChanges);  
+        _canvas->updateAtomColors(_colorChanges);
         savePreferences();
         foreach(QToolButton* b, _atomButtons){
             AtomButton* a = dynamic_cast<AtomButton*>(b);
@@ -84,17 +84,17 @@ void Preferences::savePreferences()
 }
 
 QToolButton *Preferences::makeAtomButton(const char *label)
-{	
+{
     AtomButton* a = new AtomButton(_canvas, label);
     _atomButtons.push_back(a);
     return a;
 }
 
 QWidget *Preferences::createPeriodicTable()
-{	
+{
     QGridLayout *layout = new QGridLayout;
     layout->setSpacing(0);
-    
+
     layout->addWidget(makeAtomButton("H" ), 0, 0, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("He"), 0, 18, Qt::AlignHCenter);
 
@@ -115,7 +115,7 @@ QWidget *Preferences::createPeriodicTable()
     layout->addWidget(makeAtomButton("S" ), 2, 16, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Cl"), 2, 17, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Ar"), 2, 18, Qt::AlignHCenter);
-    
+
     layout->addWidget(makeAtomButton("K" ), 3, 0, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Ca"), 3, 1, Qt::AlignHCenter);
 

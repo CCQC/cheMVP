@@ -6,16 +6,16 @@
 
 class Application : public QApplication
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Application(int &argc, char **argv);
-	bool loadFile(const QString &fileName);
+    Application(int &argc, char **argv);
+    bool loadFile(const QString &fileName);
 
-	MainWindow* mainWindow;
+    MainWindow* mainWindow;
 
 protected:
-	bool event(QEvent *event);
+    bool event(QEvent *event);
 };
 
 #endif // APPLICATION_H

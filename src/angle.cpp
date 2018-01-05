@@ -76,7 +76,6 @@ void Angle::updatePosition()
 	double phi3  		= (norm3 == 0.0 ? 0.0 : acos(dY3/norm3));
 	if(dX3 < 0.0) phi3  = 2.0*PI - phi3;
 
-	//double phi2  		= (phi1 + phi3) / 2.0; // Unused variable - HPS
 	double radius 		= myCenterAtom->effectiveRadius() + 0.2 * _info->scaleFactor();
 
 	double xRef = myCenterAtom->pos().x();

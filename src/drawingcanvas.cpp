@@ -23,7 +23,7 @@ DrawingCanvas::DrawingCanvas(DrawingInfo *info, FileParser *in_parser, QObject *
 	selectionRectangle 	= 0;
 	myArrow             = 0;
 	myTempMoveItem      = 0;
-    // Hack to make the background border disappear (unless background color is changed)
+	// Hack to make the background border disappear (unless background color is changed)
 	//myBackgroundColor.setAlpha(myBackgroundAlpha);
 	myBackgroundColor.setAlpha(0);
 
@@ -261,7 +261,7 @@ void DrawingCanvas::rotateFromInitialCoordinates()
 	refresh();
 }
 
-double ** block_matrix(unsigned long int n, unsigned long int m) //HPS
+double ** block_matrix(unsigned long int n, unsigned long int m)
 {
 	double **A=NULL;
 	double *B=NULL;
@@ -290,7 +290,7 @@ double ** block_matrix(unsigned long int n, unsigned long int m) //HPS
 	return(A);
 }
 
-void DrawingCanvas::determineRotationAngles() // HPS
+void DrawingCanvas::determineRotationAngles()
 {
 	if(atomsList.size() < 1)
 		return;
@@ -299,17 +299,10 @@ void DrawingCanvas::determineRotationAngles() // HPS
 	std::vector<AtomEntry*> oldGeom = molecule->atomsList();
 	QList<Atom*> newGeom = atomsList;
 
-	//	for(unsigned int i = 0; i < oldGeom.size(); i++)
-	//	{
-	//		printf("%6.4f %6.4f %6.4f %6.4f %6.4f %6.4f \n",
-	//			   oldGeom[i]->x, oldGeom[i]->y, oldGeom[i]->z,
-	//			   newGeom[i]->x(), newGeom[i]->y(), newGeom[i]->z());
-	//	}
-
 	if(oldGeom.size() < 1)
 		return;
 
-	double old_x, old_y, old_z, new_x, new_y, new_z;
+	double old_x = 0, old_y = 0, old_z = 0, new_x = 0, new_y = 0, new_z = 0;
 	for(unsigned int i = 0; i < oldGeom.size(); i++)
 	{
 		old_x += oldGeom[i]->x;
@@ -534,7 +527,7 @@ void DrawingCanvas::determineRotationAngles() // HPS
  * A = U dot W dot V_transpose. U replaces A on output. W is output as a vector W[1...n].
  * V (not V_transpose) is output as V[1...n][1...n].
  */
-void DrawingCanvas::svdcmp(double **a, int m, int n, double w[], double **v) // HPS
+void DrawingCanvas::svdcmp(double **a, int m, int n, double w[], double **v)
 {
 	bool flag;
 	int i, its, j, jj, k, l, nm;
@@ -744,7 +737,7 @@ void DrawingCanvas::svdcmp(double **a, int m, int n, double w[], double **v) // 
 	}
 }
 
-double DrawingCanvas::pythag(double a, double b) // HPS
+double DrawingCanvas::pythag(double a, double b)
 {
 	double absa = fabs(a);
 	double absb = fabs(b);

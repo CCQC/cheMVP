@@ -9,7 +9,7 @@
 
 #include "defines.h"
 
-class SplashScreen : public QSplashScreen 
+class SplashScreen : public QSplashScreen
 {
 public:
     SplashScreen(const QPixmap &image);

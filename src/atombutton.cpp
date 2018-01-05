@@ -7,7 +7,7 @@ AtomButton::AtomButton(DrawingCanvas* d, const char* label)
 {
     _label = label;
     _canvas = d;
-    
+
     int dimension1 = 18;
     int dimension2 = 18;
 

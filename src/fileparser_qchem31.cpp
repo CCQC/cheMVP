@@ -3,16 +3,16 @@
 using namespace std;
 
 void FileParser::readQchem31()
-{    
-    std::string tempString;    
+{
+    std::string tempString;
     QRegExp rx("", Qt::CaseInsensitive, QRegExp::RegExp2);
-    
+
     while (1) {
         Molecule *molecule = new Molecule();
-        
+
         // GOAL TO MATCH -
         // Optimization Cycle:   1
-        // 
+        //
         //                     Coordinates (Angstroms)
         //   ATOM              X           Y           Z
         //  1  H           6.264255   -1.214463    0.001562
@@ -45,24 +45,24 @@ void FileParser::readQchem31()
         // 28  N          -1.895228    0.410754   -0.001007
         // 29  C          -2.522920   -0.833703   -0.001123
         // 30  O          -1.848461   -1.874351   -0.002325
-        
+
         getline(infile, tempString);
         while (tempString.find("Optimization Cycle:") == string::npos && infile.eof() == false) {
             getline(infile, tempString);
         }
-        if (infile.eof()) 
+        if (infile.eof())
             break;
 #ifdef QT_DEBUG
         std::cout << "readQchem31: 'Optimization Cycle:' found.\n";
 #endif
-        
+
         getline(infile, tempString);
         getline(infile, tempString);
         getline(infile, tempString);
-        
+
         // qchem31 is reported in Angstroms
         myUnits = Angstrom;
-        
+
         // Read in atom information
         rx.setPattern("(?:\\s*)(?:\\d+)(?:\\s+)(\\w+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s+)(-?\\d+\\.\\d+)");
         while (1) {
@@ -75,7 +75,7 @@ void FileParser::readQchem31()
                 atom->z = rx.cap(4).toDouble();
                 molecule->addAtom(atom);
 #ifdef QT_DEBUG
-                std::cout 	<< std::setw(5) << atom->Label.toStdString() 
+                std::cout 	<< std::setw(5) << atom->Label.toStdString()
                         << " " << std::setw(16) << std::setprecision(10) << atom->x
                         << " " << std::setw(16) << std::setprecision(10) << atom->y
                         << " " << std::setw(16) << std::setprecision(10) << atom->z << std::endl;

@@ -65,31 +65,31 @@ void Bond::updatePosition()
 	Atom *atom1 = myStartAtom;
 	Atom *atom2 = myEndAtom;
 
-	double radius1 		= atom1->effectiveRadius();
-	double radius2 		= atom2->effectiveRadius();
-	double x1     		= atom1->pos().x();
-	double y1     		= atom1->pos().y();
-	double z1     		= atom1->zValue();
-	double x2     		= atom2->pos().x();
-	double y2     		= atom2->pos().y();
-	double z2     		= atom2->zValue();
-	double dx     		= x2-x1;
-	double dy     		= y2-y1;
-	double dz     		= z2-z1;
-	double norm   		= sqrt(dx*dx + dy*dy);
+	double radius1		= atom1->effectiveRadius();
+	double radius2		= atom2->effectiveRadius();
+	double x1			= atom1->pos().x();
+	double y1			= atom1->pos().y();
+	double z1			= atom1->zValue();
+	double x2			= atom2->pos().x();
+	double y2			= atom2->pos().y();
+	double z2			= atom2->zValue();
+	double dx			= x2-x1;
+	double dy			= y2-y1;
+	double dz			= z2-z1;
+	double norm			= sqrt(dx*dx + dy*dy);
 	// Phi is the angle subtended by the bond and the y axis(which runs negative)
-	double sinPhi    	= (norm == 0.0 ? 0.0 : dx/norm);
-	double cosPhi       = (norm == 0.0 ? 0.0 : dy/norm);
+	double sinPhi		= (norm == 0.0 ? 0.0 : dx/norm);
+	double cosPhi		= (norm == 0.0 ? 0.0 : dy/norm);
 	// The angle subtended by the bond and the z axis
-	double r      		= sqrt(dx*dx + dy*dy + dz*dz);
+	double r			= sqrt(dx*dx + dy*dy + dz*dz);
 	double sinTheta 	= norm/r;
 	QPointF startPoint;
 	QPointF endPoint;
 
 	startPoint.setX(x1 + ( radius1*sinTheta*sinPhi) );
 	startPoint.setY(y1 + ( radius1*sinTheta*cosPhi) );
-	endPoint.setX(  x2 - ( radius2*sinTheta*sinPhi) );
-	endPoint.setY(  y2 - ( radius2*sinTheta*cosPhi) );
+	endPoint.setX(	x2 - ( radius2*sinTheta*sinPhi) );
+	endPoint.setY(	y2 - ( radius2*sinTheta*cosPhi) );
 	setLine(QLineF(startPoint, endPoint));
 
 	// The average position is used to determine the scale factor

@@ -24,7 +24,7 @@ public:
     void setComment(QString c) {_comment = c;}
     std::vector<AtomEntry*>& atomsList() {return _molecule;}
     int numAtoms() const {return _molecule.size();}
-	
+
 	void serialize(QXmlStreamWriter* writer)
 	{
 		writer->writeStartElement("Molecule");
@@ -41,19 +41,19 @@ public:
 		}
 		writer->writeEndElement();
 	};
-	
+
 	static Molecule* deserialize(QXmlStreamReader* reader)
 	{
 		reader->readNextStartElement();
 		Q_ASSERT(reader->isStartElement() && reader->name() == "Molecule");
-		
+
 		Molecule* m = new Molecule();
 		int size = reader->attributes().value("items").toString().toInt();
 		for(int i = 0; i < size; i++)
 		{
-			reader->readNextStartElement();	
+			reader->readNextStartElement();
 			Q_ASSERT(reader->isStartElement() && reader->name().toString() == "AtomEntry");
-			
+
 			AtomEntry* a = new AtomEntry();
 			a->Label = reader->attributes().value("label").toString();
 			a->x = reader->attributes().value("x").toString().toDouble();
@@ -61,9 +61,9 @@ public:
 			a->z = reader->attributes().value("z").toString().toDouble();
 			m->addAtom(a);
 			reader->skipCurrentElement();
-		}	
+		}
 		reader->skipCurrentElement();
-		return m;		
+		return m;
 	};
 
 private:

@@ -8,7 +8,7 @@ RemoveItemCommand::RemoveItemCommand(DrawingCanvas *canvas, QUndoCommand *parent
 	setText(QObject::tr("Remove %1").arg(myList.size()>1 ? "items" : "item"));
 }
 
-// TODO - Remove all deleted items from the bonds/atoms/arrows lists - HPS
+// TODO - Remove all deleted items from the bonds/atoms/arrows lists
 void RemoveItemCommand::undo()
 {
 	foreach(QGraphicsItem *item, myList){

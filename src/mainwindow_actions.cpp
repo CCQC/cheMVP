@@ -94,7 +94,7 @@ void MainWindow::deleteItem()
 		return;
 
 	// TODO - Deletion of at least arrows
-	// Hide bond labels when they're deleted. - HPS
+	// Hide bond labels when they're deleted.
 	// Prevents bond deletion from being undoable, but fixes geometry time step from reinstating deleted bond
 	foreach(QGraphicsItem* i, canvas->selectedItems()) {
 		if(i->type() == Label::BondLabelType) {

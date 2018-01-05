@@ -16,14 +16,14 @@ public:
     int type() const {return Type;}
 
     AngleMarker(DrawingInfo *drawingInfo, QGraphicsItem *parent = 0);
-    
+
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = 0);
     void setOtherMarker(AngleMarker *marker) {otherMarker = marker;}
     void setHover(bool t_f) {hoverOver = t_f;}
-	
-	void serialize(QXmlStreamWriter* writer);
-	static AngleMarker* deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo);
+
+    void serialize(QXmlStreamWriter* writer);
+    static AngleMarker* deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo);
 
 protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);

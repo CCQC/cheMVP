@@ -3,13 +3,13 @@
 using namespace std;
 
 void FileParser::readGamess()
-{    
-    std::string tempString;    
+{
+    std::string tempString;
     QRegExp rx("", Qt::CaseInsensitive, QRegExp::RegExp2);
-    
+
     while (1) {
         Molecule *molecule = new Molecule();
-        
+
         // GOAL TO MATCH -
         // COORDINATES OF ALL ATOMS ARE (ANGS)
         //   ATOM   CHARGE       X              Y              Z
@@ -44,23 +44,23 @@ void FileParser::readGamess()
         // N           7.0   1.9281844086   0.3566034101   0.0281244464
         // C           6.0   2.5153456969  -0.9065456189   0.0945565541
         // O           8.0   1.8165225237  -1.9298676636   0.1283661943
-        
+
         getline(infile, tempString);
         while (tempString.find("COORDINATES OF ALL ATOMS ARE") == string::npos && infile.eof() == false) {
             getline(infile, tempString);
         }
-        if (infile.eof()) 
+        if (infile.eof())
             break;
 #ifdef QT_DEBUG
         std::cout << "readGamess: 'COORDINATES OF ALL ATOMS ARE' found.\n";
 #endif
-        
+
         getline(infile, tempString);
         getline(infile, tempString);
-        
+
         // Gamess geometry is reported in Angstroms
         myUnits = Angstrom;
-        
+
         // Read in atom information
         rx.setPattern("(?:\\s*)(\\w+)(?:\\s+)(?:\\d+.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s+)(-?\\d+\\.\\d+)");
         while (1) {
@@ -76,7 +76,7 @@ void FileParser::readGamess()
                 atom->z = rx.cap(4).toDouble();
                 molecule->addAtom(atom);
 #ifdef QT_DEBUG
-                std::cout 	<< std::setw(5) << atom->Label.toStdString() 
+                std::cout 	<< std::setw(5) << atom->Label.toStdString()
                         << " " << std::setw(16) << std::setprecision(10) << atom->x
                         << " " << std::setw(16) << std::setprecision(10) << atom->y
                         << " " << std::setw(16) << std::setprecision(10) << atom->z << std::endl;

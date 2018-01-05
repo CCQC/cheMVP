@@ -43,7 +43,7 @@ void DrawingCanvas::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		}else{
 			unselectAll();
 			QApplication::setOverrideCursor(Qt::CrossCursor);
-			//		selectionRectangle = new QGraphicsRectItem(QRectF(mouseEvent->scenePos(),		// HPS
+			//		selectionRectangle = new QGraphicsRectItem(QRectF(mouseEvent->scenePos(),
 			//														  mouseEvent->scenePos()));
 			selectionRectangle = new QGraphicsRectItem(QRectF(mouseEvent->scenePos().x(),
 															  mouseEvent->scenePos().y(),
@@ -130,7 +130,7 @@ void DrawingCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		break;
 	case Select:
 		if(selectionRectangle != 0){
-			//QRectF newRect(QRectF(mouseOrigin, mouseEvent->scenePos())); // HPS
+			//QRectF newRect(QRectF(mouseOrigin, mouseEvent->scenePos()));
 			QRectF newRect(QRectF(mouseOrigin.x(), mouseOrigin.y(),
 								  mouseEvent->scenePos().x()-mouseOrigin.x(),
 								  mouseEvent->scenePos().y()-mouseOrigin.y()));

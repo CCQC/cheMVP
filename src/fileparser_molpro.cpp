@@ -3,8 +3,8 @@
 using namespace std;
 
 void FileParser::readMolpro()
-{    
-    std::string tempString;    
+{
+    std::string tempString;
     QRegExp rx("", Qt::CaseInsensitive, QRegExp::RegExp2);
     QRegExp rx_done("\\s+Bond lengths.*", Qt::CaseInsensitive, QRegExp::RegExp2);
     //        GOAL TO MATCH -
@@ -41,7 +41,7 @@ void FileParser::readMolpro()
         getline(infile, tempString);
         if(tempString.find("Convergence:") != string::npos){
             Molecule *molecule = new Molecule();
-#ifdef QT_DEBUG        
+#ifdef QT_DEBUG
             std::cout << "readMolpro: Convergence:' found.\n";
 #endif
             if (infile.eof()) break;
@@ -60,7 +60,7 @@ void FileParser::readMolpro()
                     atom->z = BOHR_TO_ANG * rx.cap(4).toDouble();
                     molecule->addAtom(atom);
 #ifdef QT_DEBUG
-                    std::cout   << std::setw(5) << atom->Label.toStdString() 
+                    std::cout   << std::setw(5) << atom->Label.toStdString()
                             << " " << std::setw(16) << std::setprecision(10) << atom->x
                             << " " << std::setw(16) << std::setprecision(10) << atom->y
                             << " " << std::setw(16) << std::setprecision(10) << atom->z << std::endl;

@@ -24,7 +24,7 @@ void MainWindow::createMenus()
 	updateRecentFiles();
 
 #ifndef Q_WS_MAC
-	fileMenu->addSeparator(); // Unused separator on Macs - HPS
+	fileMenu->addSeparator(); // Unused separator on Macs
 #endif
 	fileMenu->addAction(aboutAction);
 	fileMenu->addAction(exitAction);

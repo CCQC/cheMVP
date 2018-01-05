@@ -2,7 +2,7 @@
 
 using namespace std;
 
-static const char* atomic_labels[]= 
+static const char* atomic_labels[]=
 {"X","H","HE","LI","BE","B","C","N","O","F","NE","NA","MG","AL","SI",
  "P","S","CL","AR","K","CA","SC","TI","V","CR","MN","FE","CO","NI",
  "CU","ZN","GA","GE","AS","SE","BR","KR","RB","SR","Y","ZR","NB","MO",
@@ -14,13 +14,13 @@ static const char* atomic_labels[]=
  "UUB","UUT","UUQ","UUP","UUH","UUS","UUO"};
 
 void FileParser::readPsi3()
-{    
-    std::string tempString;    
+{
+    std::string tempString;
     QRegExp rx("", Qt::CaseInsensitive, QRegExp::RegExp2);
-    
+
     while (1) {
         Molecule *molecule = new Molecule();
-        
+
         // GOAL TO MATCH -
         // New Cartesian Geometry in a.u.
         //           8.0   0.0000000000   0.0000000000  -0.1222529019
@@ -30,15 +30,15 @@ void FileParser::readPsi3()
         while (tempString.find("New Cartesian Geometry in a.u.") == string::npos && infile.eof() == false) {
             getline(infile, tempString);
         }
-        if (infile.eof()) 
+        if (infile.eof())
             break;
 #ifdef QT_DEBUG
         std::cout << "readPsi3: 'New Cartesian Geometry in a.u.' found.\n";
 #endif
-        
+
         // file11 is reported in Angstroms
         myUnits = Bohr;
-        
+
         // Read in atom information
         rx.setPattern("(?:\\s*)(\\d+.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s*)");
         while (1) {
@@ -54,7 +54,7 @@ void FileParser::readPsi3()
                 atom->z *= BOHR_TO_ANG;
                 molecule->addAtom(atom);
 #ifdef QT_DEBUG
-                std::cout 	<< std::setw(5) << atom->Label.toStdString() 
+                std::cout 	<< std::setw(5) << atom->Label.toStdString()
                         << " " << std::setw(16) << std::setprecision(10) << atom->x
                         << " " << std::setw(16) << std::setprecision(10) << atom->y
                         << " " << std::setw(16) << std::setprecision(10) << atom->z << std::endl;
