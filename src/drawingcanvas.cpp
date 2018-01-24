@@ -21,8 +21,8 @@ DrawingCanvas::DrawingCanvas(DrawingInfo *info, FileParser *in_parser, QObject *
 	myMode 				= Select;
 	bondline 			= 0;
 	selectionRectangle 	= 0;
-	myArrow             = 0;
-	myTempMoveItem      = 0;
+	myArrow				= 0;
+	myTempMoveItem		= 0;
 	// Hack to make the background border disappear (unless background color is changed)
 	//myBackgroundColor.setAlpha(myBackgroundAlpha);
 	myBackgroundColor.setAlpha(0);
@@ -35,17 +35,6 @@ DrawingCanvas::DrawingCanvas(DrawingInfo *info, FileParser *in_parser, QObject *
 	if(parser->numMolecules() && !in_parser->fileName().isEmpty()) {
 		loadFromParser();
 	}
-
-	//	xRot = yRot = zRot = 0;
-	//	for(int r = 0; r < 3; r++)
-	//	{
-	//		for(int c = 0; c < 3; c++)
-	//		{
-	//			rotationMatrix[r][c] = ((r == c) ? 1 : 0);
-	//			//printf("%6.4f ", rotationMatrix[r][c]);
-	//		}
-	//		//printf("\n");
-	//	}
 }
 
 void DrawingCanvas::updateAtomColors(QMap<QString, QVariant> newColors)
@@ -340,49 +329,9 @@ void DrawingCanvas::determineRotationAngles()
 
 	int m = 3;
 	int n = 3;
-//  double **a = block_matrix(m, n);
 	double* a = new double[m*n];
-//  char jobu = 'A';
-//  char jobvt = 'A';
-//  int lda = m;
-//  double* s = new double[MIN(m,n)];
-//  int ldu = m;
-//	double** u = block_matrix(ldu, m);
-//  double* u = new double[ldu*m];
 	int ldvt = n;
-//	double** vt = block_matrix(ldvt, n);
 	double* vt = new double[ldvt*n];
-//  int lwork = 3*m*n; // Magic number
-//  double* work = new double[lwork];
-//  int info = 0;
-
-	/*	// Create correlation matrix
-		for(int i = 0; i < newGeom.size(); i++)
-		{
-				a[0][0] += oldGeom[i]->x*newGeom[i]->x();
-				a[0][1] += oldGeom[i]->y*newGeom[i]->x();
-				a[0][2] += oldGeom[i]->z*newGeom[i]->x();
-				a[1][0] += oldGeom[i]->x*newGeom[i]->y();
-				a[1][1] += oldGeom[i]->y*newGeom[i]->y();
-				a[1][2] += oldGeom[i]->z*newGeom[i]->y();
-				a[2][0] += oldGeom[i]->x*newGeom[i]->z();
-				a[2][1] += oldGeom[i]->y*newGeom[i]->z();
-				a[2][2] += oldGeom[i]->z*newGeom[i]->z();
-		}
-*/
-	/*	// Create correlation matrix with weighted coordinates
-		for(int i = 0; i < newGeom.size(); i++)
-		{
-				a[0][0] += old_x*new_x;
-				a[0][1] += old_y*new_x;
-				a[0][2] += old_z*new_x;
-				a[1][0] += old_x*new_y;
-				a[1][1] += old_y*new_y;
-				a[1][2] += old_z*new_y;
-				a[2][0] += old_x*new_z;
-				a[2][1] += old_y*new_z;
-				a[2][2] += old_z*new_z;
-		}*/
 	// Create correlation matrix with weighted coordinates
 	for(int i = 0; i < newGeom.size(); i++)
 	{
@@ -396,62 +345,14 @@ void DrawingCanvas::determineRotationAngles()
 		a[7] += oldTransformed[i]->y*newTransformed[i]->z;
 		a[8] += oldTransformed[i]->z*newTransformed[i]->z;
 	}
-	/*for(int i = 0; i < 3; i++)
-				for(int j = 0; j < 3; j++)
-						a[i][j] /= oldGeom.size();
-		*/
 	for(int i = 0; i < 9; i++)
 		a[i] /= oldGeom.size();
 
-	//	for(int r = 0; r < m; r++)
-	//	{
-	//		for(int c = 0; c < n; c++)
-	//			printf("%6.4f ", a[r][c]);
-	//		printf("\n");
-	//	}
-
-	//	DGESVD(&jobu, &jobvt, &m, &n, a[0], &lda, s, u[0], &ldu, vt[0], &ldvt, work, &lwork, &info);
-	//DGESVD(&jobu, &jobvt, &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, work, &lwork, &info);
-
-	//	printf("\n");
-	//	for(int r = 0; r < m; r++)
-	//	{
-	//		for(int c = 0; c < n; c++)
-	//			printf("%6.4f ", a[r][c]);
-	//		printf("\n");
-	//	}
-	//
-	//	printf("\n");
-	//	for(int r = 0; r < MIN(m,n); r++)
-	//	{
-	//		printf("%6.4f ", s[r]);
-	//	}
-	//
-	//	printf("\n\n");
-	//	for(int r = 0; r < m; r++)
-	//	{
-	//		for(int c = 0; c < n; c++)
-	//			printf("%6.4f ", vt[r][c]);
-	//		printf("\n");
-	//	}
 
 	double **rotationMatrix = new double*[3];
 	for(int i = 0; i < 3; i++)
 		rotationMatrix[i] = new double[3];
 
-	// Matrix multiplication - U*V_transpose
-	/*	rotationMatrix[0][0]=a[0][0]*vt[0][0]+a[0][1]*vt[1][0]+a[0][2]*vt[2][0];
-		rotationMatrix[0][1]=a[0][0]*vt[0][1]+a[0][1]*vt[1][1]+a[0][2]*vt[2][1];
-		rotationMatrix[0][2]=a[0][0]*vt[0][2]+a[0][1]*vt[1][2]+a[0][2]*vt[2][2];
-
-		rotationMatrix[1][0]=a[1][0]*vt[0][0]+a[1][1]*vt[1][0]+a[1][2]*vt[2][0];
-		rotationMatrix[1][1]=a[1][0]*vt[0][1]+a[1][1]*vt[1][1]+a[1][2]*vt[2][1];
-		rotationMatrix[1][2]=a[1][0]*vt[0][2]+a[1][1]*vt[1][2]+a[1][2]*vt[2][2];
-
-		rotationMatrix[2][0]=a[2][0]*vt[0][0]+a[2][1]*vt[1][0]+a[2][2]*vt[2][0];
-		rotationMatrix[2][1]=a[2][0]*vt[0][1]+a[2][1]*vt[1][1]+a[2][2]*vt[2][1];
-		rotationMatrix[2][2]=a[2][0]*vt[0][2]+a[2][1]*vt[1][2]+a[2][2]*vt[2][2];
-*/
 	rotationMatrix[0][0]=a[0]*vt[0]+a[1]*vt[3]+a[2]*vt[6];
 	rotationMatrix[0][1]=a[0]*vt[1]+a[1]*vt[4]+a[2]*vt[7];
 	rotationMatrix[0][2]=a[0]*vt[2]+a[1]*vt[5]+a[2]*vt[8];
@@ -464,23 +365,6 @@ void DrawingCanvas::determineRotationAngles()
 	rotationMatrix[2][1]=a[6]*vt[1]+a[7]*vt[4]+a[8]*vt[7];
 	rotationMatrix[2][2]=a[6]*vt[2]+a[7]*vt[5]+a[8]*vt[8];
 
-	/*// Compute determinant
-		double determinant = (rotationMatrix[1][1]*rotationMatrix[2][2] - rotationMatrix[1][2]*rotationMatrix[2][1]) +
-												 (rotationMatrix[1][0]*rotationMatrix[2][2] - rotationMatrix[1][2]*rotationMatrix[2][0]) +
-												 (rotationMatrix[1][0]*rotationMatrix[2][1] - rotationMatrix[1][1]*rotationMatrix[2][0]);
-
-		// Add determinant factor to correct for reflection of desired rotation matrix
-		rotationMatrix[0][0] += (determinant-1)*a[2][0]*vt[0][2];
-		rotationMatrix[0][1] += (determinant-1)*a[2][0]*vt[1][2];
-		rotationMatrix[0][2] += (determinant-1)*a[2][0]*vt[2][2];
-
-		rotationMatrix[1][0] += (determinant-1)*a[2][1]*vt[0][2];
-		rotationMatrix[1][1] += (determinant-1)*a[2][1]*vt[1][2];
-		rotationMatrix[1][2] += (determinant-1)*a[2][1]*vt[2][2];
-
-		rotationMatrix[2][0] += (determinant-1)*a[2][2]*vt[0][2];
-		rotationMatrix[2][1] += (determinant-1)*a[2][2]*vt[1][2];
-		rotationMatrix[2][2] += (determinant-1)*a[2][2]*vt[2][2];*/
 
 	std::printf("\nRotation:\n");
 	for(int r = 0; r < 3; r++)
@@ -961,21 +845,6 @@ void DrawingCanvas::performRotation()
 	double phiX = drawingInfo->xRot() * DEG_TO_RAD;
 	double phiY = drawingInfo->yRot() * DEG_TO_RAD;
 	double phiZ = drawingInfo->zRot() * DEG_TO_RAD;
-	//xRot += phiX*RAD_TO_DEG;
-	//	yRot += phiY*RAD_TO_DEG;
-	//	zRot += phiZ*RAD_TO_DEG;
-	//	if(xRot >= 360)
-	//		xRot -= 360;
-	//	if(yRot >= 360)
-	//		yRot -= 360;
-	//	if(zRot >= 360)
-	//		zRot -= 360;
-	//	if(xRot <= -360)
-	//		xRot += 360;
-	//	if(yRot <= -360)
-	//		yRot += 360;
-	//	if(zRot <= -360)
-	//		zRot += 360;
 
 	double cx = cos(phiX);
 	double sx = sin(phiX);
@@ -1001,7 +870,10 @@ void DrawingCanvas::performRotation()
 		drawingInfo->setYRot(0);
 		drawingInfo->setZRot(0);
 
-		double perspective = (1.0 + zVal * drawingInfo->scaleFactor() * drawingInfo->perspective());
+		double perspective = 1.0;
+		if(drawingInfo->getUsePerspective()) {
+			perspective += zVal * drawingInfo->scaleFactor() * drawingInfo->perspective();
+		}
 		atom->setPos(perspective*xVal*drawingInfo->scaleFactor() + drawingInfo->dX(),
 					 perspective*yVal*drawingInfo->scaleFactor() + drawingInfo->dY());
 		atom->setZValue(zVal*drawingInfo->scaleFactor());
@@ -1030,61 +902,6 @@ void DrawingCanvas::performRotation()
 	drawingInfo->setMaxBondZ(zMax);
 	drawingInfo->setMinBondZ(zMin);
 
-	// Normalize the Z values so that the perspective stuff looks
-	//	for(int atom = 0; atom < nAtoms; ++atom){
-	//	  Atom *pAtom = atomsList[atom];
-	//	  double oldZ = pAtom->zValue();
-	//	  pAtom->setZValue(oldZ - zMax);
-	//	}
-
-	//if(nAtoms < 1)
-	//		return;
-	//
-	//	double dr[3][3];
-	//	dr[0][0] = cy*cz;
-	//	dr[0][1] = cx*sz+cz*sx*sy;
-	//	dr[0][2] = -cx*cz*sy+sx*sz;
-	//	dr[1][0] = -cy*sz;
-	//	dr[1][1] = cz*cx-sx*sy*sz;
-	//	dr[1][2] = cz*sx+cx*sy*sz;
-	//	dr[2][0] = sy;
-	//	dr[2][1] = -sx*cy;
-	//	dr[2][2] = cx*cy;
-	//
-	//	for(int r = 0; r < 3; r++)
-	//	{
-	//		for(int c = 0; c < 3; c++)
-	//		{
-	//	//			printf("%6.4f ", dr[r][c]);
-	//		}
-	//	//	printf("\n");
-	//	}
-	//
-	//	double tempRotation[3][3];
-	//	for(int i = 0; i < 3; i ++)
-	//	{
-	//		for(int j = 0; j < 3; j++)
-	//		{
-	//			double temp = 0.0;
-	//			for(int k = 0; k < 3; k++)
-	//			{
-	//				temp += dr[i][k] * rotationMatrix[k][j];
-	//			}
-	//			tempRotation[i][j] = temp;
-	//		}
-	//	}
-	//
-	//	for(int r = 0; r < 3; r++)
-	//	{
-	//		for(int c = 0; c < 3; c++)
-	//		{
-	//			rotationMatrix[r][c] = tempRotation[r][c];
-	//	//		printf("%6.4f ", rotationMatrix[r][c]);
-	//		}
-	////	printf("\n");
-	//	}
-
-	//determineRotationAngles();
 }
 
 void DrawingCanvas::refresh()

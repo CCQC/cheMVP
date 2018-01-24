@@ -74,6 +74,7 @@ private:
 	FileType determineFileType(const QString &fileName);
 	void saveImage(const QString &fileName);
 	void foggingToggled(int useFogging);
+	void perspectiveToggled(int usePerspective);
 	void loadFile();
 	void resetSignalsOnFileLoad();
 	void resetButtonsOnFileLoad(bool project);
@@ -91,8 +92,12 @@ private:
 	QWidget *createAnimationWidget(QMap<QString, QString>* options);
 	QToolButton *makeAtomButton(const char *);
 	QSlider *createSlider(int max);
+
 	QCheckBox *useFoggingBox;
 	QLabel* foggingLabel;
+
+	QCheckBox *usePerspectiveBox;
+	QLabel* perspectiveLabel;
 
 	QWidget *animationWidget;
 
@@ -159,6 +164,7 @@ private:
 	QSpinBox       *bondLabelsPrecisionBox;
 	QSpinBox       *angleLabelsPrecisionBox;
 	QSpinBox       *foggingScaleBox;
+	QSpinBox       *perspectiveScaleBox;
 	QDoubleSpinBox *atomSizeSpinBox;
 	QDoubleSpinBox *bondSizeSpinBox;
 

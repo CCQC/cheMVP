@@ -272,7 +272,14 @@ void MainWindow::foggingToggled(int useFogging)
 	drawingInfo->setUseFogging(useFogging);
 	useFoggingBox->setEnabled((bool)useFogging);
 	useFoggingBox->setVisible(false);
-	std::cout<<"I was called!"<<std::endl;
+}
+
+
+void MainWindow::perspectiveToggled(int usePerspective)
+{
+	drawingInfo->setUsePerspective(usePerspective);
+	usePerspectiveBox->setEnabled((bool)usePerspective);
+	usePerspectiveBox->setVisible(false);
 }
 
 
@@ -306,12 +313,22 @@ void MainWindow::resetSignalsOnFileLoad()
 	connect(canvas, SIGNAL(selectionChanged()), this, SLOT(updateMenus()));
 	connect(selectAllAction, SIGNAL(triggered()), canvas, SLOT(selectAll()));
 	connect(unselectAllAction, SIGNAL(triggered()), canvas, SLOT(unselectAll()));
+
 	connect(canvas, SIGNAL(mouseModeChanged(int)), this, SLOT(mouseModeButtonGroupClicked(int)));
 	connect(canvas, SIGNAL(updateTextToolbars()), this, SLOT(updateTextLabelToolbar()));
+
+	// Fog
 	connect(useFoggingBox, SIGNAL(toggled(bool)), drawingInfo, SLOT(setUseFogging(bool)));
 	connect(useFoggingBox, SIGNAL(toggled(bool)), canvas, SLOT(refresh()));
 	connect(foggingScaleBox, SIGNAL(valueChanged(int)), drawingInfo, SLOT(setFoggingScale(int)));
 	connect(foggingScaleBox, SIGNAL(valueChanged(int)), canvas, SLOT(refresh()));
+
+    // Perspective
+    connect(usePerspectiveBox, SIGNAL(toggled(bool)), drawingInfo, SLOT(setUsePerspective(bool)));
+    connect(usePerspectiveBox, SIGNAL(toggled(bool)), canvas, SLOT(refresh()));
+    connect(perspectiveScaleBox, SIGNAL(valueChanged(int)), drawingInfo, SLOT(setPerspectiveScale(int)));
+    connect(perspectiveScaleBox, SIGNAL(valueChanged(int)), canvas, SLOT(refresh()));
+
 	connect(backgroundColorButton, SIGNAL(clicked()), canvas, SLOT(setBackgroundColor()));
 	connect(backgroundOpacitySpinBox, SIGNAL(valueChanged(int)), canvas, SLOT(setBackgroundOpacity(int)));
 	connect(toggleBondLabelsButton, SIGNAL(pressed()), canvas, SLOT(toggleBondLabels()));
@@ -319,6 +336,7 @@ void MainWindow::resetSignalsOnFileLoad()
 	connect(toggleAngleLabelsButton, SIGNAL(pressed()), canvas, SLOT(toggleAngleLabels()));
 	connect(angleLabelsPrecisionBox, SIGNAL(valueChanged(int)), canvas, SLOT(setAngleLabelPrecision(int)));
 	connect(toggleBondDashingButton, SIGNAL(pressed()), canvas, SLOT(toggleBondDashing()));
+
 	connect(atomColorButton, SIGNAL(clicked()), canvas, SLOT(setAtomColors()));
 	connect(atomDrawingStyleButtonGroup, SIGNAL(buttonClicked(int)), canvas, SLOT(setAtomDrawingStyle(int)));
 	connect(toggleAtomNumberSubscriptsButton, SIGNAL(pressed()), canvas, SLOT(toggleAtomNumberSubscripts()));
