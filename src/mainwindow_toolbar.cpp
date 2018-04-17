@@ -211,76 +211,75 @@ void MainWindow::updateTextLabelToolbar()
 				}
 			}
 		}
-		bool sameValues;
 
 		// Process the fonts
-		sameValues = true;
-		foreach(QString i, textLabelFonts){
-			if(i != textLabelFonts[0]){
+		bool sameValues = textLabelFonts.length() > 0;
+		for (QString font: textLabelFonts) {
+			if (font != textLabelFonts[0]) {
 				sameValues = false;
 				break;
 			}
 		}
-		if(sameValues){
+		if (sameValues) {
 			textFontCombo->setEditText(textLabelFonts[0]);
-		}else{
+		} else {
 			textFontCombo->setEditText(tr(""));
 		}
 
 		// Process the font sizes
-		sameValues = true;
-		foreach(int i, textLabelFontSizes){
-			if(i != textLabelFontSizes[0]){
+		sameValues = textLabelFontSizes.length() > 0;
+		for (int fontSize: textLabelFontSizes) {
+			if (fontSize != textLabelFontSizes[0]) {
 				sameValues = false;
 				break;
 			}
 		}
-		if(sameValues){
+		if (sameValues) {
 			textFontSizeCombo->setEditText(QString().setNum(textLabelFontSizes[0]));
-		}else{
+		} else {
 			textFontSizeCombo->setEditText(tr(""));
 		}
 
 		// Process the font boldness
-		sameValues = true;
-		foreach(bool i, textLabelsBold){
-			if(i != textLabelsBold[0]){
+		sameValues = textLabelsBold.length() > 0;
+		for (bool boldness: textLabelsBold) {
+			if (boldness != textLabelsBold[0]) {
 				sameValues = false;
 				break;
 			}
 		}
-		if(sameValues){
-			boldTextButton->setChecked(false);
-		}else{
+		if (sameValues) {
 			boldTextButton->setChecked(textLabelsBold[0]);
+		} else {
+			boldTextButton->setChecked(false);
 		}
 
 		// Process the font italics
-		sameValues = true;
-		foreach(bool i, textLabelsItalic){
-			if(i != textLabelsItalic[0]){
+		sameValues = textLabelsItalic.length() > 0;
+		for (bool boldness: textLabelsItalic) {
+			if (boldness != textLabelsItalic[0]) {
 				sameValues = false;
 				break;
 			}
 		}
-		if(sameValues){
-			italicTextButton->setChecked(false);
-		}else{
+		if (sameValues) {
 			italicTextButton->setChecked(textLabelsItalic[0]);
+		} else {
+			italicTextButton->setChecked(false);
 		}
 
 		// Process the font underline
-		sameValues = true;
-		foreach(bool i, textLabelsUnderlined){
-			if(i != textLabelsUnderlined[0]){
+		sameValues =  textLabelsUnderlined.length() > 0;
+		for (bool underlined: textLabelsUnderlined) {
+			if (underlined != textLabelsUnderlined[0]) {
 				sameValues = false;
 				break;
 			}
 		}
-		if(sameValues){
-			underlineTextButton->setChecked(false);
-		}else{
+		if (sameValues) {
 			underlineTextButton->setChecked(textLabelsUnderlined[0]);
+		} else {
+			underlineTextButton->setChecked(false);
 		}
 	}
 
