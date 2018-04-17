@@ -45,7 +45,7 @@ public:
 	double minBondZ() const {return _minBondZ;}
 	double moleculeMaxDimension() const {return myMoleculeMaxDimension;}
 	double scaleFactor() const {return myUserScaleFactor * myAngToSceneScale;}
-	double perspective() const {return myPerspectiveScale/10000.0;}
+	double perspective() const {return _perspectiveScale/30000.0;}
 	void determineScaleFactor();
 	void setZoom(int val) { myUserScaleFactor = (double)val; emit scaleFactorChanged();}
 	int getZoom() {return (int)myUserScaleFactor;}
@@ -53,8 +53,10 @@ public:
 	static DrawingInfo* deserialize(QXmlStreamReader* reader);
 
 	int getFoggingScale() {return _foggingScale;}
-
 	bool getUseFogging() {return _useFogging;}
+
+	int getPerspectiveScale() {return _perspectiveScale;}
+	bool getUsePerspective() {return _usePerspective;}
 
 	void setAnglePenWidth(double v) {_anglePenWidth = v;}
 	double getAnglePenWidth() {return _anglePenWidth;}
@@ -88,6 +90,8 @@ public:
 public slots:
 	void setFoggingScale(int v) {_foggingScale = v;}
 	void setUseFogging(bool v) {_useFogging = v;}
+	void setPerspectiveScale(int v) {_perspectiveScale = v;}
+	void setUsePerspective(bool v) {_usePerspective = v;}
 	void setMinZ(double v) {_minZ = v;}
 	void setMaxZ(double v) {_maxZ = v;}
 	void setMinBondZ(double v) {_minBondZ = v;}
@@ -95,11 +99,13 @@ public slots:
 
 private:
 	bool _useFogging;
+	int _foggingScale;
+	bool _usePerspective;
+	int _perspectiveScale;
 	// The rotation about the axes
 	int myXRot;
 	int myYRot;
 	int myZRot;
-	int _foggingScale;
 
 	// The overall translation from the origin of all objects in the scene
 	int myDX;

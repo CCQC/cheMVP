@@ -1,11 +1,13 @@
 #include "drawinginfo.h"
 
 DrawingInfo::DrawingInfo():
-		_useFogging(false),
 		myXRot(0),
 		myYRot(0),
 		myZRot(0),
+		_useFogging(false),
 		_foggingScale(DEFAULT_FOGGING_SCALE),
+		_usePerspective(true),
+		_perspectiveScale(DEFAULT_PERSPECTIVE_SCALE),
 		myDX((int)(DEFAULT_SCENE_SIZE_X/2.0)),
 		myDY((int)(DEFAULT_SCENE_SIZE_Y/2.0)),
 		myUserDX(0),
@@ -15,7 +17,6 @@ DrawingInfo::DrawingInfo():
 		myWidth((int)(DEFAULT_SCENE_SIZE_X)),
 		myHeight((int)(DEFAULT_SCENE_SIZE_Y)),
 		myUserScaleFactor(100.0),
-		myPerspectiveScale(DEFAULT_PERSPECTIVE_SCALE),
 		myMoleculeMaxDimension(1.0),
 		myAngToSceneScale(1),
 		_maxZ(0.0),
@@ -60,7 +61,6 @@ void DrawingInfo::serialize(QXmlStreamWriter* writer)
 	writer->writeAttribute("userdX", QString("%1").arg(myUserDX));
 	writer->writeAttribute("userdY", QString("%1").arg(myUserDY));
 	writer->writeAttribute("scale", QString("%1").arg(myUserScaleFactor));
-	writer->writeAttribute("perspective", QString("%1").arg(myPerspectiveScale));
 	writer->writeAttribute("maxDim", QString("%1").arg(myMoleculeMaxDimension));
 	writer->writeAttribute("ang", QString("%1").arg(myAngToSceneScale));
 	writer->writeAttribute("maxZ", QString("%1").arg(_maxZ));
@@ -69,6 +69,7 @@ void DrawingInfo::serialize(QXmlStreamWriter* writer)
 	writer->writeAttribute("minBondZ", QString("%1").arg(_minBondZ));
 	writer->writeAttribute("fogging", QString("%1").arg(_useFogging));
 	writer->writeAttribute("fogScale", QString("%1").arg(_foggingScale));
+	writer->writeAttribute("perspective", QString("%1").arg(_usePerspective));
 	writer->writeAttribute("angleWidth", QString("%1").arg(_anglePenWidth));
 	writer->writeAttribute("angleColor", QString("%1 %2 %3 %4").arg(_angleColor.red()).arg(_angleColor.green()).arg(_angleColor.blue()).arg(_angleColor.alpha()));
 	writer->writeAttribute("anglePrecision", QString("%1").arg(_anglePrecision));
@@ -99,7 +100,6 @@ DrawingInfo* DrawingInfo::deserialize(QXmlStreamReader* reader)
 	d->myUserDX = attr.value("userdX").toString().toInt();
 	d->myUserDY = attr.value("userdY").toString().toInt();
 	d->myUserScaleFactor = attr.value("scale").toString().toDouble();
-	d->myPerspectiveScale = attr.value("perspective").toString().toDouble();
 	d->myMoleculeMaxDimension = attr.value("maxDim").toString().toDouble();
 	d->myAngToSceneScale = attr.value("ang").toString().toDouble();
 	d->_maxZ = attr.value("maxZ").toString().toDouble();
@@ -108,6 +108,7 @@ DrawingInfo* DrawingInfo::deserialize(QXmlStreamReader* reader)
 	d->_minBondZ = attr.value("minBondZ").toString().toDouble();
 	d->_useFogging = (attr.value("fogging").toString().toInt() == 1);
 	d->_foggingScale = attr.value("fogScale").toString().toInt();
+	d->_usePerspective = (attr.value("perspective").toString().toInt() == 1);
 	d->_anglePenWidth = attr.value("anglePenWidth").toString().toInt();
 	QString angleColor = attr.value("angleColor").toString();
 	d->_anglePrecision = attr.value("anglePrecision").toString().toInt();

@@ -25,7 +25,8 @@ QWidget *MainWindow::createAppearanceWidget(QMap<QString, QString>* options)
 	QWidget *widget = new QWidget;
 	QGridLayout *layout = new QGridLayout;
 
-	bool useFogging = options->value("FOGGING_ON").toInt();
+    // Fogging
+    bool useFogging = options->value("FOGGING_ON").toInt();
 
 	QGroupBox *foggingGroupBox = new QGroupBox(tr("Fogging"));
 	useFoggingBox = new QCheckBox(tr("Use fogging"));
@@ -48,6 +49,30 @@ QWidget *MainWindow::createAppearanceWidget(QMap<QString, QString>* options)
 	connect(useFoggingBox, SIGNAL(toggled(bool)), foggingLabel, SLOT(setVisible(bool)));
 	foggingGroupBox->setLayout(foggingBoxLayout);
 	layout->addWidget(foggingGroupBox);
+
+    // Perspective
+    bool usePerspective = options->value("PERSPECTIVE_ON").toInt();
+    QGroupBox *perspectiveGroupBox = new QGroupBox(tr("Perspective"));
+    usePerspectiveBox = new QCheckBox(tr("Use perspective"));
+    usePerspectiveBox->setToolTip(tr("Add a perspective effect"));
+    usePerspectiveBox->setChecked(usePerspective);
+    perspectiveScaleBox = new QSpinBox();
+    perspectiveScaleBox->setSuffix("");
+    perspectiveLabel = new QLabel(tr("Strength:"));
+    perspectiveLabel->setVisible(usePerspective);
+    QHBoxLayout *perspectiveBoxLayout = new QHBoxLayout();
+    perspectiveBoxLayout->addWidget(usePerspectiveBox);
+    perspectiveBoxLayout->addStretch(20);
+    perspectiveBoxLayout->addWidget(perspectiveLabel);
+    perspectiveBoxLayout->addWidget(perspectiveScaleBox);
+    perspectiveScaleBox->setMaximum(100);
+    perspectiveScaleBox->setValue(options->value("PERSPECTIVE_SCALE").toInt());
+    perspectiveScaleBox->setAccelerated(true);
+    perspectiveScaleBox->setVisible(usePerspective);
+    connect(usePerspectiveBox, SIGNAL(toggled(bool)), perspectiveScaleBox, SLOT(setVisible(bool)));
+    connect(usePerspectiveBox, SIGNAL(toggled(bool)), perspectiveLabel, SLOT(setVisible(bool)));
+    perspectiveGroupBox->setLayout(perspectiveBoxLayout);
+    layout->addWidget(perspectiveGroupBox);
 
 	// The Orientation Box
 	QGroupBox *rotationGroupBox = new QGroupBox(tr("Rotation"));
@@ -333,6 +358,8 @@ QMap<QString, QString>* MainWindow::defaultToolBoxOptions()
 	// Appearance
 	options->insert("FOGGING_ON", QString("%1").arg(false));
 	options->insert("FOGGING_SCALE", QString("%1").arg(DEFAULT_FOGGING_SCALE));
+	options->insert("PERSPECTIVE_ON", QString("%1").arg(true));
+	options->insert("PERSPECTIVE_SCALE", QString("%1").arg(DEFAULT_PERSPECTIVE_SCALE));
 	options->insert("X_ROTATION", "0");
 	options->insert("Y_ROTATION", "0");
 	options->insert("Z_ROTATION", "0");
@@ -363,6 +390,12 @@ void MainWindow::resetToolBox(QMap<QString, QString>* options)
 	useFoggingBox->setChecked(useFogging);
 	foggingLabel->setVisible(useFogging);
 	foggingScaleBox->setValue(options->value("FOGGING_SCALE").toInt());
+
+	bool usePerspective = options->value("PERSPECTIVE_ON").toInt();
+	usePerspectiveBox->setChecked(usePerspective);
+	perspectiveLabel->setVisible(usePerspective);
+	perspectiveScaleBox->setValue(options->value("PERSPECTIVE_SCALE").toInt());
+
 	xRotationBox->setText(options->value("X_ROTATION"));
 	yRotationBox->setText(options->value("Y_ROTATION"));
 	zRotationBox->setText(options->value("Z_ROTATION"));
