@@ -1,10 +1,12 @@
 #include "splashscreen.h"
 
-SplashScreen::SplashScreen(const QPixmap &image):
-        QSplashScreen(image, Qt::WindowStaysOnTopHint)
+SplashScreen::SplashScreen(const QPixmap &image) : QSplashScreen(image, Qt::WindowStaysOnTopHint)
 {
-    showMessage("Version " + QString(CHEMVP_VERSION)+"\nCreated by Andy Simmonett, Justin Turney, and H. Parker Shelton\nCenter for Computational Chemistry, University of Georgia",
-                Qt::AlignLeft | Qt::AlignBottom, Qt::white);
+    showMessage("Version " + QString(CHEMVP_VERSION) +
+                    "\nCreated by Andy Simmonett, Justin Turney, and H. Parker Shelton\nCenter for "
+                    "Computational Chemistry, University of Georgia",
+                Qt::AlignLeft | Qt::AlignBottom,
+                Qt::white);
     show();
 }
 

@@ -1,52 +1,52 @@
 #ifndef PREFERENCES_H
 #define PREFERENCES_H
 
-#include <QStackedLayout>
-#include <QStackedWidget>
 #include <QButtonGroup>
-#include <QPushButton>
-#include <QToolButton>
+#include <QDialog>
 #include <QGridLayout>
+#include <QList>
 #include <QListWidget>
 #include <QPainter>
+#include <QPushButton>
+#include <QStackedLayout>
+#include <QStackedWidget>
+#include <QToolButton>
 #include <QWidget>
-#include <QDialog>
-#include <QList>
 
-#include "drawinginfo.h"
-#include "drawingcanvas.h"
-#include "defines.h"
 #include "atombutton.h"
+#include "defines.h"
+#include "drawingcanvas.h"
+#include "drawinginfo.h"
 
 class Preferences : public QDialog
 {
     Q_OBJECT
 
-public:
-    Preferences(DrawingCanvas* d, int s);
+  public:
+    Preferences(DrawingCanvas *d, int s);
 
     static QMap<QString, QVariant> _colorChanges;
 
-public slots:
+  public slots:
     void savePreferences();
     void restoreDefaults();
     void revert();
 
-protected:
+  protected:
     int _drawingStyle;
-    DrawingCanvas* _canvas;
+    DrawingCanvas *_canvas;
 
-    QWidget* _periodicTable;
-    QList<QToolButton*> _atomButtons;
+    QWidget *_periodicTable;
+    QList<QToolButton *> _atomButtons;
 
-    QListWidget* _listWidget;
-    QStackedWidget* _stackedWidget;
-    QPushButton* _applyButton;
-    QPushButton* _closeButton;
-    QPushButton* _revertButton;
+    QListWidget *_listWidget;
+    QStackedWidget *_stackedWidget;
+    QPushButton *_applyButton;
+    QPushButton *_closeButton;
+    QPushButton *_revertButton;
 
-    QWidget* createPeriodicTable();
-    QToolButton* makeAtomButton(const char* label);
+    QWidget *createPeriodicTable();
+    QToolButton *makeAtomButton(const char *label);
 };
 
 #endif /* PREFERENCES_H */

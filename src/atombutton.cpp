@@ -3,7 +3,7 @@
 
 QMap<QString, QVariant> Preferences::_colorChanges;
 
-AtomButton::AtomButton(DrawingCanvas* d, const char* label)
+AtomButton::AtomButton(DrawingCanvas *d, const char *label)
 {
     _label = label;
     _canvas = d;
@@ -35,8 +35,7 @@ AtomButton::AtomButton(DrawingCanvas* d, const char* label)
 void AtomButton::setAtomColor()
 {
     QColor color = QColorDialog::getColor();
-    if(color.isValid())
-    {
+    if (color.isValid()) {
         Preferences::_colorChanges[_label] = color;
         _canvas->updateAtomColors(Preferences::_colorChanges);
         refreshColor();
@@ -61,5 +60,4 @@ void AtomButton::refreshColor()
     setIcon(icon);
     setText(text);
     setIconSize(icon_box);
-
 }

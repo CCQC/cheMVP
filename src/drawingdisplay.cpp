@@ -1,11 +1,8 @@
 #include "drawingdisplay.h"
 
-DrawingDisplay::DrawingDisplay(DrawingCanvas *scene, DrawingInfo *info):
-        QGraphicsView(scene),
-        drawingInfo(info),
-        canvas(scene)
+DrawingDisplay::DrawingDisplay(DrawingCanvas *scene, DrawingInfo *info)
+    : QGraphicsView(scene), drawingInfo(info), canvas(scene)
 {
-
 }
 
 void DrawingDisplay::resizeEvent(QResizeEvent *event)
@@ -17,12 +14,11 @@ void DrawingDisplay::resizeEvent(QResizeEvent *event)
     canvas->refresh();
 }
 
-
 void DrawingDisplay::focusOutEvent(QFocusEvent *event)
 {
-    if(event->reason() != Qt::TabFocusReason){
+    if (event->reason() != Qt::TabFocusReason) {
         QGraphicsView::focusOutEvent(event);
-    }else{
+    } else {
         QKeyEvent *newEvent = new QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
         QGraphicsView::keyPressEvent(newEvent);
     }

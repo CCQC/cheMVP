@@ -1,21 +1,21 @@
 #ifndef SPLASHSCREEN_H_
 #define SPLASHSCREEN_H_
 
+#include <QKeyEvent>
+#include <QMouseEvent>
+#include <QPixmap>
 #include <QSplashScreen>
 #include <QTimerEvent>
-#include <QMouseEvent>
-#include <QKeyEvent>
-#include <QPixmap>
 
 #include "defines.h"
 
 class SplashScreen : public QSplashScreen
 {
-public:
+  public:
     SplashScreen(const QPixmap &image);
     ~SplashScreen();
 
-protected:
+  protected:
     void timerEvent(QTimerEvent *);
     void keyPressEvent(QKeyEvent *);
     void mousePressEvent(QMouseEvent *);

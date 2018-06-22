@@ -1,6 +1,6 @@
 #include "preferences.h"
 
-Preferences::Preferences(DrawingCanvas* d, int s)
+Preferences::Preferences(DrawingCanvas *d, int s)
 {
     _canvas = d;
     _drawingStyle = s;
@@ -22,20 +22,16 @@ Preferences::Preferences(DrawingCanvas* d, int s)
     buttonsLayout->addWidget(_applyButton);
     buttonsLayout->addWidget(_closeButton);
 
-    connect(_revertButton, SIGNAL(pressed()),
-            this, SLOT(restoreDefaults()));
-    connect(_closeButton, SIGNAL(pressed()),
-            this, SLOT(close()));
-    connect(_closeButton, SIGNAL(pressed()),
-            this, SLOT(revert()));
-    connect(_applyButton, SIGNAL(pressed()),
-            this, SLOT(savePreferences()));
+    connect(_revertButton, SIGNAL(pressed()), this, SLOT(restoreDefaults()));
+    connect(_closeButton, SIGNAL(pressed()), this, SLOT(close()));
+    connect(_closeButton, SIGNAL(pressed()), this, SLOT(revert()));
+    connect(_applyButton, SIGNAL(pressed()), this, SLOT(savePreferences()));
 
     _stackedWidget = new QStackedWidget();
     _stackedWidget->addWidget(_periodicTable);
 
-    connect(_listWidget, SIGNAL(currentRowChanged(int)),
-            _stackedWidget, SLOT(setCurrentIndex(int)));
+    connect(
+        _listWidget, SIGNAL(currentRowChanged(int)), _stackedWidget, SLOT(setCurrentIndex(int)));
 
     _listWidget->setCurrentRow(0);
 
@@ -53,7 +49,7 @@ Preferences::Preferences(DrawingCanvas* d, int s)
 
 void Preferences::revert()
 {
-    if(_listWidget->currentRow() == 0){
+    if (_listWidget->currentRow() == 0) {
         _colorChanges = Atom::labelToColor;
         _canvas->updateAtomColors(_colorChanges);
     }
@@ -61,13 +57,13 @@ void Preferences::revert()
 
 void Preferences::restoreDefaults()
 {
-    if(_listWidget->currentRow() == 0){
+    if (_listWidget->currentRow() == 0) {
         Atom::fillLabelToColorMap();
         _colorChanges = Atom::labelToColor;
         _canvas->updateAtomColors(_colorChanges);
         savePreferences();
-        foreach(QToolButton* b, _atomButtons){
-            AtomButton* a = dynamic_cast<AtomButton*>(b);
+        foreach (QToolButton *b, _atomButtons) {
+            AtomButton *a = dynamic_cast<AtomButton *>(b);
             a->refreshColor();
         }
     }
@@ -76,7 +72,7 @@ void Preferences::restoreDefaults()
 void Preferences::savePreferences()
 {
     Atom::labelToColor = _colorChanges;
-    foreach(Atom * a, _canvas->getAtoms()) {
+    foreach (Atom *a, _canvas->getAtoms()) {
         a->setDrawingStyle(DrawingInfo::DrawingStyle(_drawingStyle));
     }
     QSettings settings;
@@ -85,7 +81,7 @@ void Preferences::savePreferences()
 
 QToolButton *Preferences::makeAtomButton(const char *label)
 {
-    AtomButton* a = new AtomButton(_canvas, label);
+    AtomButton *a = new AtomButton(_canvas, label);
     _atomButtons.push_back(a);
     return a;
 }
@@ -95,33 +91,33 @@ QWidget *Preferences::createPeriodicTable()
     QGridLayout *layout = new QGridLayout;
     layout->setSpacing(0);
 
-    layout->addWidget(makeAtomButton("H" ), 0, 0, Qt::AlignHCenter);
+    layout->addWidget(makeAtomButton("H"), 0, 0, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("He"), 0, 18, Qt::AlignHCenter);
 
     layout->addWidget(makeAtomButton("Li"), 1, 0, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Be"), 1, 1, Qt::AlignHCenter);
-    layout->addWidget(makeAtomButton("B" ), 1, 13, Qt::AlignHCenter);
-    layout->addWidget(makeAtomButton("C" ), 1, 14, Qt::AlignHCenter);
-    layout->addWidget(makeAtomButton("N" ), 1, 15, Qt::AlignHCenter);
-    layout->addWidget(makeAtomButton("O" ), 1, 16, Qt::AlignHCenter);
-    layout->addWidget(makeAtomButton("F" ), 1, 17, Qt::AlignHCenter);
+    layout->addWidget(makeAtomButton("B"), 1, 13, Qt::AlignHCenter);
+    layout->addWidget(makeAtomButton("C"), 1, 14, Qt::AlignHCenter);
+    layout->addWidget(makeAtomButton("N"), 1, 15, Qt::AlignHCenter);
+    layout->addWidget(makeAtomButton("O"), 1, 16, Qt::AlignHCenter);
+    layout->addWidget(makeAtomButton("F"), 1, 17, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Ne"), 1, 18, Qt::AlignHCenter);
 
     layout->addWidget(makeAtomButton("Na"), 2, 0, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Mg"), 2, 1, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Al"), 2, 13, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Si"), 2, 14, Qt::AlignHCenter);
-    layout->addWidget(makeAtomButton("P" ), 2, 15, Qt::AlignHCenter);
-    layout->addWidget(makeAtomButton("S" ), 2, 16, Qt::AlignHCenter);
+    layout->addWidget(makeAtomButton("P"), 2, 15, Qt::AlignHCenter);
+    layout->addWidget(makeAtomButton("S"), 2, 16, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Cl"), 2, 17, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Ar"), 2, 18, Qt::AlignHCenter);
 
-    layout->addWidget(makeAtomButton("K" ), 3, 0, Qt::AlignHCenter);
+    layout->addWidget(makeAtomButton("K"), 3, 0, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Ca"), 3, 1, Qt::AlignHCenter);
 
     layout->addWidget(makeAtomButton("Sc"), 3, 3, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Ti"), 3, 4, Qt::AlignHCenter);
-    layout->addWidget(makeAtomButton("V" ), 3, 5, Qt::AlignHCenter);
+    layout->addWidget(makeAtomButton("V"), 3, 5, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Cr"), 3, 6, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Mn"), 3, 7, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Fe"), 3, 8, Qt::AlignHCenter);
@@ -140,7 +136,7 @@ QWidget *Preferences::createPeriodicTable()
     layout->addWidget(makeAtomButton("Rb"), 4, 0, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Sr"), 4, 1, Qt::AlignHCenter);
 
-    layout->addWidget(makeAtomButton("Y" ), 4, 3, Qt::AlignHCenter);
+    layout->addWidget(makeAtomButton("Y"), 4, 3, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Zr"), 4, 4, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Nb"), 4, 5, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Mo"), 4, 6, Qt::AlignHCenter);
@@ -155,18 +151,18 @@ QWidget *Preferences::createPeriodicTable()
     layout->addWidget(makeAtomButton("Sn"), 4, 14, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Sb"), 4, 15, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Te"), 4, 16, Qt::AlignHCenter);
-    layout->addWidget(makeAtomButton("I" ), 4, 17, Qt::AlignHCenter);
+    layout->addWidget(makeAtomButton("I"), 4, 17, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Xe"), 4, 18, Qt::AlignHCenter);
 
     layout->addWidget(makeAtomButton("Cs"), 5, 0, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Ba"), 5, 1, Qt::AlignHCenter);
 
-    layout->addItem(new QSpacerItem(10,10), 5, 2);
+    layout->addItem(new QSpacerItem(10, 10), 5, 2);
 
     layout->addWidget(makeAtomButton("Lu"), 5, 3, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Hf"), 5, 4, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Ta"), 5, 5, Qt::AlignHCenter);
-    layout->addWidget(makeAtomButton("W" ), 5, 6, Qt::AlignHCenter);
+    layout->addWidget(makeAtomButton("W"), 5, 6, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Re"), 5, 7, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Os"), 5, 8, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Ir"), 5, 9, Qt::AlignHCenter);
@@ -184,7 +180,7 @@ QWidget *Preferences::createPeriodicTable()
     layout->addWidget(makeAtomButton("Fr"), 6, 0, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Ra"), 6, 1, Qt::AlignHCenter);
 
-    layout->addItem(new QSpacerItem(10,10), 6, 2);
+    layout->addItem(new QSpacerItem(10, 10), 6, 2);
 
     layout->addWidget(makeAtomButton("Lr"), 6, 3, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Rf"), 6, 4, Qt::AlignHCenter);
@@ -196,7 +192,7 @@ QWidget *Preferences::createPeriodicTable()
     layout->addWidget(makeAtomButton("Ds"), 6, 10, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Rg"), 6, 11, Qt::AlignHCenter);
 
-    layout->addItem(new QSpacerItem(10,10), 7, 2);
+    layout->addItem(new QSpacerItem(10, 10), 7, 2);
 
     layout->addWidget(makeAtomButton("La"), 8, 3, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Ce"), 8, 4, Qt::AlignHCenter);
@@ -216,7 +212,7 @@ QWidget *Preferences::createPeriodicTable()
     layout->addWidget(makeAtomButton("Ac"), 9, 3, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Th"), 9, 4, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Pa"), 9, 5, Qt::AlignHCenter);
-    layout->addWidget(makeAtomButton("U" ), 9, 6, Qt::AlignHCenter);
+    layout->addWidget(makeAtomButton("U"), 9, 6, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Np"), 9, 7, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Pu"), 9, 8, Qt::AlignHCenter);
     layout->addWidget(makeAtomButton("Am"), 9, 9, Qt::AlignHCenter);

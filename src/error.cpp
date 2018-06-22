@@ -2,19 +2,19 @@
 
 void error(QString message)
 {
-	QMessageBox msgBox(QMessageBox::Warning, QDialog::tr("QMessageBox::warning()"),
-                       QDialog::tr(message.toLatin1()), 0, 0);
+    QMessageBox msgBox(QMessageBox::Warning,
+                       QDialog::tr("QMessageBox::warning()"),
+                       QDialog::tr(message.toLatin1()),
+                       0,
+                       0);
     msgBox.exec();
 }
 
-void error(QString message, const char* filename, int line)
+void error(QString message, const char *filename, int line)
 {
     message += "\n\nThe error occured in ";
     message += filename;
     message += ", line ";
     message += QString::number(line) + ".";
-	error(message);
+    error(message);
 }
-
-
-

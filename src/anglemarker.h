@@ -1,31 +1,39 @@
 #ifndef ANGLEMARKER_H_
 #define ANGLEMARKER_H_
 
-#include <QtGui>
 #include <QGraphicsItem>
+#include <QtGui>
 #include <cmath>
 #include <iostream>
 
-#include "drawinginfo.h"
 #include "defines.h"
+#include "drawinginfo.h"
 
 class AngleMarker : public QGraphicsPathItem
 {
-public:
-    enum { Type = UserType + ANGLEMARKERTYPE};
-    int type() const {return Type;}
+  public:
+    enum { Type = UserType + ANGLEMARKERTYPE };
+    int type() const
+    {
+        return Type;
+    }
 
     AngleMarker(DrawingInfo *drawingInfo, QGraphicsItem *parent = 0);
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-               QWidget *widget = 0);
-    void setOtherMarker(AngleMarker *marker) {otherMarker = marker;}
-    void setHover(bool t_f) {hoverOver = t_f;}
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    void setOtherMarker(AngleMarker *marker)
+    {
+        otherMarker = marker;
+    }
+    void setHover(bool t_f)
+    {
+        hoverOver = t_f;
+    }
 
-    void serialize(QXmlStreamWriter* writer);
-    static AngleMarker* deserialize(QXmlStreamReader* reader, DrawingInfo* drawingInfo);
+    void serialize(QXmlStreamWriter *writer);
+    static AngleMarker *deserialize(QXmlStreamReader *reader, DrawingInfo *drawingInfo);
 
-protected:
+  protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);

@@ -1,20 +1,20 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include <QApplication>
 #include "mainwindow.h"
+#include <QApplication>
 
 class Application : public QApplication
 {
     Q_OBJECT
 
-public:
+  public:
     Application(int &argc, char **argv);
     bool loadFile(const QString &fileName);
 
-    MainWindow* mainWindow;
+    MainWindow *mainWindow;
 
-protected:
+  protected:
     bool event(QEvent *event);
 };
 

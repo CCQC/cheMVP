@@ -1,17 +1,18 @@
 #ifndef DRAWINGDISPLAY_H_
 #define DRAWINGDISPLAY_H_
 
-#include <QGraphicsView>
 #include "drawingcanvas.h"
 #include "drawinginfo.h"
+#include <QGraphicsView>
 
 class DrawingDisplay : public QGraphicsView
 {
-public:
+  public:
     DrawingDisplay(DrawingCanvas *scene, DrawingInfo *info);
-    void resizeEvent (QResizeEvent *event);
-    void focusOutEvent (QFocusEvent *event);
-private:
+    void resizeEvent(QResizeEvent *event);
+    void focusOutEvent(QFocusEvent *event);
+
+  private:
     DrawingInfo *drawingInfo;
     DrawingCanvas *canvas;
 };

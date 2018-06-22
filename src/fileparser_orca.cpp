@@ -22,11 +22,13 @@ void FileParser::readORCA()
         //          H     3.405318   -0.967835   -1.537305
         //          N    -1.204954    0.202179    1.259883
         getline(infile, tempString);
-        while (tempString.find("CARTESIAN COORDINATES (ANGSTROEM)") == string::npos && infile.eof() == false) {
+        while (tempString.find("CARTESIAN COORDINATES (ANGSTROEM)") == string::npos &&
+               infile.eof() == false) {
             getline(infile, tempString);
         }
-        if (infile.eof())
+        if (infile.eof()) {
             break;
+        }
 #ifdef QT_DEBUG
         std::cout << "readORCA: 'CARTESIAN COORDINATES (ANGSTROEM)' found.\n";
 #endif
@@ -35,7 +37,8 @@ void FileParser::readORCA()
         myUnits = Angstrom;
 
         // Read in atom information
-        rx.setPattern("(?:\\s*)(\\w+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s*)");
+        rx.setPattern("(?:\\s*)(\\w+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s+)(-?\\d+"
+                      "\\.\\d+)(?:\\s*)");
         while (1) {
             getline(infile, tempString);
             if (rx.exactMatch(tempString.c_str()) == true) {
@@ -46,13 +49,12 @@ void FileParser::readORCA()
                 atom->z = rx.cap(4).toDouble();
                 molecule->addAtom(atom);
 #ifdef QT_DEBUG
-                std::cout 	<< std::setw(5) << atom->Label.toStdString()
-                        << " " << std::setw(16) << std::setprecision(10) << atom->x
-                        << " " << std::setw(16) << std::setprecision(10) << atom->y
-                        << " " << std::setw(16) << std::setprecision(10) << atom->z << std::endl;
+                std::cout << std::setw(5) << atom->Label.toStdString() << " " << std::setw(16)
+                          << std::setprecision(10) << atom->x << " " << std::setw(16)
+                          << std::setprecision(10) << atom->y << " " << std::setw(16)
+                          << std::setprecision(10) << atom->z << std::endl;
 #endif
-            }
-            else if(tempString.size()==0) {
+            } else if (tempString.size() == 0) {
                 myMoleculeList.push_back(molecule);
                 break;
             }

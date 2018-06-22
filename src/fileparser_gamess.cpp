@@ -46,11 +46,13 @@ void FileParser::readGamess()
         // O           8.0   1.8165225237  -1.9298676636   0.1283661943
 
         getline(infile, tempString);
-        while (tempString.find("COORDINATES OF ALL ATOMS ARE") == string::npos && infile.eof() == false) {
+        while (tempString.find("COORDINATES OF ALL ATOMS ARE") == string::npos &&
+               infile.eof() == false) {
             getline(infile, tempString);
         }
-        if (infile.eof())
+        if (infile.eof()) {
             break;
+        }
 #ifdef QT_DEBUG
         std::cout << "readGamess: 'COORDINATES OF ALL ATOMS ARE' found.\n";
 #endif
@@ -62,27 +64,29 @@ void FileParser::readGamess()
         myUnits = Angstrom;
 
         // Read in atom information
-        rx.setPattern("(?:\\s*)(\\w+)(?:\\s+)(?:\\d+.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s+)(-?\\d+\\.\\d+)");
+        rx.setPattern("(?:\\s*)(\\w+)(?:\\s+)(?:\\d+.\\d+)(?:\\s+)(-?\\d+\\.\\d+)(?:\\s+)(-?\\d+\\."
+                      "\\d+)(?:\\s+)(-?\\d+\\.\\d+)");
         while (1) {
             getline(infile, tempString);
             if (rx.exactMatch(tempString.c_str()) == true) {
                 AtomEntry *atom = new AtomEntry;
                 QString symbol = rx.cap(1);
                 // GAMESS capitalizes EVERYTHING, make sure the symbol is correct
-                if(symbol.size()>1) symbol[1] = symbol[1].toLower();
+                if (symbol.size() > 1) {
+                    symbol[1] = symbol[1].toLower();
+                }
                 atom->Label = symbol;
                 atom->x = rx.cap(2).toDouble();
                 atom->y = rx.cap(3).toDouble();
                 atom->z = rx.cap(4).toDouble();
                 molecule->addAtom(atom);
 #ifdef QT_DEBUG
-                std::cout 	<< std::setw(5) << atom->Label.toStdString()
-                        << " " << std::setw(16) << std::setprecision(10) << atom->x
-                        << " " << std::setw(16) << std::setprecision(10) << atom->y
-                        << " " << std::setw(16) << std::setprecision(10) << atom->z << std::endl;
+                std::cout << std::setw(5) << atom->Label.toStdString() << " " << std::setw(16)
+                          << std::setprecision(10) << atom->x << " " << std::setw(16)
+                          << std::setprecision(10) << atom->y << " " << std::setw(16)
+                          << std::setprecision(10) << atom->z << std::endl;
 #endif
-            }
-            else {
+            } else {
                 myMoleculeList.push_back(molecule);
                 break;
             }

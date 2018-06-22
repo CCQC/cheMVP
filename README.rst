@@ -48,20 +48,20 @@ chemistry packages, the following outputs can be read, and there are no
 restrictions on the filenames used: the optional argument after the number of
 atoms is only necessary if the units are atomic units.
 
-- Molpro (geometry optimization) 
+- Molpro (geometry optimization)
 - GAMESS (geometry optimization)
 - NWChem (geometry optimization)
 - ORCA (single point/geometry optimization)
 - PSI3 (geometry optimization)
-- Q-Chem 3.1 
+- Q-Chem 3.1
 - File11 from PSI
 - ACESII/Cfour
 
-A save/load project format for cheMVP is in development; stay tuned, folks.  Be
+A save/load project format for cheMVP is in development; stay tuned, folks. Be
 careful if you've done a funky many-jobs-in-one-input type calculation and
-check that the correct geometries were parsed.  Sometimes it's tricky to
+check that the correct geometries were parsed. Sometimes it's tricky to
 distinguish the steps of a finite difference computation from steps of an
-optimization. 
+optimization.
 
 
 COMPILING
@@ -89,11 +89,11 @@ the Free Software Foundation, either version 3 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 Please contact me with any updates/modifications you have made, so that I can
 incorporate them into the code.
@@ -107,14 +107,20 @@ AUTHORS
 - Parker Shelton
 
 
+Notes for Contributors
+======================
+Please run your code through clang-format before submitting a pull request so
+that a consistent style is kept.
+
+
 LINKS
 =====
 A number of valuable open-source programs have been used to create this code.
 
 They are:
 
-- Qt (GUI library)  - http://qt.nokia.com
-- SVG Icons (the icons)  - http://svgicons.sourceforge.net
+- Qt (GUI library) - http://qt.nokia.com
+- SVG Icons (the icons) - http://svgicons.sourceforge.net
 - GIT (code synchronization) - http://git-scm.com/
 
 

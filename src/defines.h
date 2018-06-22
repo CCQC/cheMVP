@@ -6,9 +6,9 @@
 #define PROGRAM_NAME "cheMVP"
 #define CHEMVP_VERSION "0.2"
 
-//These are the types used in the enums to distinguish drawing types
-#define ATOMTYPE  1
-#define BONDTYPE  2
+// These are the types used in the enums to distinguish drawing types
+#define ATOMTYPE 1
+#define BONDTYPE 2
 #define ANGLETYPE 3
 #define ANGLEMARKERTYPE 4
 #define ARROWTYPE 5
@@ -36,7 +36,7 @@
 #define DEFAULT_SCENE_SIZE_Y 450.0
 #define DEFAULT_TOOLBOX_WIDTH 350.0
 #define DZ_ZERO_TOL 0.01
-#define SELECTED_COLOR QColor(104,250,14,150)
+#define SELECTED_COLOR QColor(104, 250, 14, 150)
 
 #define DEFAULT_BOND_LABEL_PRECISION 3
 #define DEFAULT_ANGLE_LABEL_PRECISION 1
@@ -55,7 +55,9 @@
 
 #define ANGLE_MARKER_OFFSET 0.4
 
-#define ITEM_IS_LABEL item->type() == Label::AngleLabelType || item->type() == Label::BondLabelType || item->type() == Label::TextLabelType
+#define ITEM_IS_LABEL                                                                              \
+    item->type() == Label::AngleLabelType || item->type() == Label::BondLabelType ||               \
+        item->type() == Label::TextLabelType
 
 #define MAX_RECENT_FILES 5
 
