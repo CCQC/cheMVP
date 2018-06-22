@@ -282,7 +282,7 @@ void MainWindow::loadFile()
 {
     if (!parser->fileName().isEmpty()) {
         if (parser->fileName().endsWith(".chmvp")) {
-            error("Project loading in MainWindow::loadFile()");
+            openProject(parser->fileName());
             return;
         }
         parser->readFile();
