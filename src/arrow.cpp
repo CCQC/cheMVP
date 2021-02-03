@@ -44,8 +44,7 @@ void DragBox::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    if (!hoverOver)
-    {
+    if (!hoverOver) {
         return;
     }
     myPen.setWidthF(0.001 * drawingInfo->scaleFactor());
@@ -87,8 +86,7 @@ void Arrow::updatePosition()
                    myEndBox->scenePos().x(),
                    myEndBox->scenePos().y()));
 
-    if (line().dy() >= 0)
-    {
+    if (line().dy() >= 0) {
         angle = (PI * 2) - angle;
     }
 
