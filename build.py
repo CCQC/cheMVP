@@ -1,23 +1,22 @@
 #!/usr/bin/env python3
 import os
 import sys
-
 from glob import glob
 from subprocess import check_call
 
-filename = 'cheMVP.pro'
-os.makedirs('build', exist_ok=True)
-os.chdir('build')
+filename = "cheMVP.pro"
+os.makedirs("build", exist_ok=True)
+os.chdir("build")
 
 sections = {
-    'SOURCES': 'cpp',
-    'HEADERS': 'h',
-    'RESOURCES': 'qrc'
+    "SOURCES": "cpp",
+    "HEADERS": "h",
+    "RESOURCES": "qrc",
 }
 
-out = ''
+out = ""
 for section, ext in sections.items():
-    out += f'{section} = ' + '  \\ \n'.join(glob(f'../src/*.{ext}')) + '\n'
+    out += f"{section} = " + "  \\ \n".join(glob(f"../src/*.{ext}")) + "\n"
 
 out += """
 CONFIG += debug_and_release static
@@ -38,10 +37,10 @@ win32{
   QMAKE_LFLAGS_RELEASE -= -mthreads
 }"""
 
-with open(filename, 'w') as f:
+with open(filename, "w") as f:
     f.write(out)
 
-qmake_flags = '-spec macx-g++' if len(sys.argv) > 1 and sys.argv[1] == 'mac' else ''
+qmake_flags = "-spec macx-g++" if len(sys.argv) > 1 and sys.argv[1] == "mac" else ""
 
-check_call(f'qmake {qmake_flags} {filename}', shell=True)
-check_call(f'time nice make -j {os.cpu_count()}', shell=True)
+check_call(f"qmake {qmake_flags} {filename}", shell=True)
+check_call(f"time nice make -j {os.cpu_count()}", shell=True)
