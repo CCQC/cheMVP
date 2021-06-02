@@ -60,9 +60,9 @@ void Angle::updatePosition()
     double r1 = sqrt(dX1 * dX1 + dY1 * dY1 + dZ1 * dZ1);
     double cosTheta1 = dZ1 / r1;
     double sinTheta1 = sin(acos(cosTheta1));
-    double phi1 = (norm1 == 0.0 ? 0.0 : acos(dY1 / norm1));
-    if (dX1 < 0.0) {
-        phi1 = 2.0 * PI - phi1;
+    double phi1 = (norm1 < 1e-9 ? 0 : acos(dY1 / norm1));
+    if (dX1 < 0) {
+        phi1 = 2 * PI - phi1;
     }
     // The angle between bond 2 and the vertical
     double dX3 = myEndAtom->pos().x() - myCenterAtom->pos().x();
@@ -72,9 +72,9 @@ void Angle::updatePosition()
     double r3 = sqrt(dX3 * dX3 + dY3 * dY3 + dZ3 * dZ3);
     double cosTheta3 = dZ3 / r3;
     double sinTheta3 = sin(acos(cosTheta3));
-    double phi3 = (norm3 == 0.0 ? 0.0 : acos(dY3 / norm3));
-    if (dX3 < 0.0) {
-        phi3 = 2.0 * PI - phi3;
+    double phi3 = (norm3 < 1e-9 ? 0 : acos(dY3 / norm3));
+    if (dX3 < 0) {
+        phi3 = 2 * PI - phi3;
     }
 
     double radius = myCenterAtom->effectiveRadius() + 0.2 * _info->scaleFactor();
@@ -92,19 +92,19 @@ void Angle::updatePosition()
     // The vectors from atom2 to the points startPos and endPos are normalized to radius by
     // construction.  The
     // sum of them is the midpoint, but it must be renormalized to radius
-    double scale = radius / sqrt(pow(bond1Pos.x() + bond2Pos.x() - 2.0 * xRef, 2.0) +
-                                 pow(bond1Pos.y() + bond2Pos.y() - 2.0 * yRef, 2.0) +
-                                 pow(bond1Z + bond2Z - 2.0 * zRef, 2.0));
+    double scale = radius / sqrt(pow(bond1Pos.x() + bond2Pos.x() - 2 * xRef, 2) +
+                                 pow(bond1Pos.y() + bond2Pos.y() - 2 * yRef, 2) +
+                                 pow(bond1Z + bond2Z - 2 * zRef, 2));
     // This is the midpoint on the arc from p1 to p3
-    double zMP = zRef + scale * (bond1Z + bond2Z - 2.0 * zRef);
-    QPointF MP(xRef + scale * (bond1Pos.x() + bond2Pos.x() - 2.0 * xRef),
-               yRef + scale * (bond1Pos.y() + bond2Pos.y() - 2.0 * yRef));
+    double zMP = zRef + scale * (bond1Z + bond2Z - 2 * zRef);
+    QPointF MP(xRef + scale * (bond1Pos.x() + bond2Pos.x() - 2 * xRef),
+               yRef + scale * (bond1Pos.y() + bond2Pos.y() - 2 * yRef));
 
     // Time to account for the angle markers not touching the bonds
     double fraction = atan(ANGLE_MARKER_OFFSET);
-    scale = radius / sqrt(pow(bond1Pos.x() - xRef + fraction * (bond2Pos.x() - xRef), 2.0) +
-                          pow(bond1Pos.y() - yRef + fraction * (bond2Pos.y() - yRef), 2.0) +
-                          pow(bond1Z - zRef + fraction * (bond2Z - zRef), 2.0));
+    scale = radius / sqrt(pow(bond1Pos.x() - xRef + fraction * (bond2Pos.x() - xRef), 2) +
+                          pow(bond1Pos.y() - yRef + fraction * (bond2Pos.y() - yRef), 2) +
+                          pow(bond1Z - zRef + fraction * (bond2Z - zRef), 2));
     QPointF startPos(xRef + scale * (bond1Pos.x() - xRef + fraction * (bond2Pos.x() - xRef)),
                      yRef + scale * (bond1Pos.y() - yRef + fraction * (bond2Pos.y() - yRef)));
     QPointF endPos(xRef + scale * (bond2Pos.x() - xRef + fraction * (bond1Pos.x() - xRef)),
@@ -113,23 +113,23 @@ void Angle::updatePosition()
     double endZ = zRef + scale * (bond2Z - zRef + fraction * (bond1Z - zRef));
 
     // Redefine this to be the normalization for the quarter and three-quarter point vectors
-    scale = radius / sqrt(pow(MP.x() + startPos.x() - 2.0 * xRef, 2.0) +
-                          pow(MP.y() + startPos.y() - 2.0 * yRef, 2.0) +
-                          pow(zMP + startZ - 2.0 * zRef, 2.0));
+    scale = radius / sqrt(pow(MP.x() + startPos.x() - 2 * xRef, 2) +
+                          pow(MP.y() + startPos.y() - 2 * yRef, 2) +
+                          pow(zMP + startZ - 2 * zRef, 2));
 
     // This will be the quarter point along the arc
-    QPointF QP1(xRef + scale * (startPos.x() + MP.x() - 2.0 * xRef),
-                yRef + scale * (startPos.y() + MP.y() - 2.0 * yRef));
+    QPointF QP1(xRef + scale * (startPos.x() + MP.x() - 2 * xRef),
+                yRef + scale * (startPos.y() + MP.y() - 2 * yRef));
     // This will be the three-quarter point along the arc
-    QPointF QP3(xRef + scale * (endPos.x() + MP.x() - 2.0 * xRef),
-                yRef + scale * (endPos.y() + MP.y() - 2.0 * yRef));
+    QPointF QP3(xRef + scale * (endPos.x() + MP.x() - 2 * xRef),
+                yRef + scale * (endPos.y() + MP.y() - 2 * yRef));
     myMarker1->setZValue(startZ);
     myMarker2->setZValue(endZ);
 
     // This is the interpolation formula to force the curve through QP1
-    QPointF guidePoint1 = 2.0 * QP1 - 0.5 * (startPos + MP);
+    QPointF guidePoint1 = 2 * QP1 - (startPos + MP)/2;
     // This is the interpolation formula to force the curve through QP3
-    QPointF guidePoint3 = 2.0 * QP3 - 0.5 * (endPos + MP);
+    QPointF guidePoint3 = 2 * QP3 - (endPos + MP)/2;
 
     QPainterPath path1(startPos);
     path1.quadTo(guidePoint1, MP);
@@ -144,9 +144,9 @@ void Angle::updatePosition()
     if (myLabel != 0) {
         QPointF labelPos;
         labelPos.setX(xRef + myLabel->dX() +
-                      1.5 * scale * (endPos.x() + startPos.x() - 2.0 * xRef));
+                      1.5 * scale * (endPos.x() + startPos.x() - 2 * xRef));
         labelPos.setY(yRef + myLabel->dY() +
-                      1.5 * scale * (endPos.y() + startPos.y() - 2.0 * yRef));
+                      1.5 * scale * (endPos.y() + startPos.y() - 2 * yRef));
         myLabel->setPos(labelPos);
     }
 }

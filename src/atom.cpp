@@ -20,7 +20,7 @@ Atom::Atom(QString element, DrawingInfo *i, QGraphicsItem *parent)
         myRadius = labelToVdwRadius.value(mySymbol).toDouble();
     }
     myMass = labelToMass.value(mySymbol).toDouble();
-    if (myMass == 0.0 && mySymbol != "X") {
+    if (myMass < 1e-9 && mySymbol != "X") {
         QString errorMessage = "I don't know the mass of the atom " + mySymbol;
         error(errorMessage, __FILE__, __LINE__);
         return;
@@ -30,9 +30,9 @@ Atom::Atom(QString element, DrawingInfo *i, QGraphicsItem *parent)
     setAcceptHoverEvents(true);
     setAcceptDrops(true);
     myEffectiveRadius =
-        _info->scaleFactor() * (1.0 + zValue() * _info->perspective()) * myRadius * myScaleFactor;
+        _info->scaleFactor() * (1 + zValue() * _info->perspective()) * myRadius * myScaleFactor;
     setRect(QRectF(
-        -myEffectiveRadius, -myEffectiveRadius, 2.0 * myEffectiveRadius, 2.0 * myEffectiveRadius));
+        -myEffectiveRadius, -myEffectiveRadius, 2 * myEffectiveRadius, 2 * myEffectiveRadius));
 }
 
 void Atom::setLabel(const QString &text)
@@ -99,7 +99,7 @@ QRectF Atom::boundingRect() const
 void Atom::computeRadius()
 {
     myEffectiveRadius =
-        _info->scaleFactor() * (1.0 + zValue() * _info->perspective()) * myRadius * myScaleFactor;
+        _info->scaleFactor() * (1 + zValue() * _info->perspective()) * myRadius * myScaleFactor;
 }
 
 void Atom::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -110,7 +110,7 @@ void Atom::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
     // The myEffectiveRadius changes on zooming/rotation so we must always update it
     setRect(QRectF(
-        -myEffectiveRadius, -myEffectiveRadius, 2.0 * myEffectiveRadius, 2.0 * myEffectiveRadius));
+        -myEffectiveRadius, -myEffectiveRadius, 2 * myEffectiveRadius, 2 * myEffectiveRadius));
     // If the item is selected, use a lighter color for the filling
     QPen linestyle;
     // If we're hovering over the item, use thicker lines
@@ -119,11 +119,11 @@ void Atom::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     painter->setPen(linestyle);
     // The outline of the atom is a little bit too diffuse, here's another more diffuse circle
     // that accounts for the width of the line so that the gradient and fogging options look pretty
-    float lineWidth = linestyle.widthF() / 2.0;
+    float lineWidth = linestyle.widthF() / 2;
     QRectF fillRect(-myEffectiveRadius - lineWidth,
                     -myEffectiveRadius - lineWidth,
-                    2.0 * myEffectiveRadius + 2.0 * lineWidth,
-                    2.0 * myEffectiveRadius + 2.0 * lineWidth);
+                    2 * myEffectiveRadius + 2 * lineWidth,
+                    2 * myEffectiveRadius + 2 * lineWidth);
 
     // The circle defnining the atom
     if (_info->getDrawingStyle() == DrawingInfo::Gradient) {
@@ -131,8 +131,8 @@ void Atom::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
         QRadialGradient gradient(QPointF(0.0, 0.0),
                                  myEffectiveRadius,
                                  QPointF(myEffectiveRadius / 2.1, -myEffectiveRadius / 2.1));
-        gradient.setColorAt(0.0, Qt::white);
-        gradient.setColorAt(1.0, fill_color);
+        gradient.setColorAt(0, Qt::white);
+        gradient.setColorAt(1, fill_color);
         gradient.setSpread(QGradient::RepeatSpread);
         // PDF looks bad when rendering gradient - here's a workaround
         painter->setPen(Qt::transparent);
@@ -150,13 +150,13 @@ void Atom::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     if (myFontSizeStyle != LargeLabel) {
         // These boxes define the path of the two arcs
         QRectF h_line_box(-myEffectiveRadius,
-                          -myEffectiveRadius / 2.0,
-                          2.0 * myEffectiveRadius,
+                          -myEffectiveRadius / 2,
+                          2 * myEffectiveRadius,
                           myEffectiveRadius);
-        QRectF v_line_box(-myEffectiveRadius / 2.0,
+        QRectF v_line_box(-myEffectiveRadius / 2,
                           -myEffectiveRadius,
                           myEffectiveRadius,
-                          2.0 * myEffectiveRadius);
+                          2 * myEffectiveRadius);
         // 2880 is 180 degrees: QT wants angles in 1/16ths of a degree
         painter->drawArc(h_line_box, 0, -2880);
         // The direction of the vertical arc depends on the style
@@ -198,12 +198,9 @@ void Atom::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     setLabelFontSize(myFontSize);
     QFontMetricsF labelFM(_info->getAtomLabelFont());
     // TODO check these offsets.  I think there's a bug in the height reported by fontmetrics
-    QPointF labelPos;
-    if (myFontSizeStyle == LargeLabel) {
-        labelPos = QPointF(-labelFM.width(myLabel) / 2.0, labelFM.height() / 3.0);
-    } else {
-        labelPos = QPointF(-labelFM.width(myLabel) / 2.0, labelFM.height() / 3.5);
-    }
+    double height = (myFontSizeStyle == LargeLabel ? labelFM.height() / 3.5 : labelFM.height() / 3);
+    QPointF labelPos = QPointF(-labelFM.width(myLabel) / 2, height);
+
     painter->setPen(_info->getAtomTextColor());
     painter->setBrush(_info->getAtomTextColor());
     painter->setFont(_info->getAtomLabelFont());
@@ -211,11 +208,11 @@ void Atom::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     // If there's a subscript to be drawn, do it
     if (myLabelSubscript.size()) {
         QFont subscriptFont(_info->getAtomLabelFont().family(),
-                            (int)(_info->getAtomLabelFont().pointSizeF() / 2.0));
+                            (int)(_info->getAtomLabelFont().pointSizeF() / 2));
         painter->setFont(subscriptFont);
         qreal hOffset = labelFM.width(myLabel);
         QFontMetricsF subscriptFM(subscriptFont);
-        qreal vOffset = subscriptFM.height() / 3.0;
+        qreal vOffset = subscriptFM.height() / 3;
 
         painter->drawText(labelPos + QPointF(hOffset, vOffset), myLabelSubscript);
     }
@@ -223,14 +220,14 @@ void Atom::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     // If there's a superscript to be drawn, do it
     if (myLabelSuperscript.size()) {
         QFont superscriptFont(_info->getAtomLabelFont().family(),
-                              (int)(_info->getAtomLabelFont().pointSizeF() / 2.0));
+                              (int)(_info->getAtomLabelFont().pointSizeF() / 2));
         painter->setFont(superscriptFont);
         qreal hOffset = labelFM.width(myLabel);
         qreal vOffset2 = labelFM.height();
         QFontMetricsF superscriptFM(superscriptFont);
-        qreal vOffset = superscriptFM.height() / 3.0;
+        qreal vOffset = superscriptFM.height() / 3;
 
-        painter->drawText(labelPos + QPointF(hOffset, -vOffset2 + 2.0 * vOffset),
+        painter->drawText(labelPos + QPointF(hOffset, -vOffset2 + 2 * vOffset),
                           myLabelSuperscript);
     }
 
@@ -243,7 +240,7 @@ void Atom::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     if (_info->getUseFogging()) {
         double dZ = _info->maxZ() - _info->minZ();
         double thisZ = fabs(myZ - _info->maxZ());
-        double opacity = (dZ > TINY ? 2.56 * (_info->getFoggingScale()) * (thisZ / dZ) : 0.0);
+        double opacity = (dZ > TINY ? 2.56 * (_info->getFoggingScale()) * (thisZ / dZ) : 0);
         opacity = (opacity < 0 ? 0 : opacity);
         opacity = (opacity > 255 ? 255 : opacity);
         painter->setPen(Qt::transparent);
@@ -254,8 +251,7 @@ void Atom::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
 double Atom::bondLength(Atom *s, Atom *e)
 {
-    return (
-        sqrt(pow(s->x() - e->x(), 2.0) + pow(s->y() - e->y(), 2.0) + pow(s->z() - e->z(), 2.0)));
+    return sqrt(pow(s->x() - e->x(), 2) + pow(s->y() - e->y(), 2) + pow(s->z() - e->z(), 2));
 }
 
 void Atom::fillLabelToVdwRadiusMap()
