@@ -5,6 +5,8 @@ from glob import glob
 from subprocess import check_call
 
 filename = "cheMVP.pro"
+N_PROCS = os.cpu_count()
+
 os.makedirs("build", exist_ok=True)
 os.chdir("build")
 
@@ -14,9 +16,10 @@ sections = {
     "RESOURCES": "qrc",
 }
 
-out = ""
-for section, ext in sections.items():
-    out += f"{section} = " + "  \\ \n".join(glob(f"../src/*.{ext}")) + "\n"
+out = "\n".join(
+    f"{section} = " + "  \\ \n".join(glob(f"../src/*.{ext}"))
+    for section, ext in sections.items()
+)
 
 out += """
 CONFIG += debug_and_release static
@@ -42,5 +45,5 @@ with open(filename, "w") as f:
 
 qmake_flags = "-spec macx-g++" if len(sys.argv) > 1 and sys.argv[1] == "mac" else ""
 
-check_call(f"qmake {qmake_flags} {filename}", shell=True)
-check_call(f"time nice make -j {os.cpu_count()}", shell=True)
+check_call(f"qmake {qmake_flags} {filename}".split())
+check_call(f"time nice make -j {N_PROCS}".split())
