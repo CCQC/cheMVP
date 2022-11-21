@@ -137,7 +137,7 @@ void Bond::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     if (_info->getUseFogging()) {
         double dZ = _info->maxBondZ() - _info->minBondZ();
         double thisZ = fabs(computeMidZ() - _info->maxBondZ());
-        double opacity = (dZ > TINY ? 2.56 * (_info->getFoggingScale()) * (thisZ / dZ) : 0.0);
+        double opacity = (dZ > TINY ? 2.56 * (_info->getFoggingScale()) * (thisZ / dZ) : 0);
         opacity = (opacity < 0 ? 0 : opacity);
         opacity = (opacity > 255 ? 255 : opacity);
         myPen.setColor(QColor(255, 255, 255, opacity));

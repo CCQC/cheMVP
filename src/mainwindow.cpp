@@ -120,7 +120,8 @@ void MainWindow::setLabelBoldness(bool bold)
     foreach (QGraphicsItem *item, canvas->items()) {
         if (ITEM_IS_LABEL) {
             Label *label = dynamic_cast<Label *>(item);
-            if (label->isSelected() || (label->textInteractionFlags() & Qt::TextEditorInteraction)) {
+            if (label->isSelected() ||
+                (label->textInteractionFlags() & Qt::TextEditorInteraction)) {
                 label->setBold(bold);
             }
         }
@@ -134,7 +135,8 @@ void MainWindow::setLabelItalics(bool italic)
     foreach (QGraphicsItem *item, canvas->items()) {
         if (ITEM_IS_LABEL) {
             Label *label = dynamic_cast<Label *>(item);
-            if (label->isSelected() || (label->textInteractionFlags() & Qt::TextEditorInteraction)) {
+            if (label->isSelected() ||
+                (label->textInteractionFlags() & Qt::TextEditorInteraction)) {
                 label->setItalic(italic);
             }
         }
@@ -148,7 +150,8 @@ void MainWindow::setLabelUnderline(bool underline)
     foreach (QGraphicsItem *item, canvas->items()) {
         if (ITEM_IS_LABEL) {
             Label *label = dynamic_cast<Label *>(item);
-            if (label->isSelected() || (label->textInteractionFlags() & Qt::TextEditorInteraction)) {
+            if (label->isSelected() ||
+                (label->textInteractionFlags() & Qt::TextEditorInteraction)) {
                 label->setUnderline(underline);
             }
         }
@@ -162,7 +165,8 @@ void MainWindow::setLabelFont(QFont font)
     foreach (QGraphicsItem *item, canvas->items()) {
         if (ITEM_IS_LABEL) {
             Label *label = dynamic_cast<Label *>(item);
-            if (label->isSelected() || (label->textInteractionFlags() & Qt::TextEditorInteraction)) {
+            if (label->isSelected() ||
+                (label->textInteractionFlags() & Qt::TextEditorInteraction)) {
                 label->setCurrentFont(font);
             }
         }
@@ -176,7 +180,8 @@ void MainWindow::setLabelFontSize(QString size)
     foreach (QGraphicsItem *item, canvas->items()) {
         if (ITEM_IS_LABEL) {
             Label *label = dynamic_cast<Label *>(item);
-            if (label->isSelected() || (label->textInteractionFlags() & Qt::TextEditorInteraction)) {
+            if (label->isSelected() ||
+                (label->textInteractionFlags() & Qt::TextEditorInteraction)) {
                 label->setCurrentFontSize(size.toInt());
             }
         }

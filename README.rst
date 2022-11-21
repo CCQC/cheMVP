@@ -71,9 +71,7 @@ source is pretty simple.
 
 1. Download and install Qt5 and necessary libraries
   - On Ubuntu,: `aptitude install qt5-default libjpeg-dev libpng-dev libqt5svg5-dev libtiff-dev`
-2. Head into the compilation directory in the cheMVP source folder (e.g. `mkdir build; cd build`)
-3. Type '../qmake_script'
-4. Type 'make'
+2. Type `./build.py`
 
 
 WARRANTY

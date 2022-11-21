@@ -100,7 +100,7 @@ class Atom : public QGraphicsEllipseItem
     void setLabelFontSize(int val)
     {
         myFontSize = val;
-        _info->getAtomLabelFont().setPointSizeF(double(val) * myEffectiveRadius / 20.0);
+        _info->getAtomLabelFont().setPointSizeF(double(val) * myEffectiveRadius / 20);
     }
     void setScaleFactor(double val)
     {
