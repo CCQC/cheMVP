@@ -384,7 +384,7 @@ void DrawingCanvas::determineRotationAngles()
     printf("Stored Rotations: %6.4f %6.4f %6.4f\n", xRot, yRot, zRot);
     // Determine the corresponding euler angles x->y->z
     double theta, phi, omega;
-    if (!(abs(rotationMatrix[2][0]) - 1E-8 < 1 && abs(rotationMatrix[2][0] + 1E-8 > 1))) {
+    if (!(abs(rotationMatrix[2][0]) - 1E-8 < 1 && abs(rotationMatrix[2][0]) + 1E-8 > 1)) {
         double theta1 = -asin(rotationMatrix[2][0]);
         double theta2 = PI - theta1;
         double omega1 =

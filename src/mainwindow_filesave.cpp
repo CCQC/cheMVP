@@ -128,7 +128,6 @@ void MainWindow::saveImage(const QString &fileName)
         painter->begin(svgGen);
         painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
         painter->setRenderHint(QPainter::Antialiasing, true);
-        painter->setRenderHint(QPainter::HighQualityAntialiasing, true);
         canvas->render(painter);
         painter->end();
         delete svgGen;
@@ -137,7 +136,6 @@ void MainWindow::saveImage(const QString &fileName)
         painter->begin(image);
         painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
         painter->setRenderHint(QPainter::Antialiasing, true);
-        painter->setRenderHint(QPainter::HighQualityAntialiasing, true);
         canvas->render(painter);
         painter->end();
         image->save(fileName);
@@ -147,7 +145,6 @@ void MainWindow::saveImage(const QString &fileName)
         painter->begin(printer);
         painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
         painter->setRenderHint(QPainter::Antialiasing, true);
-        painter->setRenderHint(QPainter::HighQualityAntialiasing, true);
         canvas->render(painter);
         painter->end();
     } else if (fileType == PostScript) {
@@ -156,7 +153,6 @@ void MainWindow::saveImage(const QString &fileName)
         painter->begin(printer);
         painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
         painter->setRenderHint(QPainter::Antialiasing, true);
-        painter->setRenderHint(QPainter::HighQualityAntialiasing, true);
         canvas->render(painter);
         painter->end();
     } else {

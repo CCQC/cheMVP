@@ -25,9 +25,5 @@ win32
 
 *._*
 
-chemvp0.2.tgz
-TODO.txt
-
 # compilation directory
-objdir/
-obj/
+build/
